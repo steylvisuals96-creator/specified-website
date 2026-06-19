@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getPayload } from "payload";
 import Link from "next/link";
 import { headers } from "next/headers";
