@@ -9,6 +9,7 @@ import { Leads } from "./collections/Leads";
 import { Media } from "./collections/Media";
 import { Gebruikers } from "./collections/Gebruikers";
 import { Instellingen } from "./globals/Instellingen";
+import { SomLogo, SomIcon } from "./components/SomLogo";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -18,6 +19,12 @@ export default buildConfig({
     user: "gebruikers",
     meta: {
       titleSuffix: "— Som Vastgoed CMS",
+    },
+    components: {
+      graphics: {
+        Logo: SomLogo as any,
+        Icon: SomIcon as any,
+      },
     },
   },
   collections: [Panden, Leads, Media, Gebruikers],

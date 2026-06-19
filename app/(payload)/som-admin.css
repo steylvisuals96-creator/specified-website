@@ -1,0 +1,162 @@
+/* SOM Vastgoed Admin Theme */
+
+/* Force dark theme */
+:root,
+html {
+  color-scheme: dark;
+}
+
+[data-theme="light"],
+[data-theme="dark"],
+:root {
+  /* Backgrounds */
+  --theme-bg: #0d0d0d;
+  --theme-elevation-0: #0d0d0d;
+  --theme-elevation-50: #111111;
+  --theme-elevation-100: #161616;
+  --theme-elevation-150: #1a1a1a;
+  --theme-elevation-200: #202020;
+  --theme-elevation-250: #262626;
+  --theme-elevation-300: #2e2e2e;
+  --theme-elevation-350: #383838;
+  --theme-elevation-400: #444444;
+  --theme-elevation-450: #555555;
+  --theme-elevation-500: #666666;
+  --theme-elevation-550: #808080;
+  --theme-elevation-600: #999999;
+  --theme-elevation-650: #b3b3b3;
+  --theme-elevation-700: #cccccc;
+  --theme-elevation-750: #e0e0e0;
+  --theme-elevation-800: #ebebeb;
+  --theme-elevation-850: #f5f5f5;
+  --theme-elevation-900: #f9f9f9;
+  --theme-elevation-1000: #ffffff;
+
+  /* Text */
+  --theme-text: #ffffff;
+  --theme-input-bg: #161616;
+
+  /* Borders */
+  --theme-border-color: #2a2a2a;
+
+  /* Gold accent — replaces Payload's blue */
+  --color-success-50: #3d2e00;
+  --color-success-100: #5a4400;
+  --color-success-200: #7a5d00;
+  --color-success-250: #9a7600;
+  --color-success-300: #b89000;
+  --color-success-350: #d4a800;
+  --color-success-400: #facb04;
+  --color-success-450: #fbd335;
+  --color-success-500: #fcdc66;
+  --color-success-550: #fde598;
+  --color-success-600: #feeecb;
+  --color-success-650: #fff5e0;
+  --color-success-700: #fffaee;
+  --color-success-750: #fffdf5;
+  --color-success-800: #fffff0;
+  --color-success-850: #fffffe;
+  --color-success-900: #ffffff;
+  --color-success-950: #ffffff;
+
+  /* Error stays red */
+  --color-error-400: #e05252;
+  --color-error-500: #cc3333;
+
+  /* Warning orange */
+  --color-warning-400: #e08020;
+  --color-warning-500: #c06010;
+}
+
+/* Nav / sidebar */
+.nav__wrap,
+nav.nav {
+  background-color: #0d0d0d !important;
+  border-right-color: #2a2a2a !important;
+}
+
+/* Accent buttons */
+.btn--style-primary,
+button[class*="btn--style-primary"],
+a[class*="btn--style-primary"] {
+  background-color: #facb04 !important;
+  color: #111111 !important;
+  border-color: #facb04 !important;
+}
+
+.btn--style-primary:hover {
+  background-color: #e0b400 !important;
+}
+
+/* Save button */
+button[id*="action-save"],
+button[class*="form-submit"] {
+  background-color: #facb04 !important;
+  color: #111111 !important;
+}
+
+/* Active nav link */
+a[class*="nav__link--active"],
+[class*="nav__link--active"] {
+  color: #facb04 !important;
+}
+
+a[class*="nav__link"]:hover {
+  color: #facb04 !important;
+}
+
+/* Logo area */
+.nav__brand-logo,
+[class*="nav__brand"] {
+  padding: 1.5rem 1rem;
+}
+
+/* Table header */
+th, thead {
+  color: #facb04 !important;
+  border-bottom-color: #2a2a2a !important;
+}
+
+/* Scrollbar */
+* {
+  scrollbar-color: #2a2a2a #0d0d0d;
+}
+
+/* Card / cell backgrounds */
+.cell,
+.row,
+.list-controls {
+  border-color: #2a2a2a !important;
+}
+
+/* Input focus ring */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #facb04 !important;
+  box-shadow: 0 0 0 2px rgba(250, 203, 4, 0.15) !important;
+}
+
+/* Checkbox / toggle accent */
+input[type="checkbox"]:checked {
+  accent-color: #facb04;
+}
+
+/* Selected / highlighted */
+[class*="--selected"],
+[aria-selected="true"] {
+  background-color: rgba(250, 203, 4, 0.1) !important;
+  border-color: #facb04 !important;
+}
+
+/* Status dots */
+[class*="status--active"],
+[class*="status--published"] {
+  background-color: #facb04 !important;
+}
+
+/* Dashboard card borders */
+.dashboard__card-list li,
+[class*="card"] {
+  border-color: #2a2a2a !important;
+}

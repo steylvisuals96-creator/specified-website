@@ -1,5 +1,6 @@
 import { RootLayout } from "@payloadcms/next/layouts";
 import "@payloadcms/next/css";
+import "./som-admin.css";
 import React from "react";
 import { importMap } from "./admin/importMap";
 import { handleServerFunctions } from "./actions";
