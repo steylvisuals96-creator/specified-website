@@ -8,6 +8,12 @@ import { Panden } from "./collections/Panden";
 import { Leads } from "./collections/Leads";
 import { Media } from "./collections/Media";
 import { Gebruikers } from "./collections/Gebruikers";
+import { Paginas } from "./collections/Paginas";
+import { Nieuws } from "./collections/Nieuws";
+import { Team } from "./collections/Team";
+import { Testimonials } from "./collections/Testimonials";
+import { FAQ } from "./collections/FAQ";
+import { Afspraken } from "./collections/Afspraken";
 import { Instellingen } from "./globals/Instellingen";
 import { SomLogo, SomIcon } from "./components/SomLogo";
 
@@ -27,7 +33,22 @@ export default buildConfig({
       },
     },
   },
-  collections: [Panden, Leads, Media, Gebruikers],
+  collections: [
+    // Vastgoed
+    Panden,
+    Afspraken,
+    // CRM
+    Leads,
+    // Inhoud
+    Paginas,
+    Nieuws,
+    Team,
+    Testimonials,
+    FAQ,
+    // Systeem
+    Media,
+    Gebruikers,
+  ],
   globals: [Instellingen],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "vastgoed-cms-secret-change-this",
