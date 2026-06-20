@@ -14,6 +14,7 @@ import { Team } from "./collections/Team";
 import { Testimonials } from "./collections/Testimonials";
 import { FAQ } from "./collections/FAQ";
 import { Afspraken } from "./collections/Afspraken";
+import { Taken } from "./collections/Taken";
 import { Instellingen } from "./globals/Instellingen";
 import { SomLogo, SomIcon } from "./components/SomLogo";
 
@@ -39,6 +40,7 @@ export default buildConfig({
     Afspraken,
     // CRM
     Leads,
+    Taken,
     // Inhoud
     Paginas,
     Nieuws,

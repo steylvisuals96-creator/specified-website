@@ -1,7 +1,23 @@
 import type { CollectionConfig } from "payload";
+import { emailNieuweLead } from "../lib/emailNieuweLead";
 
 export const Leads: CollectionConfig = {
   slug: "leads",
+  hooks: {
+    afterChange: [
+      async ({ doc, operation }) => {
+        if (operation === "create") {
+          emailNieuweLead({
+            naam: doc.naam,
+            email: doc.email,
+            telefoon: doc.telefoon,
+            bericht: doc.bericht,
+            bron: doc.bron,
+          }).catch(() => {});
+        }
+      },
+    ],
+  },
   labels: {
     singular: "Lead",
     plural: "Leads",
@@ -76,6 +92,15 @@ export const Leads: CollectionConfig = {
           ],
         },
       ],
+    },
+    {
+      name: "toegewezen_aan",
+      type: "relationship",
+      relationTo: "gebruikers",
+      label: "Toegewezen aan",
+      admin: {
+        position: "sidebar",
+      },
     },
     {
       name: "notities",
