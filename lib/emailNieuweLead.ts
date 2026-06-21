@@ -50,7 +50,7 @@ export async function emailNieuweLead(lead: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "SOM Vastgoed CRM <noreply@somvastgoed.be>",
+      from: "SOM Vastgoed CRM <onboarding@resend.dev>",
       to: [NOTIFICATIE_EMAIL],
       subject: `🆕 Nieuwe lead: ${lead.naam}`,
       html: body,
