@@ -16,7 +16,7 @@ export async function emailNieuweLead(lead: {
         <span style="color:#facb04;font-weight:700;font-size:1.1rem;letter-spacing:0.05em">SOM VASTGOED</span>
         <span style="color:#666;font-size:0.85rem;margin-left:8px">CRM Notificatie</span>
       </div>
-      <h2 style="color:#fff;font-size:1.25rem;margin:0 0 20px">🆕 Nieuwe lead binnengekomens</h2>
+      <h2 style="color:#fff;font-size:1.25rem;margin:0 0 20px">🆕 Nieuwe lead binnengekomen</h2>
       <table style="width:100%;border-collapse:collapse">
         <tr>
           <td style="color:#888;font-size:0.8rem;padding:8px 0;border-bottom:1px solid #1e1e1e;width:120px">Naam</td>
