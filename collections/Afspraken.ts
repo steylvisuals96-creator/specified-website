@@ -1,8 +1,52 @@
 import type { CollectionConfig } from "payload";
+import { emailAfspraakBevestiging } from "../lib/emailAfspraak";
+import { triggerWebhook } from "../lib/webhook";
+import { getPayload } from "payload";
 
 export const Afspraken: CollectionConfig = {
   slug: "afspraken",
   labels: { singular: "Afspraak", plural: "Afspraken" },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation }) => {
+        // Bevestigingsmail aan klant bij aanmaken of bevestigen
+        if (operation === "create" || doc.status === "bevestigd") {
+          try {
+            const { default: configPromise } = await import("@payload-config");
+            const config = await configPromise;
+            const p = await getPayload({ config: config as any });
+
+            let klantNaam: string | undefined;
+            let klantEmail: string | undefined;
+
+            if (doc.lead) {
+              const leadId = typeof doc.lead === "object" ? doc.lead.id : doc.lead;
+              const lead = await p.findByID({ collection: "leads", id: leadId }).catch(() => null) as any;
+              klantNaam = lead?.naam;
+              klantEmail = lead?.email;
+            }
+
+            if (klantEmail) {
+              emailAfspraakBevestiging({
+                titel: doc.titel,
+                datum: doc.datum,
+                locatie: doc.locatie,
+                duur: doc.duur,
+                klantNaam,
+                klantEmail,
+              }).catch(() => {});
+            }
+          } catch {}
+        }
+
+        // Zapier/Make webhook
+        triggerWebhook(operation === "create" ? "afspraak.created" : "afspraak.updated", {
+          id: doc.id, titel: doc.titel, datum: doc.datum,
+          type: doc.type, status: doc.status, locatie: doc.locatie,
+        });
+      },
+    ],
+  },
   admin: {
     useAsTitle: "titel",
     group: "CRM",

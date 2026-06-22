@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { emailNieuweLead } from "../lib/emailNieuweLead";
+import { triggerWebhook } from "../lib/webhook";
+import { getPayload } from "payload";
 
 export const Leads: CollectionConfig = {
   slug: "leads",
@@ -7,6 +9,7 @@ export const Leads: CollectionConfig = {
     afterChange: [
       async ({ doc, operation }) => {
         if (operation === "create") {
+          // E-mail notificatie
           emailNieuweLead({
             naam: doc.naam,
             email: doc.email,
@@ -14,6 +17,38 @@ export const Leads: CollectionConfig = {
             bericht: doc.bericht,
             bron: doc.bron,
           }).catch(() => {});
+
+          // Automatisch opvolgingstaak aanmaken
+          try {
+            const { default: configPromise } = await import("@payload-config");
+            const config = await configPromise;
+            const p = await getPayload({ config: config as any });
+            const deadline = new Date();
+            deadline.setDate(deadline.getDate() + 1);
+            await p.create({
+              collection: "taken",
+              data: {
+                titel: `Contacteer lead: ${doc.naam}`,
+                status: "open",
+                prioriteit: "hoog",
+                deadline: deadline.toISOString(),
+                lead: doc.id,
+                beschrijving: `Nieuwe lead binnengekomen via ${doc.bron || "website"}. Contacteer zo snel mogelijk.`,
+              } as any,
+            });
+          } catch {}
+
+          // Zapier/Make webhook
+          triggerWebhook("lead.created", {
+            id: doc.id, naam: doc.naam, email: doc.email,
+            telefoon: doc.telefoon, bron: doc.bron, status: doc.status,
+          });
+        }
+
+        if (operation === "update") {
+          triggerWebhook("lead.updated", {
+            id: doc.id, naam: doc.naam, status: doc.status,
+          });
         }
       },
     ],
