@@ -631,6 +631,209 @@ input[type="radio"]:checked {
   outline-offset: 2px !important;
 }
 
+/* ══════════════════════════════════════════
+   DOCUMENT / EDIT FORM VIEW
+══════════════════════════════════════════ */
+
+/* Top bar with breadcrumb + save button */
+[class*="doc-controls"],
+[class*="doc-controls__controls"],
+[class*="doc-header__content"] {
+  background: #0a0a0a !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  padding: 1rem 2rem !important;
+}
+
+/* "Creating new Pand" / document title area */
+[class*="doc-header"],
+[class*="doc-header__wrap"] {
+  background: #0a0a0a !important;
+  padding: 1.5rem 2rem 0 !important;
+  border-bottom: none !important;
+}
+
+[class*="doc-header"] h1,
+[class*="doc-header__title"] {
+  font-family: 'Cinzel', serif !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: #f0ede8 !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* The "[Untitled]" live preview title */
+[class*="doc-header"] [class*="live-preview"],
+[class*="doc-header"] [class*="useTitle"],
+[class*="id-label"],
+[class*="doc-header__id"] {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.7rem !important;
+  color: #444 !important;
+  letter-spacing: 0.04em !important;
+  margin-bottom: 0.25rem !important;
+}
+
+/* Tab bar (Locatie / Details / Media) */
+[class*="tabs-component"],
+[role="tablist"],
+[class*="tabs__list"],
+[class*="render-fields__tabs"] {
+  background: #0a0a0a !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  padding: 0 2rem !important;
+  display: flex !important;
+  gap: 0.25rem !important;
+}
+
+[role="tab"],
+[class*="tabs__tab"] {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  color: #555 !important;
+  padding: 0.75rem 1.25rem !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  transition: color 0.15s, border-color 0.15s !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+[role="tab"]:hover {
+  color: #aaa !important;
+}
+
+[role="tab"][aria-selected="true"],
+[class*="tabs__tab--active"] {
+  color: #facb04 !important;
+  border-bottom-color: #facb04 !important;
+  font-weight: 600 !important;
+}
+
+/* Form fields area */
+[class*="render-fields"],
+[class*="fields-wrap"],
+[class*="doc-fields"] {
+  padding: 2rem !important;
+  background: #0a0a0a !important;
+}
+
+/* Individual field wrapper */
+[class*="field-type"],
+[class*="field__wrap"],
+[class*="fieldType"] {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Field label */
+[class*="field-label"],
+[class*="field__label"],
+[class*="label"] > span,
+.field-label {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #4a4a4a !important;
+  margin-bottom: 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+/* Required asterisk */
+[class*="required"] {
+  color: #facb04 !important;
+}
+
+/* Row layout for multiple fields side by side */
+[class*="row__wrap"],
+[class*="field-type--row"] {
+  display: grid !important;
+  gap: 1.25rem !important;
+}
+
+/* Section divider / group header in form */
+[class*="collapsible__header"],
+[class*="group__header"],
+[class*="array__header"] {
+  background: #0f0f0f !important;
+  border: 1px solid #1a1a1a !important;
+  border-radius: 6px !important;
+  padding: 0.75rem 1rem !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: #facb04 !important;
+  cursor: pointer !important;
+}
+
+/* Array / repeatable field rows */
+[class*="array-field__draggable"],
+[class*="array__row"],
+[class*="row--draggable"] {
+  background: #0d0d0d !important;
+  border: 1px solid #1a1a1a !important;
+  border-radius: 6px !important;
+  padding: 1rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* Drag handle */
+[class*="drag-handle"] {
+  color: #333 !important;
+}
+
+/* Number field spinner */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.3 !important;
+  filter: invert(1) !important;
+}
+
+/* "Save" / "Create" top-right button */
+[class*="doc-controls"] button,
+[class*="form-submit"],
+button[id*="action-save"],
+button[id*="action-create"] {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.55rem 1.25rem !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+}
+
+/* Date picker */
+[class*="date-time-picker"],
+[class*="react-datepicker"] {
+  background: #141414 !important;
+  border: 1px solid #222 !important;
+  border-radius: 6px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.82rem !important;
+}
+
+[class*="react-datepicker__header"] {
+  background: #111 !important;
+  border-bottom: 1px solid #1e1e1e !important;
+}
+
+[class*="react-datepicker__day--selected"] {
+  background: #facb04 !important;
+  color: #0a0a0a !important;
+}
+
+[class*="react-datepicker__day:hover"] {
+  background: rgba(250,203,4,0.15) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition: none !important;
