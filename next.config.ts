@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
       { source: "/admin/collections/taken", destination: "/dashboard/taken", permanent: false },
       { source: "/admin/collections/afspraken", destination: "/dashboard/afspraken", permanent: false },
       { source: "/admin/collections/panden", destination: "/dashboard/panden", permanent: false },
+      { source: "/admin/collections/media", destination: "/dashboard/media", permanent: false },
+      { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen", permanent: false },
     ];
   },
 };
