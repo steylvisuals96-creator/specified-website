@@ -3,20 +3,35 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   async redirects() {
-    return [
-      { source: "/admin/collections/paginas", destination: "/dashboard/paginas", permanent: false },
-      { source: "/admin/collections/nieuws", destination: "/dashboard/nieuws", permanent: false },
-      { source: "/admin/collections/team", destination: "/dashboard/team", permanent: false },
-      { source: "/admin/collections/testimonials", destination: "/dashboard/getuigenissen", permanent: false },
-      { source: "/admin/collections/faq", destination: "/dashboard/faq", permanent: false },
-      { source: "/admin/collections/gebruikers", destination: "/dashboard/gebruikers", permanent: false },
-      { source: "/admin/collections/leads", destination: "/dashboard/leads", permanent: false },
-      { source: "/admin/collections/taken", destination: "/dashboard/taken", permanent: false },
-      { source: "/admin/collections/afspraken", destination: "/dashboard/afspraken", permanent: false },
-      { source: "/admin/collections/panden", destination: "/dashboard/panden", permanent: false },
-      { source: "/admin/collections/media", destination: "/dashboard/media", permanent: false },
-      { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen", permanent: false },
+    const collections: [string, string][] = [
+      ["paginas", "paginas"],
+      ["nieuws", "nieuws"],
+      ["team", "team"],
+      ["testimonials", "getuigenissen"],
+      ["faq", "faq"],
+      ["gebruikers", "gebruikers"],
+      ["leads", "leads"],
+      ["taken", "taken"],
+      ["afspraken", "afspraken"],
+      ["panden", "panden"],
+      ["media", "media"],
     ];
+
+    const rules: any[] = [
+      { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen", permanent: false },
+      { source: "/admin/globals/instellingen/:path*", destination: "/dashboard/instellingen", permanent: false },
+    ];
+
+    for (const [slug, dash] of collections) {
+      // List page
+      rules.push({ source: `/admin/collections/${slug}`, destination: `/dashboard/${dash}`, permanent: false });
+      // Create page
+      rules.push({ source: `/admin/collections/${slug}/create`, destination: `/dashboard/${dash}/create`, permanent: false });
+      // Edit/detail pages — map to our custom edit page
+      rules.push({ source: `/admin/collections/${slug}/:id`, destination: `/dashboard/${dash}/:id/edit`, permanent: false });
+    }
+
+    return rules;
   },
 };
 
