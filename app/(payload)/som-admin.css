@@ -117,10 +117,15 @@ nav [class*="group"] > span:first-child,
   display: block !important;
 }
 
-/* Nav links */
+/* Nav links — force reset text-transform */
 [class*="nav__link"],
+[class*="nav__link"] span,
 nav a,
-.nav__link {
+nav li a,
+nav li span,
+.nav__link,
+[class*="NavLink"],
+[class*="nav-link"] {
   font-family: 'DM Sans', sans-serif !important;
   font-size: 0.82rem !important;
   font-weight: 400 !important;
@@ -137,6 +142,21 @@ nav a,
   margin: 0.05rem 0 !important;
   text-transform: none !important;
   letter-spacing: normal !important;
+}
+
+/* Nuclear reset — overwrite any inherited uppercase on all nav text */
+nav *, [class*="nav"] a *, [class*="nav"] li * {
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* Restore only the section group labels */
+[class*="nav__group-label"],
+[class*="navGroup__label"],
+nav [class*="group"] > span:first-child,
+.nav__group > span {
+  text-transform: uppercase !important;
+  letter-spacing: 0.18em !important;
 }
 
 [class*="nav__link"]:hover,
