@@ -68,7 +68,7 @@ export default async function PandDetailPage({ params }: { params: Promise<{ id:
             {prijs && <span style={{ fontSize: "1.1rem", fontWeight: 700, color: G }}>{prijs}</span>}
           </div>
         </div>
-        <a href={`/admin/collections/panden/${id}`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
+        <a href={`/dashboard/panden/${id}/edit`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
           ✎ Bewerken
         </a>
       </div>

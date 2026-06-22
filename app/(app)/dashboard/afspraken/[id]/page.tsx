@@ -61,7 +61,7 @@ export default async function AfspraakDetailPage({ params }: { params: Promise<{
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: "0 0 0.5rem", color: TEXT }}>{afspraak.titel}</h1>
           <StatusBadge label={s.label} kleur={s.kleur} />
         </div>
-        <a href={`/admin/collections/afspraken/${id}`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
+        <a href={`/dashboard/afspraken/${id}/edit`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
           ✎ Bewerken
         </a>
       </div>

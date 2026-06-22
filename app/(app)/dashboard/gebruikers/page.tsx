@@ -14,13 +14,13 @@ export default async function GebruikersPage() {
   const docs = await payload.find({ collection: "gebruikers", limit: 100, sort: "-createdAt" });
   return (
     <DashboardShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email}>
-      <PageHeader title="Gebruikers" subtitle={`${docs.totalDocs} gebruikers`} actions={<GoldBtn href="/admin/collections/gebruikers/create">+ Nieuwe gebruiker</GoldBtn>} />
+      <PageHeader title="Gebruikers" subtitle={`${docs.totalDocs} gebruikers`} actions={<GoldBtn href="/dashboard/gebruikers/create">+ Nieuwe gebruiker</GoldBtn>} />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen gebruikers.</Empty> : (
           <Table headers={["Naam", "E-mail", "Rol", "Aangemaakt"]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
-                <TD bold><Link href={`/admin/collections/gebruikers/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam || "—"}</Link></TD>
+                <TD bold><Link href={`/dashboard/gebruikers/${doc.id}/edit`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam || "—"}</Link></TD>
                 <TD muted><a href={`mailto:${doc.email}`} style={{ color: "#facb04", textDecoration: "none" }}>{doc.email}</a></TD>
                 <TD><StatusBadge label={doc.rol === "beheerder" ? "Beheerder" : "Makelaar"} kleur={doc.rol === "beheerder" ? "#facb04" : "#60a5fa"} /></TD>
                 <TD muted>{fmtDate(doc.createdAt)}</TD>

@@ -73,7 +73,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               ☎ Bellen
             </a>
           )}
-          <a href={`/admin/collections/leads/${id}`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600, border: `1px solid ${G}` }}>
+          <a href={`/dashboard/leads/${id}/edit`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600, border: `1px solid ${G}` }}>
             ✎ Bewerken
           </a>
         </div>

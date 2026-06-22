@@ -14,13 +14,13 @@ export default async function GetuigenissenPage() {
   const docs = await payload.find({ collection: "testimonials", limit: 100, sort: "-createdAt" });
   return (
     <DashboardShell activePath="/dashboard/getuigenissen" userName={(user as any).naam || user.email}>
-      <PageHeader title="Getuigenissen" subtitle={`${docs.totalDocs} reviews`} actions={<GoldBtn href="/admin/collections/testimonials/create">+ Nieuwe getuigenis</GoldBtn>} />
+      <PageHeader title="Getuigenissen" subtitle={`${docs.totalDocs} reviews`} actions={<GoldBtn href="/dashboard/getuigenissen/create">+ Nieuwe getuigenis</GoldBtn>} />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen getuigenissen.</Empty> : (
           <Table headers={["Naam", "Type", "Beoordeling", "Status", "Datum"]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
-                <TD bold><Link href={`/admin/collections/testimonials/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam}</Link></TD>
+                <TD bold><Link href={`/dashboard/getuigenissen/${doc.id}/edit`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam}</Link></TD>
                 <TD muted>{doc.type || "—"}</TD>
                 <TD muted>{doc.beoordeling ? `${doc.beoordeling}/5 ★` : "—"}</TD>
                 <TD><StatusBadge label={doc.goedgekeurd ? "Goedgekeurd" : "In review"} kleur={doc.goedgekeurd ? "#34d399" : "#facb04"} /></TD>

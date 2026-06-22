@@ -17,7 +17,7 @@ export default async function MediaPage() {
       <PageHeader
         title="Media"
         subtitle={`${docs.totalDocs} bestanden`}
-        actions={<GoldBtn href="/admin/collections/media/create">+ Bestand uploaden</GoldBtn>}
+        actions={<GoldBtn href="/dashboard/media/create">+ Bestand uploaden</GoldBtn>}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? (
@@ -34,7 +34,7 @@ export default async function MediaPage() {
               return (
                 <a
                   key={doc.id}
-                  href={`/admin/collections/media/${doc.id}`}
+                  href={`/dashboard/media/${doc.id}/edit`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div style={{

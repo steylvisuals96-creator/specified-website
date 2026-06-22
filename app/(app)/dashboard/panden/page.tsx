@@ -34,7 +34,7 @@ export default async function PandenPage() {
       <PageHeader
         title="Panden"
         subtitle={`${panden.totalDocs} panden in totaal`}
-        actions={<GoldBtn href="/admin/collections/panden/create">+ Nieuw pand</GoldBtn>}
+        actions={<GoldBtn href="/dashboard/panden/create">+ Nieuw pand</GoldBtn>}
       />
 
       <div style={{ padding: "1.5rem 2.5rem" }}>

@@ -14,13 +14,13 @@ export default async function TeamPage() {
   const docs = await payload.find({ collection: "team", limit: 100, sort: "volgorde" });
   return (
     <DashboardShell activePath="/dashboard/team" userName={(user as any).naam || user.email}>
-      <PageHeader title="Team" subtitle={`${docs.totalDocs} teamleden`} actions={<GoldBtn href="/admin/collections/team/create">+ Nieuw teamlid</GoldBtn>} />
+      <PageHeader title="Team" subtitle={`${docs.totalDocs} teamleden`} actions={<GoldBtn href="/dashboard/team/create">+ Nieuw teamlid</GoldBtn>} />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen teamleden toegevoegd.</Empty> : (
           <Table headers={["Naam", "Functie", "E-mail", "Telefoon", "Status"]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
-                <TD bold><Link href={`/admin/collections/team/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam}</Link></TD>
+                <TD bold><Link href={`/dashboard/team/${doc.id}/edit`} style={{ color: "inherit", textDecoration: "none" }}>{doc.naam}</Link></TD>
                 <TD muted>{doc.functie || "—"}</TD>
                 <TD muted>{doc.email ? <a href={`mailto:${doc.email}`} style={{ color: "#facb04", textDecoration: "none" }}>{doc.email}</a> : "—"}</TD>
                 <TD muted>{doc.telefoon || "—"}</TD>

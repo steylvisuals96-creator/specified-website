@@ -39,7 +39,7 @@ export default async function TakenPage() {
       <PageHeader
         title="Taken"
         subtitle={`${taken.totalDocs} taken`}
-        actions={<GoldBtn href="/admin/collections/taken/create">+ Nieuwe taak</GoldBtn>}
+        actions={<GoldBtn href="/dashboard/taken/create">+ Nieuwe taak</GoldBtn>}
       />
 
       <div style={{ padding: "1.5rem 2.5rem" }}>

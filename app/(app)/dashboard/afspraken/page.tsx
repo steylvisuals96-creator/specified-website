@@ -42,7 +42,7 @@ export default async function AfsprakenPage() {
       <PageHeader
         title="Afspraken"
         subtitle={`${afspraken.totalDocs} afspraken`}
-        actions={<GoldBtn href="/admin/collections/afspraken/create">+ Nieuwe afspraak</GoldBtn>}
+        actions={<GoldBtn href="/dashboard/afspraken/create">+ Nieuwe afspraak</GoldBtn>}
       />
 
       <div style={{ padding: "1.5rem 2.5rem" }}>

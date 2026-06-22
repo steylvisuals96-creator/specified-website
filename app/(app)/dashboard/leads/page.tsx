@@ -41,7 +41,7 @@ export default async function LeadsPage() {
       <PageHeader
         title="Leads"
         subtitle={`${leads.totalDocs} leads in totaal`}
-        actions={<GoldBtn href="/admin/collections/leads/create">+ Nieuwe lead</GoldBtn>}
+        actions={<GoldBtn href="/dashboard/leads/create">+ Nieuwe lead</GoldBtn>}
       />
 
       <div style={{ padding: "1.5rem 2.5rem" }}>
