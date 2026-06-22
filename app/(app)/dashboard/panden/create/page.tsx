@@ -3,8 +3,8 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import FormShell, { Field, SelectField, CheckboxField, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
-import RichTextEditor from "@/components/RichTextEditor";
 import MediaUpload from "@/components/MediaUpload";
+import PandBeschrijvingSection from "@/components/PandBeschrijvingSection";
 import { htmlToLexical } from "@/lib/lexical";
 
 const configPromise = import("@payload-config").then((m) => m.default);
@@ -88,10 +88,7 @@ export default async function PandCreatePage() {
             <CheckboxField label="Tuin" name="tuin" />
             <CheckboxField label="Terras" name="terras" />
           </div>
-          <div style={{ marginBottom: "1.25rem" }}>
-            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#4a4a4a", marginBottom: "0.5rem" }}>Beschrijving</div>
-            <RichTextEditor name="beschrijving" />
-          </div>
+          <PandBeschrijvingSection />
         </FormSection>
 
         <FormSection title="Media">

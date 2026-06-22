@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { emailNieuweLead } from "../lib/emailNieuweLead";
 import { triggerWebhook } from "../lib/webhook";
+import { analyseerLead } from "../lib/claude";
 import { getPayload } from "payload";
 
 export const Leads: CollectionConfig = {
@@ -37,6 +38,24 @@ export const Leads: CollectionConfig = {
               } as any,
             });
           } catch {}
+
+          // Claude analyse — sla op als notitie
+          analyseerLead({
+            naam: doc.naam, email: doc.email,
+            telefoon: doc.telefoon, bericht: doc.bericht, bron: doc.bron,
+          }).then(async (analyse) => {
+            if (!analyse) return;
+            try {
+              const { default: configPromise } = await import("@payload-config");
+              const config = await configPromise;
+              const p = await getPayload({ config: config as any });
+              const bestaand = doc.notities ? `${doc.notities}\n\n` : "";
+              await p.update({
+                collection: "leads", id: doc.id,
+                data: { notities: `${bestaand}🤖 AI-analyse:\n${analyse}` } as any,
+              });
+            } catch {}
+          }).catch(() => {});
 
           // Zapier/Make webhook
           triggerWebhook("lead.created", {

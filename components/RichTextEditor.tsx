@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useEffect } from "react";
+import { useEffect, useImperativeHandle, forwardRef } from "react";
 
 const BTN = (props: { onClick: () => void; active?: boolean; title: string; children: React.ReactNode }) => (
   <button
@@ -27,7 +27,9 @@ const BTN = (props: { onClick: () => void; active?: boolean; title: string; chil
   </button>
 );
 
-export default function RichTextEditor({ name, defaultValue }: { name: string; defaultValue?: string }) {
+export type RichTextEditorHandle = { setContent: (html: string) => void };
+
+const RichTextEditor = forwardRef<RichTextEditorHandle, { name: string; defaultValue?: string }>(function RichTextEditor({ name, defaultValue }, ref) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -43,6 +45,10 @@ export default function RichTextEditor({ name, defaultValue }: { name: string; d
       editor.commands.setContent(defaultValue || "");
     }
   }, [defaultValue]);
+
+  useImperativeHandle(ref, () => ({
+    setContent: (html: string) => editor?.commands.setContent(html),
+  }));
 
   const html = editor?.getHTML() ?? "";
 
@@ -91,4 +97,6 @@ export default function RichTextEditor({ name, defaultValue }: { name: string; d
       `}</style>
     </div>
   );
-}
+});
+
+export default RichTextEditor;

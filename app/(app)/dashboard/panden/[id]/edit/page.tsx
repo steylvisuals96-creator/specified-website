@@ -3,7 +3,7 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import FormShell, { Field, SelectField, CheckboxField, FormSection, FormRow, SaveBtn, DeleteBtn } from "@/components/FormShell";
-import RichTextEditor from "@/components/RichTextEditor";
+import PandBeschrijvingSection from "@/components/PandBeschrijvingSection";
 import MediaUpload from "@/components/MediaUpload";
 import { htmlToLexical, lexicalToHtml } from "@/lib/lexical";
 
@@ -99,10 +99,7 @@ export default async function PandEditPage({ params }: { params: Promise<{ id: s
             <CheckboxField label="Tuin" name="tuin" defaultChecked={d.tuin} />
             <CheckboxField label="Terras" name="terras" defaultChecked={d.terras} />
           </div>
-          <div style={{ marginBottom: "1.25rem" }}>
-            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#4a4a4a", marginBottom: "0.5rem" }}>Beschrijving</div>
-            <RichTextEditor name="beschrijving" defaultValue={beschrijvingHtml} />
-          </div>
+          <PandBeschrijvingSection defaultValue={beschrijvingHtml} />
         </FormSection>
 
         <FormSection title="Media">
