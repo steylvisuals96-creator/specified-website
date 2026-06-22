@@ -50,7 +50,7 @@ export default async function PandenPage() {
               return (
                 <tr key={pand.id} style={{ cursor: "pointer" }}>
                   <TD bold>
-                    <Link href={`/admin/collections/panden/${pand.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
+                    <Link href={`/dashboard/panden/${pand.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
                       {pand.titel || "Zonder titel"}
                     </Link>
                   </TD>

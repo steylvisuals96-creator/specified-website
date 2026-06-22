@@ -54,7 +54,7 @@ export default async function TakenPage() {
               return (
                 <tr key={taak.id} style={{ cursor: "pointer" }}>
                   <TD bold>
-                    <Link href={`/admin/collections/taken/${taak.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
+                    <Link href={`/dashboard/taken/${taak.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
                       {taak.titel}
                     </Link>
                   </TD>

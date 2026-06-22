@@ -55,7 +55,7 @@ export default async function AfsprakenPage() {
               return (
                 <tr key={a.id} style={{ cursor: "pointer" }}>
                   <TD bold>
-                    <Link href={`/admin/collections/afspraken/${a.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
+                    <Link href={`/dashboard/afspraken/${a.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
                       {a.titel}
                     </Link>
                   </TD>

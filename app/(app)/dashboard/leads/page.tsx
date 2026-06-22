@@ -54,7 +54,7 @@ export default async function LeadsPage() {
               return (
                 <tr key={lead.id} style={{ cursor: "pointer" }}>
                   <TD bold>
-                    <Link href={`/admin/collections/leads/${lead.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
+                    <Link href={`/dashboard/leads/${lead.id}`} style={{ color: "inherit", textDecoration: "none", display: "block" }}>
                       {lead.naam}
                     </Link>
                   </TD>
