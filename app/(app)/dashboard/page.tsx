@@ -86,11 +86,11 @@ export default async function DashboardPage() {
         <nav style={{ flex: 1, padding: "1rem 0.75rem" }}>
           <NavSection label="Vastgoed">
             <NavItem href="/dashboard" icon="▦" active>Dashboard</NavItem>
-            <NavItem href="/admin/collections/panden" icon="🏠">Panden</NavItem>
-            <NavItem href="/admin/collections/afspraken" icon="📅">Afspraken</NavItem>
+            <NavItem href="/dashboard/panden" icon="🏠">Panden</NavItem>
+            <NavItem href="/dashboard/afspraken" icon="📅">Afspraken</NavItem>
           </NavSection>
           <NavSection label="CRM">
-            <NavItem href="/admin/collections/leads" icon="👤">Leads</NavItem>
+            <NavItem href="/dashboard/leads" icon="👤">Leads</NavItem>
           </NavSection>
           <NavSection label="Inhoud">
             <NavItem href="/admin/collections/paginas" icon="📄">Pagina's</NavItem>
@@ -132,29 +132,29 @@ export default async function DashboardPage() {
         {/* Stat cards rij 1 — Panden */}
         <SectionTitle>Panden</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.875rem", marginBottom: "1.5rem" }}>
-          <StatCard label="Beschikbaar" value={pandenBeschikbaar.totalDocs} href="/admin/collections/panden?where[status][equals]=beschikbaar" accent />
-          <StatCard label="Totaal panden" value={pandenTotaal.totalDocs} href="/admin/collections/panden" />
-          <StatCard label="Verkocht / Verhuurd" value={pandenVerkocht.totalDocs} href="/admin/collections/panden" />
+          <StatCard label="Beschikbaar" value={pandenBeschikbaar.totalDocs} href="/dashboard/panden?where[status][equals]=beschikbaar" accent />
+          <StatCard label="Totaal panden" value={pandenTotaal.totalDocs} href="/dashboard/panden" />
+          <StatCard label="Verkocht / Verhuurd" value={pandenVerkocht.totalDocs} href="/dashboard/panden" />
         </div>
 
         {/* Stat cards rij 2 — Leads & Afspraken */}
         <SectionTitle>CRM</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.875rem", marginBottom: "2rem" }}>
-          <StatCard label="Nieuwe leads" value={leadsNieuw.totalDocs} href="/admin/collections/leads?where[status][equals]=nieuw" accent />
-          <StatCard label="Leads (30 dagen)" value={leadsNieuw30d.totalDocs} href="/admin/collections/leads" />
-          <StatCard label="Totaal leads" value={leadsTotaal.totalDocs} href="/admin/collections/leads" />
-          <StatCard label="Afspraken vandaag" value={afsprakenVandaag.totalDocs} href="/admin/collections/afspraken" accent={afsprakenVandaag.totalDocs > 0} />
+          <StatCard label="Nieuwe leads" value={leadsNieuw.totalDocs} href="/dashboard/leads?where[status][equals]=nieuw" accent />
+          <StatCard label="Leads (30 dagen)" value={leadsNieuw30d.totalDocs} href="/dashboard/leads" />
+          <StatCard label="Totaal leads" value={leadsTotaal.totalDocs} href="/dashboard/leads" />
+          <StatCard label="Afspraken vandaag" value={afsprakenVandaag.totalDocs} href="/dashboard/afspraken" accent={afsprakenVandaag.totalDocs > 0} />
         </div>
 
         {/* Bottom grid */}
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "1.25rem", marginBottom: "1.5rem" }}>
 
           {/* Recente leads */}
-          <Panel title="Recente leads" link="/admin/collections/leads" linkLabel="Alle leads →">
+          <Panel title="Recente leads" link="/dashboard/leads" linkLabel="Alle leads →">
             {recenteLeads.docs.length === 0 ? (
               <Empty>Nog geen leads</Empty>
             ) : recenteLeads.docs.map((lead: any) => (
-              <Link key={lead.id} href={`/admin/collections/leads/${lead.id}`} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem" }}>
+              <Link key={lead.id} href={`/dashboard/leads/${lead.id}`} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
                   <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: bronKleuren[lead.status] || MUTED, flexShrink: 0 }} />
                   <span style={{ fontWeight: 600 }}>{lead.naam}</span>
@@ -166,11 +166,11 @@ export default async function DashboardPage() {
           </Panel>
 
           {/* Komende afspraken */}
-          <Panel title="Komende afspraken" link="/admin/collections/afspraken" linkLabel="Alle afspraken →">
+          <Panel title="Komende afspraken" link="/dashboard/afspraken" linkLabel="Alle afspraken →">
             {komendeAfspraken.docs.length === 0 ? (
               <Empty>Geen geplande afspraken</Empty>
             ) : komendeAfspraken.docs.map((a: any) => (
-              <Link key={a.id} href={`/admin/collections/afspraken/${a.id}`} style={{ display: "block", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem", borderLeft: `3px solid ${G}` }}>
+              <Link key={a.id} href={`/dashboard/afspraken/${a.id}`} style={{ display: "block", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem", borderLeft: `3px solid ${G}` }}>
                 <div style={{ fontWeight: 600, marginBottom: "0.125rem" }}>{a.titel}</div>
                 <div style={{ color: MUTED, fontSize: "0.72rem" }}>{fmtDate(a.datum)} · {a.type}</div>
               </Link>
@@ -201,7 +201,7 @@ export default async function DashboardPage() {
           </Panel>
 
           {/* Lead pipeline */}
-          <Panel title="Lead pipeline" link="/admin/collections/leads" linkLabel="Alle leads →">
+          <Panel title="Lead pipeline" link="/dashboard/leads" linkLabel="Alle leads →">
             {[
               { label: "Nieuw", status: "nieuw", kleur: G },
               { label: "Gecontacteerd", status: "gecontacteerd", kleur: "#60a5fa" },
@@ -209,7 +209,7 @@ export default async function DashboardPage() {
               { label: "Onderhandeling", status: "onderhandeling", kleur: "#f472b6" },
               { label: "Afgerond", status: "afgerond", kleur: "#34d399" },
             ].map((item) => (
-              <Link key={item.status} href={`/admin/collections/leads?where[status][equals]=${item.status}`} style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem", borderLeft: `3px solid ${item.kleur}` }}>
+              <Link key={item.status} href={`/dashboard/leads?where[status][equals]=${item.status}`} style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem", borderLeft: `3px solid ${item.kleur}` }}>
                 <span style={{ flex: 1 }}>{item.label}</span>
                 <span style={{ color: G }}>→</span>
               </Link>
