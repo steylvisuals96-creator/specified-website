@@ -18,8 +18,7 @@ const nextConfig: NextConfig = {
     ];
 
     const rules: any[] = [
-      { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen", permanent: false },
-      { source: "/admin/globals/instellingen/:path*", destination: "/dashboard/instellingen", permanent: false },
+      { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen/edit", permanent: false },
     ];
 
     for (const [slug, dash] of collections) {
