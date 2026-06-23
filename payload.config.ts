@@ -27,7 +27,7 @@ export default buildConfig({
     meta: {
       titleSuffix: "— Som Vastgoed CMS",
     },
-    css: path.resolve(dirname, "app/(payload)/custom.css"),
+    css: path.resolve(dirname, "styles/admin.css"),
     components: {
       graphics: {
         Logo: SomLogo as any,
