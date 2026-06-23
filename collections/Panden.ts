@@ -2,6 +2,9 @@ import type { CollectionConfig } from "payload";
 
 export const Panden: CollectionConfig = {
   slug: "panden",
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: "Pand",
     plural: "Panden",
