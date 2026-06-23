@@ -121,7 +121,7 @@ export const Leads: CollectionConfig = {
     group: "CRM",
     defaultColumns: ["naam", "email", "telefoon", "pand", "status", "createdAt", "acties"],
     components: {
-      BeforeListTable: [LeadsDuplicatePanel as any],
+      beforeListTable: [LeadsDuplicatePanel as any],
     },
   },
   fields: [
