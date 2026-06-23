@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { emailNieuweLead } from "../lib/emailNieuweLead";
+import { emailBevestigingLead } from "../lib/emailBevestigingLead";
 import { triggerWebhook } from "../lib/webhook";
 import { analyseerLead } from "../lib/claude";
 import { getPayload } from "payload";
@@ -10,13 +11,20 @@ export const Leads: CollectionConfig = {
     afterChange: [
       async ({ doc, operation }) => {
         if (operation === "create") {
-          // E-mail notificatie
+          // E-mail notificatie naar SOM Vastgoed
           emailNieuweLead({
             naam: doc.naam,
             email: doc.email,
             telefoon: doc.telefoon,
             bericht: doc.bericht,
             bron: doc.bron,
+          }).catch(() => {});
+
+          // Bevestigingsmail naar de lead zelf
+          emailBevestigingLead({
+            naam: doc.naam,
+            email: doc.email,
+            bericht: doc.bericht,
           }).catch(() => {});
 
           // Automatisch opvolgingstaak aanmaken
