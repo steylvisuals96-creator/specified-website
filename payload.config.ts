@@ -17,6 +17,7 @@ import { Afspraken } from "./collections/Afspraken";
 import { Taken } from "./collections/Taken";
 import { Instellingen } from "./globals/Instellingen";
 import { SomLogo, SomIcon } from "./components/SomLogo";
+import Dashboard from "./components/Dashboard";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -31,6 +32,12 @@ export default buildConfig({
       graphics: {
         Logo: SomLogo as any,
         Icon: SomIcon as any,
+      },
+      views: {
+        dashboard: {
+          Component: Dashboard as any,
+          path: "/",
+        },
       },
     },
   },

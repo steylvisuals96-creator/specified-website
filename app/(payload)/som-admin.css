@@ -38,7 +38,27 @@
   --theme-input-bg:        #141414;
   --theme-border-color:    #222222;
 
-  /* Gold accent replaces Payload blue */
+  /* Gold accent replaces Payload blue (base = primary accent in Payload v3) */
+  --color-base-50:   #2a1d00;
+  --color-base-100:  #3d2b00;
+  --color-base-200:  #5c4000;
+  --color-base-250:  #7a5500;
+  --color-base-300:  #9a6d00;
+  --color-base-350:  #c28800;
+  --color-base-400:  #facb04;
+  --color-base-450:  #fbd438;
+  --color-base-500:  #facb04;
+  --color-base-550:  #fde9a0;
+  --color-base-600:  #fef0c5;
+  --color-base-650:  #fff5db;
+  --color-base-700:  #fff9ec;
+  --color-base-750:  #fffcf4;
+  --color-base-800:  #fffef8;
+  --color-base-850:  #ffffff;
+  --color-base-900:  #ffffff;
+  --color-base-950:  #ffffff;
+  --color-base-1000: #ffffff;
+
   --color-success-50:  #2a1d00;
   --color-success-100: #3d2b00;
   --color-success-200: #5c4000;
@@ -832,6 +852,97 @@ button[id*="action-create"] {
 
 [class*="react-datepicker__day:hover"] {
   background: rgba(250,203,4,0.15) !important;
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD CARDS (Payload v3 default view)
+══════════════════════════════════════════ */
+
+/* Card link — the clickable collection cards */
+[class*="card-link"],
+[class*="card__link"],
+[class*="dashboard"] a[class*="card"],
+[class*="dashboard__card"] {
+  background: #111111 !important;
+  border: 1px solid #1e1e1e !important;
+  border-radius: 8px !important;
+  transition: border-color 0.2s, background 0.2s !important;
+  text-decoration: none !important;
+}
+
+[class*="card-link"]:hover,
+[class*="dashboard"] a[class*="card"]:hover {
+  border-color: rgba(250,203,4,0.35) !important;
+  background: #141414 !important;
+}
+
+/* Card title */
+[class*="card-link__title"],
+[class*="card__title"],
+[class*="dashboard"] [class*="title"] {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #c8c2b8 !important;
+}
+
+/* The "+" create button on each card */
+[class*="card-link__actions"] button,
+[class*="card-link"] button,
+[class*="dashboard"] button[class*="create"],
+[class*="dashboard"] a[class*="create"] {
+  border: 1px solid rgba(250,203,4,0.3) !important;
+  color: #facb04 !important;
+  background: rgba(250,203,4,0.05) !important;
+  border-radius: 50% !important;
+  width: 28px !important;
+  height: 28px !important;
+  transition: background 0.15s, border-color 0.15s !important;
+}
+
+[class*="card-link__actions"] button:hover,
+[class*="dashboard"] button[class*="create"]:hover {
+  background: rgba(250,203,4,0.12) !important;
+  border-color: #facb04 !important;
+}
+
+/* Dashboard section group headings */
+[class*="dashboard"] [class*="group__title"],
+[class*="dashboard"] > div > h2,
+[class*="dashboard"] [class*="section-title"] {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.58rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: #3a3a3a !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Payload dashboard wrapper */
+[class*="dashboard__wrap"],
+[class*="dashboard__content"] {
+  padding: 2rem 2.5rem !important;
+  background: #0a0a0a !important;
+}
+
+/* ══════════════════════════════════════════
+   FORCE GOLD ON LINKS, ACTIVE STATES
+══════════════════════════════════════════ */
+a[class*="active"],
+[class*="active"] a,
+[class*="pill"][class*="active"] {
+  color: #facb04 !important;
+}
+
+/* Payload's generic "pill" badges */
+[class*="pill"] {
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  padding: 0.15rem 0.55rem !important;
+  border-radius: 3px !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
