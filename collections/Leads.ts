@@ -27,11 +27,40 @@ export const Leads: CollectionConfig = {
             bericht: doc.bericht,
           }).catch(() => {});
 
-          // Automatisch opvolgingstaak aanmaken
+          // Automatisch opvolgingstaak aanmaken, toegewezen aan makelaar met minste open taken
           try {
             const { default: configPromise } = await import("@payload-config");
             const config = await configPromise;
             const p = await getPayload({ config: config as any });
+
+            // Haal alle makelaars op
+            const gebruikers = await p.find({
+              collection: "gebruikers",
+              limit: 50,
+            });
+
+            let toegewezenAan: string | undefined;
+            if (gebruikers.docs.length > 0) {
+              // Tel open taken per gebruiker, kies degene met de minste
+              const taakTelling = await Promise.all(
+                gebruikers.docs.map(async (g) => {
+                  const taken = await p.find({
+                    collection: "taken",
+                    where: {
+                      and: [
+                        { toegewezen_aan: { equals: g.id } },
+                        { status: { equals: "open" } },
+                      ],
+                    },
+                    limit: 0,
+                  });
+                  return { id: g.id as string, count: taken.totalDocs };
+                })
+              );
+              taakTelling.sort((a, b) => a.count - b.count);
+              toegewezenAan = taakTelling[0].id;
+            }
+
             const deadline = new Date();
             deadline.setDate(deadline.getDate() + 1);
             await p.create({
@@ -42,6 +71,7 @@ export const Leads: CollectionConfig = {
                 prioriteit: "hoog",
                 deadline: deadline.toISOString(),
                 lead: doc.id,
+                toegewezen_aan: toegewezenAan,
                 beschrijving: `Nieuwe lead binnengekomen via ${doc.bron || "website"}. Contacteer zo snel mogelijk.`,
               } as any,
             });
