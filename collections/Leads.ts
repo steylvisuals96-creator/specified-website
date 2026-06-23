@@ -138,6 +138,7 @@ export const Leads: CollectionConfig = {
           label: "Bron",
           defaultValue: "website",
           options: [
+            { label: "Contactformulier website", value: "contactformulier" },
             { label: "Website", value: "website" },
             { label: "Instagram", value: "instagram" },
             { label: "Immoweb", value: "immoweb" },

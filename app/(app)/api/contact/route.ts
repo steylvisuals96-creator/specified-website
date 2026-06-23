@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         telefoon: telefoon || "",
         interesse: interesse || "",
         bericht: bericht || "",
-        bron: "website",
+        bron: "contactformulier",
         status: "nieuw",
       } as any,
     });
