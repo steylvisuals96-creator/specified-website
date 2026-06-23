@@ -4,6 +4,8 @@ import { emailBevestigingLead } from "../lib/emailBevestigingLead";
 import { triggerWebhook } from "../lib/webhook";
 import { analyseerLead } from "../lib/claude";
 import { getPayload } from "payload";
+import LeadsActiesCell from "../components/LeadsActiesCell";
+import LeadsDuplicatePanel from "../components/LeadsDuplicatePanel";
 
 export const Leads: CollectionConfig = {
   slug: "leads",
@@ -117,7 +119,10 @@ export const Leads: CollectionConfig = {
   admin: {
     useAsTitle: "naam",
     group: "CRM",
-    defaultColumns: ["naam", "email", "telefoon", "pand", "status", "createdAt"],
+    defaultColumns: ["naam", "email", "telefoon", "pand", "status", "createdAt", "acties"],
+    components: {
+      BeforeListTable: [LeadsDuplicatePanel as any],
+    },
   },
   fields: [
     {
@@ -207,6 +212,16 @@ export const Leads: CollectionConfig = {
       admin: {
         date: {
           pickerAppearance: "dayOnly",
+        },
+      },
+    },
+    {
+      name: "acties",
+      type: "ui",
+      admin: {
+        components: {
+          Cell: LeadsActiesCell as any,
+          Field: (() => null) as any,
         },
       },
     },
