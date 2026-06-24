@@ -57,18 +57,6 @@ export default buildConfig({
     meta: {
       titleSuffix: "— Som Vastgoed CMS",
     },
-    components: {
-      graphics: {
-        Logo: "@/components/SomLogo#SomLogo",
-        Icon: "@/components/SomLogo#SomIcon",
-      },
-      views: {
-        dashboard: {
-          Component: "@/components/Dashboard#default",
-          path: "/",
-        },
-      },
-    },
   },
   collections: [
     // Vastgoed
