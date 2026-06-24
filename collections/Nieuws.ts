@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 export const Nieuws: CollectionConfig = {
   slug: "nieuws",
   labels: { singular: "Nieuwsbericht", plural: "Nieuws" },
+  access: { read: () => true },
   admin: {
     useAsTitle: "titel",
     group: "Inhoud",

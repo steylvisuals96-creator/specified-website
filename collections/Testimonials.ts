@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload";
 export const Testimonials: CollectionConfig = {
   slug: "testimonials",
   labels: { singular: "Getuigenis", plural: "Getuigenissen" },
+  access: { read: () => true },
   admin: {
     useAsTitle: "naam",
     group: "Inhoud",
