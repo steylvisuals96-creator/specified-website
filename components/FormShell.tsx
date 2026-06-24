@@ -1,3 +1,4 @@
+"use client";
 import DashboardShell, { PageHeader, GoldBtn } from "./DashboardShell";
 
 const G = "#facb04";
