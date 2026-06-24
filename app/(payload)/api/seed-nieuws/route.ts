@@ -426,11 +426,6 @@ const POSTS = [
 ];
 
 export async function GET(req: NextRequest) {
-  const secret = req.nextUrl.searchParams.get("secret");
-  if (secret !== process.env.PAYLOAD_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const payload = await getPayload({ config });
   const results: string[] = [];
 
