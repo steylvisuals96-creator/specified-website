@@ -1,7 +1,7 @@
 import { buildConfig } from "payload";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { r2Storage } from "@payloadcms/storage-r2";
+import { s3Storage } from "@payloadcms/storage-s3";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -33,7 +33,7 @@ const r2Enabled = !!(
 export default buildConfig({
   plugins: r2Enabled
     ? [
-        r2Storage({
+        s3Storage({
           collections: {
             media: true,
           },
