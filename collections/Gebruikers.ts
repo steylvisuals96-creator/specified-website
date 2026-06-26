@@ -22,10 +22,10 @@ export const Gebruikers: CollectionConfig = {
       name: "rol",
       type: "select",
       label: "Rol",
-      defaultValue: "makelaar",
+      defaultValue: "consultant",
       options: [
         { label: "Beheerder", value: "beheerder" },
-        { label: "Makelaar", value: "makelaar" },
+        { label: "Recruitment Consultant", value: "consultant" },
       ],
     },
   ],

@@ -6,32 +6,44 @@ export const Team: CollectionConfig = {
   admin: {
     useAsTitle: "naam",
     group: "Inhoud",
-    defaultColumns: ["naam", "functie", "actief", "volgorde"],
+    defaultColumns: ["naam", "rol", "actief", "volgorde"],
   },
   fields: [
     {
       type: "row",
       fields: [
-        {
-          name: "naam",
-          type: "text",
-          label: "Naam",
-          required: true,
-        },
-        {
-          name: "functie",
-          type: "select",
-          label: "Functie",
-          options: [
-            { label: "Zaakvoerder", value: "zaakvoerder" },
-            { label: "Senior makelaar", value: "senior_makelaar" },
-            { label: "Makelaar", value: "makelaar" },
-            { label: "Vastgoedconsulent", value: "consultant" },
-            { label: "Administratie", value: "administratie" },
-            { label: "Stagiair", value: "stagiair" },
-          ],
-        },
+        { name: "voornaam", type: "text", label: "Voornaam", required: true },
+        { name: "achternaam", type: "text", label: "Achternaam", required: true },
       ],
+    },
+    {
+      name: "naam",
+      type: "text",
+      label: "Volledige naam",
+      admin: { hidden: true },
+      hooks: {
+        beforeChange: [
+          ({ data }: { data?: Record<string, string> }) =>
+            `${data?.voornaam ?? ""} ${data?.achternaam ?? ""}`.trim(),
+        ],
+      },
+    },
+    {
+      name: "rol",
+      type: "select",
+      label: "Rol",
+      options: [
+        { label: "Managing Partner", value: "managing_partner" },
+        { label: "Senior Recruitment Consultant", value: "senior_consultant" },
+        { label: "Recruitment Consultant", value: "consultant" },
+        { label: "Talent Acquisition Specialist", value: "talent" },
+        { label: "Office Manager", value: "office" },
+      ],
+    },
+    {
+      name: "bio",
+      type: "textarea",
+      label: "Bio",
     },
     {
       name: "foto",
@@ -42,22 +54,9 @@ export const Team: CollectionConfig = {
     {
       type: "row",
       fields: [
-        {
-          name: "email",
-          type: "email",
-          label: "E-mail",
-        },
-        {
-          name: "telefoon",
-          type: "text",
-          label: "Telefoon",
-        },
+        { name: "email", type: "email", label: "E-mail" },
+        { name: "linkedin", type: "text", label: "LinkedIn URL" },
       ],
-    },
-    {
-      name: "bio",
-      type: "richText",
-      label: "Bio",
     },
     {
       type: "row",

@@ -2,17 +2,16 @@ import type { GlobalConfig } from "payload";
 
 export const Instellingen: GlobalConfig = {
   slug: "instellingen",
-  label: "Kantoor instellingen",
+  label: "Specified — Instellingen",
   admin: {
     group: "Instellingen",
   },
   fields: [
-    // --- Algemeen ---
     {
       name: "naam",
       type: "text",
-      label: "Naam kantoor",
-      required: true,
+      label: "Naam",
+      defaultValue: "Specified",
     },
     {
       name: "logo",
@@ -20,25 +19,7 @@ export const Instellingen: GlobalConfig = {
       relationTo: "media",
       label: "Logo",
     },
-    {
-      type: "row",
-      fields: [
-        {
-          name: "kleur_primair",
-          type: "text",
-          label: "Primaire kleur (hex)",
-          defaultValue: "#facb04",
-        },
-        {
-          name: "kleur_donker",
-          type: "text",
-          label: "Donkere kleur (hex)",
-          defaultValue: "#111111",
-        },
-      ],
-    },
 
-    // --- Contact ---
     {
       type: "collapsible",
       label: "Contact informatie",
@@ -47,41 +28,28 @@ export const Instellingen: GlobalConfig = {
           name: "contact_email",
           type: "email",
           label: "E-mail",
+          defaultValue: "info@specified.be",
         },
         {
-          type: "row",
-          fields: [
-            {
-              name: "telefoon_hasselt",
-              type: "text",
-              label: "Telefoon Hasselt",
-            },
-            {
-              name: "telefoon_genk",
-              type: "text",
-              label: "Telefoon Genk",
-            },
-          ],
+          name: "telefoon",
+          type: "text",
+          label: "Telefoon",
         },
         {
-          type: "row",
-          fields: [
-            {
-              name: "adres_hasselt",
-              type: "text",
-              label: "Adres Hasselt",
-            },
-            {
-              name: "adres_genk",
-              type: "text",
-              label: "Adres Genk",
-            },
-          ],
+          name: "adres",
+          type: "text",
+          label: "Adres",
+          defaultValue: "Kontich, België",
+        },
+        {
+          name: "linkedin",
+          type: "text",
+          label: "LinkedIn URL",
+          defaultValue: "https://www.linkedin.com/company/specified-be",
         },
       ],
     },
 
-    // --- Hero sectie ---
     {
       type: "collapsible",
       label: "Homepage — Hero sectie",
@@ -90,30 +58,52 @@ export const Instellingen: GlobalConfig = {
           name: "hero_tagline",
           type: "text",
           label: "Tagline (klein boven titel)",
-          defaultValue: "Vastgoed in Hasselt & omgeving",
+          defaultValue: "Engineering recruitment",
         },
         {
           name: "hero_titel",
           type: "text",
           label: "Titel regel 1",
-          defaultValue: "Uw droomwoning",
+          defaultValue: "De juiste engineer.",
         },
         {
-          name: "hero_titel_cursief",
+          name: "hero_titel_accent",
           type: "text",
-          label: "Titel regel 2 (cursief/geel)",
-          defaultValue: "gevonden.",
+          label: "Titel regel 2 (lime accent kleur)",
+          defaultValue: "Elke keer.",
         },
         {
           name: "hero_subtitel",
           type: "textarea",
           label: "Subtitel",
-          defaultValue: "Gevestigd makelaarskantoor met vestigingen in Hasselt en Genk. Persoonlijke begeleiding van A tot Z.",
+          defaultValue: "Specified verbindt technische toptalenten met ambitieuze ingenieurbureaus en industriële bedrijven. Eerlijk, snel en persoonlijk.",
+        },
+        {
+          name: "hero_cta_tekst",
+          type: "text",
+          label: "CTA knop tekst",
+          defaultValue: "Bekijk vacatures",
+        },
+        {
+          name: "hero_cta_2_tekst",
+          type: "text",
+          label: "Secundaire CTA tekst",
+          defaultValue: "Neem contact op",
         },
       ],
     },
 
-    // --- Over ons sectie ---
+    {
+      name: "statistieken",
+      type: "array",
+      label: "Statistieken (homepage)",
+      maxRows: 4,
+      fields: [
+        { name: "waarde", type: "text", label: "Waarde (bv. 150+)", required: true },
+        { name: "label", type: "text", label: "Label", required: true },
+      ],
+    },
+
     {
       type: "collapsible",
       label: "Homepage — Over ons sectie",
@@ -122,75 +112,37 @@ export const Instellingen: GlobalConfig = {
           name: "over_titel",
           type: "text",
           label: "Titel",
-          defaultValue: "Over",
+          defaultValue: "Twee founders.",
         },
         {
-          name: "over_titel_cursief",
+          name: "over_titel_accent",
           type: "text",
-          label: "Cursief deel van titel",
-          defaultValue: "SOM Vastgoed",
+          label: "Accent deel",
+          defaultValue: "Eén missie.",
         },
         {
-          name: "over_tekst_1",
+          name: "over_tekst",
           type: "textarea",
-          label: "Alinea 1",
-          defaultValue: "Met SOM Vastgoed kiest u voor een gevestigd professioneel kantoor met vestigingen in de provincie Limburg in Hasselt en Genk. Wij begeleiden u persoonlijk — van eerste bezichtiging tot sleuteloverdracht.",
-        },
-        {
-          name: "over_tekst_2",
-          type: "textarea",
-          label: "Alinea 2",
-        },
-        {
-          name: "over_foto",
-          type: "upload",
-          relationTo: "media",
-          label: "Foto (optioneel)",
+          label: "Introductietekst",
         },
       ],
     },
 
-    // --- Statistieken ---
-    {
-      name: "statistieken",
-      type: "array",
-      label: "Statistieken (homepage)",
-      maxRows: 4,
-      fields: [
-        { name: "waarde", type: "text", label: "Waarde", required: true },
-        { name: "label", type: "text", label: "Label", required: true },
-      ],
-    },
-
-    // --- Social media ---
     {
       type: "collapsible",
-      label: "Social media",
+      label: "SEO & Meta",
       fields: [
         {
-          type: "row",
-          fields: [
-            { name: "instagram", type: "text", label: "Instagram URL" },
-            { name: "facebook", type: "text", label: "Facebook URL" },
-            { name: "linkedin", type: "text", label: "LinkedIn URL" },
-          ],
-        },
-      ],
-    },
-
-    // --- Integraties ---
-    {
-      type: "collapsible",
-      label: "Integraties & Webhooks",
-      fields: [
-        {
-          name: "whatsapp_webhook_notitie",
+          name: "meta_titel",
           type: "text",
-          label: "WhatsApp webhook URL (info)",
-          admin: {
-            description: "Voeg WHATSAPP_WEBHOOK_URL toe als Vercel environment variable. Gebruik je Make.com webhook URL. Bij elke nieuwe lead wordt automatisch een WhatsApp notificatie verstuurd.",
-            readOnly: true,
-          },
+          label: "Meta titel",
+          defaultValue: "Specified — Engineering Recruitment",
+        },
+        {
+          name: "meta_beschrijving",
+          type: "textarea",
+          label: "Meta beschrijving",
+          defaultValue: "Specified verbindt technische toptalenten met ingenieurbureaus en industriële bedrijven in België.",
         },
       ],
     },

@@ -5,18 +5,13 @@ import { s3Storage } from "@payloadcms/storage-s3";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { Panden } from "./collections/Panden";
-import { Leads } from "./collections/Leads";
+import { Vacatures } from "./collections/Vacatures";
+import { Kandidaten } from "./collections/Kandidaten";
+import { Bedrijven } from "./collections/Bedrijven";
+import { Sollicitaties } from "./collections/Sollicitaties";
+import { Team } from "./collections/Team";
 import { Media } from "./collections/Media";
 import { Gebruikers } from "./collections/Gebruikers";
-import { Paginas } from "./collections/Paginas";
-import { Nieuws } from "./collections/Nieuws";
-import { Team } from "./collections/Team";
-import { Testimonials } from "./collections/Testimonials";
-import { FAQ } from "./collections/FAQ";
-import { Afspraken } from "./collections/Afspraken";
-import { Taken } from "./collections/Taken";
-import { Nieuwbouw } from "./collections/Nieuwbouw";
 import { Instellingen } from "./globals/Instellingen";
 
 const filename = fileURLToPath(import.meta.url);
@@ -49,43 +44,38 @@ export default buildConfig({
       ]
     : [],
   cors: [
-    "https://som-vastgoed.vercel.app",
+    "https://specified-website.vercel.app",
+    "https://specified.be",
     "http://localhost:3000",
-    "http://localhost:3001",
+    "http://localhost:3003",
   ],
   admin: {
     user: "gebruikers",
     meta: {
-      titleSuffix: "— Som Vastgoed CMS",
+      titleSuffix: "— Specified CMS",
     },
     components: {
       graphics: {
-        Logo: "@/components/SomLogo#SomLogo",
-        Icon: "@/components/SomLogo#SomIcon",
+        Logo: "@/components/SpecifiedLogo#SpecifiedLogo",
+        Icon: "@/components/SpecifiedLogo#SpecifiedIcon",
       },
     },
   },
   collections: [
-    // Vastgoed
-    Panden,
-    Nieuwbouw,
-    Afspraken,
-    // CRM
-    Leads,
-    Taken,
+    // Recruitment
+    Vacatures,
+    Kandidaten,
+    Bedrijven,
+    Sollicitaties,
     // Inhoud
-    Paginas,
-    Nieuws,
     Team,
-    Testimonials,
-    FAQ,
     // Systeem
     Media,
     Gebruikers,
   ],
   globals: [Instellingen],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "vastgoed-cms-secret-change-this",
+  secret: process.env.PAYLOAD_SECRET || "specified-cms-secret-change-this",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
