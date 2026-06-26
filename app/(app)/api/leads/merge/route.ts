@@ -1,44 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import { getPayload } from "payload";
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 
-const configPromise = import('@payload-config').then(m => m.default)
+const configPromise = import("@payload-config").then((m) => m.default);
 
-export async function POST(req: NextRequest) {
-  try {
-    const { keepId, mergeIds } = await req.json()
-    if (!keepId || !Array.isArray(mergeIds) || mergeIds.length === 0) {
-      return NextResponse.json({ error: 'Ongeldige invoer' }, { status: 400 })
-    }
+export async function POST(req: Request) {
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const headersList = await headers();
+  const { user } = await payload.auth({ headers: headersList });
+  if (!user) return NextResponse.json({ error: "Niet ingelogd" }, { status: 401 });
 
-    const config = await configPromise
-    const payload = await getPayload({ config: config as any })
+  const { bewaarId, verwijderId } = await req.json();
+  if (!bewaarId || !verwijderId) return NextResponse.json({ error: "Ongeldige data" }, { status: 400 });
 
-    const keepLead = await payload.findByID({ collection: 'leads', id: keepId })
+  const [bewaar, verwijder] = await Promise.all([
+    payload.findByID({ collection: "leads", id: bewaarId, depth: 0 }),
+    payload.findByID({ collection: "leads", id: verwijderId, depth: 0 }),
+  ]) as [any, any];
 
-    for (const mergeId of mergeIds) {
-      const mergeLead = await payload.findByID({ collection: 'leads', id: mergeId })
-      const updates: Record<string, any> = {}
+  const gemergedeNotities = [
+    bewaar.notities,
+    verwijder.notities ? "[Samengevoegd van " + verwijder.naam + "]:\n" + verwijder.notities : null,
+  ].filter(Boolean).join("\n\n");
 
-      if (!keepLead.telefoon && mergeLead.telefoon) updates.telefoon = mergeLead.telefoon
-      if (!keepLead.bericht && mergeLead.bericht) updates.bericht = mergeLead.bericht
-      if (!keepLead.pand && mergeLead.pand) updates.pand = mergeLead.pand
-      if (mergeLead.notities) {
-        const bestaand = (keepLead.notities as string | undefined) || ''
-        updates.notities = bestaand
-          ? `${bestaand}\n\n[Samengevoegd van ${mergeLead.naam}]:\n${mergeLead.notities}`
-          : mergeLead.notities
-      }
+  const gemergedeActiviteiten = [
+    ...(bewaar.activiteiten ?? []),
+    ...(verwijder.activiteiten ?? []),
+  ];
 
-      if (Object.keys(updates).length > 0) {
-        await payload.update({ collection: 'leads', id: keepId, data: updates as any })
-      }
+  const updateData: Record<string, any> = {};
+  if (!bewaar.telefoon && verwijder.telefoon) updateData.telefoon = verwijder.telefoon;
+  if (!bewaar.bericht && verwijder.bericht) updateData.bericht = verwijder.bericht;
+  if (!bewaar.budget && verwijder.budget) updateData.budget = verwijder.budget;
+  if (!bewaar.toegewezen_aan && verwijder.toegewezen_aan) updateData.toegewezen_aan = verwijder.toegewezen_aan;
+  if (gemergedeNotities) updateData.notities = gemergedeNotities;
+  if (gemergedeActiviteiten.length > 0) updateData.activiteiten = gemergedeActiviteiten;
 
-      await payload.delete({ collection: 'leads', id: mergeId })
-    }
+  await payload.update({ collection: "leads", id: bewaarId, data: updateData });
+  await payload.delete({ collection: "leads", id: verwijderId });
 
-    return NextResponse.json({ ok: true })
-  } catch (err) {
-    console.error('[merge leads]', err)
-    return NextResponse.json({ error: 'Samenvoegen mislukt' }, { status: 500 })
-  }
+  return NextResponse.json({ ok: true, bewaarId });
 }
