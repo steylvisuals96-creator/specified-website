@@ -9,13 +9,13 @@ const team = [
     name: "Tom Wijdooghe",
     role: "Managing Partner",
     bio: "10+ jaar ervaring in engineering recruitment. Bouwde partnerships met 's lands grootste infrastructuurgroepen.",
-    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face",
+    img: "/images/team/IMG_5734-768x1024.jpg",
   },
   {
     name: "Simon Claeys",
     role: "Managing Partner",
     bio: "Voormalig engineer. Begrijpt als geen ander wat kandidaten drijft en wat bedrijven écht nodig hebben.",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    img: "/images/team/Simon-768x1024.jpeg",
   },
 ];
 

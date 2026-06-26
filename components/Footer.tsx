@@ -1,3 +1,6 @@
+import Image from "next/image";
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer
@@ -17,19 +20,18 @@ export default function Footer() {
           gap: "1rem",
         }}
       >
-        <span
-          style={{
-            fontWeight: 600,
-            fontSize: "1rem",
-            color: "var(--white)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          specified<span style={{ color: "var(--lime)" }}>.</span>
-        </span>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+          <Image
+            src="/images/team/logo_specified.svg"
+            alt="Specified"
+            width={120}
+            height={30}
+            style={{ filter: "brightness(0) invert(1)", height: "22px", width: "auto" }}
+          />
+        </Link>
         <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/company/specified-be"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 400 }}
@@ -37,7 +39,7 @@ export default function Footer() {
             LinkedIn
           </a>
           <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
-            © 2025 Specified BV — Kontich, België
+            © 2026 Specified BV — Kontich, België
           </span>
         </div>
       </div>

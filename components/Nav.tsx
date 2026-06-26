@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Nav() {
@@ -34,19 +35,15 @@ export default function Nav() {
         }}
       >
         {/* Logo */}
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-dm-sans)",
-              fontWeight: 600,
-              fontSize: "1.2rem",
-              color: "var(--white)",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            specified
-            <span style={{ color: "var(--lime)" }}>.</span>
-          </span>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+          <Image
+            src="/images/team/logo_specified.svg"
+            alt="Specified"
+            width={140}
+            height={36}
+            style={{ filter: "brightness(0) invert(1)", height: "28px", width: "auto" }}
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}
