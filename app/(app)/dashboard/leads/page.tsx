@@ -45,6 +45,7 @@ export default async function LeadsPage() {
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <GoldBtn href="/dashboard/leads/kanban">Kanban</GoldBtn>
             <GoldBtn href="/api/leads/export">↓ CSV</GoldBtn>
+            <GoldBtn href="/dashboard/leads/import">↑ Import</GoldBtn>
             <GoldBtn href="/dashboard/leads/create">+ Nieuwe lead</GoldBtn>
           </div>
         }

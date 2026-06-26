@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { emailNieuweLead } from "../lib/emailNieuweLead";
 import { emailBevestigingLead } from "../lib/emailBevestigingLead";
-import { triggerWebhook } from "../lib/webhook";
+import { triggerWebhook, triggerWhatsAppNotificatie } from "../lib/webhook";
 import { analyseerLead } from "../lib/claude";
 import { getPayload } from "payload";
 import LeadsActiesCell from "../components/LeadsActiesCell";
@@ -101,6 +101,12 @@ export const Leads: CollectionConfig = {
           triggerWebhook("lead.created", {
             id: doc.id, naam: doc.naam, email: doc.email,
             telefoon: doc.telefoon, bron: doc.bron, status: doc.status,
+          });
+
+          // WhatsApp notificatie via Make.com
+          triggerWhatsAppNotificatie({
+            naam: doc.naam, email: doc.email,
+            telefoon: doc.telefoon, bron: doc.bron, bericht: doc.bericht,
           });
         }
 

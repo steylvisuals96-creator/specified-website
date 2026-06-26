@@ -49,6 +49,16 @@ export default async function AfspraakDetailPage({ params }: { params: Promise<{
   const s = STATUS[afspraak.status] || { label: afspraak.status, kleur: "#666" };
   const updateStatusWithId = updateStatus.bind(null, id);
 
+  // Google Calendar URL
+  function toGcalDate(iso: string, duurMin = 60) {
+    const start = new Date(iso);
+    const end = new Date(start.getTime() + duurMin * 60000);
+    const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    return { start: fmt(start), end: fmt(end) };
+  }
+  const gcalDates = afspraak.datum ? toGcalDate(afspraak.datum, afspraak.duur ?? 60) : null;
+  const gcalUrl = gcalDates ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(afspraak.titel)}&dates=${gcalDates.start}/${gcalDates.end}${afspraak.locatie ? `&location=${encodeURIComponent(afspraak.locatie)}` : ""}${afspraak.notities ? `&details=${encodeURIComponent(afspraak.notities)}` : ""}` : null;
+
   return (
     <DashboardShell activePath="/dashboard/afspraken" userName={(user as any).naam || user.email}>
       <div style={{ padding: "2rem 2.5rem 1.5rem", borderBottom: `1px solid ${BORDER}`, display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
@@ -61,9 +71,17 @@ export default async function AfspraakDetailPage({ params }: { params: Promise<{
           <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: "0 0 0.5rem", color: TEXT }}>{afspraak.titel}</h1>
           <StatusBadge label={s.label} kleur={s.kleur} />
         </div>
-        <a href={`/dashboard/afspraken/${id}/edit`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
-          ✎ Bewerken
-        </a>
+        <div style={{ display: "flex", gap: "0.625rem" }}>
+          {gcalUrl && (
+            <a href={gcalUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: "transparent", color: TEXT, textDecoration: "none", fontSize: "0.8rem", fontWeight: 500, border: `1px solid ${BORDER}` }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Google Calendar
+            </a>
+          )}
+          <a href={`/dashboard/afspraken/${id}/edit`} style={{ display: "inline-flex", alignItems: "center", padding: "0.5rem 1rem", borderRadius: "0.375rem", background: G, color: "#111", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
+            ✎ Bewerken
+          </a>
+        </div>
       </div>
 
       <div style={{ padding: "2rem 2.5rem", display: "grid", gridTemplateColumns: "1fr 300px", gap: "1.5rem" }}>

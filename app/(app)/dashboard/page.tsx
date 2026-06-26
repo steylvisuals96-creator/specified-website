@@ -46,10 +46,12 @@ export default async function DashboardPage() {
 
   const [
     pandenBeschikbaar, pandenTotaal, pandenVerkocht,
-    leadsNieuw, leadsTotaal, leadsNieuw30d,
+    leadsNieuw, leadsTotaal, leadsNieuw30d, leadsAfgerond,
+    leadsGecontacteerd, leadsBezoek, leadsOnderhandeling,
     afsprakenVandaag, afsprakenWeek,
     recenteLeads, komendeAfspraken,
     nieuwsPosts, teamleden,
+    allActiveLeads,
   ] = await Promise.all([
     payload.count({ collection: "panden", where: { status: { equals: "beschikbaar" } } }),
     payload.count({ collection: "panden" }),
@@ -57,13 +59,30 @@ export default async function DashboardPage() {
     payload.count({ collection: "leads", where: { status: { equals: "nieuw" } } }),
     payload.count({ collection: "leads" }),
     payload.count({ collection: "leads", where: { createdAt: { greater_than: thirtyDaysAgo.toISOString() } } }),
+    payload.count({ collection: "leads", where: { status: { equals: "afgerond" } } }),
+    payload.count({ collection: "leads", where: { status: { equals: "gecontacteerd" } } }),
+    payload.count({ collection: "leads", where: { status: { equals: "bezoek_gepland" } } }),
+    payload.count({ collection: "leads", where: { status: { equals: "onderhandeling" } } }),
     payload.count({ collection: "afspraken", where: { datum: { greater_than_equal: startOfDay.toISOString(), less_than_equal: endOfDay.toISOString() } } }),
     payload.count({ collection: "afspraken", where: { datum: { greater_than_equal: startOfWeek.toISOString(), less_than_equal: endOfWeek.toISOString() } } }),
     payload.find({ collection: "leads", limit: 6, sort: "-createdAt" }),
     payload.find({ collection: "afspraken", limit: 5, sort: "datum", where: { datum: { greater_than_equal: now.toISOString() }, status: { not_equals: "geannuleerd" } } }),
     payload.count({ collection: "nieuws" }),
     payload.count({ collection: "team" }),
+    payload.find({ collection: "leads", limit: 500, depth: 1, where: { status: { not_in: ["afgerond", "niet_geinteresseerd"] } } }),
   ]);
+
+  const pipelineWaarde = (allActiveLeads.docs as any[]).reduce((sum: number, l: any) => sum + (l.budget ?? l.pand?.prijs ?? 0), 0);
+  const conversieRate = leadsTotaal.totalDocs > 0 ? Math.round((leadsAfgerond.totalDocs / leadsTotaal.totalDocs) * 100) : 0;
+
+  const pipelineStappen = [
+    { label: "Nieuw", count: leadsNieuw.totalDocs, kleur: G },
+    { label: "Gecontact.", count: leadsGecontacteerd.totalDocs, kleur: "#60a5fa" },
+    { label: "Bezoek", count: leadsBezoek.totalDocs, kleur: "#a78bfa" },
+    { label: "Onderhand.", count: leadsOnderhandeling.totalDocs, kleur: "#f472b6" },
+    { label: "Afgerond", count: leadsAfgerond.totalDocs, kleur: "#34d399" },
+  ];
+  const maxCount = Math.max(...pipelineStappen.map(s => s.count), 1);
 
   const bronKleuren: Record<string, string> = {
     nieuw: G,
@@ -139,11 +158,49 @@ export default async function DashboardPage() {
 
         {/* Stat cards rij 2 — Leads & Afspraken */}
         <SectionTitle>CRM</SectionTitle>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.875rem", marginBottom: "2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.875rem", marginBottom: "1rem" }}>
           <StatCard label="Nieuwe leads" value={leadsNieuw.totalDocs} href="/dashboard/leads?where[status][equals]=nieuw" accent />
           <StatCard label="Leads (30 dagen)" value={leadsNieuw30d.totalDocs} href="/dashboard/leads" />
           <StatCard label="Totaal leads" value={leadsTotaal.totalDocs} href="/dashboard/leads" />
           <StatCard label="Afspraken vandaag" value={afsprakenVandaag.totalDocs} href="/dashboard/afspraken" accent={afsprakenVandaag.totalDocs > 0} />
+        </div>
+
+        {/* KPI row */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.875rem", marginBottom: "2rem" }}>
+          {/* Pipeline waarde */}
+          <Link href="/dashboard/leads/kanban" style={{ display: "block", background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", textDecoration: "none", border: `1px solid ${BORDER}`, borderTop: `3px solid ${G}` }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: MUTED, marginBottom: "0.5rem" }}>Actieve pipeline waarde</div>
+            <div style={{ fontSize: "1.75rem", fontWeight: 800, color: G, lineHeight: 1 }}>
+              {pipelineWaarde > 0 ? `€ ${new Intl.NumberFormat("nl-BE").format(Math.round(pipelineWaarde))}` : "—"}
+            </div>
+            <div style={{ fontSize: "0.7rem", color: MUTED, marginTop: "0.4rem" }}>{allActiveLeads.totalDocs} actieve leads</div>
+          </Link>
+          {/* Conversieratio */}
+          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}` }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: MUTED, marginBottom: "0.5rem" }}>Conversieratio</div>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: "0.5rem" }}>
+              <div style={{ fontSize: "1.75rem", fontWeight: 800, color: TEXT, lineHeight: 1 }}>{conversieRate}%</div>
+              <div style={{ fontSize: "0.75rem", color: MUTED, paddingBottom: "0.2rem" }}>{leadsAfgerond.totalDocs} afgerond</div>
+            </div>
+            <div style={{ marginTop: "0.75rem", height: 6, borderRadius: 3, background: "#222", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${conversieRate}%`, background: "#34d399", borderRadius: 3, transition: "width 0.5s" }} />
+            </div>
+          </div>
+          {/* Pipeline barchart */}
+          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}` }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: MUTED, marginBottom: "0.875rem" }}>Pipeline per fase</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+              {pipelineStappen.map(s => (
+                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <div style={{ fontSize: "0.65rem", color: MUTED, width: 70, flexShrink: 0 }}>{s.label}</div>
+                  <div style={{ flex: 1, height: 6, borderRadius: 3, background: "#222", overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${(s.count / maxCount) * 100}%`, background: s.kleur, borderRadius: 3 }} />
+                  </div>
+                  <div style={{ fontSize: "0.7rem", color: TEXT, fontWeight: 600, width: 20, textAlign: "right" }}>{s.count}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Bottom grid */}
