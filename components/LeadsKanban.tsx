@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import {
   DndContext, DragEndEvent, DragOverEvent, DragStartEvent,
   PointerSensor, useSensor, useSensors, DragOverlay, closestCorners,
+  useDroppable,
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -97,9 +98,10 @@ function LeadCard({ lead, kleur, isDragging }: { lead: Lead; kleur: string; isDr
 
 function KanbanColumn({ col, leads, isOver }: { col: typeof COLUMNS[0]; leads: Lead[]; isOver: boolean }) {
   const totaal = leads.reduce((sum, l) => sum + (l.budget ?? l.pandPrijs ?? 0), 0);
+  const { setNodeRef } = useDroppable({ id: col.id });
 
   return (
-    <div style={{
+    <div ref={setNodeRef} style={{
       flex: "0 0 260px", background: isOver ? col.bg : "#111",
       border: `1px solid ${isOver ? col.kleur : "#222"}`,
       borderRadius: 12, padding: "1rem", minHeight: 400,
@@ -149,20 +151,21 @@ export default function LeadsKanban({ initialLeads, makelaars }: { initialLeads:
     return true;
   }), [leads, filterMakelaar, filterStale]);
 
-  const getColId = useCallback((id: string) => {
+  const getColId = useCallback((id: string | null | undefined) => {
+    if (!id) return null;
     if (COLUMNS.find(c => c.id === id)) return id;
     return leads.find(l => l.id === id)?.status ?? null;
   }, [leads]);
 
   function handleDragStart(e: DragStartEvent) { setActiveId(e.active.id as string); }
-  function handleDragOver(e: DragOverEvent) { setOverId(getColId(e.over?.id as string)); }
+  function handleDragOver(e: DragOverEvent) { setOverId(getColId(e.over?.id as string ?? null)); }
 
   async function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
     setActiveId(null); setOverId(null);
     if (!over) return;
     const leadId = active.id as string;
-    const targetCol = getColId(over.id as string);
+    const targetCol = getColId(over.id as string ?? null);
     if (!targetCol) return;
     const lead = leads.find(l => l.id === leadId);
     if (!lead || lead.status === targetCol) return;
