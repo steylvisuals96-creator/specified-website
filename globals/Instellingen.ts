@@ -182,15 +182,14 @@ export const Instellingen: GlobalConfig = {
     {
       type: "collapsible",
       label: "Integraties & Webhooks",
-      admin: { description: "Stel webhook URLs in voor automatiseringen via Make.com of Zapier. De URL van WHATSAPP_WEBHOOK_URL moet je ook toevoegen als environment variabele op Vercel." },
       fields: [
         {
-          name: "webhook_info",
-          type: "ui",
-          label: "Instructies",
+          name: "whatsapp_webhook_notitie",
+          type: "text",
+          label: "WhatsApp webhook URL (info)",
           admin: {
-            components: {},
-            description: "Ga naar Vercel → Settings → Environment Variables en voeg toe: WHATSAPP_WEBHOOK_URL (Make.com webhook URL voor WhatsApp notificaties bij nieuwe leads) en AUTOMATION_WEBHOOK_URL (algemene Make.com/Zapier webhook).",
+            description: "Voeg WHATSAPP_WEBHOOK_URL toe als Vercel environment variable. Gebruik je Make.com webhook URL. Bij elke nieuwe lead wordt automatisch een WhatsApp notificatie verstuurd.",
+            readOnly: true,
           },
         },
       ],
