@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardShell, { PageHeader, GoldBtn } from "@/components/DashboardShell";
 import LeadsTable from "@/components/LeadsTable";
+import DuplicatenDetector from "@/components/DuplicatenDetector";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -48,6 +49,7 @@ export default async function LeadsPage() {
         }
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
+        <DuplicatenDetector />
         <LeadsTable initialLeads={leads} makelaars={makelaars} />
       </div>
     </DashboardShell>
