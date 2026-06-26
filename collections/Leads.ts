@@ -13,21 +13,28 @@ export const Leads: CollectionConfig = {
     afterChange: [
       async ({ doc, operation }) => {
         if (operation === "create") {
-          // E-mail notificatie naar SOM Vastgoed
-          emailNieuweLead({
-            naam: doc.naam,
-            email: doc.email,
-            telefoon: doc.telefoon,
-            bericht: doc.bericht,
-            bron: doc.bron,
-          }).catch(() => {});
+          // Alleen externe notificaties sturen voor echte website-leads
+          // Niet voor admin-aangemaakte leads, imports, merges of test-leads
+          const EXTERNE_BRONNEN = ["contactformulier", "website"];
+          const isExterneLead = EXTERNE_BRONNEN.includes(doc.bron);
 
-          // Bevestigingsmail naar de lead zelf
-          emailBevestigingLead({
-            naam: doc.naam,
-            email: doc.email,
-            bericht: doc.bericht,
-          }).catch(() => {});
+          if (isExterneLead) {
+            // E-mail notificatie naar SOM Vastgoed
+            emailNieuweLead({
+              naam: doc.naam,
+              email: doc.email,
+              telefoon: doc.telefoon,
+              bericht: doc.bericht,
+              bron: doc.bron,
+            }).catch(() => {});
+
+            // Bevestigingsmail naar de lead zelf
+            emailBevestigingLead({
+              naam: doc.naam,
+              email: doc.email,
+              bericht: doc.bericht,
+            }).catch(() => {});
+          }
 
           // Automatisch opvolgingstaak aanmaken, toegewezen aan makelaar met minste open taken
           try {
@@ -97,17 +104,19 @@ export const Leads: CollectionConfig = {
             } catch {}
           }).catch(() => {});
 
-          // Zapier/Make webhook
-          triggerWebhook("lead.created", {
-            id: doc.id, naam: doc.naam, email: doc.email,
-            telefoon: doc.telefoon, bron: doc.bron, status: doc.status,
-          });
+          if (isExterneLead) {
+            // Zapier/Make webhook
+            triggerWebhook("lead.created", {
+              id: doc.id, naam: doc.naam, email: doc.email,
+              telefoon: doc.telefoon, bron: doc.bron, status: doc.status,
+            });
 
-          // WhatsApp notificatie via Make.com
-          triggerWhatsAppNotificatie({
-            naam: doc.naam, email: doc.email,
-            telefoon: doc.telefoon, bron: doc.bron, bericht: doc.bericht,
-          });
+            // WhatsApp notificatie via Make.com
+            triggerWhatsAppNotificatie({
+              naam: doc.naam, email: doc.email,
+              telefoon: doc.telefoon, bron: doc.bron, bericht: doc.bericht,
+            });
+          }
         }
 
         if (operation === "update") {
