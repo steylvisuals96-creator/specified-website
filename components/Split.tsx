@@ -1,0 +1,142 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+
+const cards = [
+  {
+    id: "kandidaten",
+    tag: "Voor kandidaten",
+    title: "Jouw carrière verdient een echte partner",
+    body: "We luisteren eerst. Pas daarna zoeken we. Samen bepalen we welke stap écht past bij wie jij bent en waar je naartoe wil groeien als engineer.",
+    cta: "Bekijk openstaande jobs",
+    href: "#jobs",
+    accent: true,
+  },
+  {
+    id: "opdrachtgevers",
+    tag: "Voor bedrijven",
+    title: "Engineering talent dat echt het verschil maakt",
+    body: "Geen CV-schieten. Wij screenen diep, valideren technisch en leveren enkel kandidaten die passen bij jouw cultuur, stack en ambitie.",
+    cta: "Vertel ons wat je zoekt",
+    href: "#contact",
+    accent: false,
+  },
+];
+
+export default function Split() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        maxWidth: "1280px",
+        margin: "0 auto",
+        padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)",
+      }}
+    >
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7 }}
+        style={{
+          fontSize: "0.75rem",
+          fontWeight: 500,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--muted)",
+          marginBottom: "3rem",
+        }}
+      >
+        Wat we doen
+      </motion.p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "1.5rem",
+        }}
+        className="md:grid-cols-2"
+      >
+        {cards.map((card, i) => (
+          <motion.div
+            key={card.id}
+            id={card.id}
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              backgroundColor: card.accent ? "var(--lime)" : "rgba(255,255,255,0.04)",
+              border: card.accent ? "none" : "1px solid var(--border)",
+              borderRadius: "24px",
+              padding: "clamp(2rem, 4vw, 3.5rem)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem",
+              minHeight: "380px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: card.accent ? "rgba(50,50,54,0.6)" : "var(--muted)",
+              }}
+            >
+              {card.tag}
+            </span>
+
+            <h2
+              style={{
+                fontFamily: "var(--font-bebas)",
+                fontSize: "clamp(2.4rem, 4vw, 3.5rem)",
+                fontWeight: 400,
+                lineHeight: 1.05,
+                letterSpacing: "0.02em",
+                color: card.accent ? "var(--dark)" : "var(--white)",
+                flex: 1,
+              }}
+            >
+              {card.title}
+            </h2>
+
+            <p
+              style={{
+                fontSize: "0.95rem",
+                fontWeight: 300,
+                lineHeight: 1.65,
+                color: card.accent ? "rgba(50,50,54,0.7)" : "var(--muted)",
+              }}
+            >
+              {card.body}
+            </p>
+
+            <motion.a
+              href={card.href}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                textDecoration: "none",
+                color: card.accent ? "var(--dark)" : "var(--lime)",
+                borderBottom: `1px solid ${card.accent ? "rgba(50,50,54,0.3)" : "rgba(223,253,123,0.3)"}`,
+                paddingBottom: "2px",
+                width: "fit-content",
+              }}
+              whileHover={{ gap: "0.85rem" }}
+            >
+              {card.cta} →
+            </motion.a>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
