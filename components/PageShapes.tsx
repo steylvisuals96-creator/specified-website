@@ -98,7 +98,7 @@ const shapes = [
     rxStart: 0,
     rxEnd: -20,
   },
-] as const;
+];
 
 function Shape({
   cfg,
