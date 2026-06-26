@@ -16,6 +16,7 @@ import { Testimonials } from "./collections/Testimonials";
 import { FAQ } from "./collections/FAQ";
 import { Afspraken } from "./collections/Afspraken";
 import { Taken } from "./collections/Taken";
+import { Nieuwbouw } from "./collections/Nieuwbouw";
 import { Instellingen } from "./globals/Instellingen";
 
 const filename = fileURLToPath(import.meta.url);
@@ -67,6 +68,7 @@ export default buildConfig({
   collections: [
     // Vastgoed
     Panden,
+    Nieuwbouw,
     Afspraken,
     // CRM
     Leads,
