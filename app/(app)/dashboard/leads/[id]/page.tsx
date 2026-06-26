@@ -146,11 +146,44 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <h2 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: G, margin: "0 0 1rem" }}>Details</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <InfoField label="Toegewezen aan" value={lead.toegewezen_aan?.naam || "—"} />
+              {lead.budget && <InfoField label="Budget" value={`€ ${Number(lead.budget).toLocaleString("nl-BE")}`} />}
               <InfoField label="Opvolging" value={lead.opvolging ? fmtDate(lead.opvolging) : "—"} />
               <InfoField label="Aangemaakt" value={fmtDateTime(lead.createdAt)} />
               <InfoField label="Bijgewerkt" value={fmtDateTime(lead.updatedAt)} />
             </div>
           </div>
+
+          {/* Tijdlijn */}
+          {lead.activiteiten?.length > 0 && (
+            <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.5rem", border: `1px solid ${BORDER}`, marginTop: "1rem" }}>
+              <h2 style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: G, margin: "0 0 1.25rem" }}>Tijdlijn</h2>
+              <div style={{ position: "relative" }}>
+                <div style={{ position: "absolute", left: 11, top: 0, bottom: 0, width: 2, background: "#252525" }} />
+                {[...lead.activiteiten].sort((a: any, b: any) => new Date(b.datum).getTime() - new Date(a.datum).getTime()).map((act: any, i: number) => {
+                  const TYPE_ICON: Record<string, string> = {
+                    telefoon: "📞", email: "📧", bezichtiging: "🏠",
+                    notitie: "📝", status_wijziging: "📋", afspraak: "🤝", whatsapp: "💬",
+                  };
+                  return (
+                    <div key={i} style={{ display: "flex", gap: "0.875rem", marginBottom: "1rem", position: "relative" }}>
+                      <div style={{ width: 24, height: 24, borderRadius: "50%", background: "#1a1a1a", border: "2px solid #333", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.7rem", flexShrink: 0, zIndex: 1 }}>
+                        {TYPE_ICON[act.type] ?? "•"}
+                      </div>
+                      <div style={{ flex: 1, paddingTop: 2 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                          <span style={{ fontSize: "0.75rem", fontWeight: 600, color: TEXT }}>{act.door || "Medewerker"}</span>
+                          <span style={{ fontSize: "0.7rem", color: MUTED }}>
+                            {act.datum ? new Date(act.datum).toLocaleDateString("nl-BE", { day: "numeric", month: "short", year: "numeric" }) : ""}
+                          </span>
+                        </div>
+                        <p style={{ fontSize: "0.8rem", color: "#aaa", margin: 0, lineHeight: 1.5 }}>{act.omschrijving}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </DashboardShell>

@@ -15,34 +15,32 @@ export default async function LeadsKanbanPage() {
   const { user } = await payload.auth({ headers: headersList });
   if (!user) redirect("/admin/login");
 
-  const leads = await payload.find({
-    collection: "leads",
-    limit: 200,
-    sort: "-createdAt",
-    depth: 1,
-    where: {
-      status: { not_equals: "niet_geinteresseerd" },
-    },
-  });
+  const [leadsRes, gebruikersRes] = await Promise.all([
+    payload.find({ collection: "leads", limit: 200, sort: "-createdAt", depth: 2 }),
+    payload.find({ collection: "gebruikers", limit: 50, depth: 0 }),
+  ]);
 
-  const serialized = leads.docs.map((l: any) => ({
+  const makelaars = gebruikersRes.docs.map((g: any) => ({ id: g.id, naam: g.naam || g.email }));
+
+  const serialized = leadsRes.docs.map((l: any) => ({
     id: l.id,
     naam: l.naam,
     email: l.email,
     telefoon: l.telefoon ?? null,
     status: l.status,
     bron: l.bron ?? null,
+    budget: l.budget ?? null,
+    pandPrijs: l.pand?.prijs ?? null,
     createdAt: l.createdAt,
-    toegewezen_aan: l.toegewezen_aan
-      ? { naam: l.toegewezen_aan.naam ?? null }
-      : null,
+    updatedAt: l.updatedAt,
+    toegewezen_aan: l.toegewezen_aan ? { id: l.toegewezen_aan.id, naam: l.toegewezen_aan.naam ?? null } : null,
   }));
 
   return (
     <DashboardShell activePath="/dashboard/leads" userName={(user as any).naam || user.email}>
       <PageHeader
         title="Leads — Kanban"
-        subtitle={`${leads.totalDocs} actieve leads`}
+        subtitle={`${leadsRes.totalDocs} leads`}
         actions={
           <div style={{ display: "flex", gap: "0.75rem" }}>
             <GoldBtn href="/dashboard/leads">Lijstweergave</GoldBtn>
@@ -51,7 +49,7 @@ export default async function LeadsKanbanPage() {
         }
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
-        <LeadsKanban initialLeads={serialized} />
+        <LeadsKanban initialLeads={serialized} makelaars={makelaars} />
       </div>
     </DashboardShell>
   );

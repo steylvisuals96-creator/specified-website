@@ -225,6 +225,65 @@ export const Leads: CollectionConfig = {
         },
       },
     },
+    // Tijdlijn / activiteitslog
+    {
+      name: "activiteiten",
+      type: "array",
+      label: "Activiteiten",
+      admin: {
+        description: "Chronologisch logboek van alle acties op deze lead.",
+      },
+      fields: [
+        {
+          type: "row",
+          fields: [
+            {
+              name: "type",
+              type: "select",
+              label: "Type",
+              required: true,
+              options: [
+                { label: "📞 Telefoongesprek", value: "telefoon" },
+                { label: "📧 E-mail verstuurd", value: "email" },
+                { label: "🏠 Bezichtiging", value: "bezichtiging" },
+                { label: "📝 Notitie", value: "notitie" },
+                { label: "📋 Statuswijziging", value: "status_wijziging" },
+                { label: "🤝 Afspraak", value: "afspraak" },
+                { label: "💬 WhatsApp", value: "whatsapp" },
+              ],
+            },
+            {
+              name: "datum",
+              type: "date",
+              label: "Datum",
+              required: true,
+              admin: { date: { pickerAppearance: "dayAndTime" } },
+            },
+          ],
+        },
+        {
+          name: "omschrijving",
+          type: "textarea",
+          label: "Omschrijving",
+          required: true,
+        },
+        {
+          name: "door",
+          type: "text",
+          label: "Door (naam medewerker)",
+        },
+      ],
+    },
+    // Budget van de lead
+    {
+      name: "budget",
+      type: "number",
+      label: "Budget (€)",
+      admin: {
+        position: "sidebar",
+        description: "Geschat budget van de koper/huurder",
+      },
+    },
   ],
   timestamps: true,
 };
