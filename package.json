@@ -13,6 +13,7 @@
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@hello-pangea/dnd": "^18.0.1",
     "@payloadcms/db-mongodb": "^3.85.1",
     "@payloadcms/next": "^3.85.1",
     "@payloadcms/richtext-lexical": "^3.85.1",
@@ -41,6 +42,7 @@
   "allowScripts": {
     "@tiptap/pm@3.27.1": true,
     "@tiptap/react@3.27.1": true,
-    "@tiptap/starter-kit@3.27.1": true
+    "@tiptap/starter-kit@3.27.1": true,
+    "@hello-pangea/dnd@18.0.1": true
   }
 }
