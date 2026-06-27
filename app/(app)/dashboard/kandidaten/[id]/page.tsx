@@ -6,6 +6,7 @@ import Link from "next/link";
 import DashboardShell, { PageHeader, LimeBtn, StatusBadge, fmtDate } from "@/components/DashboardShell";
 import { ActiviteitFeed, type ActiviteitItem } from "@/components/ActiviteitFeed";
 import KandidaatEditDrawer from "@/components/KandidaatEditDrawer";
+import ActiviteitAddDrawer from "@/components/ActiviteitAddDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -128,12 +129,10 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
                 gewenst_salaris: k.gewenst_salaris, notities: k.notities, bron: k.bron,
               }}
             />
-            <Link
-              href={`/admin/collections/activiteiten/create?kandidaat=${id}`}
-              style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: "transparent", color: "#666", textDecoration: "none", fontSize: "0.78rem", fontWeight: 600, border: `1px solid rgba(255,255,255,0.06)` }}
-            >
-              + Activiteit toevoegen
-            </Link>
+            <ActiviteitAddDrawer
+              kandidaatId={id}
+              defaultNaar={k.email}
+            />
           </div>
         </div>
 

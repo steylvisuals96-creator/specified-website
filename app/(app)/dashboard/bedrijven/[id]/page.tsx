@@ -6,6 +6,7 @@ import Link from "next/link";
 import DashboardShell, { PageHeader, LimeBtn, StatusBadge, fmtDate } from "@/components/DashboardShell";
 import { ActiviteitFeed, type ActiviteitItem } from "@/components/ActiviteitFeed";
 import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
+import ActiviteitAddDrawer from "@/components/ActiviteitAddDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -111,12 +112,10 @@ export default async function BedrijfDetailPage({ params }: { params: Promise<{ 
               id={id}
               initial={{ naam: b.naam, sector: b.sector, grootte: b.grootte, contactpersoon: b.contactpersoon, email: b.email, telefoon: b.telefoon, website: b.website, locatie: b.locatie, relatiestatus: b.relatiestatus, notities: b.notities }}
             />
-            <Link
-              href={`/admin/collections/activiteiten/create?bedrijf=${id}`}
-              style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: "transparent", color: "#666", textDecoration: "none", fontSize: "0.78rem", fontWeight: 600, border: `1px solid rgba(255,255,255,0.06)` }}
-            >
-              + Activiteit toevoegen
-            </Link>
+            <ActiviteitAddDrawer
+              bedrijfId={id}
+              defaultNaar={b.email}
+            />
           </div>
         </div>
 
