@@ -55,6 +55,10 @@ export default buildConfig({
     meta: {
       titleSuffix: "— Specified CMS",
     },
+    autoLogin: false,
+    routes: {
+      afterLogin: "/dashboard",
+    },
     components: {
       graphics: {
         Logo: "@/components/SpecifiedLogo#SpecifiedLogo",
