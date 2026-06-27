@@ -42,7 +42,7 @@ export default async function VacaturesPage() {
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
-                  <Link href={`/admin/collections/vacatures/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+                  <Link href={`/dashboard/vacatures/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
                     {doc.titel}
                   </Link>
                 </TD>

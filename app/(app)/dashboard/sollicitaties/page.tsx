@@ -46,8 +46,8 @@ export default async function SollicitatiePage() {
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
-                  <Link href={`/admin/collections/sollicitaties/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
-                    {typeof doc.kandidaat === "object" ? doc.kandidaat?.naam : "—"}
+                  <Link href={`/dashboard/sollicitaties/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+                    {typeof doc.kandidaat === "object" ? (doc.kandidaat?.naam || `${doc.kandidaat?.voornaam || ""} ${doc.kandidaat?.achternaam || ""}`.trim()) : "—"}
                   </Link>
                 </TD>
                 <TD muted>{typeof doc.vacature === "object" ? doc.vacature?.titel : "—"}</TD>
