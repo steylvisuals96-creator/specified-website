@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { addActiviteit } from "@/app/(app)/dashboard/kandidaten/[id]/addActivity";
+import { addActiviteit } from "@/app/(app)/dashboard/actions/activiteit";
 
 const LIME = "#dffd7b";
 const S1 = "#27272a";
