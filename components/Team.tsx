@@ -19,7 +19,7 @@ const team = [
     surname: "Claeys",
     role: "Managing Partner",
     bio: "Founder & partner at Specified. Voormalig engineer, begrijpt als geen ander wat kandidaten drijft en wat bedrijven écht nodig hebben om te groeien.",
-    linkedin: "https://www.linkedin.com/in/simon-claeys/",
+    linkedin: "https://www.linkedin.com/in/simon-claeys-specified/",
     img: "/images/team/Simon-768x1024.jpeg",
     photoSide: "right" as const,
   },
