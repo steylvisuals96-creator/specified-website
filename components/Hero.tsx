@@ -78,7 +78,18 @@ export default function Hero() {
             maxWidth: "480px",
           }}
         >
-          Specified verbindt uitzonderlijke engineers met bedrijven die bouwen aan morgen. Geen standaard recruitment — wij gaan dieper.
+          At Specified, we envision a dynamic engineering landscape where innovation thrives and endless opportunities abound. We believe that no single person or company can capture the vast potential of the engineering world.
+        </p>
+        <p
+          style={{
+            color: "var(--muted)",
+            fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
+            fontWeight: 400,
+            lineHeight: 1.55,
+            maxWidth: "480px",
+          }}
+        >
+          Therefore, we are committed to fostering entrepreneurship among our engineers, empowering them to become experts in their fields.
         </p>
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
