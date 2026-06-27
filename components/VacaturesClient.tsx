@@ -87,7 +87,7 @@ export default function VacaturesClient({ vacatures }: { vacatures: Vacature[] }
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
                 onClick={() => setSelected(selected === job.id ? null : job.id)}
-                style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 1rem", borderBottom: "1px solid var(--border)", background: "none", border: "none", borderBottom: "1px solid var(--border)", cursor: "pointer", textAlign: "left", width: "100%", backgroundColor: selected === job.id ? "rgba(223,253,123,0.04)" : "transparent", borderLeft: selected === job.id ? "2px solid var(--lime)" : "2px solid transparent", transition: "all 0.2s" }}
+                style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 1rem", borderBottom: "1px solid var(--border)", background: "none", cursor: "pointer", textAlign: "left", width: "100%", backgroundColor: selected === job.id ? "rgba(223,253,123,0.04)" : "transparent", borderLeft: selected === job.id ? "2px solid var(--lime)" : "2px solid transparent", transition: "all 0.2s" }}
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                   <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--white)" }}>{job.title}</span>
