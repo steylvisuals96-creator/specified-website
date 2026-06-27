@@ -50,8 +50,8 @@ export default async function KandidatenPage() {
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
-                  <Link href={`/admin/collections/kandidaten/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
-                    {doc.naam}
+                  <Link href={`/dashboard/kandidaten/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+                    {doc.naam || [doc.voornaam, doc.achternaam].filter(Boolean).join(" ") || "—"}
                   </Link>
                 </TD>
                 <TD muted>{doc.sector || "—"}</TD>

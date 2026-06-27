@@ -12,6 +12,7 @@ import { Sollicitaties } from "./collections/Sollicitaties";
 import { Team } from "./collections/Team";
 import { Media } from "./collections/Media";
 import { Gebruikers } from "./collections/Gebruikers";
+import { Activiteiten } from "./collections/Activiteiten";
 import { Instellingen } from "./globals/Instellingen";
 
 const filename = fileURLToPath(import.meta.url);
@@ -67,6 +68,7 @@ export default buildConfig({
     Kandidaten,
     Bedrijven,
     Sollicitaties,
+    Activiteiten,
     // Inhoud
     Team,
     // Systeem

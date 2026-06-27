@@ -42,7 +42,7 @@ export default async function BedrijvenPage() {
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
-                  <Link href={`/admin/collections/bedrijven/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
+                  <Link href={`/dashboard/bedrijven/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
                     {doc.naam}
                   </Link>
                 </TD>
