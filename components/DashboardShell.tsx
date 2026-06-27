@@ -18,6 +18,7 @@ const NAV = [
       { href: "/dashboard/sollicitaties", icon: "🔗", label: "Sollicitaties" },
       { href: "/dashboard/bedrijven", icon: "🏢", label: "Bedrijven" },
       { href: "/dashboard/activiteiten", icon: "📬", label: "Activiteiten" },
+      { href: "/dashboard/agenda", icon: "📅", label: "Agenda" },
     ],
   },
   {

@@ -18,8 +18,10 @@ export async function addActiviteit(data: {
 }) {
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });
-  await payload.create({ collection: "activiteiten" as any, data });
+  const doc = await payload.create({ collection: "activiteiten" as any, data });
   if (data.kandidaat) revalidatePath(`/dashboard/kandidaten/${data.kandidaat}`);
   if (data.bedrijf) revalidatePath(`/dashboard/bedrijven/${data.bedrijf}`);
   revalidatePath("/dashboard/activiteiten");
+  revalidatePath("/dashboard/agenda");
+  return { id: (doc as any).id };
 }
