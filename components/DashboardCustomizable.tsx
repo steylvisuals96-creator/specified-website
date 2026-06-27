@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SectorBarChart, PipelinePieChart } from "./DashboardCharts";
 
@@ -84,7 +84,6 @@ export type DashboardData = {
 
 export default function DashboardCustomizable({ data }: { data: DashboardData }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [enabled, setEnabled] = useState<string[]>(DEFAULT_ENABLED);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -105,9 +104,7 @@ export default function DashboardCustomizable({ data }: { data: DashboardData })
   }
 
   function setPeriod(p: string) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("period", p);
-    router.push(`/dashboard?${params.toString()}`);
+    router.push(`/dashboard?period=${p}`);
   }
 
   const show = (id: string) => !mounted || enabled.includes(id);
