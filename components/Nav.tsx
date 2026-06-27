@@ -55,7 +55,7 @@ export default function Nav() {
           }}
           className="hidden md:flex"
         >
-          {["Diensten", "Over ons", "Jobs", "Contact"].map((item) => (
+          {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
             <Link
               key={item}
               href={`#${item.toLowerCase().replace(" ", "-")}`}
@@ -143,7 +143,7 @@ export default function Nav() {
             gap: "1.25rem",
           }}
         >
-          {["Diensten", "Over ons", "Jobs", "Contact"].map((item) => (
+          {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
             <Link
               key={item}
               href={`#${item.toLowerCase()}`}
