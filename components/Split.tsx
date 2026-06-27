@@ -30,6 +30,7 @@ export default function Split() {
 
   return (
     <section
+      id="diensten"
       ref={ref}
       style={{
         maxWidth: "1280px",
