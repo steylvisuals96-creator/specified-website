@@ -44,7 +44,7 @@ export default function DashboardShell({
   userName?: string;
 }) {
   return (
-    <div style={{ minHeight: "100vh", background: DARK, color: TEXT, display: "flex", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: DARK, color: TEXT, display: "flex", fontFamily: "'Avenir LT Std', 'Avenir', 'Century Gothic', 'Trebuchet MS', sans-serif" }}>
       {/* Sidebar */}
       <aside style={{ width: "240px", background: S1, borderRight: `1px solid ${BORDER}`, display: "flex", flexDirection: "column", flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
         {/* Logo */}
@@ -101,7 +101,7 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2rem 2.5rem 1.5rem", borderBottom: `1px solid ${BORDER}` }}>
       <div>
-        <h1 style={{ fontSize: "1.375rem", fontWeight: 700, margin: "0 0 0.2rem", color: TEXT }}>{title}</h1>
+        <h1 style={{ fontSize: "2.5rem", fontWeight: 400, margin: "0 0 0.2rem", color: TEXT, fontFamily: "'Bebas Neue', 'Avenir LT Std', sans-serif", letterSpacing: "0.04em", lineHeight: 1 }}>{title}</h1>
         {subtitle && <p style={{ color: MUTED, fontSize: "0.8rem", margin: 0 }}>{subtitle}</p>}
       </div>
       {actions && <div style={{ display: "flex", gap: "0.625rem" }}>{actions}</div>}
