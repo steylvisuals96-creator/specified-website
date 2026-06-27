@@ -2,7 +2,7 @@
 
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
+  PieChart, Pie, Cell, Legend, Label,
 } from "recharts";
 
 const LIME = "#dffd7b";
@@ -72,25 +72,48 @@ export function SectorBarChart({ data }: { data: SectorData[] }) {
   );
 }
 
+const RADIAN = Math.PI / 180;
+
+function PieLabel({ cx, cy, midAngle, innerRadius, outerRadius, count }: any) {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  return (
+    <text x={x} y={y} fill="#1e1e21" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={700}>
+      {count}
+    </text>
+  );
+}
+
 export function PipelinePieChart({ data }: { data: PipelineData[] }) {
   const filled = data.filter(d => d.count > 0);
+  const totaal = filled.reduce((s, d) => s + d.count, 0);
   return (
-    <ResponsiveContainer width="100%" height={200}>
+    <ResponsiveContainer width="100%" height={220}>
       <PieChart>
         <Pie
           data={filled}
           dataKey="count"
           nameKey="label"
           cx="50%"
-          cy="50%"
-          innerRadius={50}
-          outerRadius={75}
+          cy="48%"
+          innerRadius={52}
+          outerRadius={78}
           paddingAngle={3}
           strokeWidth={0}
+          labelLine={false}
+          label={<PieLabel />}
         >
           {filled.map((entry) => (
             <Cell key={entry.label} fill={PIPELINE_COLORS[entry.label] ?? LIME} />
           ))}
+          <Label
+            value={`${totaal} totaal`}
+            position="center"
+            fill={MUTED}
+            fontSize={11}
+            fontWeight={500}
+          />
         </Pie>
         <Tooltip content={<PieTooltip />} />
         <Legend
