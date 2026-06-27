@@ -5,6 +5,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardShell, { LimeBtn } from "@/components/DashboardShell";
+import { SectorBarChart, PipelinePieChart } from "@/components/DashboardCharts";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -15,11 +16,32 @@ const BORDER = "rgba(255,255,255,0.08)";
 const MUTED = "rgba(255,255,255,0.45)";
 const TEXT = "#ffffff";
 
-function fmt(n: number) {
-  return new Intl.NumberFormat("nl-BE").format(n);
-}
+const SECTOR_LABEL: Record<string, string> = {
+  civiel: "Civiel", elektro: "Elektro", werktuig: "Werktuig",
+  bouw: "Bouw", industrie: "Industrie", energie: "Energie",
+  it: "IT", projectmanagement: "PM",
+};
 
-function fmtDateShort(d: string | Date) {
+const STATUS_KLEUR: Record<string, string> = {
+  nieuw: "#60a5fa", gescreend: LIME, in_gesprek: "#a78bfa",
+  voorgesteld: "#fb923c", interview_klant: "#f472b6",
+  geplaatst: "#34d399", afgewezen: "#6b7280", on_hold: "#facc15",
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  nieuw: "Nieuw", gescreend: "Gescreend", in_gesprek: "In gesprek",
+  voorgesteld: "Voorgesteld", interview_klant: "Interview",
+  geplaatst: "Geplaatst", afgewezen: "Afgewezen", on_hold: "On hold",
+};
+
+const PIPELINE_LABEL: Record<string, string> = {
+  nieuw: "Nieuw", screening: "Screening", tel_gescreend: "Gescreend",
+  voorgesteld: "Voorgesteld", interview_gepland: "Interview",
+  interview_afgerond: "Afgerond", aanbod: "Aanbod", geplaatst: "Geplaatst",
+};
+
+function fmt(n: number) { return new Intl.NumberFormat("nl-BE").format(n); }
+function fmtDate(d: string | Date) {
   return new Date(d).toLocaleDateString("nl-BE", { day: "numeric", month: "short" });
 }
 
@@ -30,71 +52,70 @@ export default async function DashboardPage() {
   const { user } = await payload.auth({ headers: headersList });
   if (!user) redirect("/admin/login");
 
-  const thirtyDaysAgo = new Date(); thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
   const [
-    vacaturesActief, vacaturesTotaal, vacaturesIngevuld,
-    kandidatenNieuw, kandidatenTotaal, kandidatenGeplaatst,
-    sollicitatiesNieuw, sollicitatiesVoorgesteld, sollicitatiesGeplaatst,
-    bedrijvenActief, teamleden,
+    vacActief, vacTotaal, vacIngevuld,
+    kanTotaal, kanGeplaatst, kanNieuw,
+    solTotaal, solGeplaatst,
+    bedrijvenActief,
+    allKandidaten, allSollicitaties,
     recenteKandidaten, recenteSollicitaties,
   ] = await Promise.all([
     payload.count({ collection: "vacatures", where: { status: { equals: "actief" } } }),
     payload.count({ collection: "vacatures" }),
     payload.count({ collection: "vacatures", where: { status: { equals: "ingevuld" } } }),
-    payload.count({ collection: "kandidaten", where: { status: { equals: "nieuw" } } }),
     payload.count({ collection: "kandidaten" }),
     payload.count({ collection: "kandidaten", where: { status: { equals: "geplaatst" } } }),
-    payload.count({ collection: "sollicitaties", where: { status: { equals: "nieuw" } } }),
-    payload.count({ collection: "sollicitaties", where: { status: { equals: "voorgesteld" } } }),
+    payload.count({ collection: "kandidaten", where: { status: { equals: "nieuw" } } }),
+    payload.count({ collection: "sollicitaties" }),
     payload.count({ collection: "sollicitaties", where: { status: { equals: "geplaatst" } } }),
     payload.count({ collection: "bedrijven", where: { relatiestatus: { equals: "actief" } } }),
-    payload.count({ collection: "team" }),
-    payload.find({ collection: "kandidaten", limit: 6, sort: "-createdAt" }),
-    payload.find({ collection: "sollicitaties", limit: 5, sort: "-updatedAt" }),
+    payload.find({ collection: "kandidaten", limit: 200 }),
+    payload.find({ collection: "sollicitaties", limit: 200 }),
+    payload.find({ collection: "kandidaten", limit: 5, sort: "-createdAt" }),
+    payload.find({ collection: "sollicitaties", limit: 5, sort: "-updatedAt", depth: 1 }),
   ]);
 
-  const conversieRate = kandidatenTotaal.totalDocs > 0
-    ? Math.round((kandidatenGeplaatst.totalDocs / kandidatenTotaal.totalDocs) * 100)
+  // Sector verdeling voor bar chart
+  const sectorCount: Record<string, number> = {};
+  for (const k of allKandidaten.docs as any[]) {
+    const s = k.sector ?? "overig";
+    sectorCount[s] = (sectorCount[s] ?? 0) + 1;
+  }
+  const sectorData = Object.entries(sectorCount)
+    .map(([sector, count]) => ({ sector: SECTOR_LABEL[sector] ?? sector, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // Pipeline verdeling voor pie chart
+  const pipelineCount: Record<string, number> = {};
+  for (const s of allSollicitaties.docs as any[]) {
+    const st = s.status ?? "nieuw";
+    if (st !== "afgewezen" && st !== "teruggetrokken") {
+      const label = PIPELINE_LABEL[st] ?? st;
+      pipelineCount[label] = (pipelineCount[label] ?? 0) + 1;
+    }
+  }
+  const pipelineData = Object.values(PIPELINE_LABEL).map(label => ({
+    label,
+    count: pipelineCount[label] ?? 0,
+  }));
+
+  const plaatsingsratio = kanTotaal.totalDocs > 0
+    ? Math.round((kanGeplaatst.totalDocs / kanTotaal.totalDocs) * 100)
     : 0;
 
-  const pipelineStappen = [
-    { label: "Nieuw", count: kandidatenNieuw.totalDocs, kleur: LIME },
-    { label: "Gescreend", count: 0, kleur: "#60a5fa" },
-    { label: "Voorgesteld", count: sollicitatiesVoorgesteld.totalDocs, kleur: "#a78bfa" },
-    { label: "Interview", count: 0, kleur: "#f472b6" },
-    { label: "Geplaatst", count: kandidatenGeplaatst.totalDocs, kleur: "#34d399" },
-  ];
-  const maxCount = Math.max(...pipelineStappen.map(s => s.count), 1);
-
-  const statusKleuren: Record<string, string> = {
-    nieuw: LIME,
-    gescreend: "#60a5fa",
-    in_gesprek: "#a78bfa",
-    voorgesteld: "#f472b6",
-    geplaatst: "#34d399",
-    afgewezen: "#6b7280",
-    on_hold: "#f59e0b",
-  };
-
-  const statusLabels: Record<string, string> = {
-    nieuw: "Nieuw",
-    screening: "Screening",
-    voorgesteld: "Voorgesteld",
-    interview_gepland: "Interview",
-    geplaatst: "Geplaatst",
-    afgewezen: "Afgewezen",
-  };
+  const openSollicitaties = solTotaal.totalDocs - solGeplaatst.totalDocs;
 
   return (
     <DashboardShell activePath="/dashboard" userName={(user as any).naam || user.email}>
-      <div style={{ padding: "2rem 2.5rem" }}>
+      <div style={{ padding: "2rem 2.5rem", maxWidth: 1280 }}>
 
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem" }}>
           <div>
-            <h1 style={{ fontSize: "1.375rem", fontWeight: 700, margin: "0 0 0.2rem", color: TEXT }}>Dashboard</h1>
-            <p style={{ color: MUTED, fontSize: "0.8rem", margin: 0 }}>Welkom terug, {(user as any).naam || user.email}</p>
+            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, margin: "0 0 0.25rem", color: TEXT }}>Dashboard</h1>
+            <p style={{ color: MUTED, fontSize: "0.8rem", margin: 0 }}>
+              Welkom terug, {(user as any).naam || user.email}
+            </p>
           </div>
           <div style={{ display: "flex", gap: "0.625rem" }}>
             <LimeBtn href="/admin/collections/vacatures/create">+ Vacature</LimeBtn>
@@ -102,82 +123,91 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Stat cards — Vacatures */}
-        <SectionTitle>Vacatures</SectionTitle>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.875rem", marginBottom: "1.5rem" }}>
-          <StatCard label="Actieve vacatures" value={vacaturesActief.totalDocs} href="/dashboard/vacatures" accent />
-          <StatCard label="Totaal vacatures" value={vacaturesTotaal.totalDocs} href="/dashboard/vacatures" />
-          <StatCard label="Ingevuld" value={vacaturesIngevuld.totalDocs} href="/dashboard/vacatures" />
+        {/* KPI Row */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0.875rem", marginBottom: "1.5rem" }}>
+          <KpiCard label="Actieve vacatures" value={vacActief.totalDocs} sub={`${vacIngevuld.totalDocs} ingevuld`} accent href="/dashboard/vacatures" />
+          <KpiCard label="Kandidaten" value={kanTotaal.totalDocs} sub={`${kanNieuw.totalDocs} nieuw`} href="/dashboard/kandidaten" />
+          <KpiCard label="Plaatsingsratio" value={`${plaatsingsratio}%`} sub={`${kanGeplaatst.totalDocs} geplaatst`} href="/dashboard/kandidaten" />
+          <KpiCard label="Open pipeline" value={openSollicitaties} sub={`${solGeplaatst.totalDocs} geplaatst`} href="/dashboard/pipeline" />
+          <KpiCard label="Actieve klanten" value={bedrijvenActief.totalDocs} sub="bedrijven" href="/dashboard/bedrijven" />
         </div>
 
-        {/* Stat cards — Kandidaten */}
-        <SectionTitle>Kandidaten & Pipeline</SectionTitle>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.875rem", marginBottom: "1rem" }}>
-          <StatCard label="Nieuwe kandidaten" value={kandidatenNieuw.totalDocs} href="/dashboard/kandidaten" accent />
-          <StatCard label="Totaal kandidaten" value={kandidatenTotaal.totalDocs} href="/dashboard/kandidaten" />
-          <StatCard label="Geplaatst" value={kandidatenGeplaatst.totalDocs} href="/dashboard/kandidaten" />
-          <StatCard label="Actieve klanten" value={bedrijvenActief.totalDocs} href="/dashboard/bedrijven" />
-        </div>
+        {/* Charts row */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
 
-        {/* KPI row */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.875rem", marginBottom: "2rem" }}>
-          <Link href="/dashboard/sollicitaties" style={{ display: "block", background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", textDecoration: "none", border: `1px solid ${BORDER}`, borderTop: `3px solid ${LIME}` }}>
-            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: MUTED, marginBottom: "0.5rem" }}>Open sollicitaties</div>
-            <div style={{ fontSize: "1.75rem", fontWeight: 800, color: LIME, lineHeight: 1 }}>{sollicitatiesNieuw.totalDocs}</div>
-            <div style={{ fontSize: "0.7rem", color: MUTED, marginTop: "0.4rem" }}>{sollicitatiesVoorgesteld.totalDocs} voorgesteld aan klant</div>
-          </Link>
-          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}` }}>
-            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: MUTED, marginBottom: "0.5rem" }}>Plaatsingsratio</div>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: "0.5rem" }}>
-              <div style={{ fontSize: "1.75rem", fontWeight: 800, color: TEXT, lineHeight: 1 }}>{conversieRate}%</div>
-              <div style={{ fontSize: "0.75rem", color: MUTED, paddingBottom: "0.2rem" }}>{kandidatenGeplaatst.totalDocs} geplaatst</div>
-            </div>
-            <div style={{ marginTop: "0.75rem", height: 6, borderRadius: 3, background: "#1a1a1d", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${conversieRate}%`, background: "#34d399", borderRadius: 3 }} />
-            </div>
+          {/* Sector bar chart */}
+          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.5rem", border: `1px solid ${BORDER}` }}>
+            <ChartTitle>Kandidaten per sector</ChartTitle>
+            <SectorBarChart data={sectorData} />
           </div>
-          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}` }}>
-            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: MUTED, marginBottom: "0.875rem" }}>Pipeline per fase</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-              {pipelineStappen.map(s => (
-                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <div style={{ fontSize: "0.65rem", color: MUTED, width: 70, flexShrink: 0 }}>{s.label}</div>
-                  <div style={{ flex: 1, height: 6, borderRadius: 3, background: "#1a1a1d", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${(s.count / maxCount) * 100}%`, background: s.kleur, borderRadius: 3 }} />
-                  </div>
-                  <div style={{ fontSize: "0.7rem", color: TEXT, fontWeight: 600, width: 20, textAlign: "right" }}>{s.count}</div>
-                </div>
-              ))}
-            </div>
+
+          {/* Pipeline pie chart */}
+          <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.5rem", border: `1px solid ${BORDER}` }}>
+            <ChartTitle>Pipeline verdeling</ChartTitle>
+            <PipelinePieChart data={pipelineData} />
           </div>
         </div>
 
-        {/* Bottom grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "1.25rem" }}>
+        {/* Progress bar: plaatsingsratio */}
+        <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}`, marginBottom: "1.5rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+            <ChartTitle style={{ margin: 0 }}>Plaatsingsratio</ChartTitle>
+            <span style={{ fontSize: "1.5rem", fontWeight: 800, color: LIME }}>{plaatsingsratio}%</span>
+          </div>
+          <div style={{ height: 8, borderRadius: 4, background: "#1a1a1d", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${plaatsingsratio}%`, background: `linear-gradient(90deg, #34d399, ${LIME})`, borderRadius: 4, transition: "width 1s ease" }} />
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.5rem", fontSize: "0.72rem", color: MUTED }}>
+            <span>{kanGeplaatst.totalDocs} geplaatst van {kanTotaal.totalDocs} kandidaten</span>
+            <span>{vacIngevuld.totalDocs} van {vacTotaal.totalDocs} vacatures ingevuld</span>
+          </div>
+        </div>
+
+        {/* Bottom: recente activiteit */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+
           <Panel title="Recente kandidaten" link="/dashboard/kandidaten" linkLabel="Alle kandidaten">
-            {recenteKandidaten.docs.length === 0 ? (
-              <EmptyPanel>Nog geen kandidaten</EmptyPanel>
-            ) : recenteKandidaten.docs.map((k: any) => (
-              <Link key={k.id} href={`/admin/collections/kandidaten/${k.id}`} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
-                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: statusKleuren[k.status] || MUTED, flexShrink: 0 }} />
-                  <span style={{ fontWeight: 600 }}>{k.naam}</span>
-                  {k.sector && <span style={{ color: MUTED }}>{k.sector}</span>}
-                </div>
-                <span style={{ color: MUTED, fontSize: "0.72rem", whiteSpace: "nowrap" }}>{fmtDateShort(k.createdAt)}</span>
-              </Link>
-            ))}
+            {recenteKandidaten.docs.length === 0
+              ? <Empty>Nog geen kandidaten</Empty>
+              : (recenteKandidaten.docs as any[]).map(k => (
+                <Link key={k.id} href={`/admin/collections/kandidaten/${k.id}`}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: STATUS_KLEUR[k.status] ?? MUTED, flexShrink: 0 }} />
+                    <span style={{ fontWeight: 600 }}>{k.naam}</span>
+                    {k.sector && <span style={{ color: MUTED, fontSize: "0.72rem" }}>{SECTOR_LABEL[k.sector] ?? k.sector}</span>}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <span style={{ fontSize: "0.62rem", padding: "0.15rem 0.45rem", borderRadius: 3, background: `${STATUS_KLEUR[k.status] ?? MUTED}20`, color: STATUS_KLEUR[k.status] ?? MUTED, fontWeight: 600 }}>
+                      {STATUS_LABEL[k.status] ?? k.status}
+                    </span>
+                    <span style={{ color: MUTED, fontSize: "0.7rem", whiteSpace: "nowrap" }}>{fmtDate(k.createdAt)}</span>
+                  </div>
+                </Link>
+              ))}
           </Panel>
 
           <Panel title="Recente sollicitaties" link="/dashboard/sollicitaties" linkLabel="Alle sollicitaties">
-            {recenteSollicitaties.docs.length === 0 ? (
-              <EmptyPanel>Nog geen sollicitaties</EmptyPanel>
-            ) : recenteSollicitaties.docs.map((s: any) => (
-              <Link key={s.id} href={`/admin/collections/sollicitaties/${s.id}`} style={{ display: "block", padding: "0.625rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem", borderLeft: `3px solid ${statusKleuren[s.status] || MUTED}` }}>
-                <div style={{ fontWeight: 600, marginBottom: "0.125rem" }}>{statusLabels[s.status] || s.status}</div>
-                <div style={{ color: MUTED, fontSize: "0.72rem" }}>{fmtDateShort(s.updatedAt)}</div>
-              </Link>
-            ))}
+            {recenteSollicitaties.docs.length === 0
+              ? <Empty>Nog geen sollicitaties</Empty>
+              : (recenteSollicitaties.docs as any[]).map(s => {
+                const kleur = STATUS_KLEUR[s.status] ?? MUTED;
+                return (
+                  <Link key={s.id} href={`/admin/collections/sollicitaties/${s.id}`}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, borderLeft: `3px solid ${kleur}`, marginBottom: "0.375rem" }}>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: "0.8rem" }}>{s.kandidaat?.naam ?? "—"}</div>
+                      <div style={{ color: MUTED, fontSize: "0.7rem" }}>{s.vacature?.titel ?? "—"}</div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ fontSize: "0.62rem", padding: "0.15rem 0.45rem", borderRadius: 3, background: `${kleur}20`, color: kleur, fontWeight: 600 }}>
+                        {PIPELINE_LABEL[s.status] ?? s.status}
+                      </span>
+                      <span style={{ color: MUTED, fontSize: "0.7rem", whiteSpace: "nowrap" }}>{fmtDate(s.updatedAt)}</span>
+                    </div>
+                  </Link>
+                );
+              })}
           </Panel>
         </div>
 
@@ -186,30 +216,29 @@ export default async function DashboardPage() {
   );
 }
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function KpiCard({ label, value, sub, accent, href }: { label: string; value: string | number; sub: string; accent?: boolean; href: string }) {
   return (
-    <div style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: LIME, marginBottom: "0.625rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      <span style={{ flex: 1, height: "1px", background: BORDER }} />
-      {children}
-      <span style={{ flex: 1, height: "1px", background: BORDER }} />
-    </div>
+    <Link href={href} style={{ display: "block", background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", textDecoration: "none", border: `1px solid ${BORDER}`, borderTop: accent ? `3px solid ${LIME}` : `1px solid ${BORDER}` }}>
+      <div style={{ fontSize: "2rem", fontWeight: 800, color: accent ? LIME : TEXT, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{value}</div>
+      <div style={{ fontSize: "0.72rem", color: TEXT, marginTop: "0.3rem", fontWeight: 600 }}>{label}</div>
+      <div style={{ fontSize: "0.68rem", color: MUTED, marginTop: "0.15rem" }}>{sub}</div>
+    </Link>
   );
 }
 
-function StatCard({ label, value, href, accent }: { label: string; value: number; href: string; accent?: boolean }) {
+function ChartTitle({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <Link href={href} style={{ display: "block", background: S2, borderRadius: "0.625rem", padding: "1.25rem 1.5rem", textDecoration: "none", border: `1px solid ${BORDER}`, borderTop: accent ? `3px solid ${LIME}` : `1px solid ${BORDER}` }}>
-      <div style={{ fontSize: "2.25rem", fontWeight: 800, color: accent ? LIME : TEXT, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{fmt(value)}</div>
-      <div style={{ fontSize: "0.75rem", color: MUTED, marginTop: "0.4rem", fontWeight: 500 }}>{label}</div>
-    </Link>
+    <div style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: MUTED, marginBottom: "1rem", ...style }}>
+      {children}
+    </div>
   );
 }
 
 function Panel({ title, link, linkLabel, children }: { title: string; link: string; linkLabel: string; children: React.ReactNode }) {
   return (
     <div style={{ background: S2, borderRadius: "0.625rem", padding: "1.25rem", border: `1px solid ${BORDER}` }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
-        <h2 style={{ fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", color: TEXT, margin: 0 }}>{title}</h2>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.875rem" }}>
+        <div style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", color: MUTED }}>{title}</div>
         <Link href={link} style={{ fontSize: "0.72rem", color: LIME, textDecoration: "none" }}>{linkLabel}</Link>
       </div>
       {children}
@@ -217,6 +246,6 @@ function Panel({ title, link, linkLabel, children }: { title: string; link: stri
   );
 }
 
-function EmptyPanel({ children }: { children: React.ReactNode }) {
+function Empty({ children }: { children: React.ReactNode }) {
   return <div style={{ textAlign: "center", padding: "2rem 1rem", color: MUTED, fontSize: "0.8rem" }}>{children}</div>;
 }
