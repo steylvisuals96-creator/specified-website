@@ -46,15 +46,15 @@ function kandidaatNaam(k: ActiviteitItem["kandidaat"]) {
   return k.naam || [k.voornaam, k.achternaam].filter(Boolean).join(" ") || k.id;
 }
 
-function replyHref(item: ActiviteitItem) {
-  // Reply goes to whoever sent it (the "van" address)
+function replyHref(item: ActiviteitItem, bccEmail?: string) {
   const to = item.van ?? "";
   const subject = encodeURIComponent(`Re: ${item.onderwerp}`);
   const body = encodeURIComponent(`\n\n---\nOp ${fmtDt(item.datum)} schreef ${item.van}:\n\n${item.inhoud ?? ""}`);
-  return `mailto:${to}?subject=${subject}&body=${body}`;
+  const bcc = bccEmail ? `&bcc=${encodeURIComponent(bccEmail)}` : "";
+  return `mailto:${to}?subject=${subject}${bcc}&body=${body}`;
 }
 
-function ActiviteitCard({ item, showRelaties }: { item: ActiviteitItem; showRelaties?: boolean }) {
+function ActiviteitCard({ item, showRelaties, bccEmail }: { item: ActiviteitItem; showRelaties?: boolean; bccEmail?: string }) {
   const [open, setOpen] = useState(false);
   const kleur = TYPE_KLEUR[item.type] ?? LIME;
   const isEmail = item.type === "email";
@@ -101,7 +101,7 @@ function ActiviteitCard({ item, showRelaties }: { item: ActiviteitItem; showRela
         <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
           {isEmail && item.van && item.richting === "inkomend" && (
             <a
-              href={replyHref(item)}
+              href={replyHref(item, bccEmail)}
               title="Beantwoorden in mailclient"
               style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", padding: "0.28rem 0.6rem", borderRadius: "3px", fontSize: "0.72rem", fontWeight: 600, color: LIME, background: `${LIME}12`, border: `1px solid ${LIME}30`, textDecoration: "none", whiteSpace: "nowrap" }}
             >
@@ -141,7 +141,7 @@ function ActiviteitCard({ item, showRelaties }: { item: ActiviteitItem; showRela
       {open && isEmail && item.van && item.richting === "inkomend" && (
         <div style={{ marginTop: "0.75rem" }} onClick={(e) => e.stopPropagation()}>
           <a
-            href={replyHref(item)}
+            href={replyHref(item, bccEmail)}
             style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", padding: "0.4rem 0.9rem", borderRadius: "3px", fontSize: "0.78rem", fontWeight: 600, color: "#1e1e21", background: LIME, textDecoration: "none" }}
           >
             ↩ Beantwoorden in Gmail / Outlook
@@ -152,7 +152,7 @@ function ActiviteitCard({ item, showRelaties }: { item: ActiviteitItem; showRela
   );
 }
 
-export function ActiviteitFeed({ items, showRelaties }: { items: ActiviteitItem[]; showRelaties?: boolean }) {
+export function ActiviteitFeed({ items, showRelaties, bccEmail }: { items: ActiviteitItem[]; showRelaties?: boolean; bccEmail?: string }) {
   if (items.length === 0) {
     return (
       <div style={{ textAlign: "center", padding: "3rem 1rem", color: "#555", fontSize: "0.85rem" }}>
@@ -178,7 +178,7 @@ export function ActiviteitFeed({ items, showRelaties }: { items: ActiviteitItem[
 
             {/* Card */}
             <div style={{ flex: 1, paddingBottom: isLast ? 0 : "1.25rem" }}>
-              <ActiviteitCard item={item} showRelaties={showRelaties} />
+              <ActiviteitCard item={item} showRelaties={showRelaties} bccEmail={bccEmail} />
             </div>
           </div>
         );

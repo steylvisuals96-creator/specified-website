@@ -46,13 +46,17 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
   if (!kandidaat) notFound();
   const k = kandidaat as any;
 
-  const activiteiten = await payload.find({
-    collection: "activiteiten" as any,
-    where: { kandidaat: { equals: id } },
-    sort: "-datum",
-    limit: 50,
-    depth: 1,
-  });
+  const [activiteiten, instellingen] = await Promise.all([
+    payload.find({
+      collection: "activiteiten" as any,
+      where: { kandidaat: { equals: id } },
+      sort: "-datum",
+      limit: 50,
+      depth: 1,
+    }),
+    payload.findGlobal({ slug: "instellingen" as any }),
+  ]);
+  const bccEmail = (instellingen as any)?.bcc_logging_email ?? undefined;
 
   const items: ActiviteitItem[] = activiteiten.docs.map((d: any) => ({
     id: d.id,
@@ -130,7 +134,7 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
           <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>
             {activiteiten.totalDocs} activiteiten
           </div>
-          <ActiviteitFeed items={items} />
+          <ActiviteitFeed items={items} bccEmail={bccEmail} />
         </div>
       </div>
     </DashboardShell>

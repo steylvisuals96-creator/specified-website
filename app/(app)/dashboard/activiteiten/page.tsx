@@ -28,13 +28,17 @@ export default async function ActiviteitenPage({
   if (type) where.type = { equals: type };
   if (richting) where.richting = { equals: richting };
 
-  const docs = await payload.find({
-    collection: "activiteiten" as any,
-    limit: 100,
-    sort: "-datum",
-    depth: 1,
-    where: Object.keys(where).length ? where : undefined,
-  });
+  const [docs, instellingen] = await Promise.all([
+    payload.find({
+      collection: "activiteiten" as any,
+      limit: 100,
+      sort: "-datum",
+      depth: 1,
+      where: Object.keys(where).length ? where : undefined,
+    }),
+    payload.findGlobal({ slug: "instellingen" as any }),
+  ]);
+  const bccEmail = (instellingen as any)?.bcc_logging_email ?? undefined;
 
   const items: ActiviteitItem[] = docs.docs.map((d: any) => ({
     id: d.id,
@@ -106,7 +110,7 @@ export default async function ActiviteitenPage({
       </div>
 
       <div style={{ padding: "1.5rem 2.5rem" }}>
-        <ActiviteitFeed items={items} showRelaties />
+        <ActiviteitFeed items={items} showRelaties bccEmail={bccEmail} />
       </div>
     </DashboardShell>
   );

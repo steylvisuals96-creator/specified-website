@@ -22,6 +22,21 @@ export const Instellingen: GlobalConfig = {
 
     {
       type: "collapsible",
+      label: "E-mail logging (BCC)",
+      fields: [
+        {
+          name: "bcc_logging_email",
+          type: "email",
+          label: "BCC logging adres",
+          admin: {
+            description: "BCC dit adres op elke mail naar een kandidaat of bedrijf zodat ze automatisch als activiteit worden gelogd. Bv. log@inbound.specified.be (Postmark inbound adres).",
+          },
+        },
+      ],
+    },
+
+    {
+      type: "collapsible",
       label: "Contact informatie",
       fields: [
         {
