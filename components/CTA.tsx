@@ -23,7 +23,7 @@ export default function CTA() {
           maxWidth: "1280px",
           margin: "0 auto",
           backgroundColor: "var(--lime)",
-          borderRadius: "28px",
+          borderRadius: "6px",
           padding: "clamp(3rem, 6vw, 5rem)",
           display: "flex",
           flexDirection: "column",
@@ -32,18 +32,6 @@ export default function CTA() {
         className="md:flex-row md:items-end md:justify-between"
       >
         <div style={{ maxWidth: "520px" }}>
-          <p
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "rgba(50,50,54,0.55)",
-              marginBottom: "1.25rem",
-            }}
-          >
-            Klaar om te starten?
-          </p>
           <h2
             style={{
               fontFamily: "var(--font-bebas)",
@@ -65,7 +53,7 @@ export default function CTA() {
               backgroundColor: "var(--dark)",
               color: "var(--white)",
               padding: "1rem 2.2rem",
-              borderRadius: "100px",
+              borderRadius: "6px",
               fontSize: "0.9rem",
               fontWeight: 600,
               textDecoration: "none",

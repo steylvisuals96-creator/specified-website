@@ -32,12 +32,6 @@ export default function Team() {
     <section id="over-ons" ref={ref} style={{ borderTop: "1px solid var(--border)", position: "relative" }}>
       {/* Header */}
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem) 3rem" }}>
-        <motion.p
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem" }}
-        >
-          Over ons
-        </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -84,7 +78,7 @@ export default function Team() {
                 </p>
                 <motion.a
                   href={member.linkedin} target="_blank" rel="noopener noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", backgroundColor: "var(--dark)", color: "var(--white)", padding: "0.8rem 1.6rem", borderRadius: "100px", fontSize: "0.85rem", fontWeight: 500, textDecoration: "none", width: "fit-content" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", backgroundColor: "var(--dark)", color: "var(--white)", padding: "0.8rem 1.6rem", borderRadius: "4px", fontSize: "0.85rem", fontWeight: 500, textDecoration: "none", width: "fit-content" }}
                   whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>

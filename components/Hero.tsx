@@ -27,44 +27,9 @@ export default function Hero() {
         width: "100%",
       }}
     >
-      {/* Tag */}
-      <motion.div
-        custom={0}
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          marginBottom: "2rem",
-        }}
-      >
-        <span
-          style={{
-            width: "8px",
-            height: "8px",
-            borderRadius: "50%",
-            backgroundColor: "var(--lime)",
-            display: "inline-block",
-          }}
-        />
-        <span
-          style={{
-            fontSize: "0.75rem",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--lime)",
-          }}
-        >
-          Engineering Recruitment — België
-        </span>
-      </motion.div>
-
       {/* Heading */}
       <motion.h1
-        custom={1}
+        custom={0}
         initial="hidden"
         animate="visible"
         variants={fadeUp}
@@ -94,7 +59,7 @@ export default function Hero() {
 
       {/* Bottom row */}
       <motion.div
-        custom={2}
+        custom={1}
         initial="hidden"
         animate="visible"
         variants={fadeUp}
@@ -108,8 +73,8 @@ export default function Hero() {
           style={{
             color: "var(--muted)",
             fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
-            fontWeight: 300,
-            lineHeight: 1.6,
+            fontWeight: 400,
+            lineHeight: 1.55,
             maxWidth: "480px",
           }}
         >
@@ -122,36 +87,33 @@ export default function Hero() {
             style={{
               backgroundColor: "var(--lime)",
               color: "var(--dark)",
-              padding: "0.9rem 2rem",
-              borderRadius: "100px",
+              padding: "0.85rem 1.75rem",
+              borderRadius: "6px",
               fontSize: "0.9rem",
               fontWeight: 600,
               textDecoration: "none",
             }}
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ backgroundColor: "#cef056" }}
             whileTap={{ scale: 0.97 }}
           >
-            Ik zoek een job →
+            Ik zoek een job
           </motion.a>
           <motion.a
             href="#opdrachtgevers"
             style={{
-              border: "1px solid var(--border)",
+              border: "1px solid rgba(255,255,255,0.2)",
               color: "var(--white)",
-              padding: "0.9rem 2rem",
-              borderRadius: "100px",
+              padding: "0.85rem 1.75rem",
+              borderRadius: "6px",
               fontSize: "0.9rem",
               fontWeight: 400,
               textDecoration: "none",
               backgroundColor: "transparent",
             }}
-            whileHover={{
-              borderColor: "rgba(255,255,255,0.4)",
-              backgroundColor: "rgba(255,255,255,0.04)",
-            }}
+            whileHover={{ borderColor: "rgba(255,255,255,0.5)" }}
             whileTap={{ scale: 0.97 }}
           >
-            Ik zoek talent →
+            Ik zoek talent
           </motion.a>
         </div>
       </motion.div>

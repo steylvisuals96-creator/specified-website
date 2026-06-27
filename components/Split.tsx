@@ -37,22 +37,6 @@ export default function Split() {
         padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)",
       }}
     >
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7 }}
-        style={{
-          fontSize: "0.75rem",
-          fontWeight: 500,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          color: "var(--muted)",
-          marginBottom: "3rem",
-        }}
-      >
-        Wat we doen
-      </motion.p>
-
       <div
         style={{
           display: "grid",
@@ -71,7 +55,7 @@ export default function Split() {
             style={{
               backgroundColor: card.accent ? "var(--lime)" : "rgba(255,255,255,0.04)",
               border: card.accent ? "none" : "1px solid var(--border)",
-              borderRadius: "24px",
+              borderRadius: "4px",
               padding: "clamp(2rem, 4vw, 3.5rem)",
               display: "flex",
               flexDirection: "column",
@@ -81,11 +65,12 @@ export default function Split() {
           >
             <span
               style={{
-                fontSize: "0.7rem",
-                fontWeight: 600,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: card.accent ? "rgba(50,50,54,0.6)" : "var(--muted)",
+                fontSize: "0.8rem",
+                fontWeight: 500,
+                color: card.accent ? "rgba(50,50,54,0.55)" : "rgba(255,255,255,0.4)",
+                borderBottom: `1px solid ${card.accent ? "rgba(50,50,54,0.2)" : "rgba(255,255,255,0.1)"}`,
+                paddingBottom: "0.75rem",
+                display: "block",
               }}
             >
               {card.tag}
@@ -132,7 +117,7 @@ export default function Split() {
               }}
               whileHover={{ gap: "0.85rem" }}
             >
-              {card.cta} →
+              {card.cta}
             </motion.a>
           </motion.div>
         ))}

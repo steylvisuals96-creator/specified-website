@@ -61,20 +61,6 @@ export default function Jobs() {
           }}
         >
           <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 500,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-                marginBottom: "0.75rem",
-              }}
-            >
-              Open posities
-            </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -105,7 +91,7 @@ export default function Jobs() {
               paddingBottom: "2px",
             }}
           >
-            Alle vacatures →
+            Alle vacatures
           </motion.a>
         </div>
 
@@ -152,19 +138,17 @@ export default function Jobs() {
               <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 <span
                   style={{
-                    fontSize: "0.7rem",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
                     color: job.type === "Vast" ? "var(--lime)" : "var(--muted)",
                     border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`,
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: "100px",
+                    padding: "0.2rem 0.65rem",
+                    borderRadius: "3px",
                   }}
                 >
                   {job.type}
                 </span>
-                <span style={{ color: "var(--muted)", fontSize: "1rem" }}>→</span>
+                <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>↗</span>
               </div>
             </motion.a>
           ))}
