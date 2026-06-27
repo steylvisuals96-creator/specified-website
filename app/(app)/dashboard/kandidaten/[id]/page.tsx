@@ -5,6 +5,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import DashboardShell, { PageHeader, LimeBtn, StatusBadge, fmtDate } from "@/components/DashboardShell";
 import { ActiviteitFeed, type ActiviteitItem } from "@/components/ActiviteitFeed";
+import KandidaatEditDrawer from "@/components/KandidaatEditDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -78,12 +79,7 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
       <PageHeader
         title={naam}
         subtitle="Kandidaat profiel"
-        actions={
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <LimeBtn href="/dashboard/kandidaten" outline>← Terug</LimeBtn>
-            <LimeBtn href={`/admin/collections/kandidaten/${id}`}>Bewerken in CMS</LimeBtn>
-          </div>
-        }
+        actions={<LimeBtn href="/dashboard/kandidaten" outline>← Terug</LimeBtn>}
       />
 
       <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 0, height: "calc(100vh - 90px)" }}>
@@ -119,10 +115,22 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
             </div>
           )}
 
-          <div style={{ marginTop: "1.5rem" }}>
+          <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <KandidaatEditDrawer
+              id={id}
+              initial={{
+                voornaam: k.voornaam, achternaam: k.achternaam,
+                email: k.email, telefoon: k.telefoon,
+                sector: k.sector, ervaringsniveau: k.ervaringsniveau,
+                beschikbaarheid: k.beschikbaarheid, functietitel: k.functietitel,
+                huidige_werkgever: k.huidige_werkgever, jaren_ervaring: k.jaren_ervaring,
+                linkedin: k.linkedin, status: k.status,
+                gewenst_salaris: k.gewenst_salaris, notities: k.notities, bron: k.bron,
+              }}
+            />
             <Link
               href={`/admin/collections/activiteiten/create?kandidaat=${id}`}
-              style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: `${LIME}14`, color: LIME, textDecoration: "none", fontSize: "0.78rem", fontWeight: 600, border: `1px solid ${LIME}30` }}
+              style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: "transparent", color: "#666", textDecoration: "none", fontSize: "0.78rem", fontWeight: 600, border: `1px solid rgba(255,255,255,0.06)` }}
             >
               + Activiteit toevoegen
             </Link>
