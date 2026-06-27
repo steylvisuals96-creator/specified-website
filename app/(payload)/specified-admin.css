@@ -10,10 +10,10 @@
   --avenir: 'Avenir LT Std', 'Avenir', 'Century Gothic', 'Trebuchet MS', sans-serif;
   --bebas: 'Bebas Neue', var(--avenir);
 
-  /* Override Payload's font variable */
-  --font-body: 500 15px/1.6 var(--avenir);
+  /* Payload v3 font variable — controls all body text */
+  --font-body: 500 14px/1.6 var(--avenir);
 
-  /* ── ACCENT: swap Payload blue → Specified lime ── */
+  /* ── Payload accent ramp → Specified lime ── */
   --color-base-0:    #ffffff;
   --color-base-50:   #f5ffe0;
   --color-base-100:  #eeff9c;
@@ -36,187 +36,339 @@
   --color-base-950:  #0a0f00;
   --color-base-1000: #000000;
 
-  /* Success palette = lime */
-  --color-success-50:  #f5ffe0;
-  --color-success-100: #eeff9c;
-  --color-success-150: #e8fe8a;
-  --color-success-200: #e5fe96;
-  --color-success-250: #e2fd84;
-  --color-success-300: #dffd7b;
-  --color-success-350: #cef05a;
-  --color-success-400: #bfe040;
-  --color-success-450: #aecf2a;
-  --color-success-500: #9cbd18;
-  --color-success-550: #87a810;
-  --color-success-600: #72920a;
-  --color-success-650: #5e7b06;
-  --color-success-700: #4b6404;
-  --color-success-750: #3a4f03;
-  --color-success-800: #2c3d02;
-  --color-success-850: #1e2c01;
-  --color-success-900: #131c00;
-  --color-success-950: #0a0f00;
-
   /* Error stays red */
-  --color-error-300:   #f87171;
-  --color-error-400:   #ef4444;
-  --color-error-500:   #dc2626;
+  --color-error-300: #f87171;
+  --color-error-400: #ef4444;
+  --color-error-500: #dc2626;
 }
 
-/* ── DARK THEME ELEVATION SCALE ── */
+/* ── DARK THEME ── */
 html[data-theme='dark'],
 [data-theme='dark'] {
-  --theme-elevation-0:   #1e1e21;
-  --theme-elevation-50:  #222225;
-  --theme-elevation-100: #27272a;
-  --theme-elevation-150: #2a2a2d;
-  --theme-elevation-200: #2d2d30;
-  --theme-elevation-250: #323236;
-  --theme-elevation-300: #3a3a3e;
-  --theme-elevation-350: #444448;
-  --theme-elevation-400: #525256;
-  --theme-elevation-450: #666669;
-  --theme-elevation-500: #7a7a7d;
-  --theme-elevation-550: #949497;
-  --theme-elevation-600: #adadaf;
-  --theme-elevation-650: #c5c5c7;
-  --theme-elevation-700: #d8d8da;
-  --theme-elevation-750: #e8e8ea;
-  --theme-elevation-800: #f0f0f1;
-  --theme-elevation-850: #f5f5f6;
-  --theme-elevation-900: #f9f9fa;
+  --theme-elevation-0:    #1e1e21;
+  --theme-elevation-50:   #222225;
+  --theme-elevation-100:  #27272a;
+  --theme-elevation-150:  #2a2a2d;
+  --theme-elevation-200:  #2d2d30;
+  --theme-elevation-250:  #323236;
+  --theme-elevation-300:  #3a3a3e;
+  --theme-elevation-350:  #444448;
+  --theme-elevation-400:  #525256;
+  --theme-elevation-450:  #666669;
+  --theme-elevation-500:  #7a7a7d;
+  --theme-elevation-550:  #949497;
+  --theme-elevation-600:  #adadaf;
+  --theme-elevation-650:  #c5c5c7;
+  --theme-elevation-700:  #d8d8da;
+  --theme-elevation-750:  #e8e8ea;
+  --theme-elevation-800:  #f0f0f1;
+  --theme-elevation-850:  #f5f5f6;
+  --theme-elevation-900:  #f9f9fa;
   --theme-elevation-1000: #ffffff;
-  --theme-text: #e8e8ea;
-  --theme-bg: #1e1e21;
-  --theme-input-bg: #27272a;
-  --theme-border-color: #2d2d30;
+  --theme-text:           #e4e4e6;
+  --theme-bg:             #1e1e21;
+  --theme-input-bg:       #27272a;
+  --theme-border-color:   #2d2d30;
 }
 
-/* Force dark on html so it's always applied */
-html {
-  color-scheme: dark;
-}
+/* Force dark always */
+html { color-scheme: dark; }
 
-/* ── BODY & GLOBAL ── */
+/* ── GLOBAL ── */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   font-family: var(--avenir) !important;
   background: #1e1e21 !important;
   color: #e0e0e2 !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
   -webkit-font-smoothing: antialiased !important;
 }
 
 /* ── HEADINGS: Bebas Neue ── */
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5,
+[class*="heading"],
+[class*="collection-list__header"] h1,
+[class*="render-title"] {
   font-family: var(--bebas) !important;
   font-weight: 400 !important;
   letter-spacing: 0.04em !important;
   color: #f0f0f0 !important;
+  line-height: 1 !important;
 }
+h1 { font-size: 2.6rem !important; }
+h2 { font-size: 1.9rem !important; }
+h3 { font-size: 1.4rem !important; }
 
-h1 { font-size: 2.8rem !important; line-height: 1 !important; margin: 0 !important; }
-h2 { font-size: 2rem !important; line-height: 1 !important; }
-h3 { font-size: 1.5rem !important; }
+/* Payload puts the page title in a specific tag pattern */
+[class*="render-title"] * {
+  font-family: var(--bebas) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em !important;
+}
 
 /* ── SCROLLBAR ── */
 * { scrollbar-color: #2d2d30 #1e1e21; scrollbar-width: thin; }
 
-/* ── NAV / SIDEBAR ── */
-:root {
-  --nav-width: 240px !important;
+/* ── SIDEBAR NAV ── */
+nav a, nav button, nav span {
+  font-family: var(--avenir) !important;
+  font-size: 0.82rem !important;
 }
 
-/* ── BUTTONS ── */
-/* Primary = lime */
-button[class*="btn"][class*="primary"],
-a[class*="btn"][class*="primary"] {
-  background: #dffd7b !important;
-  color: #1e1e21 !important;
+/* Active nav item: lime accent via Payload's CSS var */
+[aria-current="page"] {
+  color: #dffd7b !important;
+}
+
+/* ── TABLE ── */
+table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+th {
   font-family: var(--avenir) !important;
-  font-weight: 700 !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #dffd7b !important;
+  background: #222225 !important;
+  padding: 0.75rem 1rem !important;
+  white-space: nowrap !important;
+  border-bottom: 1px solid #2d2d30 !important;
+}
+
+td {
+  font-family: var(--avenir) !important;
   font-size: 0.85rem !important;
-  border-radius: 4px !important;
-  border: none !important;
-  box-shadow: 0 2px 10px rgba(223,253,123,0.15) !important;
+  color: #94949a !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  padding: 0.8rem 1rem !important;
+  vertical-align: middle !important;
 }
-button[class*="btn"][class*="primary"]:hover,
-a[class*="btn"][class*="primary"]:hover {
-  background: #cef05a !important;
+
+tr:hover td {
+  background: rgba(255,255,255,0.02) !important;
 }
+
+/* First cell (name/title) brighter */
+td:first-child a,
+td:first-child {
+  color: #e0e0e4 !important;
+  font-weight: 600 !important;
+}
+
+/* Clickable table row links */
+td a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+td a:hover { color: #dffd7b !important; }
 
 /* ── INPUTS ── */
-input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]),
 textarea,
 select {
   font-family: var(--avenir) !important;
-  font-size: 0.9rem !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
   background: #27272a !important;
   border: 1px solid #323236 !important;
   color: #f0f0f0 !important;
   border-radius: 4px !important;
+  padding: 0.5rem 0.75rem !important;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: #dffd7b !important;
-  box-shadow: 0 0 0 3px rgba(223,253,123,0.08) !important;
+  box-shadow: 0 0 0 2px rgba(223,253,123,0.1) !important;
   outline: none !important;
 }
 
 /* ── LABELS ── */
 label {
   font-family: var(--avenir) !important;
-  font-size: 0.75rem !important;
+  font-size: 0.7rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
   color: #666669 !important;
 }
 
-/* ── TABLE ── */
-th {
+/* ── BUTTONS ── */
+/* Payload renders primary buttons with data-button-style or specific roles */
+button,
+[role="button"] {
   font-family: var(--avenir) !important;
-  font-size: 0.7rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: #dffd7b !important;
-  background: #222225 !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
 }
 
-td {
+/* "Create New" and primary action buttons — target by color variable inheritance */
+button[style*="background"],
+a[style*="background"] {
   font-family: var(--avenir) !important;
-  font-size: 0.9rem !important;
-  color: #94949a !important;
-  border-bottom: 1px solid #27272a !important;
 }
 
-tr:hover td { background: rgba(255,255,255,0.015) !important; }
-td:first-child { color: #e0e0e4 !important; font-weight: 500 !important; }
-
-/* ── FOCUS ── */
-:focus-visible {
-  outline: 2px solid rgba(223,253,123,0.5) !important;
-  outline-offset: 2px !important;
+/* Payload v3 uses CSS vars for button colors — these override the base colour */
+:root {
+  --color-base-mid: #dffd7b;
 }
 
-/* ── CHECKBOX accent ── */
-input[type="checkbox"], input[type="radio"] {
+/* Target Payload's own button classes via partial match on data attributes */
+[data-button-style="primary"],
+button[aria-label*="Create"],
+button[aria-label*="Save"],
+a[href*="create"] button {
+  background: #dffd7b !important;
+  color: #1e1e21 !important;
+  border: none !important;
+  box-shadow: 0 1px 8px rgba(223,253,123,0.12) !important;
+}
+
+[data-button-style="primary"]:hover {
+  background: #cef05a !important;
+}
+
+/* "Create New" pill in collection header */
+a[href$="/create"] {
+  background: #dffd7b !important;
+  color: #1e1e21 !important;
+  font-family: var(--avenir) !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  border-radius: 4px !important;
+  padding: 0.4rem 1rem !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+a[href$="/create"]:hover { background: #cef05a !important; }
+
+/* ── STATUS / BADGE cells ── */
+[class*="status"],
+[class*="pill"],
+[class*="badge"] {
+  border-radius: 3px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  font-family: var(--avenir) !important;
+}
+
+/* ── CHECKBOX ── */
+input[type="checkbox"],
+input[type="radio"] {
   accent-color: #dffd7b;
 }
 
-/* ── REACT SELECT dropdowns ── */
+/* ── FOCUS RING ── */
+:focus-visible {
+  outline: 2px solid rgba(223,253,123,0.45) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── REACT-SELECT (relationship fields) ── */
 [class*="rs__control"] {
   background: #27272a !important;
   border-color: #323236 !important;
+  border-radius: 4px !important;
 }
-[class*="rs__menu"] { background: #27272a !important; border-color: #323236 !important; }
-[class*="rs__option--is-focused"] { background: rgba(223,253,123,0.07) !important; color: #f0f0f0 !important; }
-[class*="rs__option--is-selected"] { background: rgba(223,253,123,0.15) !important; color: #dffd7b !important; }
-[class*="rs__single-value"] { color: #e0e0e4 !important; }
+[class*="rs__control--is-focused"] {
+  border-color: #dffd7b !important;
+  box-shadow: 0 0 0 2px rgba(223,253,123,0.1) !important;
+}
+[class*="rs__menu"] {
+  background: #27272a !important;
+  border: 1px solid #323236 !important;
+  border-radius: 4px !important;
+}
+[class*="rs__option--is-focused"] {
+  background: rgba(223,253,123,0.07) !important;
+  color: #f0f0f0 !important;
+}
+[class*="rs__option--is-selected"] {
+  background: rgba(223,253,123,0.15) !important;
+  color: #dffd7b !important;
+}
+[class*="rs__single-value"],
+[class*="rs__placeholder"] {
+  color: #a0a0a4 !important;
+  font-family: var(--avenir) !important;
+  font-size: 0.88rem !important;
+}
 
-/* ── TOAST success border ── */
+/* ── SEARCH BAR ── */
+[class*="search"] input,
+input[placeholder*="Search"],
+input[placeholder*="Zoek"] {
+  background: #27272a !important;
+  border-color: #323236 !important;
+  color: #f0f0f0 !important;
+}
+
+/* ── TOAST ── */
 [class*="toast--success"] { border-left: 3px solid #dffd7b !important; }
 
-/* ── UPLOAD dropzone ── */
+/* ── UPLOAD / DROPZONE ── */
+[class*="dropzone"] {
+  border: 2px dashed #323236 !important;
+  border-radius: 6px !important;
+  background: #222225 !important;
+}
 [class*="dropzone"]:hover { border-color: #dffd7b !important; }
+
+/* ── FIELD DESCRIPTIONS ── */
+[class*="field-description"],
+[class*="field__description"] {
+  font-size: 0.75rem !important;
+  color: #666669 !important;
+  font-family: var(--avenir) !important;
+}
+
+/* ── COLLAPSIBLE panels ── */
+[class*="collapsible__header"],
+[class*="collapsible"] > button {
+  font-family: var(--avenir) !important;
+  font-weight: 700 !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #888 !important;
+}
+
+/* ── PAGINATION ── */
+[class*="pagination"] button {
+  font-family: var(--avenir) !important;
+  font-size: 0.78rem !important;
+}
+[class*="pagination"] [aria-current="page"] {
+  background: rgba(223,253,123,0.1) !important;
+  color: #dffd7b !important;
+}
+
+/* ── COLUMNS / FILTERS buttons in list view ── */
+[class*="list-controls"] button,
+[class*="list-header"] button {
+  font-family: var(--avenir) !important;
+  font-size: 0.78rem !important;
+  background: #27272a !important;
+  border: 1px solid #323236 !important;
+  color: #94949a !important;
+  border-radius: 4px !important;
+}
+[class*="list-controls"] button:hover,
+[class*="list-header"] button:hover {
+  border-color: #dffd7b !important;
+  color: #dffd7b !important;
+}
+
+/* ── NO CONTENT empty state ── */
+[class*="no-results"],
+[class*="empty"] {
+  color: #444448 !important;
+  font-family: var(--avenir) !important;
+}
