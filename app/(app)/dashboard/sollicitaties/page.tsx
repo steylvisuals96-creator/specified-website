@@ -10,6 +10,7 @@ const configPromise = import("@payload-config").then((m) => m.default);
 const statusKleur: Record<string, string> = {
   nieuw: "#dffd7b",
   screening: "#60a5fa",
+  tel_gescreend: "#f59e0b",
   voorgesteld: "#a78bfa",
   interview_gepland: "#f472b6",
   geplaatst: "#34d399",
@@ -19,6 +20,7 @@ const statusKleur: Record<string, string> = {
 const statusLabel: Record<string, string> = {
   nieuw: "Nieuw",
   screening: "Screening",
+  tel_gescreend: "Tel. gescreend",
   voorgesteld: "Voorgesteld",
   interview_gepland: "Interview gepland",
   geplaatst: "Geplaatst",
