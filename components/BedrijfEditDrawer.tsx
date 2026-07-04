@@ -67,7 +67,7 @@ export default function BedrijfEditDrawer({ id, initial }: { id: string; initial
     startTransition(async () => {
       await updateBedrijf(id, form);
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => { setSaved(false); setOpen(false); }, 1000);
     });
   }
 

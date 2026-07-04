@@ -100,7 +100,7 @@ export default function VacatureEditDrawer({
     startTransition(async () => {
       await updateVacature(id, form);
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => { setSaved(false); setOpen(false); }, 1000);
     });
   }
 

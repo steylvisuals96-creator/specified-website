@@ -69,7 +69,7 @@ export default function TeamEditDrawer({
     startTransition(async () => {
       await updateTeamlid(id, form);
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => { setSaved(false); setOpen(false); }, 1000);
     });
   }
 
