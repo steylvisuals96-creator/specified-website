@@ -102,6 +102,7 @@ export type KandidaatData = {
 export default function KandidaatEditDrawer({
   id,
   initial,
+  autoOpen,
 }: {
   id: string;
   initial: KandidaatData;
