@@ -4,8 +4,14 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardShell, { PageHeader, Table, TD, Empty, fmtDate } from "@/components/DashboardShell";
 import GebruikerCreateDrawer from "@/components/GebruikerCreateDrawer";
+import GebruikerEditDrawer from "@/components/GebruikerEditDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
+
+const rolLabel: Record<string, string> = {
+  beheerder: "Beheerder",
+  consultant: "Recruitment Consultant",
+};
 
 export default async function GebruikersPage() {
   const config = await configPromise;
@@ -24,14 +30,21 @@ export default async function GebruikersPage() {
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen gebruikers.</Empty> : (
-          <Table headers={["Naam", "E-mail", "Aangemaakt"]}>
+          <Table headers={["Naam", "E-mail", "Rol", "Aangemaakt", ""]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>{doc.naam || doc.email}</TD>
                 <TD muted>
                   <a href={`mailto:${doc.email}`} style={{ color: "#dffd7b", textDecoration: "none" }}>{doc.email}</a>
                 </TD>
+                <TD muted>{rolLabel[doc.rol] || doc.rol || "—"}</TD>
                 <TD muted>{fmtDate(doc.createdAt)}</TD>
+                <TD>
+                  <GebruikerEditDrawer
+                    id={doc.id}
+                    initial={{ naam: doc.naam, email: doc.email, rol: doc.rol }}
+                  />
+                </TD>
               </tr>
             ))}
           </Table>
