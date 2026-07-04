@@ -3,7 +3,7 @@
 export function SpecifiedLogo() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      <svg width="28" height="28" viewBox="0 0 26.3 24.4" xmlns="http://www.w3.org/2000/svg">
+      <svg width="28" height="28" viewBox="-1 -1 28.3 26.4" xmlns="http://www.w3.org/2000/svg">
         <path fill="none" stroke="#dffd7b" strokeWidth="1.5"
           d="M.5,0c0,1.7.3,3.4,1,4.9.6,1.6,1.6,3,2.8,4.2,1.2,1.2,2.6,2.2,4.2,2.8s3.2,1,4.9,1,3.4-.3,4.9-1c1.6-.6,3-1.6,4.2-2.8s2.1-2.6,2.8-4.2C25.9,3.3,26.3,1.7,26.3,0Z"/>
         <path fill="none" stroke="#dffd7b" strokeWidth="1.5"
@@ -18,7 +18,7 @@ export function SpecifiedLogo() {
 
 export function SpecifiedIcon() {
   return (
-    <svg width="32" height="32" viewBox="0 0 26.3 24.4" xmlns="http://www.w3.org/2000/svg">
+    <svg width="32" height="32" viewBox="-1 -1 28.3 26.4" xmlns="http://www.w3.org/2000/svg">
       <path fill="none" stroke="#dffd7b" strokeWidth="1.5"
         d="M.5,0c0,1.7.3,3.4,1,4.9.6,1.6,1.6,3,2.8,4.2,1.2,1.2,2.6,2.2,4.2,2.8s3.2,1,4.9,1,3.4-.3,4.9-1c1.6-.6,3-1.6,4.2-2.8s2.1-2.6,2.8-4.2C25.9,3.3,26.3,1.7,26.3,0Z"/>
       <path fill="none" stroke="#dffd7b" strokeWidth="1.5"
