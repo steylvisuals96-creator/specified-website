@@ -61,8 +61,8 @@ export default buildConfig({
         Icon: "@/components/SpecifiedLogo#SpecifiedIcon",
       },
     },
-    access: (args: any) => {
-      return args?.data?.rol === "beheerder";
+    access: ({ req: { user } }: any) => {
+      return (user as any)?.rol === "beheerder";
     },
   },
   collections: [
