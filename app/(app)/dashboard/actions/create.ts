@@ -24,6 +24,15 @@ export async function createBedrijf(data: Record<string, any>) {
   return { id: (doc as any).id };
 }
 
+export async function createVacature(data: Record<string, any>) {
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const doc = await payload.create({ collection: "vacatures" as any, data });
+  revalidatePath("/dashboard/vacatures");
+  revalidatePath("/dashboard");
+  return { id: (doc as any).id };
+}
+
 export async function createSollicitatie(data: Record<string, any>) {
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });

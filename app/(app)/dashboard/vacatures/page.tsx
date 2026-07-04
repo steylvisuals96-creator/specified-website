@@ -3,8 +3,9 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
 import VacatureEditDrawer from "@/components/VacatureEditDrawer";
+import VacatureCreateDrawer from "@/components/VacatureCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -37,7 +38,7 @@ export default async function VacaturesPage() {
       <PageHeader
         title="Vacatures"
         subtitle={`${docs.totalDocs} vacatures`}
-        actions={<LimeBtn href="/admin/collections/vacatures/create">+ Nieuwe vacature</LimeBtn>}
+        actions={<VacatureCreateDrawer />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen vacatures aangemaakt.</Empty> : (
