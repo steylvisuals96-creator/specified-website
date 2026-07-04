@@ -1,19 +1,30 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
+const WORDS = ["engineer", "shape", "unlock", "build", "define"];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 48 },
   visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
+    opacity: 1, y: 0,
     transition: { duration: 0.9, delay: i * 0.1, ease: EASE },
   }),
 };
 
 export default function Hero() {
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setWordIndex((i) => (i + 1) % WORDS.length);
+    }, 2600);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <section
       style={{
@@ -27,7 +38,6 @@ export default function Hero() {
         width: "100%",
       }}
     >
-      {/* Heading */}
       <motion.h1
         custom={0}
         initial="hidden"
@@ -45,50 +55,56 @@ export default function Hero() {
         }}
       >
         We{" "}
-        <em
+        <span
           style={{
-            fontStyle: "normal",
+            display: "inline-block",
+            position: "relative",
             color: "var(--lime)",
+            overflow: "hidden",
+            verticalAlign: "bottom",
+            minWidth: "5ch",
           }}
         >
-          engineer
-        </em>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={WORDS[wordIndex]}
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: "0%", opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0 }}
+              transition={{ duration: 0.45, ease: EASE }}
+              style={{ display: "block" }}
+            >
+              {WORDS[wordIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </span>
         <br />
         possibilities.
       </motion.h1>
 
-      {/* Bottom row */}
       <motion.div
         custom={1}
         initial="hidden"
         animate="visible"
         variants={fadeUp}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "2rem",
-        }}
+        style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
       >
-        <p
-          style={{
-            color: "var(--muted)",
-            fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
-            fontWeight: 400,
-            lineHeight: 1.55,
-            maxWidth: "480px",
-          }}
-        >
+        <p style={{
+          color: "var(--muted)",
+          fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
+          fontWeight: 400,
+          lineHeight: 1.55,
+          maxWidth: "480px",
+        }}>
           At Specified, we envision a dynamic engineering landscape where innovation thrives and endless opportunities abound. We believe that no single person or company can capture the vast potential of the engineering world.
         </p>
-        <p
-          style={{
-            color: "var(--muted)",
-            fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
-            fontWeight: 400,
-            lineHeight: 1.55,
-            maxWidth: "480px",
-          }}
-        >
+        <p style={{
+          color: "var(--muted)",
+          fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
+          fontWeight: 400,
+          lineHeight: 1.55,
+          maxWidth: "480px",
+        }}>
           Therefore, we are committed to fostering entrepreneurship among our engineers, empowering them to become experts in their fields.
         </p>
 
@@ -104,7 +120,7 @@ export default function Hero() {
               fontWeight: 600,
               textDecoration: "none",
             }}
-            whileHover={{ backgroundColor: "#cef056" }}
+            whileHover={{ backgroundColor: "#cef056", scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
             Ik zoek een job
@@ -121,7 +137,7 @@ export default function Hero() {
               textDecoration: "none",
               backgroundColor: "transparent",
             }}
-            whileHover={{ borderColor: "rgba(255,255,255,0.5)" }}
+            whileHover={{ borderColor: "rgba(255,255,255,0.5)", scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
             Ik zoek talent

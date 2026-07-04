@@ -7,6 +7,8 @@ import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
+import Marquee from "@/components/Marquee";
+import CursorGlow from "@/components/CursorGlow";
 
 export const revalidate = 60;
 
@@ -52,10 +54,12 @@ export default async function Home() {
 
   return (
     <>
+      <CursorGlow />
       <PageShapes />
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
         <Hero />
+        <Marquee />
         <Stats />
         <Split />
         <Jobs jobs={jobs} />
