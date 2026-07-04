@@ -2,8 +2,9 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, Empty } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, Empty } from "@/components/DashboardShell";
 import TeamEditDrawer from "@/components/TeamEditDrawer";
+import TeamCreateDrawer from "@/components/TeamCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -28,7 +29,7 @@ export default async function TeamPage() {
       <PageHeader
         title="Team"
         subtitle={`${docs.totalDocs} teamleden`}
-        actions={<LimeBtn href="/admin/collections/team/create">+ Nieuw teamlid</LimeBtn>}
+        actions={<TeamCreateDrawer />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen teamleden toegevoegd.</Empty> : (

@@ -2,8 +2,9 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardShell, { PageHeader, LimeBtn } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader } from "@/components/DashboardShell";
 import { ActiviteitFeed, type ActiviteitItem } from "@/components/ActiviteitFeed";
+import ActiviteitCreateDrawer from "@/components/ActiviteitCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -28,7 +29,7 @@ export default async function ActiviteitenPage({
   if (type) where.type = { equals: type };
   if (richting) where.richting = { equals: richting };
 
-  const [docs, instellingen] = await Promise.all([
+  const [docs, instellingen, kandidatenDocs, bedrijvenDocs] = await Promise.all([
     payload.find({
       collection: "activiteiten" as any,
       limit: 100,
@@ -37,7 +38,15 @@ export default async function ActiviteitenPage({
       where: Object.keys(where).length ? where : undefined,
     }),
     payload.findGlobal({ slug: "instellingen" as any }),
+    payload.find({ collection: "kandidaten" as any, limit: 200, sort: "achternaam" }),
+    payload.find({ collection: "bedrijven" as any, limit: 200, sort: "naam" }),
   ]);
+
+  const kandidaatOpties = kandidatenDocs.docs.map((k: any) => ({
+    id: k.id,
+    label: `${k.voornaam || ""} ${k.achternaam || ""}`.trim() || k.id,
+  }));
+  const bedrijfOpties = bedrijvenDocs.docs.map((b: any) => ({ id: b.id, label: b.naam || b.id }));
   const bccEmail = (instellingen as any)?.bcc_logging_email ?? undefined;
 
   const items: ActiviteitItem[] = docs.docs.map((d: any) => ({
@@ -66,7 +75,7 @@ export default async function ActiviteitenPage({
       <PageHeader
         title="Activiteiten"
         subtitle={`${docs.totalDocs} activiteiten`}
-        actions={<LimeBtn href="/admin/collections/activiteiten/create">+ Activiteit toevoegen</LimeBtn>}
+        actions={<ActiviteitCreateDrawer kandidaten={kandidaatOpties} bedrijven={bedrijfOpties} />}
       />
 
       {/* Filters */}

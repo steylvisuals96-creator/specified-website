@@ -24,6 +24,30 @@ export async function createBedrijf(data: Record<string, any>) {
   return { id: (doc as any).id };
 }
 
+export async function createTeamlid(data: Record<string, any>) {
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const doc = await payload.create({ collection: "team" as any, data });
+  revalidatePath("/dashboard/team");
+  return { id: (doc as any).id };
+}
+
+export async function createGebruiker(data: Record<string, any>) {
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const doc = await payload.create({ collection: "gebruikers" as any, data });
+  revalidatePath("/dashboard/gebruikers");
+  return { id: (doc as any).id };
+}
+
+export async function createActiviteit(data: Record<string, any>) {
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const doc = await payload.create({ collection: "activiteiten" as any, data });
+  revalidatePath("/dashboard/activiteiten");
+  return { id: (doc as any).id };
+}
+
 export async function createVacature(data: Record<string, any>) {
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });

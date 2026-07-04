@@ -2,7 +2,8 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, Empty, fmtDate } from "@/components/DashboardShell";
+import GebruikerCreateDrawer from "@/components/GebruikerCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -19,7 +20,7 @@ export default async function GebruikersPage() {
       <PageHeader
         title="Gebruikers"
         subtitle={`${docs.totalDocs} gebruikers`}
-        actions={<LimeBtn href="/admin/collections/gebruikers/create">+ Nieuwe gebruiker</LimeBtn>}
+        actions={<GebruikerCreateDrawer />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen gebruikers.</Empty> : (
