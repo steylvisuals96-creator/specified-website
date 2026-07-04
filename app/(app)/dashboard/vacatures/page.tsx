@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import VacatureEditDrawer from "@/components/VacatureEditDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -12,6 +13,7 @@ const statusKleur: Record<string, string> = {
   ingevuld: "#34d399",
   on_hold: "#f59e0b",
   gesloten: "#6b7280",
+  geannuleerd: "#6b7280",
 };
 
 const statusLabel: Record<string, string> = {
@@ -19,6 +21,7 @@ const statusLabel: Record<string, string> = {
   ingevuld: "Ingevuld",
   on_hold: "On hold",
   gesloten: "Gesloten",
+  geannuleerd: "Geannuleerd",
 };
 
 export default async function VacaturesPage() {
@@ -57,9 +60,18 @@ export default async function VacaturesPage() {
                 </TD>
                 <TD muted>{fmtDate(doc.createdAt)}</TD>
                 <TD>
-                  <Link href={`/admin/collections/vacatures/${doc.id}`} style={{ color: "var(--muted)", display: "inline-flex", alignItems: "center" }} title="Bewerken">
-                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.3317 11.3754 6.42166 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42166 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42166 9.28547Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"/></svg>
-                  </Link>
+                  <VacatureEditDrawer
+                    id={doc.id}
+                    initial={{
+                      titel: doc.titel,
+                      sector: doc.sector,
+                      type: doc.type,
+                      status: doc.status,
+                      locatie: doc.locatie,
+                      ervaringsniveau: doc.ervaringsniveau,
+                      salaris: doc.salaris,
+                    }}
+                  />
                 </TD>
               </tr>
             ))}
