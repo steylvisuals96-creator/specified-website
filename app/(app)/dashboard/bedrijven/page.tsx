@@ -3,8 +3,9 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty } from "@/components/DashboardShell";
 import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
+import BedrijfCreateDrawer from "@/components/BedrijfCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -29,7 +30,7 @@ export default async function BedrijvenPage() {
       <PageHeader
         title="Bedrijven"
         subtitle={`${docs.totalDocs} klanten`}
-        actions={<LimeBtn href="/admin/collections/bedrijven/create">+ Bedrijf toevoegen</LimeBtn>}
+        actions={<BedrijfCreateDrawer />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen bedrijven toegevoegd.</Empty> : (

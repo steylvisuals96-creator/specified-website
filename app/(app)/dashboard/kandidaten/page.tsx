@@ -3,8 +3,9 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
 import KandidaatEditDrawer from "@/components/KandidaatEditDrawer";
+import KandidaatCreateDrawer from "@/components/KandidaatCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -33,7 +34,7 @@ export default async function KandidatenPage() {
       <PageHeader
         title="Kandidaten"
         subtitle={`${docs.totalDocs} kandidaten`}
-        actions={<LimeBtn href="/admin/collections/kandidaten/create">+ Kandidaat toevoegen</LimeBtn>}
+        actions={<KandidaatCreateDrawer />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen kandidaten in de pipeline.</Empty> : (

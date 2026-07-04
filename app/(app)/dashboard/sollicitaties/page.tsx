@@ -3,8 +3,9 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
 import SollicitatieEditDrawer from "@/components/SollicitatieEditDrawer";
+import SollicitatieCreateDrawer from "@/components/SollicitatieCreateDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -28,14 +29,24 @@ export default async function SollicitatiePage() {
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
 
-  const docs = await payload.find({ collection: "sollicitaties", limit: 100, sort: "-updatedAt", depth: 1 });
+  const [docs, kandidatenDocs, vacaturesDocs] = await Promise.all([
+    payload.find({ collection: "sollicitaties", limit: 100, sort: "-updatedAt", depth: 1 }),
+    payload.find({ collection: "kandidaten" as any, limit: 200, sort: "achternaam" }),
+    payload.find({ collection: "vacatures" as any, limit: 200, sort: "titel" }),
+  ]);
+
+  const kandidaatOpties = kandidatenDocs.docs.map((k: any) => ({
+    id: k.id,
+    label: `${k.voornaam || ""} ${k.achternaam || ""}`.trim() || k.naam || k.id,
+  }));
+  const vacatureOpties = vacaturesDocs.docs.map((v: any) => ({ id: v.id, label: v.titel || v.id }));
 
   return (
     <DashboardShell activePath="/dashboard/sollicitaties" userName={(user as any).naam || user.email}>
       <PageHeader
         title="Sollicitaties"
         subtitle={`${docs.totalDocs} sollicitaties`}
-        actions={<LimeBtn href="/admin/collections/sollicitaties/create">+ Sollicitatie toevoegen</LimeBtn>}
+        actions={<SollicitatieCreateDrawer kandidaten={kandidaatOpties} vacatures={vacatureOpties} />}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen sollicitaties aangemaakt.</Empty> : (
