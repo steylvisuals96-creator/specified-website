@@ -105,8 +105,9 @@ export default function KandidaatEditDrawer({
 }: {
   id: string;
   initial: KandidaatData;
+  autoOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(autoOpen ?? false);
   const [form, setForm] = useState<KandidaatData>(initial);
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();

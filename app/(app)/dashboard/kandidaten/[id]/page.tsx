@@ -37,8 +37,9 @@ function InfoRow({ label, value }: { label: string; value?: string | null }) {
   );
 }
 
-export default async function KandidaatDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function KandidaatDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ edit?: string }> }) {
   const { id } = await params;
+  const { edit } = await searchParams;
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });
   const { user } = await payload.auth({ headers: await headers() });
@@ -119,6 +120,7 @@ export default async function KandidaatDetailPage({ params }: { params: Promise<
           <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <KandidaatEditDrawer
               id={id}
+              autoOpen={edit === "1"}
               initial={{
                 voornaam: k.voornaam, achternaam: k.achternaam,
                 email: k.email, telefoon: k.telefoon,
