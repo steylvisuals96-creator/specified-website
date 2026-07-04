@@ -73,12 +73,7 @@ export default async function BedrijfDetailPage({ params }: { params: Promise<{ 
       <PageHeader
         title={b.naam}
         subtitle="Bedrijf profiel"
-        actions={
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            <LimeBtn href="/dashboard/bedrijven" outline>← Terug</LimeBtn>
-            <LimeBtn href={`/admin/collections/bedrijven/${id}`}>Bewerken in CMS</LimeBtn>
-          </div>
-        }
+        actions={<LimeBtn href="/dashboard/bedrijven" outline>← Terug</LimeBtn>}
       />
 
       <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 0, height: "calc(100vh - 90px)" }}>

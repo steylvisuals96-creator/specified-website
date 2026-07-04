@@ -2,8 +2,7 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, LimeBtn, Table, TD, Empty, fmtDate } from "@/components/DashboardShell";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -27,11 +26,7 @@ export default async function GebruikersPage() {
           <Table headers={["Naam", "E-mail", "Aangemaakt"]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
-                <TD bold>
-                  <Link href={`/admin/collections/gebruikers/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
-                    {doc.naam || doc.email}
-                  </Link>
-                </TD>
+                <TD bold>{doc.naam || doc.email}</TD>
                 <TD muted>
                   <a href={`mailto:${doc.email}`} style={{ color: "#dffd7b", textDecoration: "none" }}>{doc.email}</a>
                 </TD>
