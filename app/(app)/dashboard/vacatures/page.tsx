@@ -43,7 +43,7 @@ export default async function VacaturesPage({ searchParams }: { searchParams: Pr
         actions={<VacatureCreateDrawer />}
       />
       <div style={{ padding: "0.75rem 2.5rem 0" }}>
-        <ZoekFilter placeholder="Zoek op titel, sector of locatie…" />
+        <ZoekFilter placeholder="Zoek op titel, sector of locatie…" defaultValue={q ?? ""} />
       </div>
       <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
         {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen vacatures aangemaakt."}</Empty> : (

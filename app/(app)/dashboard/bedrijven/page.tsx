@@ -42,7 +42,7 @@ export default async function BedrijvenPage({ searchParams }: { searchParams: Pr
         actions={<BedrijfCreateDrawer />}
       />
       <div style={{ padding: "0.75rem 2.5rem 0" }}>
-        <ZoekFilter placeholder="Zoek op naam, sector, contactpersoon…" />
+        <ZoekFilter placeholder="Zoek op naam, sector, contactpersoon…" defaultValue={q ?? ""} />
       </div>
       <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
         {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen bedrijven toegevoegd."}</Empty> : (

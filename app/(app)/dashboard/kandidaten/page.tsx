@@ -58,7 +58,7 @@ export default async function KandidatenPage({ searchParams }: { searchParams: P
         }
       />
       <div style={{ padding: "0.75rem 2.5rem 0" }}>
-        <ZoekFilter placeholder="Zoek op naam, email, sector…" />
+        <ZoekFilter placeholder="Zoek op naam, email, sector…" defaultValue={q ?? ""} />
       </div>
       <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
         {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen kandidaten in de pipeline."}</Empty> : (

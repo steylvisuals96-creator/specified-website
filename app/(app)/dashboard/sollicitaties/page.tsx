@@ -62,7 +62,7 @@ export default async function SollicitatiePage({ searchParams }: { searchParams:
         actions={<SollicitatieCreateDrawer kandidaten={kandidaatOpties} vacatures={vacatureOpties} />}
       />
       <div style={{ padding: "0.75rem 2.5rem 0" }}>
-        <ZoekFilter placeholder="Zoek op kandidaat of vacature…" />
+        <ZoekFilter placeholder="Zoek op kandidaat of vacature…" defaultValue={q ?? ""} />
       </div>
       <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
         {filtered.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen sollicitaties aangemaakt."}</Empty> : (
