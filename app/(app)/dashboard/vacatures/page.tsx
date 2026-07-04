@@ -27,7 +27,7 @@ export default async function VacaturesPage({ searchParams }: { searchParams: Pr
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
 
-  const where = q ? { or: [
+  const where: any = q ? { or: [
     { titel: { like: q } },
     { sector: { like: q } },
     { locatie: { like: q } },

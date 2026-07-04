@@ -25,7 +25,7 @@ export default async function BedrijvenPage({ searchParams }: { searchParams: Pr
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
 
-  const where = q ? { or: [
+  const where: any = q ? { or: [
     { naam: { like: q } },
     { sector: { like: q } },
     { contactpersoon: { like: q } },

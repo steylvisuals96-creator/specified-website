@@ -29,7 +29,7 @@ export default async function KandidatenPage({ searchParams }: { searchParams: P
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
 
-  const where = q ? { or: [
+  const where: any = q ? { or: [
     { voornaam: { like: q } },
     { achternaam: { like: q } },
     { naam: { like: q } },

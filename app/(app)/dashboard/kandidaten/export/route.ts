@@ -1,6 +1,5 @@
 import { getPayload } from "payload";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 const configPromise = import("@payload-config").then((m) => m.default);
