@@ -47,9 +47,9 @@ export default function DashboardShell({
   userName?: string;
 }) {
   return (
-    <div style={{ minHeight: "100vh", background: DARK, color: TEXT, display: "flex", fontFamily: "'Avenir LT Std', 'Avenir', 'Century Gothic', 'Trebuchet MS', sans-serif" }}>
+    <div className="dashboard-shell" style={{ minHeight: "100vh", background: DARK, color: TEXT, display: "flex", fontFamily: "'Avenir LT Std', 'Avenir', 'Century Gothic', 'Trebuchet MS', sans-serif" }}>
       {/* Sidebar */}
-      <aside style={{ width: "240px", background: S1, borderRight: `1px solid ${BORDER}`, display: "flex", flexDirection: "column", flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
+      <aside className="dashboard-sidebar" style={{ width: "240px", background: S1, borderRight: `1px solid ${BORDER}`, display: "flex", flexDirection: "column", flexShrink: 0, position: "sticky", top: 0, height: "100vh", overflowY: "auto" }}>
         {/* Logo */}
         <div style={{ padding: "1.5rem 1.25rem 1rem", borderBottom: `1px solid ${BORDER}`, display: "flex", alignItems: "center", gap: "0.625rem" }}>
           <svg width="22" height="22" viewBox="0 0 26.3 24.4" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@ export default function DashboardShell({
       </aside>
 
       {/* Main */}
-      <main style={{ flex: 1, overflowY: "auto", maxWidth: "calc(100vw - 240px)" }}>
+      <main className="dashboard-main" style={{ flex: 1, overflowY: "auto", maxWidth: "calc(100vw - 240px)" }}>
         {children}
       </main>
     </div>
@@ -102,7 +102,7 @@ export default function DashboardShell({
 
 export function PageHeader({ title, subtitle, actions }: { title: string; subtitle?: string; actions?: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2rem 2.5rem 1.5rem", borderBottom: `1px solid ${BORDER}` }}>
+    <div className="page-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2rem 2.5rem 1.5rem", borderBottom: `1px solid ${BORDER}` }}>
       <div>
         <h1 style={{ fontSize: "2.5rem", fontWeight: 400, margin: "0 0 0.2rem", color: TEXT, fontFamily: "'Bebas Neue', 'Avenir LT Std', sans-serif", letterSpacing: "0.04em", lineHeight: 1 }}>{title}</h1>
         {subtitle && <p style={{ color: MUTED, fontSize: "0.8rem", margin: 0 }}>{subtitle}</p>}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
 import SollicitatieEditDrawer from "@/components/SollicitatieEditDrawer";
 import SollicitatieCreateDrawer from "@/components/SollicitatieCreateDrawer";
+import ZoekFilter from "@/components/ZoekFilter";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -23,7 +24,8 @@ const statusLabel: Record<string, string> = {
   geplaatst: "Geplaatst", afgewezen: "Afgewezen",
 };
 
-export default async function SollicitatiePage() {
+export default async function SollicitatiePage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q } = await searchParams;
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });
   const { user } = await payload.auth({ headers: await headers() });
@@ -36,10 +38,21 @@ export default async function SollicitatiePage() {
   ]);
 
   const kandidaatOpties = kandidatenDocs.docs.map((k: any) => ({
-    id: k.id,
-    label: `${k.voornaam || ""} ${k.achternaam || ""}`.trim() || k.naam || k.id,
+    id: k.id, label: `${k.voornaam || ""} ${k.achternaam || ""}`.trim() || k.naam || k.id,
   }));
   const vacatureOpties = vacaturesDocs.docs.map((v: any) => ({ id: v.id, label: v.titel || v.id }));
+
+  // Client-side filter op naam/titel (depth:1 maakt server-side OR over relations complex)
+  const filtered = q
+    ? docs.docs.filter((doc: any) => {
+        const kNaam = typeof doc.kandidaat === "object"
+          ? `${doc.kandidaat?.voornaam || ""} ${doc.kandidaat?.achternaam || ""}`.trim() || doc.kandidaat?.naam || ""
+          : "";
+        const vTitel = typeof doc.vacature === "object" ? doc.vacature?.titel || "" : "";
+        const zoek = q.toLowerCase();
+        return kNaam.toLowerCase().includes(zoek) || vTitel.toLowerCase().includes(zoek);
+      })
+    : docs.docs;
 
   return (
     <DashboardShell activePath="/dashboard/sollicitaties" userName={(user as any).naam || user.email}>
@@ -48,10 +61,13 @@ export default async function SollicitatiePage() {
         subtitle={`${docs.totalDocs} sollicitaties`}
         actions={<SollicitatieCreateDrawer kandidaten={kandidaatOpties} vacatures={vacatureOpties} />}
       />
-      <div style={{ padding: "1.5rem 2.5rem" }}>
-        {docs.docs.length === 0 ? <Empty>Nog geen sollicitaties aangemaakt.</Empty> : (
+      <div style={{ padding: "0.75rem 2.5rem 0" }}>
+        <ZoekFilter placeholder="Zoek op kandidaat of vacature…" />
+      </div>
+      <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
+        {filtered.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen sollicitaties aangemaakt."}</Empty> : (
           <Table headers={["Kandidaat", "Vacature", "Status", "Consultant", "Bijgewerkt", ""]}>
-            {docs.docs.map((doc: any) => {
+            {filtered.map((doc: any) => {
               const kandidaatNaam = typeof doc.kandidaat === "object"
                 ? (doc.kandidaat?.naam || `${doc.kandidaat?.voornaam || ""} ${doc.kandidaat?.achternaam || ""}`.trim())
                 : "—";
@@ -64,23 +80,14 @@ export default async function SollicitatiePage() {
                     </Link>
                   </TD>
                   <TD muted>{vacatureTitel}</TD>
-                  <TD>
-                    <StatusBadge label={statusLabel[doc.status] || doc.status} kleur={statusKleur[doc.status] || "#6b7280"} />
-                  </TD>
+                  <TD><StatusBadge label={statusLabel[doc.status] || doc.status} kleur={statusKleur[doc.status] || "#6b7280"} /></TD>
                   <TD muted>{typeof doc.consultant === "object" ? doc.consultant?.email : "—"}</TD>
                   <TD muted>{fmtDate(doc.updatedAt)}</TD>
                   <TD>
-                    <SollicitatieEditDrawer
-                      id={doc.id}
-                      titel={`${kandidaatNaam} → ${vacatureTitel}`}
-                      initial={{
-                        status: doc.status,
-                        datum_sollicitatie: doc.datum_sollicitatie,
-                        datum_interview: doc.datum_interview,
-                        startdatum: doc.startdatum,
-                        notities: doc.notities,
-                      }}
-                    />
+                    <SollicitatieEditDrawer id={doc.id} titel={`${kandidaatNaam} → ${vacatureTitel}`} initial={{
+                      status: doc.status, datum_sollicitatie: doc.datum_sollicitatie,
+                      datum_interview: doc.datum_interview, startdatum: doc.startdatum, notities: doc.notities,
+                    }} />
                   </TD>
                 </tr>
               );

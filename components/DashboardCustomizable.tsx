@@ -235,7 +235,7 @@ export default function DashboardCustomizable({ data }: { data: DashboardData })
               {data.recenteKandidaten.length === 0
                 ? <Empty>Geen kandidaten in deze periode</Empty>
                 : data.recenteKandidaten.map((k: any) => (
-                  <Link key={k.id} href={`/admin/collections/kandidaten/${k.id}`}
+                  <Link key={k.id} href={`/dashboard/kandidaten/${k.id}`}
                     style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, marginBottom: "0.375rem" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
                       <span style={{ width: 7, height: 7, borderRadius: "50%", background: STATUS_KLEUR[k.status] ?? MUTED, flexShrink: 0 }} />
@@ -259,7 +259,7 @@ export default function DashboardCustomizable({ data }: { data: DashboardData })
                 : data.recenteSollicitaties.map((s: any) => {
                   const kleur = STATUS_KLEUR[s.status] ?? MUTED;
                   return (
-                    <Link key={s.id} href={`/admin/collections/sollicitaties/${s.id}`}
+                    <Link key={s.id} href={`/dashboard/sollicitaties/${s.id}`}
                       style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.6rem 0.75rem", borderRadius: "0.375rem", background: S3, textDecoration: "none", color: TEXT, fontSize: "0.8rem", border: `1px solid ${BORDER}`, borderLeft: `3px solid ${kleur}`, marginBottom: "0.375rem" }}>
                       <div>
                         <div style={{ fontWeight: 600, fontSize: "0.8rem" }}>{s.kandidaat?.naam ?? "—"}</div>

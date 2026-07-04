@@ -6,6 +6,7 @@ import Link from "next/link";
 import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty } from "@/components/DashboardShell";
 import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
 import BedrijfCreateDrawer from "@/components/BedrijfCreateDrawer";
+import ZoekFilter from "@/components/ZoekFilter";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -17,13 +18,21 @@ const statusLabel: Record<string, string> = {
   prospect: "Prospect", actief: "Actief", slapend: "Slapend", voormalig: "Voormalig",
 };
 
-export default async function BedrijvenPage() {
+export default async function BedrijvenPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q } = await searchParams;
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
 
-  const docs = await payload.find({ collection: "bedrijven", limit: 100, sort: "naam" });
+  const where = q ? { or: [
+    { naam: { like: q } },
+    { sector: { like: q } },
+    { contactpersoon: { like: q } },
+    { locatie: { like: q } },
+  ]} : undefined;
+
+  const docs = await payload.find({ collection: "bedrijven", limit: 100, sort: "naam", where });
 
   return (
     <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email}>
@@ -32,8 +41,11 @@ export default async function BedrijvenPage() {
         subtitle={`${docs.totalDocs} klanten`}
         actions={<BedrijfCreateDrawer />}
       />
-      <div style={{ padding: "1.5rem 2.5rem" }}>
-        {docs.docs.length === 0 ? <Empty>Nog geen bedrijven toegevoegd.</Empty> : (
+      <div style={{ padding: "0.75rem 2.5rem 0" }}>
+        <ZoekFilter placeholder="Zoek op naam, sector, contactpersoon…" />
+      </div>
+      <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
+        {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen bedrijven toegevoegd."}</Empty> : (
           <Table headers={["Naam", "Sector", "Contactpersoon", "E-mail", "Status", ""]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
@@ -45,24 +57,16 @@ export default async function BedrijvenPage() {
                 <TD muted>{doc.sector || "—"}</TD>
                 <TD muted>{doc.contactpersoon || "—"}</TD>
                 <TD muted>
-                  {doc.email
-                    ? <a href={`mailto:${doc.email}`} style={{ color: "#dffd7b", textDecoration: "none" }}>{doc.email}</a>
-                    : "—"}
+                  {doc.email ? <a href={`mailto:${doc.email}`} style={{ color: "#dffd7b", textDecoration: "none" }}>{doc.email}</a> : "—"}
                 </TD>
+                <TD><StatusBadge label={statusLabel[doc.relatiestatus] || doc.relatiestatus} kleur={statusKleur[doc.relatiestatus] || "#6b7280"} /></TD>
                 <TD>
-                  <StatusBadge label={statusLabel[doc.relatiestatus] || doc.relatiestatus} kleur={statusKleur[doc.relatiestatus] || "#6b7280"} />
-                </TD>
-                <TD>
-                  <BedrijfEditDrawer
-                    id={doc.id}
-                    initial={{
-                      naam: doc.naam, sector: doc.sector, grootte: doc.grootte,
-                      contactpersoon: doc.contactpersoon, email: doc.email,
-                      telefoon: doc.telefoon, website: doc.website,
-                      locatie: doc.locatie, relatiestatus: doc.relatiestatus,
-                      notities: doc.notities,
-                    }}
-                  />
+                  <BedrijfEditDrawer id={doc.id} initial={{
+                    naam: doc.naam, sector: doc.sector, grootte: doc.grootte,
+                    contactpersoon: doc.contactpersoon, email: doc.email,
+                    telefoon: doc.telefoon, website: doc.website,
+                    locatie: doc.locatie, relatiestatus: doc.relatiestatus, notities: doc.notities,
+                  }} />
                 </TD>
               </tr>
             ))}
