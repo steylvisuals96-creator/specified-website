@@ -3,22 +3,17 @@ import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, LimeBtn, Table, TD, StatusBadge, Empty } from "@/components/DashboardShell";
+import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const statusKleur: Record<string, string> = {
-  prospect: "#60a5fa",
-  actief: "#dffd7b",
-  slapend: "#f59e0b",
-  voormalig: "#6b7280",
+  prospect: "#60a5fa", actief: "#dffd7b", slapend: "#f59e0b", voormalig: "#6b7280",
 };
 
 const statusLabel: Record<string, string> = {
-  prospect: "Prospect",
-  actief: "Actief",
-  slapend: "Slapend",
-  voormalig: "Voormalig",
+  prospect: "Prospect", actief: "Actief", slapend: "Slapend", voormalig: "Voormalig",
 };
 
 export default async function BedrijvenPage() {
@@ -38,7 +33,7 @@ export default async function BedrijvenPage() {
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? <Empty>Nog geen bedrijven toegevoegd.</Empty> : (
-          <Table headers={["Naam", "Sector", "Contactpersoon", "E-mail", "Status"]}>
+          <Table headers={["Naam", "Sector", "Contactpersoon", "E-mail", "Status", ""]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
@@ -54,9 +49,18 @@ export default async function BedrijvenPage() {
                     : "—"}
                 </TD>
                 <TD>
-                  <StatusBadge
-                    label={statusLabel[doc.relatiestatus] || doc.relatiestatus}
-                    kleur={statusKleur[doc.relatiestatus] || "#6b7280"}
+                  <StatusBadge label={statusLabel[doc.relatiestatus] || doc.relatiestatus} kleur={statusKleur[doc.relatiestatus] || "#6b7280"} />
+                </TD>
+                <TD>
+                  <BedrijfEditDrawer
+                    id={doc.id}
+                    initial={{
+                      naam: doc.naam, sector: doc.sector, grootte: doc.grootte,
+                      contactpersoon: doc.contactpersoon, email: doc.email,
+                      telefoon: doc.telefoon, website: doc.website,
+                      locatie: doc.locatie, relatiestatus: doc.relatiestatus,
+                      notities: doc.notities,
+                    }}
                   />
                 </TD>
               </tr>
