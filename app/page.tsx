@@ -8,7 +8,6 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
 import Marquee from "@/components/Marquee";
-import CursorGlow from "@/components/CursorGlow";
 import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -66,7 +65,6 @@ export default async function Home() {
 
   return (
     <>
-      <CursorGlow />
       <PageShapes />
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
