@@ -44,7 +44,9 @@ body::after {
   background-size: 180px 180px;
 }
 
-/* Hide cursor on desktop — replaced by custom cursor */
+/* Verberg de systeemcursor ALLEEN op pagina's met de custom cursor (homepage).
+   De class wordt door CursorGlow op <html> gezet zolang die component actief is. */
 @media (pointer: fine) {
-  * { cursor: none !important; }
+  html.custom-cursor,
+  html.custom-cursor * { cursor: none !important; }
 }

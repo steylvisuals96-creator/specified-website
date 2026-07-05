@@ -9,6 +9,9 @@ export default function CursorGlow() {
   const glowPos = useRef({ x: -200, y: -200 });
 
   useEffect(() => {
+    // Verberg de systeemcursor enkel zolang deze component actief is (homepage)
+    document.documentElement.classList.add("custom-cursor");
+
     const onMove = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
     };
@@ -31,6 +34,7 @@ export default function CursorGlow() {
     return () => {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(raf);
+      document.documentElement.classList.remove("custom-cursor");
     };
   }, []);
 
