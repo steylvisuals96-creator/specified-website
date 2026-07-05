@@ -3,6 +3,9 @@ import type { GlobalConfig } from "payload";
 export const Instellingen: GlobalConfig = {
   slug: "instellingen",
   label: "Specified — Instellingen",
+  access: {
+    read: () => true,
+  },
   admin: {
     group: "Instellingen",
   },
