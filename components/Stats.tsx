@@ -3,12 +3,21 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
-const stats = [
+type StatItem = { value: number; suffix: string; label: string };
+
+const fallbackStats: StatItem[] = [
   { value: 200, suffix: "+", label: "Plaatsingen gedaan" },
   { value: 98, suffix: "%", label: "Retentie na 1 jaar" },
   { value: 3, suffix: " wk", label: "Gemiddelde time-to-hire" },
   { value: 50, suffix: "+", label: "Partnerbedrijven" },
 ];
+
+// Zet "200+" of "3 wk" om naar { value: 200, suffix: "+" }
+function parseStat(waarde: string): { value: number; suffix: string } {
+  const match = waarde.match(/^\s*([\d.,]+)(.*)$/);
+  if (!match) return { value: 0, suffix: waarde };
+  return { value: parseInt(match[1].replace(/[.,]/g, ""), 10) || 0, suffix: match[2] };
+}
 
 function CountUp({ to, suffix, start }: { to: number; suffix: string; start: boolean }) {
   const [count, setCount] = useState(0);
@@ -29,9 +38,13 @@ function CountUp({ to, suffix, start }: { to: number; suffix: string; start: boo
   return <>{count}{suffix}</>;
 }
 
-export default function Stats() {
+export default function Stats({ items }: { items?: { waarde: string; label: string }[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  const stats: StatItem[] = items && items.length > 0
+    ? items.map((s) => ({ ...parseStat(s.waarde), label: s.label }))
+    : fallbackStats;
 
   return (
     <section

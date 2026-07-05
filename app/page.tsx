@@ -9,8 +9,20 @@ import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
 import Marquee from "@/components/Marquee";
 import CursorGlow from "@/components/CursorGlow";
+import { getSettings } from "@/lib/settings";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSettings();
+  return {
+    title: s.meta_titel || "Specified — We Engineer Possibilities",
+    description:
+      s.meta_beschrijving ||
+      "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
+  };
+}
 
 const SECTOR_LABEL: Record<string, string> = {
   civiel: "Civiele techniek",
@@ -50,7 +62,7 @@ async function getRecentJobs() {
 }
 
 export default async function Home() {
-  const jobs = await getRecentJobs();
+  const [jobs, settings] = await Promise.all([getRecentJobs(), getSettings()]);
 
   return (
     <>
@@ -58,9 +70,13 @@ export default async function Home() {
       <PageShapes />
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
-        <Hero />
+        <Hero
+          subtitle={settings.hero_subtitel}
+          ctaPrimary={settings.hero_cta_tekst}
+          ctaSecondary={settings.hero_cta_2_tekst}
+        />
         <Marquee />
-        <Stats />
+        <Stats items={settings.statistieken} />
         <Split />
         <Jobs jobs={jobs} />
         <Team />

@@ -15,8 +15,24 @@ const fadeUp = {
   }),
 };
 
-export default function Hero() {
+const FALLBACK_SUBTITLE =
+  "At Specified, we envision a dynamic engineering landscape where innovation thrives and endless opportunities abound. We believe that no single person or company can capture the vast potential of the engineering world.\n\nTherefore, we are committed to fostering entrepreneurship among our engineers, empowering them to become experts in their fields.";
+
+export default function Hero({
+  subtitle,
+  ctaPrimary,
+  ctaSecondary,
+}: {
+  subtitle?: string;
+  ctaPrimary?: string;
+  ctaSecondary?: string;
+} = {}) {
   const [wordIndex, setWordIndex] = useState(0);
+
+  const paragraphs = (subtitle || FALLBACK_SUBTITLE)
+    .split("\n\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -89,24 +105,17 @@ export default function Hero() {
         variants={fadeUp}
         style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
       >
-        <p style={{
-          color: "var(--muted)",
-          fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
-          fontWeight: 400,
-          lineHeight: 1.55,
-          maxWidth: "480px",
-        }}>
-          At Specified, we envision a dynamic engineering landscape where innovation thrives and endless opportunities abound. We believe that no single person or company can capture the vast potential of the engineering world.
-        </p>
-        <p style={{
-          color: "var(--muted)",
-          fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
-          fontWeight: 400,
-          lineHeight: 1.55,
-          maxWidth: "480px",
-        }}>
-          Therefore, we are committed to fostering entrepreneurship among our engineers, empowering them to become experts in their fields.
-        </p>
+        {paragraphs.map((para, i) => (
+          <p key={i} style={{
+            color: "var(--muted)",
+            fontSize: "clamp(1rem, 1.5vw, 1.15rem)",
+            fontWeight: 400,
+            lineHeight: 1.55,
+            maxWidth: "480px",
+          }}>
+            {para}
+          </p>
+        ))}
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
           <motion.a
@@ -123,7 +132,7 @@ export default function Hero() {
             whileHover={{ backgroundColor: "#cef056", scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            Ik zoek een job
+            {ctaPrimary || "Ik zoek een job"}
           </motion.a>
           <motion.a
             href="#opdrachtgevers"
@@ -140,7 +149,7 @@ export default function Hero() {
             whileHover={{ borderColor: "rgba(255,255,255,0.5)", scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            Ik zoek talent
+            {ctaSecondary || "Ik zoek talent"}
           </motion.a>
         </div>
       </motion.div>
