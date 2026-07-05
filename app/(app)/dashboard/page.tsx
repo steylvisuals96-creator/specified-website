@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import DashboardShell from "@/components/DashboardShell";
 import DashboardCustomizable, { DashboardData } from "@/components/DashboardCustomizable";
+import SysteemStatus from "@/components/SysteemStatus";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -165,6 +166,9 @@ export default async function DashboardPage({
   return (
     <DashboardShell activePath="/dashboard" userName={data.userName}>
       <DashboardCustomizable data={data} />
+      <div style={{ padding: "0 2.5rem 2.5rem" }}>
+        <SysteemStatus />
+      </div>
     </DashboardShell>
   );
 }
