@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import CookieBanner from "@/components/CookieBanner";
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="nl" className={`${bebasNeue.variable} h-full`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <CookieBanner />
+      </body>
     </html>
   );
 }

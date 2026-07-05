@@ -29,7 +29,13 @@ export default function Footer() {
             style={{ filter: "brightness(0) invert(1)", height: "22px", width: "auto" }}
           />
         </Link>
-        <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
+          <Link href="/privacy" style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 400 }}>
+            Privacy
+          </Link>
+          <Link href="/cookies" style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 400 }}>
+            Cookies
+          </Link>
           <a
             href="https://www.linkedin.com/company/specified-be"
             target="_blank"
