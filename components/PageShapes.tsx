@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 /* Outline-only shapes — engineering / technical drawing feel */
@@ -100,7 +101,8 @@ const shapes = [
   },
 ];
 
-function Shape({
+// Binnenlaag: scroll-animatie (framer) + 3D diepte via translateZ
+function ShapeInner({
   cfg,
   scrollYProgress,
 }: {
@@ -115,25 +117,19 @@ function Shape({
   const rz = useSpring(rawRZ, { stiffness: 20, damping: 18 });
   const rx = useSpring(rawRX, { stiffness: 20, damping: 18 });
 
-  const pos: Record<string, string | number> = {};
-  if ("top"    in cfg) pos.top    = cfg.top as string;
-  if ("bottom" in cfg) pos.bottom = cfg.bottom as string;
-  if ("left"   in cfg) pos.left   = cfg.left as string;
-  if ("right"  in cfg) pos.right  = cfg.right as string;
+  const depth = (400 - cfg.size) * 0.7; // translateZ — grote vormen naar achter
 
   return (
     <motion.div
       style={{
-        position: "absolute",
-        ...pos,
         width:  cfg.size,
         height: cfg.size,
         color:  cfg.color,
         opacity: cfg.opacity,
-        pointerEvents: "none",
         y,
         rotateZ: rz,
         rotateX: rx,
+        z: depth,
         willChange: "transform",
       }}
     >
@@ -144,8 +140,46 @@ function Shape({
   );
 }
 
+// px verplaatsing per muis-eenheid — kleinere vormen bewegen sterker (dichterbij)
+const parallaxFor = (size: number) => Math.max(8, (520 - size) / 6);
+
 export default function PageShapes() {
   const { scrollYProgress } = useScroll();
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const shapeEls = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const target = { x: 0, y: 0 };   // doel o.b.v. muis (-0.5 .. 0.5)
+    const smooth = { x: 0, y: 0 };   // soepel gevolgde waarde
+
+    const onMove = (e: MouseEvent) => {
+      target.x = e.clientX / window.innerWidth - 0.5;
+      target.y = e.clientY / window.innerHeight - 0.5;
+    };
+    window.addEventListener("mousemove", onMove);
+
+    let raf: number;
+    const tick = () => {
+      smooth.x += (target.x - smooth.x) * 0.06;
+      smooth.y += (target.y - smooth.y) * 0.06;
+
+      if (fieldRef.current) {
+        fieldRef.current.style.transform = `rotateX(${-smooth.y * 10}deg) rotateY(${smooth.x * 10}deg)`;
+      }
+      shapeEls.current.forEach((el, i) => {
+        if (!el) return;
+        const p = parallaxFor(shapes[i].size);
+        el.style.transform = `translate3d(${smooth.x * p}px, ${smooth.y * p}px, 0)`;
+      });
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <div
@@ -156,11 +190,32 @@ export default function PageShapes() {
         pointerEvents: "none",
         zIndex: 0,
         overflow: "hidden",
+        perspective: "1200px",
       }}
     >
-      {shapes.map((cfg, i) => (
-        <Shape key={i} cfg={cfg} scrollYProgress={scrollYProgress} />
-      ))}
+      {/* Veld — kantelt in 3D met de muis (handmatige rAF, geen framer) */}
+      <div
+        ref={fieldRef}
+        style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d", willChange: "transform" }}
+      >
+        {shapes.map((cfg, i) => {
+          const pos: Record<string, string | number> = {};
+          if ("top"    in cfg) pos.top    = cfg.top as string;
+          if ("bottom" in cfg) pos.bottom = cfg.bottom as string;
+          if ("left"   in cfg) pos.left   = cfg.left as string;
+          if ("right"  in cfg) pos.right  = cfg.right as string;
+          return (
+            // Buitenlaag: muis-parallax (handmatige rAF)
+            <div
+              key={i}
+              ref={(el) => { shapeEls.current[i] = el; }}
+              style={{ position: "absolute", ...pos, pointerEvents: "none", willChange: "transform" }}
+            >
+              <ShapeInner cfg={cfg} scrollYProgress={scrollYProgress} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
