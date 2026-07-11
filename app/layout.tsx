@@ -3,6 +3,7 @@ import { Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import CursorGlow from "@/components/CursorGlow";
+import { Analytics } from "@vercel/analytics/next";
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
@@ -26,6 +27,7 @@ export default function RootLayout({
         <CursorGlow />
         {children}
         <CookieBanner />
+        <Analytics />
       </body>
     </html>
   );
