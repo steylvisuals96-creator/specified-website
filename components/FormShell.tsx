@@ -19,15 +19,17 @@ export default function FormShell({
 }) {
   return (
     <DashboardShell activePath={activePath} userName={userName}>
-      <PageHeader
-        title={title}
-        actions={
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <LimeBtn href={backHref} outline>← Annuleren</LimeBtn>
-            {actions}
-          </div>
-        }
-      />
+      <div style={{ position: "sticky", top: 0, zIndex: 20, background: "#1e1e21" }}>
+        <PageHeader
+          title={title}
+          actions={
+            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <LimeBtn href={backHref} outline>← Annuleren</LimeBtn>
+              {actions}
+            </div>
+          }
+        />
+      </div>
       <div style={{ padding: "2rem 2.5rem", maxWidth: "860px" }}>
         {children}
       </div>
