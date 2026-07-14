@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Footer() {
+export default function Footer({ linkedin, footerTekst }: { linkedin?: string; footerTekst?: string } = {}) {
+  const linkedinUrl = linkedin || "https://www.linkedin.com/company/specified-be";
+  const bedrijfsregel = footerTekst || "© 2026 Specified BV — Kontich, België";
   return (
     <footer
       style={{
@@ -37,7 +39,7 @@ export default function Footer() {
             Cookies
           </Link>
           <a
-            href="https://www.linkedin.com/company/specified-be"
+            href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 400 }}
@@ -45,7 +47,7 @@ export default function Footer() {
             LinkedIn
           </a>
           <span style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
-            © 2026 Specified BV — Kontich, België
+            {bedrijfsregel}
           </span>
         </div>
       </div>

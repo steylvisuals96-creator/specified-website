@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-const WORDS = ["engineer", "shape", "unlock", "build", "define"];
+const FALLBACK_WORDS = ["engineer", "shape", "unlock", "build", "define"];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 48 },
@@ -19,15 +19,25 @@ const FALLBACK_SUBTITLE =
   "At Specified, we envision a dynamic engineering landscape where innovation thrives and endless opportunities abound. We believe that no single person or company can capture the vast potential of the engineering world.\n\nTherefore, we are committed to fostering entrepreneurship among our engineers, empowering them to become experts in their fields.";
 
 export default function Hero({
+  prefix,
+  woorden,
+  suffix,
   subtitle,
   ctaPrimary,
   ctaSecondary,
 }: {
+  prefix?: string;
+  woorden?: { woord: string }[];
+  suffix?: string;
   subtitle?: string;
   ctaPrimary?: string;
   ctaSecondary?: string;
 } = {}) {
   const [wordIndex, setWordIndex] = useState(0);
+
+  const words = woorden && woorden.length > 0 ? woorden.map((w) => w.woord) : FALLBACK_WORDS;
+  const heroPrefix = prefix ?? "We";
+  const heroSuffix = suffix ?? "possibilities.";
 
   const paragraphs = (subtitle || FALLBACK_SUBTITLE)
     .split("\n\n")
@@ -36,10 +46,10 @@ export default function Hero({
 
   useEffect(() => {
     const t = setInterval(() => {
-      setWordIndex((i) => (i + 1) % WORDS.length);
+      setWordIndex((i) => (i + 1) % words.length);
     }, 2600);
     return () => clearInterval(t);
-  }, []);
+  }, [words.length]);
 
   return (
     <section
@@ -70,7 +80,7 @@ export default function Hero({
           marginBottom: "2.5rem",
         }}
       >
-        We{" "}
+        {heroPrefix}{" "}
         <span
           style={{
             display: "inline-block",
@@ -83,19 +93,19 @@ export default function Hero({
         >
           <AnimatePresence mode="wait">
             <motion.span
-              key={WORDS[wordIndex]}
+              key={words[wordIndex]}
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: "0%", opacity: 1 }}
               exit={{ y: "-100%", opacity: 0 }}
               transition={{ duration: 0.45, ease: EASE }}
               style={{ display: "block" }}
             >
-              {WORDS[wordIndex]}
+              {words[wordIndex]}
             </motion.span>
           </AnimatePresence>
         </span>
         <br />
-        possibilities.
+        {heroSuffix}
       </motion.h1>
 
       <motion.div

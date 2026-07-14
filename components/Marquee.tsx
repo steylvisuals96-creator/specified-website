@@ -1,6 +1,6 @@
 "use client";
 
-const items = [
+const FALLBACK_ITEMS = [
   "Civiele techniek",
   "Elektrotechniek",
   "Werktuigbouwkunde",
@@ -11,9 +11,10 @@ const items = [
   "Projectmanagement",
 ];
 
-const track = [...items, ...items];
+export default function Marquee({ items }: { items?: string[] }) {
+  const list = items && items.length > 0 ? items : FALLBACK_ITEMS;
+  const track = [...list, ...list];
 
-export default function Marquee() {
   return (
     <div
       aria-hidden="true"

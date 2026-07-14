@@ -3,9 +3,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-export default function CTA() {
+export default function CTA({ titel, email, telefoon }: { titel?: string; email?: string; telefoon?: string }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const mail = email || "hello@specified.be";
+  const tel = telefoon || "";
 
   return (
     <section
@@ -42,13 +45,13 @@ export default function CTA() {
               color: "var(--dark)",
             }}
           >
-            Laten we kennismaken.
+            {titel || "Laten we kennismaken."}
           </h2>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <motion.a
-            href="mailto:hello@specified.be"
+            href={`mailto:${mail}`}
             style={{
               backgroundColor: "var(--dark)",
               color: "var(--white)",
@@ -63,20 +66,22 @@ export default function CTA() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
-            hello@specified.be
+            {mail}
           </motion.a>
-          <a
-            href="tel:+3234601234"
-            style={{
-              color: "rgba(50,50,54,0.6)",
-              textDecoration: "none",
-              fontSize: "0.85rem",
-              fontWeight: 400,
-              textAlign: "center",
-            }}
-          >
-            +32 3 460 12 34
-          </a>
+          {tel && (
+            <a
+              href={`tel:${tel.replace(/\s/g, "")}`}
+              style={{
+                color: "rgba(50,50,54,0.6)",
+                textDecoration: "none",
+                fontSize: "0.85rem",
+                fontWeight: 400,
+                textAlign: "center",
+              }}
+            >
+              {tel}
+            </a>
+          )}
         </div>
       </motion.div>
     </section>

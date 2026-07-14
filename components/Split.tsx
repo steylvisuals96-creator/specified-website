@@ -2,31 +2,32 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import type { SiteSettings } from "@/lib/settings";
 
-const cards = [
-  {
-    id: "kandidaten",
-    tag: "Voor kandidaten",
-    title: "Jouw carrière verdient een echte partner",
-    body: "We luisteren eerst. Pas daarna zoeken we. Samen bepalen we welke stap écht past bij wie jij bent en waar je naartoe wil groeien als engineer.",
-    cta: "Bekijk openstaande jobs",
-    href: "#jobs",
-    accent: true,
-  },
-  {
-    id: "opdrachtgevers",
-    tag: "Voor bedrijven",
-    title: "Engineering talent dat echt het verschil maakt",
-    body: "Geen CV-schieten. Wij screenen diep, valideren technisch en leveren enkel kandidaten die passen bij jouw cultuur, stack en ambitie.",
-    cta: "Vertel ons wat je zoekt",
-    href: "#contact",
-    accent: false,
-  },
-];
-
-export default function Split() {
+export default function Split({ settings = {} }: { settings?: SiteSettings }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const cards = [
+    {
+      id: "kandidaten",
+      tag: settings.kandidaten_tag || "Voor kandidaten",
+      title: settings.kandidaten_titel || "Jouw carrière verdient een echte partner",
+      body: settings.kandidaten_tekst || "We luisteren eerst. Pas daarna zoeken we. Samen bepalen we welke stap écht past bij wie jij bent en waar je naartoe wil groeien als engineer.",
+      cta: settings.kandidaten_cta || "Bekijk openstaande jobs",
+      href: "#jobs",
+      accent: true,
+    },
+    {
+      id: "opdrachtgevers",
+      tag: settings.bedrijven_tag || "Voor bedrijven",
+      title: settings.bedrijven_titel || "Engineering talent dat echt het verschil maakt",
+      body: settings.bedrijven_tekst || "Geen CV-schieten. Wij screenen diep, valideren technisch en leveren enkel kandidaten die passen bij jouw cultuur, stack en ambitie.",
+      cta: settings.bedrijven_cta || "Vertel ons wat je zoekt",
+      href: "#contact",
+      accent: false,
+    },
+  ];
 
   return (
     <section

@@ -8,7 +8,7 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
 import Marquee from "@/components/Marquee";
-import { getSettings } from "@/lib/settings";
+import { getSettings, getTeam } from "@/lib/settings";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -61,7 +61,7 @@ async function getRecentJobs() {
 }
 
 export default async function Home() {
-  const [jobs, settings] = await Promise.all([getRecentJobs(), getSettings()]);
+  const [jobs, settings, team] = await Promise.all([getRecentJobs(), getSettings(), getTeam()]);
 
   return (
     <>
@@ -69,18 +69,21 @@ export default async function Home() {
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
         <Hero
+          prefix={settings.hero_prefix}
+          woorden={settings.hero_woorden}
+          suffix={settings.hero_suffix}
           subtitle={settings.hero_subtitel}
           ctaPrimary={settings.hero_cta_tekst}
           ctaSecondary={settings.hero_cta_2_tekst}
         />
-        <Marquee />
+        <Marquee items={settings.sectoren?.map((s) => s.naam)} />
         <Stats items={settings.statistieken} />
-        <Split />
-        <Jobs jobs={jobs} />
-        <Team />
-        <CTA />
+        <Split settings={settings} />
+        <Jobs jobs={jobs} titel={settings.jobs_titel} linkTekst={settings.jobs_link_tekst} />
+        <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
+        <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
-      <Footer />
+      <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
     </>
   );
 }

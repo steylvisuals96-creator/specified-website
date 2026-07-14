@@ -10,7 +10,7 @@ type Job = {
   sector: string;
 };
 
-export default function Jobs({ jobs }: { jobs: Job[] }) {
+export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: string; linkTekst?: string }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -24,7 +24,7 @@ export default function Jobs({ jobs }: { jobs: Job[] }) {
             transition={{ duration: 0.7, delay: 0.1 }}
             style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(2.8rem, 5vw, 5rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.0, color: "var(--white)" }}
           >
-            Vind jouw volgende stap.
+            {titel || "Vind jouw volgende stap."}
           </motion.h2>
           <motion.a
             href="/vacatures"
@@ -33,7 +33,7 @@ export default function Jobs({ jobs }: { jobs: Job[] }) {
             transition={{ delay: 0.3 }}
             style={{ fontSize: "0.875rem", color: "var(--lime)", textDecoration: "none", fontWeight: 500, borderBottom: "1px solid rgba(223,253,123,0.3)", paddingBottom: "2px" }}
           >
-            Alle vacatures
+            {linkTekst || "Alle vacatures"}
           </motion.a>
         </div>
 
