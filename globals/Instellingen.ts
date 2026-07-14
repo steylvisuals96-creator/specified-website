@@ -65,6 +65,12 @@ export const Instellingen: GlobalConfig = {
           label: "LinkedIn URL",
           defaultValue: "https://www.linkedin.com/company/specified-be",
         },
+        {
+          name: "footer_tekst",
+          type: "text",
+          label: "Footer — bedrijfsregel",
+          defaultValue: "© 2026 Specified BV — Kontich, België",
+        },
       ],
     },
 
@@ -73,22 +79,31 @@ export const Instellingen: GlobalConfig = {
       label: "Homepage — Hero sectie",
       fields: [
         {
+          name: "hero_prefix",
+          type: "text",
+          label: "Titel — vast woord vóór",
+          defaultValue: "We",
+          admin: { description: "Bv. 'We' in 'We engineer possibilities'." },
+        },
+        {
+          name: "hero_woorden",
+          type: "array",
+          label: "Titel — wisselende woorden (lime, animeren)",
+          admin: { description: "Deze woorden wisselen elkaar automatisch af in de accentkleur." },
+          fields: [{ name: "woord", type: "text", label: "Woord", required: true }],
+        },
+        {
+          name: "hero_suffix",
+          type: "text",
+          label: "Titel — vast woord ná",
+          defaultValue: "possibilities.",
+          admin: { description: "Bv. 'possibilities.' in 'We engineer possibilities'." },
+        },
+        {
           name: "hero_tagline",
           type: "text",
           label: "Tagline (klein boven titel)",
           defaultValue: "Engineering recruitment",
-        },
-        {
-          name: "hero_titel",
-          type: "text",
-          label: "Titel regel 1",
-          defaultValue: "De juiste engineer.",
-        },
-        {
-          name: "hero_titel_accent",
-          type: "text",
-          label: "Titel regel 2 (lime accent kleur)",
-          defaultValue: "Elke keer.",
         },
         {
           name: "hero_subtitel",
@@ -107,6 +122,58 @@ export const Instellingen: GlobalConfig = {
           type: "text",
           label: "Secundaire CTA tekst",
           defaultValue: "Neem contact op",
+        },
+      ],
+    },
+
+    {
+      type: "collapsible",
+      label: "Homepage — Diensten (twee blokken)",
+      fields: [
+        {
+          type: "row",
+          fields: [
+            { name: "kandidaten_tag", type: "text", label: "Blok 1 — label", defaultValue: "Voor kandidaten" },
+            { name: "bedrijven_tag", type: "text", label: "Blok 2 — label", defaultValue: "Voor bedrijven" },
+          ],
+        },
+        {
+          type: "row",
+          fields: [
+            { name: "kandidaten_titel", type: "text", label: "Blok 1 — titel", defaultValue: "Jouw carrière verdient een echte partner" },
+            { name: "bedrijven_titel", type: "text", label: "Blok 2 — titel", defaultValue: "Engineering talent dat echt het verschil maakt" },
+          ],
+        },
+        {
+          type: "row",
+          fields: [
+            { name: "kandidaten_tekst", type: "textarea", label: "Blok 1 — tekst", defaultValue: "We luisteren eerst. Pas daarna zoeken we. Samen bepalen we welke stap écht past bij wie jij bent en waar je naartoe wil groeien als engineer." },
+            { name: "bedrijven_tekst", type: "textarea", label: "Blok 2 — tekst", defaultValue: "Geen CV-schieten. Wij screenen diep, valideren technisch en leveren enkel kandidaten die passen bij jouw cultuur, stack en ambitie." },
+          ],
+        },
+        {
+          type: "row",
+          fields: [
+            { name: "kandidaten_cta", type: "text", label: "Blok 1 — knop", defaultValue: "Bekijk openstaande jobs" },
+            { name: "bedrijven_cta", type: "text", label: "Blok 2 — knop", defaultValue: "Vertel ons wat je zoekt" },
+          ],
+        },
+      ],
+    },
+
+    {
+      type: "collapsible",
+      label: "Homepage — Sectietitels & sectorbalk",
+      fields: [
+        { name: "jobs_titel", type: "text", label: "Jobs — sectietitel", defaultValue: "Vind jouw volgende stap." },
+        { name: "jobs_link_tekst", type: "text", label: "Jobs — link tekst", defaultValue: "Alle vacatures" },
+        { name: "contact_titel", type: "text", label: "Contact — sectietitel", defaultValue: "Laten we kennismaken." },
+        {
+          name: "sectoren",
+          type: "array",
+          label: "Sectorbalk (scrollende woorden)",
+          admin: { description: "De sectoren die onderaan de hero voorbijscrollen." },
+          fields: [{ name: "naam", type: "text", label: "Sector", required: true }],
         },
       ],
     },
