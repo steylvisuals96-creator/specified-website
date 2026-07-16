@@ -91,7 +91,7 @@ export default function DashboardShell({
       </aside>
 
       {/* Main */}
-      <main className="dashboard-main" style={{ flex: 1, overflowY: "auto", maxWidth: "calc(100vw - 240px)" }}>
+      <main className="dashboard-main" style={{ flex: 1, height: "100vh", overflowY: "auto", maxWidth: "calc(100vw - 240px)" }}>
         {children}
       </main>
     </div>

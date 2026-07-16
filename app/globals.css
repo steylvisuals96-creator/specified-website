@@ -51,6 +51,8 @@ body {
   }
   .dashboard-main {
     max-width: 100vw !important;
+    height: auto !important;
+    overflow-y: visible !important;
   }
   .page-header {
     flex-direction: column !important;
