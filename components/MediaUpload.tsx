@@ -49,7 +49,7 @@ export default function MediaUpload({
           transition: "border-color 0.2s", position: "relative", overflow: "hidden",
           minHeight: preview ? "180px" : "100px",
         }}
-        onMouseEnter={e => (e.currentTarget.style.borderColor = "#facb04")}
+        onMouseEnter={e => (e.currentTarget.style.borderColor = "#dffd7b")}
         onMouseLeave={e => (e.currentTarget.style.borderColor = "#2a2a2a")}
       >
         {preview ? (
@@ -61,7 +61,7 @@ export default function MediaUpload({
           </div>
         )}
         {uploading && (
-          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#facb04", fontSize: "0.82rem" }}>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#dffd7b", fontSize: "0.82rem" }}>
             Uploaden...
           </div>
         )}

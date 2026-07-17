@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardShell, { PageHeader, GoldBtn, Empty } from "@/components/DashboardShell";
+import DashboardShell, { PageHeader, LimeBtn, Empty } from "@/components/DashboardShell";
 const configPromise = import("@payload-config").then((m) => m.default);
 
 export default async function MediaPage() {
@@ -17,7 +17,7 @@ export default async function MediaPage() {
       <PageHeader
         title="Media"
         subtitle={`${docs.totalDocs} bestanden`}
-        actions={<GoldBtn href="/dashboard/media/create">+ Bestand uploaden</GoldBtn>}
+        actions={<LimeBtn href="/dashboard/media/create">+ Bestand uploaden</LimeBtn>}
       />
       <div style={{ padding: "1.5rem 2.5rem" }}>
         {docs.docs.length === 0 ? (
@@ -67,7 +67,7 @@ export default async function MediaPage() {
                           padding: "0.5rem 0.75rem",
                           fontFamily: "monospace",
                           fontSize: "0.75rem",
-                          color: "#facb04",
+                          color: "#dffd7b",
                           letterSpacing: "0.05em",
                         }}>{ext}</div>
                       )}
