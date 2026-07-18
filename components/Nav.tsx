@@ -58,7 +58,7 @@ export default function Nav() {
           {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
             <Link
               key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
+              href={`/#${item.toLowerCase().replace(/\s+/g, "-")}`}
               style={{
                 color: "var(--muted)",
                 textDecoration: "none",
@@ -73,7 +73,7 @@ export default function Nav() {
             </Link>
           ))}
           <motion.a
-            href="#contact"
+            href="/#contact"
             style={{
               backgroundColor: "var(--lime)",
               color: "var(--dark)",
@@ -146,7 +146,7 @@ export default function Nav() {
           {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
             <Link
               key={item}
-              href={`#${item.toLowerCase()}`}
+              href={`/#${item.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={() => setMenuOpen(false)}
               style={{
                 color: "var(--white)",
@@ -159,7 +159,7 @@ export default function Nav() {
             </Link>
           ))}
           <a
-            href="#contact"
+            href="/#contact"
             onClick={() => setMenuOpen(false)}
             style={{
               backgroundColor: "var(--lime)",
