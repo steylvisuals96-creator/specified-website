@@ -4,6 +4,7 @@ import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import CursorGlow from "@/components/CursorGlow";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
@@ -28,6 +29,7 @@ export default function RootLayout({
         {children}
         <CookieBanner />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

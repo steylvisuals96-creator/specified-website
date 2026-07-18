@@ -24,6 +24,7 @@ export type SiteSettings = {
   jobs_titel?: string;
   jobs_link_tekst?: string;
   contact_titel?: string;
+  vacatures_titel?: string;
   sectoren?: { naam: string }[];
   // Over ons / team-kop
   over_titel?: string;

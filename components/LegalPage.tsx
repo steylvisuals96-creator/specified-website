@@ -1,7 +1,8 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { getSettings } from "@/lib/settings";
 
-export default function LegalPage({
+export default async function LegalPage({
   title,
   updated,
   children,
@@ -10,6 +11,7 @@ export default function LegalPage({
   updated: string;
   children: React.ReactNode;
 }) {
+  const settings = await getSettings();
   return (
     <>
       <Nav />
@@ -40,7 +42,7 @@ export default function LegalPage({
         </p>
         <div className="legal-body">{children}</div>
       </main>
-      <Footer />
+      <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
       <style>{`
         .legal-body h2 {
           font-family: var(--font-bebas);

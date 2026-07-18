@@ -17,7 +17,8 @@ type Vacature = {
   aanbod: string[];
 };
 
-export default function VacaturesClient({ vacatures }: { vacatures: Vacature[] }) {
+export default function VacaturesClient({ vacatures, titel, contactEmail }: { vacatures: Vacature[]; titel?: string; contactEmail?: string }) {
+  const mail = contactEmail || "info@specified.be";
   const sectors = ["Alle sectoren", ...Array.from(new Set(vacatures.map((v) => v.sector).filter(Boolean)))];
   const types = ["Alle types", ...Array.from(new Set(vacatures.map((v) => v.type).filter(Boolean)))];
 
@@ -45,7 +46,7 @@ export default function VacaturesClient({ vacatures }: { vacatures: Vacature[] }
           style={{ marginBottom: "3rem" }}
         >
           <h1 style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(4rem, 9vw, 8rem)", fontWeight: 400, letterSpacing: "0.01em", lineHeight: 0.95, color: "var(--white)", marginBottom: "1.5rem" }}>
-            Jouw volgende stap.
+            {titel || "Jouw volgende stap."}
           </h1>
           <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "480px", lineHeight: 1.6 }}>
             {filtered.length} vacature{filtered.length !== 1 ? "s" : ""} gevonden — vaste en interim posities in engineering.
@@ -160,7 +161,7 @@ export default function VacaturesClient({ vacatures }: { vacatures: Vacature[] }
               )}
 
               <a
-                href={`mailto:info@specified.be?subject=Sollicitatie: ${selectedJob.title}`}
+                href={`mailto:${mail}?subject=Sollicitatie: ${selectedJob.title}`}
                 style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "1rem 2rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 600, textDecoration: "none", textAlign: "center" as const }}
               >
                 Solliciteer voor deze job

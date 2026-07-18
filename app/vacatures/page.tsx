@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import VacaturesClient from "@/components/VacaturesClient";
+import { getSettings } from "@/lib/settings";
 
 export const revalidate = 60; // refresh elke minuut
 
@@ -63,15 +64,19 @@ async function getVacatures() {
 }
 
 export default async function VacaturesPage() {
-  const vacatures = await getVacatures();
+  const [vacatures, settings] = await Promise.all([getVacatures(), getSettings()]);
 
   return (
     <>
       <Nav />
       <main>
-        <VacaturesClient vacatures={vacatures} />
+        <VacaturesClient
+          vacatures={vacatures}
+          titel={settings.vacatures_titel}
+          contactEmail={settings.contact_email}
+        />
       </main>
-      <Footer />
+      <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
     </>
   );
 }
