@@ -168,6 +168,7 @@ export const Instellingen: GlobalConfig = {
         { name: "jobs_titel", type: "text", label: "Jobs — sectietitel", defaultValue: "Vind jouw volgende stap." },
         { name: "jobs_link_tekst", type: "text", label: "Jobs — link tekst", defaultValue: "Alle vacatures" },
         { name: "contact_titel", type: "text", label: "Contact — sectietitel", defaultValue: "Laten we kennismaken." },
+        { name: "vacatures_titel", type: "text", label: "Vacaturepagina — titel", defaultValue: "Jouw volgende stap." },
         {
           name: "sectoren",
           type: "array",
