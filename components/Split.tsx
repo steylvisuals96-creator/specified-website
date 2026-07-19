@@ -40,12 +40,12 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
       }}
     >
       <div
+        className="split-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr",
           gap: "1.5rem",
         }}
-        className="md:grid-cols-2"
       >
         {cards.map((card, i) => (
           <motion.div

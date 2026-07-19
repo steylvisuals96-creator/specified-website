@@ -22,6 +22,7 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
         initial={{ opacity: 0, y: 40 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="cta-box"
         style={{
           maxWidth: "1280px",
           margin: "0 auto",
@@ -32,7 +33,6 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
           flexDirection: "column",
           gap: "2.5rem",
         }}
-        className="md:flex-row md:items-end md:justify-between"
       >
         <div style={{ maxWidth: "520px" }}>
           <h2

@@ -56,6 +56,7 @@ export default function Stats({ items }: { items?: { waarde: string; label: stri
       }}
     >
       <div
+        className="stats-grid"
         style={{
           maxWidth: "1280px",
           margin: "0 auto",
@@ -63,18 +64,16 @@ export default function Stats({ items }: { items?: { waarde: string; label: stri
           gridTemplateColumns: "repeat(2, 1fr)",
           gap: "0",
         }}
-        className="md:grid-cols-4"
       >
         {stats.map((s, i) => (
           <motion.div
             key={s.label}
+            className="stat-cell"
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
             style={{
               padding: "2rem clamp(1rem, 3vw, 2.5rem)",
-              borderRight: i < 3 ? "1px solid var(--border)" : "none",
-              borderBottom: i < 2 ? "1px solid var(--border)" : "none",
             }}
           >
             <p style={{

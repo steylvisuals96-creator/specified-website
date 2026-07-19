@@ -82,3 +82,22 @@ body::after {
   .team-filler { display: none !important; }
   .team-foto { min-height: 320px !important; }
 }
+
+/* ─── Desktop-layouts (de md:-classes werkten niet door inline stijlen) ─── */
+
+/* Statistieken: nette scheidingslijnen — 2 kolommen mobiel, 4 op desktop */
+.stat-cell { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stat-cell:nth-child(2n) { border-right: none; }   /* rechterkolom, geen rechterrand */
+.stat-cell:nth-child(n+3) { border-bottom: none; } /* onderste rij, geen onderrand */
+
+@media (min-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  .stat-cell { border-bottom: none !important; border-right: 1px solid var(--border) !important; }
+  .stat-cell:last-child { border-right: none !important; }
+
+  /* Dienstenblokken naast elkaar */
+  .split-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* Contact-CTA: titel links, knoppen rechts */
+  .cta-box { flex-direction: row !important; align-items: flex-end !important; justify-content: space-between !important; }
+}
