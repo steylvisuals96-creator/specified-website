@@ -65,6 +65,7 @@ export default function Hero({
       }}
     >
       <motion.h1
+        className="hero-title"
         custom={0}
         initial="hidden"
         animate="visible"
@@ -82,6 +83,7 @@ export default function Hero({
       >
         {heroPrefix}{" "}
         <span
+          className="hero-word"
           style={{
             display: "inline-block",
             position: "relative",

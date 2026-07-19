@@ -56,14 +56,14 @@ export default function Team({
           const naam = member.voornaam || "";
           const achternaam = member.achternaam || "";
           const foto = member.fotoUrl ? (
-            <div style={{ position: "relative", overflow: "hidden", minHeight: "520px" }}>
+            <div className="team-foto" style={{ position: "relative", overflow: "hidden", minHeight: "520px" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={member.fotoUrl} alt={`${naam} ${achternaam}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
             </div>
           ) : (
-            <div style={{ backgroundColor: "rgba(30,30,33,0.6)", minHeight: "520px" }} />
+            <div className="team-foto" style={{ backgroundColor: "rgba(30,30,33,0.6)", minHeight: "520px" }} />
           );
-          const filler = <div style={{ backgroundColor: "rgba(30,30,33,0.6)", borderRight: isLeft ? "1px solid var(--border)" : "none", borderLeft: isLeft ? "none" : "1px solid var(--border)" }} />;
+          const filler = <div className="team-filler" style={{ backgroundColor: "rgba(30,30,33,0.6)", borderRight: isLeft ? "1px solid var(--border)" : "none", borderLeft: isLeft ? "none" : "1px solid var(--border)" }} />;
 
           return (
             <motion.div
@@ -72,6 +72,7 @@ export default function Team({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="team-row"
               style={{ display: "grid", gridTemplateColumns: "1fr 400px 1fr", minHeight: "520px" }}
             >
               {isLeft ? foto : filler}

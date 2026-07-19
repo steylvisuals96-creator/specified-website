@@ -45,7 +45,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
           transition={{ duration: 0.8, ease: EASE }}
           style={{ marginBottom: "3rem" }}
         >
-          <h1 style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(4rem, 9vw, 8rem)", fontWeight: 400, letterSpacing: "0.01em", lineHeight: 0.95, color: "var(--white)", marginBottom: "1.5rem" }}>
+          <h1 className="vac-title" style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(4rem, 9vw, 8rem)", fontWeight: 400, letterSpacing: "0.01em", lineHeight: 0.95, color: "var(--white)", marginBottom: "1.5rem" }}>
             {titel || "Jouw volgende stap."}
           </h1>
           <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "480px", lineHeight: 1.6 }}>
@@ -74,7 +74,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
         </motion.div>
 
         {/* Two-column layout */}
-        <div style={{ display: "grid", gridTemplateColumns: selected ? "1fr 1fr" : "1fr", gap: "2rem", alignItems: "start" }}>
+        <div className="vac-grid" style={{ display: "grid", gridTemplateColumns: selected ? "1fr 1fr" : "1fr", gap: "2rem", alignItems: "start" }}>
 
           {/* Job list */}
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -113,6 +113,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
+              className="vac-detail"
               style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", borderRadius: "8px", padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
             >
               <div>

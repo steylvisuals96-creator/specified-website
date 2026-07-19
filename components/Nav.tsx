@@ -53,7 +53,7 @@ export default function Nav() {
             alignItems: "center",
             gap: "2.5rem",
           }}
-          className="hidden md:flex"
+          className="hidden md:flex nav-desktop"
         >
           {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
             <Link
@@ -92,7 +92,7 @@ export default function Nav() {
 
         {/* Mobile burger */}
         <button
-          className="md:hidden"
+          className="md:hidden nav-burger"
           onClick={() => setMenuOpen(!menuOpen)}
           style={{
             background: "none",
