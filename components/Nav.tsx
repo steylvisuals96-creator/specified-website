@@ -10,6 +10,7 @@ import { useState } from "react";
 const NAV_ITEMS = [
   { label: "Diensten", href: "/#diensten" },
   { label: "Jobs", href: "/vacatures" },
+  { label: "Blog", href: "/blog" },
   { label: "Over ons", href: "/#over-ons" },
   { label: "Contact", href: "/#contact" },
 ];

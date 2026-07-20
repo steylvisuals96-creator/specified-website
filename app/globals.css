@@ -55,11 +55,12 @@ body::after {
    De componenten gebruiken inline display/grid-stijlen die Tailwind's
    responsive classes overschrijven. Daarom sturen we hier expliciet. */
 
-/* Menu: desktopnav verbergen, hamburger tonen op mobiel */
-@media (max-width: 767px) {
+/* Menu: desktopnav verbergen, hamburger tonen tot er echt plaats is.
+   Grens op 1024px omdat het menu 5 items + een knop bevat. */
+@media (max-width: 1023px) {
   .nav-desktop { display: none !important; }
 }
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .nav-burger { display: none !important; }
 }
 
@@ -92,6 +93,36 @@ body::after {
     order: -1; /* foto altijd bovenaan, ook bij de omgekeerde rij */
   }
 }
+
+/* ─── Blog ─────────────────────────────────────────────── */
+
+/* Overzicht: 1 kolom mobiel, 2 op tablet, 3 op desktop */
+@media (min-width: 700px) {
+  .blog-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media (min-width: 1100px) {
+  .blog-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+/* Artikeltekst — rustige, leesbare typografie */
+.blog-inhoud { color: rgba(255, 255, 255, 0.72); font-size: 1.02rem; line-height: 1.8; }
+.blog-inhoud p { margin-bottom: 1.4rem; }
+.blog-inhoud h2 {
+  font-family: var(--font-bebas); font-size: 2rem; font-weight: 400;
+  letter-spacing: 0.02em; line-height: 1.15; color: var(--white);
+  margin: 2.8rem 0 1rem;
+}
+.blog-inhoud h3 {
+  font-size: 1.15rem; font-weight: 600; color: var(--white);
+  margin: 2rem 0 0.75rem;
+}
+.blog-inhoud ul, .blog-inhoud ol { margin: 0 0 1.4rem 1.25rem; }
+.blog-inhoud li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+.blog-inhoud ul li::marker { color: var(--lime); }
+.blog-inhoud ol li::marker { color: var(--lime); font-weight: 600; }
+.blog-inhoud strong { color: var(--white); font-weight: 600; }
+.blog-inhoud a { color: var(--lime); text-decoration: underline; text-underline-offset: 3px; }
+.blog-inhoud hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 
 /* ─── Desktop-layouts (de md:-classes werkten niet door inline stijlen) ─── */
 
