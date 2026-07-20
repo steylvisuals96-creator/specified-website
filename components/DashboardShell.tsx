@@ -25,7 +25,8 @@ const NAV = [
     label: "Inhoud",
     items: [
       { href: "/dashboard/team", icon: "👥", label: "Team" },
-      { href: "/admin/collections/media", icon: "🖼", label: "Media" },
+      { href: "/dashboard/blog", icon: "📝", label: "Blog" },
+      { href: "/dashboard/media", icon: "🖼", label: "Media" },
     ],
   },
   {

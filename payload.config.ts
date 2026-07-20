@@ -10,6 +10,7 @@ import { Kandidaten } from "./collections/Kandidaten";
 import { Bedrijven } from "./collections/Bedrijven";
 import { Sollicitaties } from "./collections/Sollicitaties";
 import { Team } from "./collections/Team";
+import { Blog } from "./collections/Blog";
 import { Media } from "./collections/Media";
 import { Gebruikers } from "./collections/Gebruikers";
 import { Activiteiten } from "./collections/Activiteiten";
@@ -71,6 +72,7 @@ export default buildConfig({
     Activiteiten,
     // Inhoud
     Team,
+    Blog,
     // Systeem
     Media,
     Gebruikers,
