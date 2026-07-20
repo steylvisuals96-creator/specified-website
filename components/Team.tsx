@@ -58,7 +58,7 @@ export default function Team({
           const foto = member.fotoUrl ? (
             <div className="team-foto" style={{ position: "relative", overflow: "hidden", minHeight: "520px" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={member.fotoUrl} alt={`${naam} ${achternaam}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+              <img src={member.fotoUrl} alt={`${naam} ${achternaam}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 25%" }} />
             </div>
           ) : (
             <div className="team-foto" style={{ backgroundColor: "rgba(30,30,33,0.6)", minHeight: "520px" }} />

@@ -80,7 +80,17 @@ body::after {
 @media (max-width: 900px) {
   .team-row { grid-template-columns: 1fr !important; min-height: auto !important; }
   .team-filler { display: none !important; }
-  .team-foto { min-height: 320px !important; }
+  /* Foto's zijn portret (3:4). Bij gestapelde weergave zou een volle-breedte
+     foto een dunne strook tonen — daarom begrenzen we de breedte en houden
+     we een portret-achtige hoogte aan. */
+  .team-foto {
+    min-height: 560px !important;
+    max-width: 460px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    order: -1; /* foto altijd bovenaan, ook bij de omgekeerde rij */
+  }
 }
 
 /* ─── Desktop-layouts (de md:-classes werkten niet door inline stijlen) ─── */
