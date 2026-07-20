@@ -3,6 +3,7 @@ export const CMS_URL = "https://specified-cms.vercel.app";
 export type Stat = { waarde: string; label: string };
 
 export type SiteSettings = {
+  naam?: string;
   hero_prefix?: string;
   hero_woorden?: { woord: string }[];
   hero_suffix?: string;
