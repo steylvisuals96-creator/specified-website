@@ -5,6 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
+// Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
+// volledige vacaturepagina; de rest scrollt naar een sectie op de homepage.
+const NAV_ITEMS = [
+  { label: "Diensten", href: "/#diensten" },
+  { label: "Jobs", href: "/vacatures" },
+  { label: "Over ons", href: "/#over-ons" },
+  { label: "Contact", href: "/#contact" },
+];
+
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -55,10 +64,10 @@ export default function Nav() {
           }}
           className="hidden md:flex nav-desktop"
         >
-          {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link
-              key={item}
-              href={`/#${item.toLowerCase().replace(/\s+/g, "-")}`}
+              key={item.label}
+              href={item.href}
               style={{
                 color: "var(--muted)",
                 textDecoration: "none",
@@ -69,7 +78,7 @@ export default function Nav() {
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--white)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
             >
-              {item}
+              {item.label}
             </Link>
           ))}
           <motion.a
@@ -143,10 +152,10 @@ export default function Nav() {
             gap: "1.25rem",
           }}
         >
-          {["Diensten", "Jobs", "Over ons", "Contact"].map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link
-              key={item}
-              href={`/#${item.toLowerCase().replace(/\s+/g, "-")}`}
+              key={item.label}
+              href={item.href}
               onClick={() => setMenuOpen(false)}
               style={{
                 color: "var(--white)",
@@ -155,7 +164,7 @@ export default function Nav() {
                 fontWeight: 400,
               }}
             >
-              {item}
+              {item.label}
             </Link>
           ))}
           <a
