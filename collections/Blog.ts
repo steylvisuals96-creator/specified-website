@@ -76,8 +76,16 @@ export const Blog: CollectionConfig = {
       name: "cover",
       type: "upload",
       relationTo: "media",
-      label: "Coverafbeelding",
-      admin: { description: "Wordt gebruikt op de blogpagina én bij het delen op LinkedIn/WhatsApp." },
+      label: "Coverafbeelding (upload)",
+      admin: { description: "Upload een afbeelding. Of gebruik het veld hieronder voor een externe URL." },
+    },
+    {
+      name: "cover_url",
+      type: "text",
+      label: "Coverafbeelding URL (extern)",
+      admin: {
+        description: "Alternatief voor upload: plak een directe afbeeldings-URL (bv. van Unsplash).",
+      },
     },
     {
       name: "samenvatting",
