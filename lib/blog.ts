@@ -64,8 +64,9 @@ export function lexicalToHtml(lexical: any): string {
 /* ── Data ophalen ─────────────────────────────────────────── */
 
 function mapPost(d: any): BlogPost {
-  const url = d.cover?.url as string | undefined;
-  const coverUrl = url ? (url.startsWith("http") ? url : `${CMS_URL}${url}`) : undefined;
+  const uploadUrl = d.cover?.url as string | undefined;
+  const uploadFull = uploadUrl ? (uploadUrl.startsWith("http") ? uploadUrl : `${CMS_URL}${uploadUrl}`) : undefined;
+  const coverUrl = uploadFull ?? (d.cover_url as string | undefined) ?? undefined;
   const auteur = typeof d.auteur === "object" && d.auteur
     ? [d.auteur.voornaam, d.auteur.achternaam].filter(Boolean).join(" ") || d.auteur.naam
     : undefined;
