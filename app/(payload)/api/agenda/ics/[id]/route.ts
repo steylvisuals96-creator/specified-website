@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPayload } from "payload";
+import { headers } from "next/headers";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -17,7 +18,16 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const config = await configPromise;
   const payload = await getPayload({ config: config as any });
 
-  const doc = await payload.findByID({ collection: "activiteiten" as any, id, depth: 1 }).catch(() => null);
+  // Een activiteit bevat het volledige e-mailverkeer met kandidaten en
+  // bedrijven. De Local API negeert standaard de toegangsregels van de
+  // collectie, dus die controle moet hier expliciet gebeuren — anders is elke
+  // activiteit leesbaar voor wie een id raadt.
+  const { user } = await payload.auth({ headers: await headers() });
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const doc = await payload
+    .findByID({ collection: "activiteiten" as any, id, depth: 1, overrideAccess: false, user })
+    .catch(() => null);
   if (!doc) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const d = doc as any;

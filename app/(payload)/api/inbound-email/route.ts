@@ -28,9 +28,16 @@ function looksLikeSollicitatie(subject: string, body: string): boolean {
 
 export async function POST(req: NextRequest) {
   try {
-    // Verify webhook secret
+    // Verify webhook secret. Ontbreekt het secret in de omgeving, dan weigeren
+    // we alles: eerder verviel de controle stilzwijgend en kon iedereen
+    // e-mails in het CRM schrijven.
+    const verwacht = process.env.EMAIL_WEBHOOK_SECRET;
+    if (!verwacht) {
+      console.error("EMAIL_WEBHOOK_SECRET ontbreekt — inkomende e-mail geweigerd.");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const secret = req.headers.get("x-webhook-secret");
-    if (process.env.EMAIL_WEBHOOK_SECRET && secret !== process.env.EMAIL_WEBHOOK_SECRET) {
+    if (secret !== verwacht) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
