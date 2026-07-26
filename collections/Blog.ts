@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd, publiekMits } from "@/lib/access";
 
 /** Maakt van "Zo vind je de juiste engineer" → "zo-vind-je-de-juiste-engineer" */
 function slugify(input: string): string {
@@ -13,7 +14,14 @@ function slugify(input: string): string {
 
 export const Blog: CollectionConfig = {
   slug: "blog",
-  access: { read: () => true },
+  // Concepten stonden publiek opvraagbaar via de API, ook al toonde de
+  // website ze niet. Een nog niet afgewerkt artikel is nu echt privé.
+  access: {
+    read: publiekMits({ status: { equals: "gepubliceerd" } }),
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   labels: { singular: "Artikel", plural: "Blog" },
   admin: {
     useAsTitle: "titel",

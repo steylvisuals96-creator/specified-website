@@ -1,8 +1,19 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd, publiekMits } from "@/lib/access";
 
 export const Vacatures: CollectionConfig = {
   slug: "vacatures",
-  access: { read: () => true },
+  // Publiek, maar alleen wat ook echt op de site hoort te staan. Voorheen
+  // gaf de API ook ingevulde, on-hold en verborgen vacatures terug: de
+  // website filterde die weg, de API niet.
+  access: {
+    read: publiekMits({
+      and: [{ status: { equals: "actief" } }, { zichtbaar_op_website: { not_equals: false } }],
+    }),
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   labels: { singular: "Vacature", plural: "Vacatures" },
   admin: {
     useAsTitle: "titel",

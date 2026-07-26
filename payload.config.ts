@@ -12,12 +12,23 @@ import { Sollicitaties } from "./collections/Sollicitaties";
 import { Team } from "./collections/Team";
 import { Blog } from "./collections/Blog";
 import { Media } from "./collections/Media";
+import { Documenten } from "./collections/Documenten";
 import { Gebruikers } from "./collections/Gebruikers";
 import { Activiteiten } from "./collections/Activiteiten";
 import { Instellingen } from "./globals/Instellingen";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+function requireEnv(naam: string): string {
+  const waarde = process.env[naam];
+  if (!waarde) {
+    throw new Error(
+      `${naam} ontbreekt. Zet deze omgevingsvariabele in .env.local en in Vercel (alle omgevingen) voor de app start.`
+    );
+  }
+  return waarde;
+}
 
 const r2Enabled = !!(
   process.env.R2_ACCOUNT_ID &&
@@ -30,8 +41,15 @@ export default buildConfig({
   plugins: r2Enabled
     ? [
         s3Storage({
+          // Niets in de bucket is rechtstreeks opvraagbaar. Alle bestanden
+          // lopen via Payload, dat de toegangsregels toepast — anders zou een
+          // publieke bucket-URL elke regel hierboven omzeilen.
+          acl: "private",
           collections: {
             media: true,
+            // Cv's en kandidaatfoto's: korte, ondertekende links in plaats van
+            // een permanent adres dat blijft werken zodra iemand het kent.
+            documenten: { signedDownloads: { expiresIn: 300 } },
           },
           bucket: process.env.R2_BUCKET!,
           config: {
@@ -75,11 +93,16 @@ export default buildConfig({
     Blog,
     // Systeem
     Media,
+    Documenten,
     Gebruikers,
   ],
   globals: [Instellingen],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "specified-cms-secret-change-this",
+  // Geen fallback. Deze sleutel ondertekent de sessie-JWT's; een standaard-
+  // waarde die in de repo staat, betekent dat iedereen met de broncode een
+  // geldig beheerderstoken kan maken zodra een omgeving de variabele mist.
+  // Liever meteen stuk bij het opstarten dan stil onveilig draaien.
+  secret: requireEnv("PAYLOAD_SECRET"),
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },

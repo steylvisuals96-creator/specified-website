@@ -1,7 +1,16 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd } from "@/lib/access";
 
 export const Kandidaten: CollectionConfig = {
   slug: "kandidaten",
+  // Payload weigert dit standaard al voor anonieme bezoekers; expliciet
+  // opschrijven zodat een latere wijziging elders het niet stil opent.
+  access: {
+    read: alleenIngelogd,
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   labels: { singular: "Kandidaat", plural: "Kandidaten" },
   admin: {
     useAsTitle: "naam",
@@ -109,7 +118,8 @@ export const Kandidaten: CollectionConfig = {
     {
       name: "cv",
       type: "upload",
-      relationTo: "media",
+      // Bewust "documenten" en niet "media": media is publiek leesbaar.
+      relationTo: "documenten",
       label: "CV (PDF)",
     },
     {
@@ -142,7 +152,7 @@ export const Kandidaten: CollectionConfig = {
     {
       name: "foto",
       type: "upload",
-      relationTo: "media",
+      relationTo: "documenten",
       label: "Foto (optioneel)",
     },
     {

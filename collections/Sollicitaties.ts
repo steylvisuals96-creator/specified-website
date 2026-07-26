@@ -1,7 +1,14 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd } from "@/lib/access";
 
 export const Sollicitaties: CollectionConfig = {
   slug: "sollicitaties",
+  access: {
+    read: alleenIngelogd,
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   labels: { singular: "Sollicitatie", plural: "Sollicitaties" },
   admin: {
     useAsTitle: "titel",

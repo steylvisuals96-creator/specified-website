@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd } from "@/lib/access";
 
 export const Activiteiten: CollectionConfig = {
   slug: "activiteiten",
@@ -8,7 +9,16 @@ export const Activiteiten: CollectionConfig = {
     group: "Recruitment",
     defaultColumns: ["onderwerp", "type", "kandidaat", "bedrijf", "datum"],
   },
-  access: { read: () => true, create: () => true, update: () => true },
+  // Dit is een communicatielogboek: onderwerp, inhoud, afzender en
+  // ontvanger van contact met kandidaten en klanten. Het stond volledig
+  // open — leesbaar én beschrijfbaar zonder login. Het dashboard schrijft
+  // via de Local API, die access control overslaat, dus dit breekt niets.
+  access: {
+    read: alleenIngelogd,
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   fields: [
     {
       type: "row",

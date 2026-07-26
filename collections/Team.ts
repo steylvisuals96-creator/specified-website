@@ -1,9 +1,16 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd, publiekMits } from "@/lib/access";
 
 export const Team: CollectionConfig = {
   slug: "team",
   labels: { singular: "Teamlid", plural: "Team" },
-  access: { read: () => true },
+  // Publieke sitecontent, maar alleen de teamleden die ook getoond worden.
+  access: {
+    read: publiekMits({ actief: { not_equals: false } }),
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   admin: {
     useAsTitle: "naam",
     group: "Inhoud",

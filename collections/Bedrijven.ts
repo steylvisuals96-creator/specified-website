@@ -1,8 +1,17 @@
 import type { CollectionConfig } from "payload";
+import { alleenIngelogd } from "@/lib/access";
 
 export const Bedrijven: CollectionConfig = {
   slug: "bedrijven",
-  access: { read: () => true },
+  // Stond publiek leesbaar en gaf zo contactpersoon, e-mailadres en de
+  // interne relatiestatus van elke klant prijs. De website heeft deze
+  // collectie niet nodig; het dashboard leest via de Local API.
+  access: {
+    read: alleenIngelogd,
+    create: alleenIngelogd,
+    update: alleenIngelogd,
+    delete: alleenIngelogd,
+  },
   labels: { singular: "Bedrijf", plural: "Bedrijven" },
   admin: {
     useAsTitle: "naam",
