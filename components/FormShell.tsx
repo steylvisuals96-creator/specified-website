@@ -61,7 +61,7 @@ export function FormRow({ children }: { children: React.ReactNode }) {
 const inputBase: React.CSSProperties = {
   background: S1, border: `1px solid rgba(255,255,255,0.1)`, color: TEXT,
   borderRadius: "4px", padding: "0.55rem 0.75rem", fontSize: "0.85rem",
-  fontFamily: "'Avenir LT Std', 'Avenir', 'Century Gothic', sans-serif", width: "100%", outline: "none",
+  fontFamily: "var(--font-avenir)", width: "100%", outline: "none",
 };
 
 export function Field({
@@ -137,7 +137,7 @@ export function SaveBtn({ label = "Opslaan", form }: { label?: string; form?: st
   return (
     <button
       type="submit" form={form}
-      style={{ background: LIME, color: "#1e1e21", border: "none", borderRadius: "4px", padding: "0.55rem 1.25rem", fontWeight: 700, fontSize: "0.82rem", cursor: "pointer", letterSpacing: "0.02em", fontFamily: "'Avenir LT Std', 'Avenir', sans-serif" }}
+      style={{ background: LIME, color: "#1e1e21", border: "none", borderRadius: "4px", padding: "0.55rem 1.25rem", fontWeight: 700, fontSize: "0.82rem", cursor: "pointer", letterSpacing: "0.02em", fontFamily: "var(--font-avenir)" }}
     >
       {label}
     </button>
@@ -149,7 +149,7 @@ export function DeleteBtn({ label = "Verwijderen" }: { label?: string }) {
     <button
       type="submit" name="_action" value="delete"
       onClick={(e) => { if (!confirm("Zeker verwijderen?")) e.preventDefault(); }}
-      style={{ background: "transparent", color: "#ef4444", border: "1px solid #ef444440", borderRadius: "4px", padding: "0.5rem 1rem", fontWeight: 600, fontSize: "0.78rem", cursor: "pointer", fontFamily: "'Avenir LT Std', 'Avenir', sans-serif" }}
+      style={{ background: "transparent", color: "#ef4444", border: "1px solid #ef444440", borderRadius: "4px", padding: "0.5rem 1rem", fontWeight: 600, fontSize: "0.78rem", cursor: "pointer", fontFamily: "var(--font-avenir)" }}
     >
       {label}
     </button>
@@ -162,7 +162,7 @@ export function TabBar({ tabs, active, onSelect }: { tabs: string[]; active: str
       {tabs.map(t => (
         <button
           key={t} type="button" onClick={() => onSelect(t)}
-          style={{ background: "transparent", border: "none", borderBottom: `2px solid ${t === active ? LIME : "transparent"}`, color: t === active ? LIME : "#555", padding: "0.65rem 1.1rem", cursor: "pointer", fontSize: "0.8rem", fontWeight: t === active ? 600 : 400, fontFamily: "'Avenir LT Std', 'Avenir', sans-serif", transition: "all 0.15s" }}
+          style={{ background: "transparent", border: "none", borderBottom: `2px solid ${t === active ? LIME : "transparent"}`, color: t === active ? LIME : "#555", padding: "0.65rem 1.1rem", cursor: "pointer", fontSize: "0.8rem", fontWeight: t === active ? 600 : 400, fontFamily: "var(--font-avenir)", transition: "all 0.15s" }}
         >
           {t}
         </button>
