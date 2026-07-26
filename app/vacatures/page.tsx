@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import VacaturesClient from "@/components/VacaturesClient";
-import { getSettings } from "@/lib/settings";
+import { getSettings, CMS_URL } from "@/lib/settings";
 
 export const revalidate = 60; // refresh elke minuut
 
@@ -62,7 +62,7 @@ function lexicalToParagraphs(richText: any): string[] {
 async function getVacatures() {
   try {
     const res = await fetch(
-      "https://specified-cms.vercel.app/api/vacatures?where[status][equals]=actief&limit=100&sort=-createdAt",
+      `${CMS_URL}/api/vacatures?where[status][equals]=actief&limit=100&sort=-createdAt`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return [];

@@ -8,7 +8,7 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
 import Marquee from "@/components/Marquee";
-import { getSettings, getTeam } from "@/lib/settings";
+import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -51,7 +51,7 @@ const ERVARING_LABEL: Record<string, string> = {
 async function getRecentJobs() {
   try {
     const res = await fetch(
-      "https://specified-cms.vercel.app/api/vacatures?where[status][equals]=actief&limit=5&sort=-createdAt",
+      `${CMS_URL}/api/vacatures?where[status][equals]=actief&limit=5&sort=-createdAt`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return [];

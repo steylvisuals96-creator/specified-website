@@ -1,4 +1,8 @@
-export const CMS_URL = "https://specified-cms.vercel.app";
+/**
+ * Waar de CMS draait. Overschrijfbaar via NEXT_PUBLIC_CMS_URL zodat een
+ * preview- of lokale omgeving niet tegen productie hoeft te praten.
+ */
+export const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL ?? "https://specified-cms.vercel.app";
 
 export type Stat = { waarde: string; label: string };
 
