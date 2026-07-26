@@ -41,6 +41,13 @@ const TYPE_LABEL: Record<string, string> = {
   student: "Student",
 };
 
+const ERVARING_LABEL: Record<string, string> = {
+  junior: "Junior (0–2 jaar)",
+  medior: "Medior (2–5 jaar)",
+  senior: "Senior (5+ jaar)",
+  lead: "Lead / Expert",
+};
+
 async function getRecentJobs() {
   try {
     const res = await fetch(
@@ -49,12 +56,15 @@ async function getRecentJobs() {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.docs ?? []).map((v: any) => ({
-      title: v.titel,
-      type: TYPE_LABEL[v.type] ?? v.type ?? "Vast",
-      location: v.locatie ?? "België",
-      sector: SECTOR_LABEL[v.sector] ?? v.sector ?? "",
-    }));
+    return (data.docs ?? [])
+      .filter((v: any) => v.zichtbaar_op_website !== false)
+      .map((v: any) => ({
+        title: v.titel,
+        type: TYPE_LABEL[v.type] ?? v.type ?? "",
+        location: v.locatie ?? "België",
+        sector: SECTOR_LABEL[v.sector] ?? v.sector ?? "",
+        ervaring: v.ervaringsniveau ? ERVARING_LABEL[v.ervaringsniveau] ?? v.ervaringsniveau : "",
+      }));
   } catch {
     return [];
   }

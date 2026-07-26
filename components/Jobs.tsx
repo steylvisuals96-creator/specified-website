@@ -8,6 +8,7 @@ type Job = {
   type: string;
   location: string;
   sector: string;
+  ervaring?: string;
 };
 
 export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: string; linkTekst?: string }) {
@@ -56,7 +57,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
                 <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
                   <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--white)" }}>{job.title}</span>
                   <span style={{ fontSize: "0.75rem", color: "var(--muted)", fontWeight: 400 }}>
-                    {job.location} · {job.sector}
+                    {[job.location, job.sector, job.ervaring].filter(Boolean).join(" · ")}
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
