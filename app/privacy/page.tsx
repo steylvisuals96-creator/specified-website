@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <p>
         <strong>Specified BV</strong>, met maatschappelijke zetel te Kontich, België.
         Ondernemingsnummer: BE 0XXX.XXX.XXX. Voor alle vragen over dit beleid kan je ons
-        bereiken via <a href="mailto:hello@specified.be">hello@specified.be</a>.
+        bereiken via <a href="mailto:info@specified.be">info@specified.be</a>.
       </p>
 
       <h2>2. Welke gegevens we verzamelen</h2>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
         <li>Overdraagbaarheid van je gegevens.</li>
       </ul>
       <p>
-        Je kan deze rechten uitoefenen via <a href="mailto:hello@specified.be">hello@specified.be</a>.
+        Je kan deze rechten uitoefenen via <a href="mailto:info@specified.be">info@specified.be</a>.
         Ben je niet tevreden over hoe we met je gegevens omgaan, dan kan je klacht indienen bij de
         Belgische Gegevensbeschermingsautoriteit (<a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank" rel="noopener noreferrer">gegevensbeschermingsautoriteit.be</a>).
       </p>

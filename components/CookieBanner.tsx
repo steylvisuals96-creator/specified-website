@@ -2,18 +2,19 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const KEY = "specified-cookie-consent";
+import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@/lib/consent";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem(KEY)) setVisible(true);
+    const sync = () => setVisible(readConsent() === null);
+    sync();
+    return onConsentChange(sync);
   }, []);
 
-  function choose(value: "accepted" | "declined") {
-    localStorage.setItem(KEY, value);
+  function choose(value: ConsentValue) {
+    writeConsent(value);
     setVisible(false);
   }
 
@@ -45,22 +46,28 @@ export default function CookieBanner() {
         <Link href="/cookies" style={{ color: "var(--lime)", textDecoration: "underline" }}>cookiebeleid</Link>.
       </p>
       <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+        {/* Beide keuzes krijgen exact hetzelfde gewicht: zelfde vorm, maat,
+            letterdikte en contrast. De EDPB-richtsnoeren vereisen dat weigeren
+            even makkelijk is als aanvaarden; een spookknop naast een gevulde
+            knop stuurt de keuze en is daarmee geen vrije toestemming. */}
         <button
+          type="button"
           onClick={() => choose("accepted")}
           style={{
-            flex: 1, minWidth: "120px", padding: "0.6rem 1rem", borderRadius: "6px",
+            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: "6px",
             background: "var(--lime)", color: "var(--dark)", fontWeight: 600,
-            fontSize: "0.82rem", border: "none", cursor: "pointer", fontFamily: "inherit",
+            fontSize: "0.82rem", border: "1px solid var(--lime)", cursor: "pointer", fontFamily: "inherit",
           }}
         >
           Alles accepteren
         </button>
         <button
+          type="button"
           onClick={() => choose("declined")}
           style={{
-            flex: 1, minWidth: "120px", padding: "0.6rem 1rem", borderRadius: "6px",
-            background: "transparent", color: "rgba(255,255,255,0.7)", fontWeight: 500,
-            fontSize: "0.82rem", border: "1px solid var(--border)", cursor: "pointer", fontFamily: "inherit",
+            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: "6px",
+            background: "var(--white)", color: "var(--dark)", fontWeight: 600,
+            fontSize: "0.82rem", border: "1px solid var(--white)", cursor: "pointer", fontFamily: "inherit",
           }}
         >
           Enkel noodzakelijke

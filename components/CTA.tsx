@@ -7,7 +7,7 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
-  const mail = email || "hello@specified.be";
+  const mail = email || "info@specified.be";
   const tel = telefoon || "";
 
   return (

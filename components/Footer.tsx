@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import CookieVoorkeurenLink from "@/components/CookieVoorkeurenLink";
 
 export default function Footer({ linkedin, footerTekst }: { linkedin?: string; footerTekst?: string } = {}) {
   const linkedinUrl = linkedin || "https://www.linkedin.com/company/specified-be";
@@ -38,6 +39,7 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
           <Link href="/cookies" style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 400 }}>
             Cookies
           </Link>
+          <CookieVoorkeurenLink />
           <a
             href={linkedinUrl}
             target="_blank"

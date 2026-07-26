@@ -35,15 +35,16 @@ export default function CookiesPage() {
 
       <h2>3. Je voorkeuren beheren</h2>
       <p>
-        Bij je eerste bezoek vragen we je toestemming voor niet-noodzakelijke cookies. Je kan je
-        keuze op elk moment aanpassen via de instellingen van je browser, waar je bestaande cookies
-        kan verwijderen en nieuwe kan blokkeren.
+        Bij je eerste bezoek vragen we je toestemming voor niet-noodzakelijke cookies. Zolang je
+        die niet geeft, laden we geen analytische scripts. Je kan je keuze op elk moment herzien
+        via <strong>Cookievoorkeuren</strong> onderaan elke pagina; daarnaast kan je in je browser
+        bestaande cookies verwijderen en nieuwe blokkeren.
       </p>
 
       <h2>4. Vragen</h2>
       <p>
         Heb je vragen over ons cookiegebruik? Neem contact op via{" "}
-        <a href="mailto:hello@specified.be">hello@specified.be</a>. Meer over hoe we met
+        <a href="mailto:info@specified.be">info@specified.be</a>. Meer over hoe we met
         persoonsgegevens omgaan, lees je in ons <a href="/privacy">privacybeleid</a>.
       </p>
     </LegalPage>
