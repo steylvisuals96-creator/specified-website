@@ -8,6 +8,9 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PageShapes from "@/components/PageShapes";
 import Marquee from "@/components/Marquee";
+import Manifesto from "@/components/Manifesto";
+import SmoothScroll from "@/components/SmoothScroll";
+import ScrollProgress from "@/components/ScrollProgress";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -75,6 +78,8 @@ export default async function Home() {
 
   return (
     <>
+      <SmoothScroll />
+      <ScrollProgress />
       <PageShapes />
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
@@ -82,10 +87,10 @@ export default async function Home() {
           prefix={settings.hero_prefix}
           woorden={settings.hero_woorden}
           suffix={settings.hero_suffix}
-          subtitle={settings.hero_subtitel}
           ctaPrimary={settings.hero_cta_tekst}
           ctaSecondary={settings.hero_cta_2_tekst}
         />
+        <Manifesto text={settings.hero_subtitel} label={settings.hero_tagline} />
         <Marquee items={settings.sectoren?.map((s) => s.naam)} />
         <Stats items={settings.statistieken} />
         <Split settings={settings} />

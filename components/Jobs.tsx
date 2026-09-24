@@ -48,9 +48,10 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
               <motion.a
                 key={`${job.title}-${i}`}
                 href="/vacatures"
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: Math.min(i, 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 0", borderBottom: "1px solid var(--border)", textDecoration: "none", cursor: "pointer" }}
                 whileHover={{ x: 6 }}
               >

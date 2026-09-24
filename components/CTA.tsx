@@ -1,11 +1,16 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 export default function CTA({ titel, email, telefoon }: { titel?: string; email?: string; telefoon?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const ref = useRef<HTMLElement>(null);
+
+  // Het blok groeit vanuit het midden open terwijl het in beeld schuift.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
+  const radius = useTransform(scrollYProgress, [0, 1], [48, 8]);
+  const titleY = useTransform(scrollYProgress, [0.3, 1], [80, 0]);
 
   const mail = email || "info@specified.be";
   const tel = telefoon || "";
@@ -19,35 +24,37 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="cta-box"
+        className="cta-box scroll-fx"
         style={{
+          scale,
+          borderRadius: radius,
           maxWidth: "1280px",
+          minHeight: "min(70svh, 640px)",
           margin: "0 auto",
           backgroundColor: "var(--lime)",
-          borderRadius: "6px",
           padding: "clamp(3rem, 6vw, 5rem)",
           display: "flex",
           flexDirection: "column",
+          justifyContent: "space-between",
           gap: "2.5rem",
+          overflow: "hidden",
         }}
       >
-        <div style={{ maxWidth: "520px" }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-bebas)",
-              fontSize: "clamp(3rem, 6vw, 6rem)",
-              fontWeight: 400,
-              letterSpacing: "0.02em",
-              lineHeight: 0.95,
-              color: "var(--dark)",
-            }}
-          >
-            {titel || "Laten we kennismaken."}
-          </h2>
-        </div>
+        <motion.h2
+          className="scroll-fx"
+          style={{
+            y: titleY,
+            fontFamily: "var(--font-bebas)",
+            fontSize: "clamp(3.5rem, 10vw, 9.5rem)",
+            fontWeight: 400,
+            letterSpacing: "0.01em",
+            lineHeight: 0.9,
+            color: "var(--dark)",
+            maxWidth: "10ch",
+          }}
+        >
+          {titel || "Laten we kennismaken."}
+        </motion.h2>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <motion.a

@@ -20,9 +20,56 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis stuurt de scroll zelf; native smooth-scroll zou elke stap nog eens
+   vertragen en laten haperen. */
+html.lenis, html.lenis body { height: auto; }
+html.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis.lenis-stopped { overflow: clip; }
+
+/* Scroll-hint in de hero */
+.scroll-hint-line {
+  display: inline-block;
+  width: 48px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-hint-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  animation: scroll-hint 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+@keyframes scroll-hint {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* Wie minder beweging wil, krijgt de gewone pagina: niets vastgepind,
+   niets dat schuift of vervaagt met de scroll. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-fx { transform: none !important; opacity: 1 !important; }
+  .scroll-fx-fade { opacity: 0 !important; }
+  .hero-pin, .manifesto-pin { height: auto !important; }
+  .hero-sticky, .manifesto-sticky { position: static !important; }
+  .hero-sticky { height: 100svh !important; }
+  .manifesto-sticky { height: auto !important; padding-top: 6rem !important; padding-bottom: 6rem !important; }
+  .team-pin { height: auto !important; }
+  .team-sticky { position: static !important; height: auto !important; overflow: visible !important; }
+  .team-track { flex-direction: column !important; width: 100% !important; height: auto !important; gap: 3rem; padding-bottom: 4rem; }
+  .team-intro, .team-panel { flex: none !important; height: auto !important; }
+  .team-intro { padding-top: 6rem !important; }
+  .team-intro-hint { display: none !important; }
+  .scroll-hint-line::after { animation: none; }
+}
+
 /* De header is vast en 72px hoog. Zonder deze marge belandt de sectiekop
    eronder en lijkt het alsof je op de verkeerde plek bent geland. */
 #diensten,
+#kandidaten,
+#opdrachtgevers,
 #jobs,
 #over-ons,
 #contact {
@@ -75,7 +122,7 @@ body::after {
 
 /* Hero: titel niet laten overlopen op smalle schermen */
 @media (max-width: 767px) {
-  .hero-title { font-size: clamp(2.6rem, 11vw, 4.5rem) !important; max-width: 100% !important; }
+  .hero-title { font-size: clamp(2.8rem, 14vw, 5rem) !important; max-width: 100% !important; }
   .hero-word { min-width: 4ch !important; }
 }
 
@@ -86,21 +133,27 @@ body::after {
   .vac-detail { position: static !important; padding: 1.5rem !important; top: auto !important; }
 }
 
-/* Teamsectie: gestapeld op mobiel/tablet i.p.v. vaste 3 kolommen */
+/* Teamsectie: horizontale scroll alleen waar er plaats is. Op smalle schermen
+   gewoon onder elkaar — horizontaal vastpinnen op een telefoon voelt als vastzitten. */
 @media (max-width: 900px) {
-  .team-row { grid-template-columns: 1fr !important; min-height: auto !important; }
-  .team-filler { display: none !important; }
-  /* Foto's zijn portret (3:4). Bij gestapelde weergave zou een volle-breedte
-     foto een dunne strook tonen — daarom begrenzen we de breedte en houden
-     we een portret-achtige hoogte aan. */
-  .team-foto {
-    min-height: 560px !important;
-    max-width: 460px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
-    order: -1; /* foto altijd bovenaan, ook bij de omgekeerde rij */
-  }
+  .team-pin { height: auto !important; }
+  .team-sticky { position: static !important; height: auto !important; overflow: visible !important; }
+  .team-track { transform: none !important; flex-direction: column !important; width: 100% !important; height: auto !important; gap: 3rem; padding-bottom: 4rem; }
+  .team-intro { flex: none !important; height: auto !important; padding: clamp(4rem, 10vw, 6rem) clamp(1.5rem, 5vw, 4rem) 0 !important; }
+  .team-intro > div { transform: none !important; }
+  .team-intro-hint { display: none !important; }
+  .team-panel { flex: none !important; height: auto !important; padding: 0 clamp(1.5rem, 5vw, 4rem) !important; }
+  .team-panel-grid { grid-template-columns: 1fr !important; max-height: none !important; max-width: 460px !important; }
+  /* Foto's zijn portret (3:4): begrensde breedte, portret-achtige hoogte. */
+  .team-foto { aspect-ratio: 3 / 4; border-radius: 8px 8px 0 0 !important; }
+  .team-card { border-radius: 0 0 8px 8px !important; }
+}
+
+/* Dienstenkaarten: op mobiel mag de kaart zo hoog zijn als haar inhoud. */
+@media (max-width: 767px) {
+  .stack-slot { height: auto !important; min-height: 0 !important; max-height: none !important; }
+  .manifesto-text { font-size: clamp(1.3rem, 5.6vw, 1.8rem) !important; }
+  .cta-box { min-height: 0 !important; }
 }
 
 /* ─── Blog ─────────────────────────────────────────────── */
