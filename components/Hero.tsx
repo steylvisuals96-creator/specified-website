@@ -38,9 +38,11 @@ export default function Hero({
 
   // De hero blijft even staan en zakt dan weg: kleiner, vager, naar boven.
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.7], [1, 0.82]);
-  const opacity = useClamped(scrollYProgress, [0.15, 0.65], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.7], [0, -120]);
+  // Zakt weg naar achter in plaats van omhoog: zo schuift de titel nooit
+  // onder de header en wordt hij niet afgesneden.
+  const scale = useTransform(scrollYProgress, [0, 0.8], [1, 0.86]);
+  const opacity = useClamped(scrollYProgress, [0.2, 0.75], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.8], [0, 60]);
   const hintOpacity = useClamped(scrollYProgress, [0, 0.08], [1, 0]);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function Hero({
   }, [words.length]);
 
   return (
-    <section ref={ref} className="hero-pin" style={{ position: "relative", height: "150vh" }}>
+    <section ref={ref} className="hero-pin" style={{ position: "relative", height: "135vh" }}>
       <div
         className="hero-sticky"
         style={{

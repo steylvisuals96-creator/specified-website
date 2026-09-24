@@ -11,6 +11,8 @@ import Marquee from "@/components/Marquee";
 import Manifesto from "@/components/Manifesto";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollProgress from "@/components/ScrollProgress";
+import Chapters from "@/components/Chapters";
+import Wordmark from "@/components/Wordmark";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -80,6 +82,7 @@ export default async function Home() {
     <>
       <SmoothScroll />
       <ScrollProgress />
+      <Chapters />
       <PageShapes />
       <Nav />
       <main style={{ position: "relative", zIndex: 1 }}>
@@ -97,6 +100,7 @@ export default async function Home() {
         <Jobs jobs={jobs} titel={settings.jobs_titel} linkTekst={settings.jobs_link_tekst} />
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
         <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
+        <Wordmark />
       </main>
       <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
     </>

@@ -119,6 +119,7 @@ export default function Team({
   return (
     <section
       id="over-ons"
+      data-chapter="Over ons"
       ref={ref}
       className="team-pin"
       style={{ borderTop: "1px solid var(--border)", position: "relative", height: `${panels * 100}vh` }}
@@ -146,6 +147,11 @@ export default function Team({
             <MemberPanel key={member.id} member={member} i={i} count={list.length} progress={scrollYProgress} />
           ))}
         </motion.div>
+
+        {/* Hoe ver je door de horizontale rij bent */}
+        <div className="team-progress" aria-hidden="true" style={{ position: "absolute", left: "50%", bottom: "1.25rem", transform: "translateX(-50%)", width: "min(240px, 40vw)", height: 2, background: "rgba(255,255,255,0.12)", borderRadius: 2, overflow: "hidden" }}>
+          <motion.div style={{ scaleX: scrollYProgress, transformOrigin: "0% 50%", height: "100%", background: "var(--lime)" }} />
+        </div>
       </div>
     </section>
   );

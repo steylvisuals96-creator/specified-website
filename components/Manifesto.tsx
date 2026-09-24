@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useClamped } from "@/lib/scroll";
 import { useRef } from "react";
 
@@ -17,8 +17,13 @@ function Word({
   range: [number, number];
 }) {
   const opacity = useClamped(progress, range, [0.14, 1]);
+  // Het woord dat je nu "leest" en de twee ervoor kleuren limoen, als een
+  // leescursor die door de tekst loopt.
+  const [start, end] = range;
+  const lag = (end - start) * 3;
+  const color = useTransform(progress, (v) => (v >= start && v < end + lag ? "#dffd7b" : "#ffffff"));
   return (
-    <motion.span className="scroll-fx" style={{ opacity, display: "inline-block", marginRight: "0.28em" }}>
+    <motion.span className="scroll-fx" style={{ opacity, color, transition: "color 0.35s ease", display: "inline-block", marginRight: "0.28em" }}>
       {children}
     </motion.span>
   );
@@ -43,7 +48,7 @@ export default function Manifesto({ text, label }: { text?: string; label?: stri
   let index = 0;
 
   return (
-    <section ref={ref} className="manifesto-pin" style={{ position: "relative", height: "260vh" }}>
+    <section ref={ref} className="manifesto-pin" data-chapter="Visie" style={{ position: "relative", height: "260vh" }}>
       <div
         className="manifesto-sticky"
         style={{

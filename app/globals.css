@@ -61,7 +61,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   .team-track { flex-direction: column !important; width: 100% !important; height: auto !important; gap: 3rem; padding-bottom: 4rem; }
   .team-intro, .team-panel { flex: none !important; height: auto !important; }
   .team-intro { padding-top: 6rem !important; }
-  .team-intro-hint { display: none !important; }
+  .team-intro-hint, .team-progress { display: none !important; }
   .scroll-hint-line::after { animation: none; }
 }
 
@@ -141,12 +141,17 @@ body::after {
   .team-track { transform: none !important; flex-direction: column !important; width: 100% !important; height: auto !important; gap: 3rem; padding-bottom: 4rem; }
   .team-intro { flex: none !important; height: auto !important; padding: clamp(4rem, 10vw, 6rem) clamp(1.5rem, 5vw, 4rem) 0 !important; }
   .team-intro > div { transform: none !important; }
-  .team-intro-hint { display: none !important; }
+  .team-intro-hint, .team-progress { display: none !important; }
   .team-panel { flex: none !important; height: auto !important; padding: 0 clamp(1.5rem, 5vw, 4rem) !important; }
   .team-panel-grid { grid-template-columns: 1fr !important; max-height: none !important; max-width: 460px !important; }
   /* Foto's zijn portret (3:4): begrensde breedte, portret-achtige hoogte. */
   .team-foto { aspect-ratio: 3 / 4; border-radius: 8px 8px 0 0 !important; }
   .team-card { border-radius: 0 0 8px 8px !important; }
+}
+
+/* Hoofdstukaanduiding alleen waar er naast de inhoud plaats voor is */
+@media (max-width: 1023px) {
+  .chapters { display: none !important; }
 }
 
 /* Dienstenkaarten: op mobiel mag de kaart zo hoog zijn als haar inhoud. */

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -20,8 +20,22 @@ export default function Nav() {
   const { scrollY } = useScroll();
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
 
+  // Naar beneden scrollen = menu uit de weg, zodat vastgepinde secties het
+  // hele scherm krijgen. Een klein stukje terug omhoog haalt het terug.
+  const [hidden, setHidden] = useState(false);
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    const delta = y - prev;
+    if (y < 120) setHidden(false);
+    else if (delta > 4) setHidden(true);
+    else if (delta < -4) setHidden(false);
+  });
+
   return (
     <motion.header
+      animate={{ y: hidden && !menuOpen ? "-100%" : "0%" }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      onFocusCapture={() => setHidden(false)}
       style={{
         position: "fixed",
         top: 0,

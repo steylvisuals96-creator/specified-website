@@ -16,7 +16,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="jobs" ref={ref} style={{ padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)", borderTop: "1px solid var(--border)" }}>
+    <section id="jobs" data-chapter="Jobs" ref={ref} style={{ padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)", borderTop: "1px solid var(--border)" }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", flexWrap: "wrap", gap: "1rem" }}>
           <motion.h2

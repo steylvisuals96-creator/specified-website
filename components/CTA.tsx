@@ -18,6 +18,7 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
   return (
     <section
       id="contact"
+      data-chapter="Contact"
       ref={ref}
       style={{
         padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)",

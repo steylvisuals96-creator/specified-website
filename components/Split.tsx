@@ -154,6 +154,7 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
   return (
     <section
       id="diensten"
+      data-chapter="Diensten"
       ref={ref}
       style={{
         maxWidth: "1280px",
@@ -162,6 +163,12 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
         width: "100%",
       }}
     >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "2rem", gap: "1rem" }}>
+        <p style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--lime)" }}>
+          Wat we doen
+        </p>
+        <p style={{ fontSize: "0.8rem", color: "var(--muted)" }}>Voor kandidaten én bedrijven</p>
+      </div>
       {cards.map((card, i) => (
         <StackCard key={card.id} card={card} i={i} count={cards.length} progress={scrollYProgress} />
       ))}
