@@ -12,7 +12,10 @@ Skill: `/nieuwe-website` · Branch: `redesign/signatuurmerk` · Gestart: 2026-09
 - [x] Huidige site geanalyseerd (Behouden / Vervangen / Content)
 - [ ] Visuele referentie goedgekeurd
 - [x] Portretten vrijstaand gemaakt (macOS Vision, randen 2px ingekort): `public/images/team/tom-vrijstaand.png`, `simon-vrijstaand.png`. Beperking: gsm-foto's 768×1024; fotoshoot later sterker.
-- [ ] Higgsfield koppelen voor ontwerpbeelden per sectie (kost eerst melden)
+- [x] 5 ontwerpbeelden gegenereerd (Higgsfield, GPT Image 2.5 high/2K, 13,75 credits, akkoord Sam): `design/referentie/1-hero … 5-contact.jpg`
+- [ ] Referentie goedgekeurd door Sam
+
+Let op bij bouwen: gezichten in de referentie zijn AI-hertekend (op de site de echte foto's); cijfers 240+/94%/3 wk en 'Sinds 2024' zijn placeholders, echte waarden komen uit de CMS of van de klant.
 
 ### Behouden
 Logo/wordmark SPECIFIED · kleuren #1E1E21 / #323236 + limoen #DFFD7B · Bebas Neue koppen, Avenir tekst ·
