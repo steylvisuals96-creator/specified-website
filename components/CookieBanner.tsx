@@ -33,7 +33,7 @@ export default function CookieBanner() {
         margin: "0 auto",
         background: "var(--dark)",
         border: "1px solid var(--border)",
-        borderRadius: "10px",
+        borderRadius: 0,
         padding: "1.25rem 1.4rem",
         zIndex: 9990,
         boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
@@ -54,7 +54,7 @@ export default function CookieBanner() {
           type="button"
           onClick={() => choose("accepted")}
           style={{
-            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: "6px",
+            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: 0,
             background: "var(--lime)", color: "var(--dark)", fontWeight: 600,
             fontSize: "0.82rem", border: "1px solid var(--lime)", cursor: "pointer", fontFamily: "inherit",
           }}
@@ -65,7 +65,7 @@ export default function CookieBanner() {
           type="button"
           onClick={() => choose("declined")}
           style={{
-            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: "6px",
+            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: 0,
             background: "var(--white)", color: "var(--dark)", fontWeight: 600,
             fontSize: "0.82rem", border: "1px solid var(--white)", cursor: "pointer", fontFamily: "inherit",
           }}

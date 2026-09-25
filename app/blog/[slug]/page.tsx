@@ -72,12 +72,12 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
         <article style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem" }}>
           <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
             <Link href="/blog" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none" }}>
-              ← Terug naar blog
+              Terug naar blog
             </Link>
 
             <div style={{ display: "flex", gap: "1rem", alignItems: "center", margin: "2rem 0 1rem", flexWrap: "wrap" }}>
               {post.publicatiedatum && (
-                <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--lime)" }}>
+                <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>
                   {formatDatum(post.publicatiedatum)}
                 </span>
               )}
@@ -108,12 +108,12 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
             )}
 
             {post.coverUrl && (
-              <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: "8px", marginBottom: "3rem" }}>
+              <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: 0, marginBottom: "3rem" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={post.coverUrl}
                   alt={post.titel}
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  className="foto-grade" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             )}

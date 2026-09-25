@@ -59,7 +59,7 @@ export default async function BlogIndex() {
                       flexDirection: "column",
                       textDecoration: "none",
                       border: "1px solid var(--border)",
-                      borderRadius: "8px",
+                      borderRadius: 0,
                       overflow: "hidden",
                       backgroundColor: "rgba(255,255,255,0.02)",
                     }}
@@ -70,13 +70,13 @@ export default async function BlogIndex() {
                         <img
                           src={post.coverUrl}
                           alt={post.titel}
-                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                          className="foto-grade" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                         />
                       </div>
                     )}
                     <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                       {post.publicatiedatum && (
-                        <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--lime)" }}>
+                        <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>
                           {formatDatum(post.publicatiedatum)}
                         </span>
                       )}

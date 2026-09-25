@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 import { useState } from "react";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -48,8 +48,7 @@ function FilterGroep({
           het afbreken onder het label door en oogde de rij rafelig. */}
       <legend
         style={{
-          fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em",
-          textTransform: "uppercase", color: "var(--muted)",
+          fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: "var(--muted)",
           padding: 0, marginBottom: "0.6rem",
         }}
       >
@@ -65,7 +64,7 @@ function FilterGroep({
             aria-pressed={isActief}
             onClick={() => onKies(w)}
             style={{
-              padding: "0.45rem 1.1rem", borderRadius: "4px", fontSize: "0.8rem", fontWeight: 500,
+              padding: "0.45rem 1.1rem", borderRadius: 0, fontSize: "0.8rem", fontWeight: 500,
               cursor: "pointer", transition: "all 0.2s", border: "1px solid",
               borderColor: isActief ? "var(--lime)" : "var(--border)",
               backgroundColor: isActief ? "var(--lime)" : "transparent",
@@ -117,6 +116,8 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
     }, "");
 
   return (
+    // Respecteert "beweging beperken" van het besturingssysteem.
+    <MotionConfig reducedMotion="user">
     <section style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem", minHeight: "100svh" }}>
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
 
@@ -174,15 +175,15 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                   <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--white)" }}>{job.title}</span>
                   <span style={{ fontSize: "0.8rem", color: "var(--muted)" }}>
-                    {[job.location, job.sector, job.ervaring, job.salaris].filter(Boolean).join(" · ")}
+                    {[job.location, job.sector, job.ervaring, job.salaris].filter(Boolean).join(", ")}
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: "3px" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                     {job.type}
                   </span>
                   <span style={{ color: selected === job.id ? "var(--lime)" : "var(--muted)", fontSize: "1rem", transition: "color 0.2s" }}>
-                    {selected === job.id ? "×" : "↗"}
+                    {selected === job.id ? "Sluiten" : "Bekijk"}
                   </span>
                 </div>
               </motion.button>
@@ -197,17 +198,17 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
               className="vac-detail"
-              style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", borderRadius: "8px", padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
+              style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", borderRadius: 0, padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
             >
               <div>
                 <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: selectedJob.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${selectedJob.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: "3px" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: selectedJob.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${selectedJob.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                     {selectedJob.type}
                   </span>
                   {[selectedJob.location, selectedJob.ervaring, selectedJob.salaris, selectedJob.opdrachtgever]
                     .filter(Boolean)
                     .map((chip) => (
-                      <span key={chip} style={{ fontSize: "0.65rem", fontWeight: 500, color: "var(--muted)", border: "1px solid var(--border)", padding: "0.25rem 0.75rem", borderRadius: "3px" }}>
+                      <span key={chip} style={{ fontSize: "0.65rem", fontWeight: 500, color: "var(--muted)", border: "1px solid var(--border)", padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                         {chip}
                       </span>
                     ))}
@@ -226,7 +227,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.profiel.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--lime)", marginBottom: "0.75rem" }}>Jouw profiel</p>
+                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Jouw profiel</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.profiel.map((p) => (
                       <li key={p} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -240,7 +241,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.niceToHave.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--lime)", marginBottom: "0.75rem" }}>Nice to have</p>
+                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Nice to have</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.niceToHave.map((n) => (
                       <li key={n} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -254,7 +255,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.aanbod.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "var(--lime)", marginBottom: "0.75rem" }}>Wat we bieden</p>
+                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Wat we bieden</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.aanbod.map((a) => (
                       <li key={a} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -268,7 +269,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               <a
                 href={`mailto:${mail}?subject=Sollicitatie: ${selectedJob.title}`}
-                style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "1rem 2rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 600, textDecoration: "none", textAlign: "center" as const }}
+                style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "1rem 2rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 600, textDecoration: "none", textAlign: "center" as const }}
               >
                 Solliciteer voor deze job
               </a>
@@ -277,5 +278,6 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
         </div>
       </div>
     </section>
+    </MotionConfig>
   );
 }
