@@ -61,5 +61,20 @@ Beslissing: geen smooth-scroll-laag (Lenis) — DESIGN.md vraagt stille motion; 
 
 Totaal Higgsfield: 27,5 credits.
 
-## Fase 4–6
+## Fase 4 — Back-end & admin (code klaar, wacht op livegang)
+Bestaande Payload-CMS (`specified-cms`, MongoDB + R2), branch `fase4/rollen-en-beveiliging`.
+- [x] **Lek gedicht:** 11 server actions schreven zonder login-check via de Local API (overrideAccess). Nu: `lib/serverPayload.ts` controleert login en schrijft als de gebruiker.
+- [x] Rollen: `creator` (Sam) > `beheerder` > `consultant`; creator onzichtbaar/onaantastbaar voor de klant; consultant kan eigen rol niet wijzigen
+- [x] Instellingen alleen door beheerder/creator te wijzigen; rol in JWT (`/admin` werkte voorheen voor niemand)
+- [x] `seed-users.ts` met hardgecodeerde wachtwoorden verwijderd; `seed-creator.ts` leest alles uit env
+- [x] Getest op lokale testdatabase: 14/14 rolscenario's + dashboard/admin-redirects
+- [ ] **Sam:** branch nakijken en naar `main` mergen (= productie)
+- [ ] **Sam:** creator-account in productie seeden (eigen wachtwoord, via env) — Claude typt geen wachtwoorden
+- [ ] **Specified:** Tom & Simon wachtwoord wijzigen (stond in git-geschiedenis van de privé-repo)
+- [ ] MFA voor creator: Payload heeft geen ingebouwde MFA — plugin of SSO nodig
+- [ ] Audit-log (wie wijzigde wat): nog niet aanwezig
+- [ ] Overblijfselen vastgoed in `dashboard/team/create` en `team/[id]/edit` (velden bestaan niet in Team-collectie)
+- Homepage-inhoud: disciplines (`sectoren`) en cijfers (`statistieken`) zijn in het instellingen-dashboard in te vullen; beide nu leeg
+
+## Fase 5–6
 Nog niet gestart.
