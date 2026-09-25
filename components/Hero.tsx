@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Signature from "@/components/Signature";
 
 // Typografische hero: de kop is het beeld. Het tweede woord kan uit de CMS komen
@@ -26,6 +27,10 @@ export default function Hero({
 
   return (
     <section className="hero" aria-labelledby="hero-titel">
+      {/* Sfeerbeeld (AI-gegenereerd, geen mensen): turbine rechtsboven, kop in de donkere ruimte. */}
+      <div className="hero__beeld" aria-hidden="true">
+        <Image src="/images/beeld/hero-turbine.jpg" alt="" fill priority sizes="100vw" />
+      </div>
       <div className="wrap hero__inner">
         <div className="hero__copy">
           <p className="lead">{intro}</p>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { SiteSettings } from "@/lib/settings";
 
 // Twee doelgroepen naast elkaar, gescheiden door één haarlijn. De doelgroep
@@ -14,6 +15,7 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
       cta: settings.kandidaten_cta || "Bekijk openstaande jobs",
       href: "/vacatures",
       knop: "btn-primary",
+      beeld: "/images/beeld/kandidaten-engineer.jpg",
     },
     {
       id: "opdrachtgevers",
@@ -25,6 +27,7 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
       cta: settings.bedrijven_cta || "Vertel ons wat je zoekt",
       href: "#contact",
       knop: "btn-secondary",
+      beeld: "/images/beeld/bedrijven-installatie.jpg",
     },
   ];
 
@@ -33,6 +36,9 @@ export default function Split({ settings = {} }: { settings?: SiteSettings }) {
       <div className="wrap split__grid">
         {kolommen.map((k) => (
           <div key={k.id} id={k.id} className="split__col">
+            <div className="split__beeld">
+              <Image src={k.beeld} alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
+            </div>
             <h2 className="display display-m">{k.kop}</h2>
             <p className="split__titel">{k.titel}</p>
             <p className="split__tekst">{k.tekst}</p>

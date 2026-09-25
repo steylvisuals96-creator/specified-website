@@ -10,7 +10,8 @@ type Job = {
 };
 
 function versheid(dagen?: number) {
-  if (dagen === undefined) return null;
+  // Alleen tonen als het nieuws is: "90 dagen online" leest als oud, niet als vers.
+  if (dagen === undefined || dagen > 30) return null;
   if (dagen < 1) return { getal: "Nieuw", label: "vandaag online" };
   return { getal: String(dagen), label: dagen === 1 ? "dag online" : "dagen online" };
 }
@@ -40,7 +41,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
               return (
                 <li key={`${job.title}-${i}`}>
                   <a href="/vacatures" className="jobs__rij">
-                    <span className="jobs__vers">
+                    <span className="jobs__vers" data-leeg={!v}>
                       {v && (
                         <>
                           <span className="jobs__getal display">{v.getal}</span>

@@ -45,5 +45,18 @@ Hero, 8 disciplines, 4 stats, kandidaten/bedrijven, 5 recentste vacatures, found
 
 Beslissing: geen smooth-scroll-laag (Lenis) — DESIGN.md vraagt stille motion; native scroll + één ScrollTrigger-scrub.
 
-## Fase 3–6
+## Fase 3 — Front-end & scroll (bezig)
+- [x] Tokens + basis (globals.css), oude variabelen gealiast zodat vacatures/blog/juridisch meekleuren
+- [x] Nav, typografische hero (CSS-laadsequentie + handtekening), disciplines-scroll (GSAP ScrollTrigger scrub), diensten, vacatures (versheid ≤ 30 dagen), founders, contact, footer-band
+- [x] Cut-outs geschrapt op vraag van Sam; hero zonder gezichten
+- [x] 5 AI-sfeerbeelden gegenereerd (13,75 credits, akkoord Sam), 3 gebruikt: turbine (hero), engineer op de rug (kandidaten, olijf-gegraded), schakelkasten (bedrijven)
+- [x] Gecontroleerd op 1440×900 en 375×812: geen horizontale scroll, hero past in het scherm
+- [x] `turbopack.root` gezet: package.json in home-map verstoorde de dev-watcher
+- [ ] Vacatures in CMS zijn ~90 dagen oud (versheid-cijfer daarom verborgen) — navragen bij Specified
+- [ ] Bio Tom is Engels, Simon Nederlands — navragen bij Specified
+- [ ] Reduced-motion en vacature/blog-pagina's nalopen
+
+Totaal Higgsfield: 27,5 credits.
+
+## Fase 4–6
 Nog niet gestart.

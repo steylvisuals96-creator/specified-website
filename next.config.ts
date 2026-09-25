@@ -47,6 +47,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Er staat een package.json in de home-map van de ontwikkelaar; zonder dit kiest
+  // Turbopack die map als root en mist het wijzigingen in dit project.
+  turbopack: { root: process.cwd() },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -96,6 +96,11 @@ niveau, contract (`meta`, `--bone-400`). Links in de rij het aantal dagen online
 ("3d", "12d") in plaats van 01/02/03: vacatures zijn geen volgorde, versheid is wel informatie.
 Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij is één link.
 
+**Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
+doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
+limoen lichtaccent. Hero: `images/beeld/hero-turbine.jpg`; diensten: `kandidaten-engineer.jpg`,
+`bedrijven-installatie.jpg`.
+
 **Handtekening** — SVG-pad in `--lime-300`, 3px streek, ronde uiteinden. Staat naast of onder een
 portret, nooit over een gezicht. Doel: echte handtekeningen van Tom en Simon (op papier, gevectoriseerd);
 tot dan een placeholder-pad.
