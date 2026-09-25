@@ -12,8 +12,21 @@ import type { Access, Where } from "payload";
 /** Alleen voor wie ingelogd is. Gebruik dit voor alles wat intern is. */
 export const alleenIngelogd: Access = ({ req }) => Boolean(req.user);
 
-/** Alleen voor beheerders. */
-export const alleenBeheerder: Access = ({ req }) => req.user?.rol === "beheerder";
+/**
+ * Rollen, van meeste naar minste rechten:
+ * - creator:    SteylVisuals (bouwer/onderhoud). Alles, en het enige account dat
+ *               de klant niet kan zien, wijzigen of verwijderen.
+ * - beheerder:  eigenaar bij Specified. Alle inhoud, instellingen en eigen gebruikers.
+ * - consultant: recruitment consultant. Werkt met kandidaten, vacatures, blog.
+ */
+export const isCreator = (user: any) => user?.rol === "creator";
+export const isBeheerder = (user: any) => user?.rol === "beheerder" || isCreator(user);
+
+/** Alleen voor beheerders (en de creator). */
+export const alleenBeheerder: Access = ({ req }) => isBeheerder(req.user);
+
+/** Alleen voor de creator. */
+export const alleenCreator: Access = ({ req }) => isCreator(req.user);
 
 /**
  * Publiek leesbaar, maar enkel de records die de website ook echt toont.

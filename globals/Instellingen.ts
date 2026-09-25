@@ -1,10 +1,14 @@
 import type { GlobalConfig } from "payload";
+import { alleenBeheerder } from "@/lib/access";
 
 export const Instellingen: GlobalConfig = {
   slug: "instellingen",
   label: "Specified — Instellingen",
   access: {
+    // Publiek leesbaar: de website haalt hier haar teksten uit.
     read: () => true,
+    // Wijzigen alleen door beheerders (en de creator), niet door consultants.
+    update: alleenBeheerder,
   },
   admin: {
     group: "Instellingen",

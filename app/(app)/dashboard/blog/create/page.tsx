@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
+import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import FormShell, { Field, SelectField, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
@@ -26,8 +27,7 @@ export default async function BlogCreatePage() {
 
   async function create(fd: FormData) {
     "use server";
-    const cfg = await configPromise;
-    const p = await getPayload({ config: cfg as any });
+    const { payload: p, als } = await payloadAlsGebruiker();
     const html = fd.get("inhoud") as string;
     const str = (k: string) => {
       const v = fd.get(k);
@@ -35,6 +35,7 @@ export default async function BlogCreatePage() {
     };
 
     const result = await p.create({
+      ...als,
       collection: "blog" as any,
       data: {
         titel: fd.get("titel"),

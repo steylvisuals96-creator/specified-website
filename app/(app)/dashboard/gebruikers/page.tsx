@@ -5,10 +5,12 @@ import { redirect } from "next/navigation";
 import DashboardShell, { PageHeader, Table, TD, Empty, fmtDate } from "@/components/DashboardShell";
 import GebruikerCreateDrawer from "@/components/GebruikerCreateDrawer";
 import GebruikerEditDrawer from "@/components/GebruikerEditDrawer";
+import { isBeheerder, isCreator } from "@/lib/access";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const rolLabel: Record<string, string> = {
+  creator: "Creator (SteylVisuals)",
   beheerder: "Beheerder",
   consultant: "Recruitment Consultant",
 };
@@ -18,8 +20,9 @@ export default async function GebruikersPage() {
   const payload = await getPayload({ config: config as any });
   const { user } = await payload.auth({ headers: await headers() });
   if (!user) redirect("/admin/login");
+  if (!isBeheerder(user)) redirect("/dashboard");
 
-  const docs = await payload.find({ collection: "gebruikers", limit: 100, sort: "-createdAt" });
+  const docs = await payload.find({ collection: "gebruikers", limit: 100, sort: "-createdAt", user, overrideAccess: false });
 
   return (
     <DashboardShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email}>
@@ -43,6 +46,7 @@ export default async function GebruikersPage() {
                   <GebruikerEditDrawer
                     id={doc.id}
                     initial={{ naam: doc.naam, email: doc.email, rol: doc.rol }}
+                    magCreator={isCreator(user)}
                   />
                 </TD>
               </tr>

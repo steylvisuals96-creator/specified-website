@@ -24,9 +24,10 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "inherit", width: "100%", outline: "none",
 };
 
-export default function GebruikerEditDrawer({ id, initial }: {
+export default function GebruikerEditDrawer({ id, initial, magCreator = false }: {
   id: string;
   initial: { naam?: string; email?: string; rol?: string };
+  magCreator?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [naam, setNaam] = useState(initial.naam ?? "");
@@ -75,6 +76,7 @@ export default function GebruikerEditDrawer({ id, initial }: {
           </Field>
           <Field label="Rol">
             <select style={{ ...inputStyle, cursor: "pointer" }} value={rol} onChange={(e) => setRol(e.target.value)}>
+              {magCreator && <option value="creator">Creator (SteylVisuals)</option>}
               <option value="beheerder">Beheerder</option>
               <option value="consultant">Recruitment Consultant</option>
             </select>

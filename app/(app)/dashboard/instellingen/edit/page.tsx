@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
+import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import FormShell, { Field, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
@@ -22,8 +23,7 @@ export default async function InstellingenEditPage() {
 
   async function save(fd: FormData) {
     "use server";
-    const cfg = await configPromise;
-    const p = await getPayload({ config: cfg as any });
+    const { payload: p, als } = await payloadAlsGebruiker();
 
     const str = (k: string) => {
       const v = fd.get(k);
@@ -42,6 +42,7 @@ export default async function InstellingenEditPage() {
       .filter((x) => x.waarde && x.label);
 
     await (p as any).updateGlobal({
+      ...als,
       slug: "instellingen",
       data: {
         naam: fd.get("naam"),
