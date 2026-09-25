@@ -15,10 +15,10 @@ export default function ScrollMomenten() {
     const mm = gsap.matchMedia();
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Hero: de turbine draait mee met de scroll, de kop schuift weg.
-      gsap.to(".hero__beeld img", {
-        rotate: 28,
-        scale: 1.18,
+      // Hero: de turbine (videolus) zoomt licht in, de kop schuift weg. Geen
+      // rotatie meer: die liet de randen van het beeld zien.
+      gsap.fromTo(".hero__beeld", { scale: 1 }, {
+        scale: 1.15,
         ease: "none",
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.8 },
       });

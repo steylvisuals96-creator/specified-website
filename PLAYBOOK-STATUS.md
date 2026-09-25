@@ -61,12 +61,16 @@ Beslissing: geen smooth-scroll-laag (Lenis) — DESIGN.md vraagt stille motion; 
 
 Totaal Higgsfield: 27,5 credits.
 
-## Tussenstap — hero-video (bezig)
+## Tussenstap — hero-video (klaar)
 - Rotator + hertekenende handtekening + scroll-moment per sectie: klaar (commit f94a6d7)
 - Turbine als naadloze videolus: 2 Kling 3.0 Pro-varianten (10 s, geen geluid, start = eind = `hero-turbine`), 30 credits, akkoord Sam
   - traag: Higgsfield job `0395f015-8b97-43e2-ab1d-d17c8727fd93`
   - sneller: Higgsfield job `757a6ba6-e614-4cf6-b870-24f22abcb926`
-- Te doen: Sam kiest variant; H.264 + WebM (1080p desktop, 720p mobiel), poster = huidige still, scroll-rotatie vervalt (enkel zoom), stil bij reduced motion/save-data
+- Gekozen: variant 'sneller'; naad weggewerkt met 0,6 s crossfade (laatste↔eerste frame 98,6% gelijk)
+- `public/videos/hero-turbine-1080.webm` (0,9 MB), `-1080.mp4` (1,2 MB), `-720.mp4` (0,5 MB, mobiel); poster = eerste frame
+- Video laadt na eerste weergave, pauzeert buiten beeld, niet bij reduced motion/databesparing
+- Scroll-rotatie vervangen door zoom (liet randen zien, melding Sam); beeld bedekt de hero altijd
+- Later: video naar Cloudflare R2 verhuizen (playbook), nu in `public/`
 - Totaal Higgsfield: 57,5 credits
 
 ## Fase 4 — Back-end & admin (code klaar, wacht op livegang)

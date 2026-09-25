@@ -1,5 +1,6 @@
 import Image from "next/image";
 import HeroRotator from "@/components/HeroRotator";
+import HeroVideo from "@/components/HeroVideo";
 
 // Typografische hero: de kop is het beeld. Het tweede woord wisselt (rotator);
 // de woorden komen uit de CMS (hero_woorden) of uit de standaardlijst.
@@ -28,9 +29,11 @@ export default function Hero({
 
   return (
     <section className="hero" aria-labelledby="hero-titel">
-      {/* Sfeerbeeld (AI-gegenereerd, geen mensen): turbine rechtsboven, kop in de donkere ruimte. */}
+      {/* Sfeerbeeld (AI-gegenereerd, geen mensen): turbine rechtsboven, kop in de donkere ruimte.
+          De poster is het eerste frame van de videolus, zodat de overgang onzichtbaar is. */}
       <div className="hero__beeld" aria-hidden="true">
-        <Image src="/images/beeld/hero-turbine.jpg" alt="" fill priority sizes="100vw" />
+        <Image src="/images/beeld/hero-turbine-poster.jpg" alt="" fill priority sizes="100vw" />
+        <HeroVideo />
       </div>
       <div className="wrap hero__inner">
         <div className="hero__copy">

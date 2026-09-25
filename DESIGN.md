@@ -98,7 +98,7 @@ Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij i
 
 **Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
 doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
-limoen lichtaccent. Hero: `images/beeld/hero-turbine.jpg`; diensten: `kandidaten-engineer.jpg`,
+limoen lichtaccent. Hero: videolus `videos/hero-turbine-*` (Kling 3.0, naadloos via crossfade) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
 `bedrijven-installatie.jpg`.
 
 **Handtekening** — SVG-pad in `--lime-300`, 3px streek, ronde uiteinden. Staat naast of onder een
