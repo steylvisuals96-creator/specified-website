@@ -66,12 +66,13 @@ Regels:
 - Display-koppen mogen tot de rand van het scherm lopen (bleed); tekstblokken blijven in het raster.
 
 ```
-HERO (100svh)
+HERO (100svh, typografisch, geen foto's)
 ┌──────────────────────────────────────────────┐
 │ SPECIFIED      Diensten Jobs Blog Over ons  [Neem contact op] │
-│ WE ENGINEER POSSIBILITIES.   (bleed, achter de founders)      │
-│        [ Tom ][ Simon ]   ~~~handtekening~~~                  │
-│ [Engineering recruitment, Kontich]                            │
+│                              intro-tekst + 2 knoppen (rechts) │
+│                                                               │
+│ WE ENGINEER                                                   │
+│ POSSIBILITIES.  ~~~handtekening door de onderste regel~~~     │
 └──────────────────────────────────────────────┘
 DISCIPLINES (scroll-scrub, rijen schuiven om en om links/rechts)
 VOOR KANDIDATEN | VOOR BEDRIJVEN (2 kolommen, tekst + knop)
@@ -99,8 +100,10 @@ Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij i
 portret, nooit over een gezicht. Doel: echte handtekeningen van Tom en Simon (op papier, gevectoriseerd);
 tot dan een placeholder-pad.
 
-**Portretten** — vrijstaand (`public/images/team/*-vrijstaand.png`), grade: verzadiging 0.8, contrast +8%.
-Geen AI-hertekende gezichten op de site.
+**Portretten** — alleen in de founders-sectie, niet in de hero (keuze Sam 2026-09-25: geen cut-outs).
+De originele foto's als rechthoekige portretten (3:4), donkere grade: verzadiging 0.75, helderheid −8%,
+contrast +8%, plus een verloop van `--ink-900` onderaan zodat de infokaart erin overloopt.
+Geen AI-hertekende gezichten, geen uitgeknipte foto's.
 
 **Focus** — 2px outline `--lime-300`, offset 3px, op alles wat focusbaar is.
 

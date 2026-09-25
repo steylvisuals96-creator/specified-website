@@ -1,14 +1,14 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
 import Split from "@/components/Split";
 import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
-import PageShapes from "@/components/PageShapes";
-import Marquee from "@/components/Marquee";
+import Disciplines from "@/components/Disciplines";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
+
+const DAG = 24 * 60 * 60 * 1000;
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -64,6 +64,7 @@ async function getRecentJobs() {
         location: v.locatie ?? "België",
         sector: SECTOR_LABEL[v.sector] ?? v.sector ?? "",
         ervaring: v.ervaringsniveau ? ERVARING_LABEL[v.ervaringsniveau] ?? v.ervaringsniveau : "",
+        dagen: v.createdAt ? Math.floor((Date.now() - new Date(v.createdAt).getTime()) / DAG) : undefined,
       }));
   } catch {
     return [];
@@ -75,9 +76,8 @@ export default async function Home() {
 
   return (
     <>
-      <PageShapes />
       <Nav />
-      <main style={{ position: "relative", zIndex: 1 }}>
+      <main>
         <Hero
           prefix={settings.hero_prefix}
           woorden={settings.hero_woorden}
@@ -86,8 +86,7 @@ export default async function Home() {
           ctaPrimary={settings.hero_cta_tekst}
           ctaSecondary={settings.hero_cta_2_tekst}
         />
-        <Marquee items={settings.sectoren?.map((s) => s.naam)} />
-        <Stats items={settings.statistieken} />
+        <Disciplines items={settings.sectoren?.map((s) => s.naam)} />
         <Split settings={settings} />
         <Jobs jobs={jobs} titel={settings.jobs_titel} linkTekst={settings.jobs_link_tekst} />
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
-import CursorGlow from "@/components/CursorGlow";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import HashScroll from "@/components/HashScroll";
 
@@ -43,7 +42,6 @@ export default function RootLayout({
     // navigeren zonder dit attribuut traag naar boven glijdt in plaats van te springen.
     <html lang="nl" className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth">
       <body className="min-h-full flex flex-col">
-        <CursorGlow />
         <HashScroll />
         {children}
         <CookieBanner />

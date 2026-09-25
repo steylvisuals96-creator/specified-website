@@ -1,7 +1,4 @@
-"use client";
-
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { metAccent } from "@/lib/accent";
 
 type Job = {
   title: string;
@@ -9,67 +6,63 @@ type Job = {
   location: string;
   sector: string;
   ervaring?: string;
+  dagen?: number;
 };
 
+function versheid(dagen?: number) {
+  if (dagen === undefined) return null;
+  if (dagen < 1) return { getal: "Nieuw", label: "vandaag online" };
+  return { getal: String(dagen), label: dagen === 1 ? "dag online" : "dagen online" };
+}
+
 export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: string; linkTekst?: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
-    <section id="jobs" ref={ref} style={{ padding: "clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem)", borderTop: "1px solid var(--border)" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "3rem", flexWrap: "wrap", gap: "1rem" }}>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(2.8rem, 5vw, 5rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.0, color: "var(--white)" }}
-          >
-            {titel || "Vind jouw volgende stap."}
-          </motion.h2>
-          <motion.a
-            href="/vacatures"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            style={{ fontSize: "0.875rem", color: "var(--lime)", textDecoration: "none", fontWeight: 500, borderBottom: "1px solid rgba(223,253,123,0.3)", paddingBottom: "2px" }}
-          >
-            {linkTekst || "Alle vacatures"}
-          </motion.a>
+    <section id="jobs" className="jobs">
+      <div className="wrap">
+        <div className="jobs__kop">
+          <h2 className="display display-l">{metAccent(titel || "Vind jouw volgende stap.")}</h2>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {jobs.length === 0 ? (
-            <p style={{ color: "var(--muted)", padding: "2rem 0", fontSize: "0.9rem" }}>
-              Binnenkort nieuwe vacatures beschikbaar.
+        {jobs.length === 0 ? (
+          <div className="jobs__leeg">
+            <p className="lead">
+              Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook
+              buiten de openstaande jobs.
             </p>
-          ) : (
-            jobs.map((job, i) => (
-              <motion.a
-                key={`${job.title}-${i}`}
-                href="/vacatures"
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
-                style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 0", borderBottom: "1px solid var(--border)", textDecoration: "none", cursor: "pointer" }}
-                whileHover={{ x: 6 }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--white)" }}>{job.title}</span>
-                  <span style={{ fontSize: "0.75rem", color: "var(--muted)", fontWeight: 400 }}>
-                    {[job.location, job.sector, job.ervaring].filter(Boolean).join(" · ")}
-                  </span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 500, color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.2rem 0.65rem", borderRadius: "3px" }}>
-                    {job.type}
-                  </span>
-                  <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>↗</span>
-                </div>
-              </motion.a>
-            ))
-          )}
-        </div>
+            <a href="mailto:info@specified.be?subject=Open%20sollicitatie" className="btn btn-primary">
+              Stuur een open sollicitatie
+            </a>
+          </div>
+        ) : (
+          <ul className="jobs__lijst">
+            {jobs.map((job, i) => {
+              const v = versheid(job.dagen);
+              return (
+                <li key={`${job.title}-${i}`}>
+                  <a href="/vacatures" className="jobs__rij">
+                    <span className="jobs__vers">
+                      {v && (
+                        <>
+                          <span className="jobs__getal display">{v.getal}</span>
+                          <span className="jobs__vers-label">{v.label}</span>
+                        </>
+                      )}
+                    </span>
+                    <span className="jobs__titel">{job.title}</span>
+                    <span className="jobs__meta">{job.location}</span>
+                    <span className="jobs__meta">{job.sector}</span>
+                    <span className="jobs__meta">{job.ervaring}</span>
+                    <span className="jobs__meta">{job.type}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <a href="/vacatures" className="btn btn-secondary jobs__alle">
+          {linkTekst || "Bekijk alle vacatures"}
+        </a>
       </div>
     </section>
   );
