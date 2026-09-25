@@ -6,6 +6,7 @@ import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import Disciplines from "@/components/Disciplines";
+import ScrollMomenten from "@/components/ScrollMomenten";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
 
 const DAG = 24 * 60 * 60 * 1000;
@@ -92,6 +93,7 @@ export default async function Home() {
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
         <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
+      <ScrollMomenten />
       <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
     </>
   );

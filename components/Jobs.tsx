@@ -41,6 +41,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
               return (
                 <li key={`${job.title}-${i}`}>
                   <a href="/vacatures" className="jobs__rij">
+                    <span className="jobs__veeg" aria-hidden="true" />
                     <span className="jobs__vers" data-leeg={!v}>
                       {v && (
                         <>

@@ -292,7 +292,8 @@ body::after {
   display: grid; grid-template-rows: 1fr auto; row-gap: clamp(32px, 5vw, 72px);
 }
 .hero__beeld { position: absolute; inset: 0; z-index: 0; }
-.hero__beeld img { object-fit: cover; object-position: 78% 20%; }
+.hero__beeld { overflow: hidden; }
+.hero__beeld img { object-fit: cover; object-position: 78% 20%; transform-origin: 88% 8%; }
 .hero__beeld::after {
   content: ""; position: absolute; inset: 0;
   background:
@@ -314,9 +315,19 @@ body::after {
 .hero__line { display: block; overflow: hidden; padding-top: 0.05em; margin-top: -0.05em; }
 .hero__line > span { display: block; }
 .hero__brand { color: var(--lime-300); }
+/* Rotator: het woord wisselt binnen een masker, zodat het van onder inschuift. */
+.hero__rotator {
+  display: inline-block; vertical-align: top; overflow: hidden; color: var(--lime-300);
+  padding-top: 0.05em; margin-top: -0.05em;
+}
+.hero__woord { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero__woord { animation: hero-woord 620ms var(--ease-out) both; }
+}
+@keyframes hero-woord { from { transform: translateY(100%); } }
 .hero__signature {
   position: absolute; z-index: 2; pointer-events: none;
-  width: min(46vw, 640px); right: var(--gutter); bottom: clamp(8px, 2vw, 32px);
+  width: min(46vw, 640px); right: -2%; bottom: -6%;
   stroke: var(--lime-300); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
   overflow: visible;
 }
@@ -327,7 +338,7 @@ body::after {
   .hero__line:nth-child(2) > span { animation-delay: 90ms; }
   .hero__signature path {
     stroke-dasharray: 1; stroke-dashoffset: 1;
-    animation: hero-sign 1300ms ease-in-out 650ms forwards;
+    animation: hero-sign 1100ms ease-in-out 250ms forwards;
   }
 }
 @keyframes hero-rise { from { transform: translateY(105%); } }
@@ -336,7 +347,7 @@ body::after {
 @media (max-width: 899px) {
   .hero__inner { min-height: 88svh; }
   .hero__beeld img { object-position: 70% 0%; }
-  .hero__signature { width: 70vw; bottom: 4px; }
+  .hero__signature { width: 70vw; right: -4%; bottom: -10%; }
 }
 
 /* ─── Disciplines (scroll-moment) ─────────────────────── */
@@ -388,6 +399,10 @@ body::after {
 .jobs__rij:hover .jobs__meta, .jobs__rij:hover .jobs__vers-label,
 .jobs__rij:focus-visible .jobs__meta, .jobs__rij:focus-visible .jobs__vers-label,
 .jobs__rij:hover .jobs__getal, .jobs__rij:focus-visible .jobs__getal { color: var(--ink-900); }
+.jobs__veeg {
+  position: absolute; inset: 0 calc(var(--gutter) * -1); z-index: -1; pointer-events: none;
+  background: var(--lime-300); transform: scaleX(0);
+}
 .jobs__vers { flex-basis: 100%; display: flex; align-items: baseline; gap: 0.5rem; }
 .jobs__vers[data-leeg="true"] { display: none; }
 .jobs__getal { font-size: 2.75rem; line-height: 0.9; color: var(--lime-300); }

@@ -128,7 +128,7 @@ Geen AI-hertekende gezichten, geen uitgeknipte foto's.
 
 ## Motion
 
-Eén georkestreerd moment en één scroll-moment; de rest is stil.
+Eén laadmoment, een doorlopende rotator in de hero, en per sectie één eigen scroll-moment (keuze Sam 2026-09-26: de site moet voelbaar scrollen). Elk moment heeft een ander karakter; nooit dezelfde fade op elke sectie.
 
 Basisregel: alles is zichtbaar in de HTML zonder JavaScript. Animatie verfraait een pagina die al af is;
 de beginstaat wordt pas door JS gezet vlak voor het afspelen (geen verborgen content bij trage JS).
@@ -138,6 +138,12 @@ Easing standaard exponentieel uit (`cubic-bezier(0.22,1,0.36,1)`); naast transfo
 | Moment | Wat | Timing |
 | --- | --- | --- |
 | Hero-laadsequentie (één keer) | Kopregels schuiven van onder hun eigen masker in (per regel, 80ms stagger), daarna tekent de handtekening zichzelf (`stroke-dashoffset`) | kop 700ms `cubic-bezier(0.22,1,0.36,1)`; handtekening 1200ms `ease-in-out`, start na 400ms |
+| Hero-rotator | Woord wisselt elke 2,6 s (engineer, shape, unlock, build, define of CMS `hero_woorden`), schuift van onder in; de handtekening wist en hertekent zich bij elk woord | woord 620ms; handtekening 1100ms |
+| Hero (scroll) | Turbine draait mee (tot 28°) en zoomt licht; kop schuift omhoog; intro vervaagt | scrub |
+| Diensten (scroll) | Beeld opent als een sluiter (`clip-path` inset → 0) en zoomt uit | scrub |
+| Vacatures (scroll, eenmalig) | Eén limoen veeg golft over de rijen | 0,35 s in + 0,4 s uit, 90ms stagger |
+| Founders (scroll) | Foto schuift trager dan de pagina (diepte) | scrub |
+| Contact (scroll) | Kop groeit van 82% naar volle maat; onderlijn onder het e-mailadres trekt zich | scrub |
 | Disciplines (scroll-scrub) | Rijen bewegen horizontaal met de scroll, om en om links/rechts, GSAP ScrollTrigger `scrub: 0.6` | gekoppeld aan scroll, geen eigen duur |
 | Vacaturerij (gebruiker) | Limoen balk schuift van links in | 220ms `cubic-bezier(0.2,0,0,1)` |
 | Knoppen (gebruiker) | Kleurwissel | 160ms ease-out |

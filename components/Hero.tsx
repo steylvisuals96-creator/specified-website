@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Signature from "@/components/Signature";
+import HeroRotator from "@/components/HeroRotator";
 
-// Typografische hero: de kop is het beeld. Het tweede woord kan uit de CMS komen
-// (hero_woorden); het eerste daarvan wordt gebruikt, niet geroteerd.
+// Typografische hero: de kop is het beeld. Het tweede woord wisselt (rotator);
+// de woorden komen uit de CMS (hero_woorden) of uit de standaardlijst.
 export default function Hero({
   prefix,
   woorden,
@@ -18,7 +18,8 @@ export default function Hero({
   ctaPrimary?: string;
   ctaSecondary?: string;
 } = {}) {
-  const woord = woorden?.[0]?.woord || "engineer";
+  const lijst = woorden?.map((w) => w.woord).filter(Boolean);
+  const woord = lijst?.[0] || "engineer";
   const heroPrefix = prefix || "We";
   const heroSuffix = suffix || "possibilities.";
   const intro =
@@ -45,17 +46,11 @@ export default function Hero({
         </div>
 
         <h1 id="hero-titel" className="display hero__title">
-          <span className="hero__line">
-            <span>
-              {heroPrefix} <span className="hero__brand">{woord}</span>
-            </span>
+          <span className="sr-only">
+            {heroPrefix} {woord} {heroSuffix}
           </span>
-          <span className="hero__line">
-            <span>{heroSuffix}</span>
-          </span>
+          <HeroRotator prefix={heroPrefix} suffix={heroSuffix} woorden={lijst} />
         </h1>
-
-        <Signature className="hero__signature" />
       </div>
     </section>
   );
