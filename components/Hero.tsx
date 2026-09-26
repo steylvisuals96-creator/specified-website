@@ -28,33 +28,47 @@ export default function Hero({
     "Specified verbindt technische toptalenten met ambitieuze ingenieurbureaus en industriële bedrijven. Eerlijk, snel en persoonlijk.";
 
   return (
-    <section className="hero" aria-labelledby="hero-titel">
-      {/* Sfeerbeeld (AI-gegenereerd, geen mensen): turbine rechtsboven, kop in de donkere ruimte.
+    // De spoor-div reserveert de scrollruimte van de turbine in CSS, zodat er na
+    // het laden niets verspringt (een GSAP-pin voegt die ruimte pas later toe).
+    <div className="hero-spoor">
+      <section className="hero" aria-labelledby="hero-titel">
+        {/* Sfeerbeeld (AI-gegenereerd, geen mensen): turbine rechtsboven, kop in de donkere ruimte.
           De poster is frame 1 van de scroll-video, zodat de overgang onzichtbaar is. */}
-      <div className="hero__beeld" aria-hidden="true">
-        <Image src="/images/beeld/hero-turbine-poster.jpg" alt="" fill priority sizes="100vw" />
-        <HeroScrub />
-      </div>
-      <div className="wrap hero__inner">
-        <div className="hero__copy">
-          <p className="lead">{intro}</p>
-          <div className="hero__actions">
-            <a href="/vacatures" className="btn btn-primary">
-              {ctaPrimary || "Bekijk vacatures"}
-            </a>
-            <a href="#contact" className="btn btn-secondary">
-              {ctaSecondary || "Neem contact op"}
-            </a>
-          </div>
+        <div className="hero__beeld" aria-hidden="true">
+          <Image
+            src="/images/beeld/hero-turbine-poster.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+          />
+          <HeroScrub />
         </div>
+        <div className="wrap hero__inner">
+          <div className="hero__copy">
+            <p className="lead">{intro}</p>
+            <div className="hero__actions">
+              <a href="/vacatures" className="btn btn-primary">
+                {ctaPrimary || "Bekijk vacatures"}
+              </a>
+              <a href="#contact" className="btn btn-secondary">
+                {ctaSecondary || "Neem contact op"}
+              </a>
+            </div>
+          </div>
 
-        <h1 id="hero-titel" className="display hero__title">
-          <span className="sr-only">
-            {heroPrefix} {woord} {heroSuffix}
-          </span>
-          <HeroRotator prefix={heroPrefix} suffix={heroSuffix} woorden={lijst} />
-        </h1>
-      </div>
-    </section>
+          <h1 id="hero-titel" className="display hero__title">
+            <span className="sr-only">
+              {heroPrefix} {woord} {heroSuffix}
+            </span>
+            <HeroRotator
+              prefix={heroPrefix}
+              suffix={heroSuffix}
+              woorden={lijst}
+            />
+          </h1>
+        </div>
+      </section>
+    </div>
   );
 }

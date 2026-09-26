@@ -285,6 +285,12 @@ body::after {
 
 /* ─── Hero (typografisch) ───────────────────────────── */
 .hero { position: relative; overflow: hidden; }
+/* Scrollruimte voor de turbine: de hero blijft 130vh staan terwijl de frames
+   meescrollen. In CSS, zodat ze er al is vóór JS laadt (geen verspringing). */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-spoor { padding-bottom: 130vh; }
+  .hero-spoor > .hero { position: sticky; top: 0; }
+}
 .hero__inner {
   position: relative; min-height: 100svh;
   padding-top: calc(76px + clamp(32px, 6vw, 96px));

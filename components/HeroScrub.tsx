@@ -12,6 +12,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // frames op een canvas in plaats van een <video>: terugspoelen in een video
 // hapert, zeker in Safari. De poster in Hero is frame 1 en blijft staan tot
 // het canvas tekent; zonder JS of met "beweging beperken" blijft alleen die.
+// De hero blijft staan met CSS (position: sticky in .hero-spoor), niet met een
+// GSAP-pin: zo ligt de scrollruimte vast vóór JS laadt en verspringt er niets.
 const SETS = {
   desktop: { map: "desktop", aantal: 95, positie: [0.78, 0.2] },
   mobiel: { map: "mobiel", aantal: 76, positie: [0.7, 0] },
@@ -78,19 +80,30 @@ export default function HeroScrub() {
 
       maat();
       let geannuleerd = false;
-      laadVolgorde(set.aantal).forEach((i, volgorde) => {
-        const img = new Image();
-        img.decoding = "async";
-        // Na de eerste weergave laden, in de volgorde van laadVolgorde.
-        window.setTimeout(() => {
-          if (geannuleerd) return;
-          img.src = pad(set.map, i);
-        }, 300 + volgorde * 12);
-        img.onload = () => {
-          beelden[i] = img;
-          if (i === 0 || Math.abs(i - huidig) < 4) teken(huidig);
-        };
-      });
+      const laadFrames = () =>
+        laadVolgorde(set.aantal).forEach((i, volgorde) => {
+          const img = new Image();
+          img.decoding = "async";
+          // Gespreid, in de volgorde van laadVolgorde.
+          window.setTimeout(() => {
+            if (geannuleerd) return;
+            img.src = pad(set.map, i);
+          }, volgorde * 12);
+          img.onload = () => {
+            beelden[i] = img;
+            if (i === 0 || Math.abs(i - huidig) < 4) teken(huidig);
+          };
+        });
+      // Pas na het laden van de pagina en als de browser vrij is: de frames
+      // mogen de bandbreedte van de poster en de letters niet opeten.
+      const start = () => {
+        const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number })
+          .requestIdleCallback;
+        if (idle) idle(laadFrames, { timeout: 1500 });
+        else window.setTimeout(laadFrames, 200);
+      };
+      if (document.readyState === "complete") start();
+      else window.addEventListener("load", start, { once: true });
 
       const onResize = () => {
         maat();
@@ -100,10 +113,9 @@ export default function HeroScrub() {
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: ".hero",
+          trigger: ".hero-spoor",
           start: "top top",
-          end: "+=130%",
-          pin: true,
+          end: "bottom bottom",
           scrub: 0.4,
           onUpdate: (self) => {
             const i = Math.round(self.progress * (set.aantal - 1));
@@ -131,6 +143,7 @@ export default function HeroScrub() {
 
       return () => {
         geannuleerd = true;
+        window.removeEventListener("load", start);
         window.removeEventListener("resize", onResize);
       };
     });
