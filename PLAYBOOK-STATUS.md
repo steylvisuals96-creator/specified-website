@@ -89,5 +89,16 @@ Bestaande Payload-CMS (`specified-cms`, MongoDB + R2), branch `fase4/rollen-en-b
 - [ ] Overblijfselen vastgoed in `dashboard/team/create` en `team/[id]/edit` (velden bestaan niet in Team-collectie)
 - Homepage-inhoud: disciplines (`sectoren`) en cijfers (`statistieken`) zijn in het instellingen-dashboard in te vullen; beide nu leeg
 
+## Fase 4b — Supabase i.p.v. MongoDB (klaar voor overstap)
+Keuze Sam 2026-09-26: Specified-CMS naar Supabase, zoals het playbook.
+- [x] Supabase-project `specified-cms` (ref htkcrkafetzbnpznektz, Frankfurt, Free, $0)
+- [x] Branch `fase4b/supabase` (specified-cms): Postgres-adapter, schema `payload` (niet via Data API, anon/authenticated zonder rechten), migratie, migratiescript, `overstap-supabase.sh`, `docs/MIGRATIE-SUPABASE.md`
+- [x] Lokaal getest (Postgres 17 + MongoDB): aantallen, relaties, uploads, arrays, rich text, datums, login met oud wachtwoord, 14 rolscenario's, website-API, CMS-build
+- [ ] **Sam:** Supabase DB-wachtwoord resetten + Session- en Transaction-pooler-adres; Atlas-adres; `./scripts/overstap-supabase.sh` draaien
+- [ ] **Sam:** `DATABASE_URI` (Transaction pooler) in Vercel zetten, branch mergen
+- [ ] Controle na overstap + Supabase-advisors
+- [ ] Na 30 dagen: MongoDB/Atlas en `MONGODB_URI` opruimen
+- Let op: `~/specified-cms/.vercel` wees naar `som-vastgoed-cms`; opnieuw gekoppeld aan `specified-cms`
+
 ## Fase 5–6
 Nog niet gestart.
