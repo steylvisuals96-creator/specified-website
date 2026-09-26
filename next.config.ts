@@ -28,7 +28,22 @@ const doorverwijzingen: Doorverwijzing[] = [
   { slug: "activiteiten" },
 ];
 
+// Beveiligingsheaders voor dashboard, admin en API. Geen volledige CSP: de
+// Payload-admin gebruikt inline scripts en stijlen. Wel frame-ancestors, zodat
+// niemand de CMS in een frame kan laden (clickjacking op de loginpagina).
+const beveiligingsheaders = [
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Content-Security-Policy", value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{ source: "/:path*", headers: beveiligingsheaders }];
+  },
   async redirects() {
     const rules = [
       { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen/edit", permanent: false },

@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
 
     const result = await payload.create({
       collection: "media",
+      // Als de ingelogde gebruiker, zodat de toegangsregels en het bestandstype gelden.
+      user,
+      overrideAccess: false,
       data: { alt } as any,
       file: {
         data: buffer,

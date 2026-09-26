@@ -19,7 +19,11 @@ export const Media: CollectionConfig = {
   admin: {
     group: "Instellingen",
   },
-  upload: true,
+  // Alleen rasterafbeeldingen. Geen SVG of HTML: die worden publiek vanaf het
+  // CMS-domein geserveerd en kunnen script bevatten (stored XSS op de admins).
+  upload: {
+    mimeTypes: ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"],
+  },
   fields: [
     {
       name: "alt",
