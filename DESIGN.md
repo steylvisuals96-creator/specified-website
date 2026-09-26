@@ -98,7 +98,7 @@ Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij i
 
 **Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
 doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
-limoen lichtaccent. Hero: scroll-gestuurde turbine (Kling 3.0-lus als framereeks `videos/turbine-frames/{desktop,mobiel}/*.webp`, 114/76 frames, 3,1/1,0 MB) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
+limoen lichtaccent. Hero: scroll-gestuurde turbine (Kling 3.0-lus als framereeks `videos/turbine-frames/{desktop,mobiel}/*.webp`, 95/76 frames op 1912/1200 px, 4,7/1,9 MB) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
 `bedrijven-installatie.jpg`.
 
 **Handtekening** — SVG-pad in `--lime-300`, 3px streek, ronde uiteinden. Staat naast of onder een

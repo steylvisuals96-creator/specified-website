@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 // hapert, zeker in Safari. De poster in Hero is frame 1 en blijft staan tot
 // het canvas tekent; zonder JS of met "beweging beperken" blijft alleen die.
 const SETS = {
-  desktop: { map: "desktop", aantal: 114, positie: [0.78, 0.2] },
+  desktop: { map: "desktop", aantal: 95, positie: [0.78, 0.2] },
   mobiel: { map: "mobiel", aantal: 76, positie: [0.7, 0] },
 } as const;
 
@@ -67,6 +67,8 @@ export default function HeroScrub() {
         const w = img.naturalWidth * s;
         const h = img.naturalHeight * s;
         const [px, py] = set.positie;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
         ctx.drawImage(img, (cw - w) * px, (ch - h) * py, w, h);
         if (!getekend) {
           getekend = true;
@@ -114,7 +116,7 @@ export default function HeroScrub() {
       });
       // Terwijl de turbine draait: intro vervaagt, beeld zoomt licht, kop schuift pas op het einde weg.
       tl.to(".hero__copy", { opacity: 0, y: -40, ease: "none", duration: 0.35 }, 0)
-        .to(".hero__beeld", { scale: 1.1, ease: "none", duration: 1 }, 0)
+        .to(".hero__beeld", { scale: 1.04, ease: "none", duration: 1 }, 0)
         .to(".hero__title", { yPercent: -14, ease: "none", duration: 0.35 }, 0.65);
 
       ScrollTrigger.refresh();
