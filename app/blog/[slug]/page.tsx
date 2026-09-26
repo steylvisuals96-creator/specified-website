@@ -66,7 +66,7 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <Nav />
       <main>
         <article style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem" }}>
