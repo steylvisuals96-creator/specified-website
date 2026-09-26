@@ -21,10 +21,9 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { SpecifiedIcon as SpecifiedIcon_84df67f4b0f8e76db0c6a39231c02ea0 } from '@/components/SpecifiedLogo'
+import { SpecifiedLogo as SpecifiedLogo_84df67f4b0f8e76db0c6a39231c02ea0 } from '@/components/SpecifiedLogo'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
-import { S3ClientUploadHandler as S3ClientUploadHandler_storage_s3 } from '@payloadcms/storage-s3/client'
-import { SomLogo as SomLogo_som } from '@/components/SomLogo'
-import { SomIcon as SomIcon_som } from '@/components/SomLogo'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -51,8 +50,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_storage_s3,
-  "@/components/SomLogo#SomLogo": SomLogo_som,
-  "@/components/SomLogo#SomIcon": SomIcon_som
+  "@/components/SpecifiedLogo#SpecifiedIcon": SpecifiedIcon_84df67f4b0f8e76db0c6a39231c02ea0,
+  "@/components/SpecifiedLogo#SpecifiedLogo": SpecifiedLogo_84df67f4b0f8e76db0c6a39231c02ea0,
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

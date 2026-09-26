@@ -169,8 +169,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ status: "ok", created });
   } catch (err: any) {
+    // Details alleen in de serverlog; de aanroeper krijgt geen interne foutmeldingen.
     console.error("Email webhook error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Verwerking mislukt" }, { status: 500 });
   }
 }
 

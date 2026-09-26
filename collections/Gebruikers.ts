@@ -39,7 +39,17 @@ const rolWijzigen: FieldAccess = ({ req }) => isBeheerder(req.user);
 
 export const Gebruikers: CollectionConfig = {
   slug: "gebruikers",
-  auth: true,
+  auth: {
+    // Na 5 foute pogingen 15 minuten geblokkeerd (brute force op wachtwoorden).
+    maxLoginAttempts: 5,
+    lockTime: 15 * 60 * 1000,
+    // Sessie verloopt na 8 uur: een werkdag, niet langer.
+    tokenExpiration: 8 * 60 * 60,
+    cookies: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+    },
+  },
   labels: {
     singular: "Gebruiker",
     plural: "Gebruikers",

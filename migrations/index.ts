@@ -10,6 +10,6 @@ export const migrations = [
   {
     up: migration_20260926_080223_payload_3_90.up,
     down: migration_20260926_080223_payload_3_90.down,
-    name: '20260926_080223_payload_3_90'
+    name: '20260926_080223_payload_3_90',
   },
 ];
