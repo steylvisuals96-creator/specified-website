@@ -114,5 +114,14 @@ Keuze Sam 2026-09-26: Specified-CMS naar Supabase, zoals het playbook.
 - Lockout (5×/15 min) enkel lokaal getest; niet op productie om geen echte accounts te blokkeren
 - Redesign-branch heeft dezelfde website-fixes al (commits 94f2589, c8aa10b)
 
+## Back-end redesign (klaar, live 2026-09-26)
+- [x] Ontwerpreferentie: 3 beelden (overzicht, kandidatenlijst, kandidaatpagina) via Higgsfield, ±8,25 credits, in specified-cms/design/referentie/
+- [x] /dashboard en /admin in dezelfde huisstijl als de website (tokens uit DESIGN.md, Bebas + Instrument, radius 2px, geen emoji/pijltjes/kapitalen-labels)
+- [x] Eén gedeeld menu (lib/menu.ts) in beide omgevingen; Payload-collecties ingeklapt onder "Ruwe gegevens"
+- [x] Nieuw: overzicht, kandidatenlijst met filters, kandidaatpagina met voortgangslijn, status wijzigen en snelle notitie
+- [x] Verouderde importMap.ts verwijderd (blokkeerde nieuwe admin-componenten); importmap-script bewaart de R2-uploadcomponent
+- PR steylvisuals96-creator/specified-cms#4 gemerged; live inlogscherm gecontroleerd
+- Nog na te kijken door Sam met een echt account: /dashboard en /admin ingelogd op productie
+
 ## Fase 6
 Nog niet gestart.
