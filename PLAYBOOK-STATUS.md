@@ -103,14 +103,15 @@ Keuze Sam 2026-09-26: Specified-CMS naar Supabase, zoals het playbook.
 ## Volgende: back-end redesign (na fase 5)
 - Sam: /admin (Payload) en /dashboard (eigen UI) voelen als twee apps; één back-end in Signatuurmerk-stijl. Eerst 2–3 ontwerpbeelden (± 8,25 credits, akkoord), dan shadcn + DESIGN.md-tokens, /admin gethemed, één menu.
 
-## Fase 5 — Veiligheid (klaar, wacht op merge)
+## Fase 5 — Veiligheid (klaar, live 2026-09-26)
 - [x] Supply chain: CMS Payload 3.85→3.90.2 + Next 16.2.9→16.3.6 (kritieke middleware-bypass, Payload account-unlock); website Next 16.3.6. Audit: CMS 0 kritiek/hoog (5 matig, alleen dev), website 0
 - [x] Semgrep (OWASP, Next, React, TS, JS, secrets): 0 bevindingen (124 + 54 bestanden)
 - [x] insecure-defaults (handmatig, plugin niet geïnstalleerd): CMS-headers toegevoegd, media alleen rasterbeelden, login-lockout 5×/15 min, sessie 8 u, geen interne foutmeldingen
 - [x] Website: 3 XSS-lekken in blog gedicht (javascript:-links, koptags, JSON-LD)
 - [x] Supabase-advies: 0 waarschuwingen; migratie payload_3_90 op productie gezet (additief) vóór merge
 - [x] /security-review op CMS-branch: geen kwetsbaarheden geïntroduceerd
-- [ ] **Sam:** merge steylvisuals96-creator/specified-cms#3 en steylvisuals96-creator/specified-website#1
+- [x] CMS #3 en website #1 gemerged en live. Gecontroleerd op productie: headers op CMS en website, /admin en API zonder login 401/307, upload zonder login 401, gebruikerslijst afgeschermd, blog + JSON-LD en vacatures uit de CMS renderen
+- Lockout (5×/15 min) enkel lokaal getest; niet op productie om geen echte accounts te blokkeren
 - Redesign-branch heeft dezelfde website-fixes al (commits 94f2589, c8aa10b)
 
 ## Fase 6
