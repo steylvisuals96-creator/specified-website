@@ -344,13 +344,8 @@ body::after {
 @media (prefers-reduced-motion: no-preference) {
   .hero__line > span { animation: hero-rise 760ms var(--ease-out) both; }
   .hero__line:nth-child(2) > span { animation-delay: 90ms; }
-  .hero__signature path {
-    stroke-dasharray: 1; stroke-dashoffset: 1;
-    animation: hero-sign 1100ms ease-in-out 250ms forwards;
-  }
 }
 @keyframes hero-rise { from { transform: translateY(105%); } }
-@keyframes hero-sign { to { stroke-dashoffset: 0; } }
 
 @media (max-width: 899px) {
   .hero__inner { min-height: 88svh; }

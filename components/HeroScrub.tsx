@@ -115,7 +115,15 @@ export default function HeroScrub() {
         },
       });
       // Terwijl de turbine draait: intro vervaagt, beeld zoomt licht, kop schuift pas op het einde weg.
-      tl.to(".hero__copy", { opacity: 0, y: -40, ease: "none", duration: 0.35 }, 0)
+      // De handtekening schrijft zich terwijl je scrolt (en wist bij terugscrollen).
+      tl.fromTo(
+        ".hero__signature path",
+        { strokeDasharray: 1, strokeDashoffset: 1 },
+        // autoRound uit: het pad heeft lengte 1, afronden zou het in één klap tonen.
+        { strokeDashoffset: 0, ease: "none", duration: 0.6, autoRound: false },
+        0.05,
+      )
+        .to(".hero__copy", { opacity: 0, y: -40, ease: "none", duration: 0.35 }, 0)
         .to(".hero__beeld", { scale: 1.04, ease: "none", duration: 1 }, 0)
         .to(".hero__title", { yPercent: -14, ease: "none", duration: 0.35 }, 0.65);
 

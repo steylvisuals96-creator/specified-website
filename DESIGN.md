@@ -138,7 +138,8 @@ Easing standaard exponentieel uit (`cubic-bezier(0.22,1,0.36,1)`); naast transfo
 | Moment | Wat | Timing |
 | --- | --- | --- |
 | Hero-laadsequentie (één keer) | Kopregels schuiven van onder hun eigen masker in (per regel, 80ms stagger), daarna tekent de handtekening zichzelf (`stroke-dashoffset`) | kop 700ms `cubic-bezier(0.22,1,0.36,1)`; handtekening 1200ms `ease-in-out`, start na 400ms |
-| Hero-rotator | Woord wisselt elke 2,6 s (engineer, shape, unlock, build, define of CMS `hero_woorden`), schuift van onder in; de handtekening wist en hertekent zich bij elk woord | woord 620ms; handtekening 1100ms |
+| Hero-rotator | Woord wisselt elke 2,6 s (engineer, shape, unlock, build, define of CMS `hero_woorden`), schuift van onder in | 620ms |
+| Handtekening (scroll) | Schrijft zich met de scroll tijdens de gepinde hero (0–800 px op desktop), wist bij terugscrollen; zonder JS/reduced motion volledig zichtbaar | scrub |
 | Hero (scroll, gepind) | Hero pint 130% schermhoogte; de scroll speelt de turbine-frames af (vooruit/terug); intro vervaagt, beeld zoomt tot 110%, kop schuift op het einde weg | scrub 0,4 |
 | Diensten (scroll) | Beeld opent als een sluiter (`clip-path` inset → 0) en zoomt uit | scrub |
 | Vacatures (scroll, eenmalig) | Eén limoen veeg golft over de rijen | 0,35 s in + 0,4 s uit, 90ms stagger |

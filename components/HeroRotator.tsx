@@ -6,8 +6,8 @@ import Signature from "@/components/Signature";
 const FALLBACK = ["engineer", "shape", "unlock", "build", "define"];
 const INTERVAL = 2600;
 
-// Het wisselende woord in de hero, met de handtekening die bij elk woord
-// opnieuw getekend wordt. De volledige zin staat ook als gewone tekst in de h1
+// Het wisselende woord in de hero. De handtekening staat hier mee in de kop,
+// maar wordt door de scroll getekend (zie HeroScrub). De volledige zin staat ook als gewone tekst in de h1
 // (zie Hero), zodat schermlezers en zoekmachines geen wisselende kop krijgen.
 export function useWoordIndex(aantal: number) {
   const [index, setIndex] = useState(0);
@@ -47,8 +47,8 @@ export default function HeroRotator({
       <span className="hero__line" aria-hidden="true">
         <span>{suffix}</span>
       </span>
-      {/* key herstart de teken-animatie bij elk nieuw woord */}
-      <Signature key={`sig-${index}`} className="hero__signature" />
+      {/* Wordt getekend door de scroll (HeroScrub), niet per woord. */}
+      <Signature className="hero__signature" />
     </>
   );
 }
