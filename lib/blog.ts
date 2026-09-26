@@ -34,8 +34,9 @@ function nodeToHtml(node: any): string {
     case "paragraph":
       return children ? `<p>${children}</p>` : "";
     case "heading": {
-      // h1 blijft voor de artikeltitel; verlaag koppen in de tekst één niveau
-      const tag = node.tag === "h1" ? "h2" : node.tag || "h2";
+      // h1 blijft voor de artikeltitel; verlaag koppen in de tekst één niveau.
+      // Alleen bekende koptags: node.tag komt uit de CMS en belandt letterlijk in de HTML.
+      const tag = ["h2", "h3", "h4", "h5", "h6"].includes(node.tag) ? node.tag : "h2";
       return `<${tag}>${children}</${tag}>`;
     }
     case "list":
@@ -43,7 +44,11 @@ function nodeToHtml(node: any): string {
     case "listitem":
       return `<li>${children}</li>`;
     case "link": {
-      const url = String(node.url || "#").replace(/"/g, "%22");
+      // Alleen veilige adressen: http(s), mailto, tel of een pad/anker op de site.
+      // Een javascript:-link zou code uitvoeren bij het klikken.
+      const ruw = String(node.fields?.url ?? node.url ?? "#").trim();
+      const veilig = /^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i.test(ruw) ? ruw : "#";
+      const url = veilig.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
       const extern = /^https?:\/\//i.test(url);
       return `<a href="${url}"${extern ? ' target="_blank" rel="noopener noreferrer"' : ""}>${children}</a>`;
     }
