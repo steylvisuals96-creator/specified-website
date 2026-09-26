@@ -25,7 +25,7 @@ export const Blog: CollectionConfig = {
   labels: { singular: "Artikel", plural: "Blog" },
   admin: {
     useAsTitle: "titel",
-    group: "Inhoud",
+    group: "Ruwe gegevens",
     defaultColumns: ["titel", "status", "publicatiedatum", "updatedAt"],
   },
   fields: [

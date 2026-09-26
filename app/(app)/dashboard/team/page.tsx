@@ -25,13 +25,13 @@ export default async function TeamPage() {
   const docs = await payload.find({ collection: "team", limit: 100, sort: "volgorde" });
 
   return (
-    <DashboardShell activePath="/dashboard/team" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/team" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Team"
         subtitle={`${docs.totalDocs} teamleden`}
         actions={<TeamCreateDrawer />}
       />
-      <div style={{ padding: "1.5rem 2.5rem" }}>
+      <div className="px-5 py-6 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>Nog geen teamleden toegevoegd.</Empty> : (
           <Table headers={["Naam", "Rol", "E-mail", "LinkedIn", "Actief", ""]}>
             {docs.docs.map((doc: any) => {
@@ -51,7 +51,7 @@ export default async function TeamPage() {
                       : "—"}
                   </TD>
                   <TD>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: doc.actief ? "#34d399" : "#6b7280" }}>
+                    <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: doc.actief ? "#9bd17f" : "#6f6d62" }}>
                       {doc.actief ? "Actief" : "Inactief"}
                     </span>
                   </TD>

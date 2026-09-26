@@ -72,6 +72,10 @@ export default buildConfig({
   ],
   admin: {
     user: "gebruikers",
+    // Niet automatisch: lokaal staat R2 uit en dan zou de dev-server de
+    // S3-uploadcomponent uit de map halen. Nieuwe admin-componenten?
+    // `npx tsx scripts/db-migratie.ts importmap`
+    importMap: { autoGenerate: false },
     meta: {
       titleSuffix: "— Specified CMS",
     },
@@ -80,6 +84,8 @@ export default buildConfig({
         Logo: "@/components/SpecifiedLogo#SpecifiedLogo",
         Icon: "@/components/SpecifiedLogo#SpecifiedIcon",
       },
+      // Zelfde menu als /dashboard (lib/menu.ts), boven Payloads collectielijst.
+      beforeNavLinks: ["@/components/admin/AdminMenu#AdminMenu"],
     },
   },
   collections: [

@@ -41,6 +41,9 @@ const beveiligingsheaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Er staat een package.json in de home-map van de ontwikkelaar; zonder dit kiest
+  // Turbopack die map als root en leest het verouderde bestanden (bv. de importMap).
+  turbopack: { root: process.cwd() },
   async headers() {
     return [{ source: "/:path*", headers: beveiligingsheaders }];
   },

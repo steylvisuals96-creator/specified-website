@@ -13,7 +13,7 @@ export const Team: CollectionConfig = {
   },
   admin: {
     useAsTitle: "naam",
-    group: "Inhoud",
+    group: "Ruwe gegevens",
     defaultColumns: ["naam", "rol", "actief", "volgorde"],
   },
   fields: [

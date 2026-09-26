@@ -9,9 +9,9 @@ import ActiviteitCreateDrawer from "@/components/ActiviteitCreateDrawer";
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const LIME = "#dffd7b";
-const MUTED = "rgba(255,255,255,0.4)";
-const BORDER = "rgba(255,255,255,0.08)";
-const S1 = "#27272a";
+const MUTED = "var(--bone-400)";
+const BORDER = "var(--line)";
+const S1 = "var(--ink-800)";
 
 export default async function ActiviteitenPage({
   searchParams,
@@ -64,14 +64,14 @@ export default async function ActiviteitenPage({
 
   const TYPES = [
     { value: "", label: "Alle types" },
-    { value: "email", label: "📧 E-mail" },
-    { value: "telefoon", label: "📞 Telefoon" },
-    { value: "meeting", label: "📅 Meeting" },
-    { value: "notitie", label: "📝 Notitie" },
+    { value: "email", label: "E-mail" },
+    { value: "telefoon", label: "Telefoon" },
+    { value: "meeting", label: "Afspraak" },
+    { value: "notitie", label: "Notitie" },
   ];
 
   return (
-    <DashboardShell activePath="/dashboard/activiteiten" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/activiteiten" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Activiteiten"
         subtitle={`${docs.totalDocs} activiteiten`}
@@ -89,7 +89,7 @@ export default async function ActiviteitenPage({
             <a
               key={t.value}
               href={href}
-              style={{ padding: "0.35rem 0.75rem", borderRadius: "3px", fontSize: "0.78rem", textDecoration: "none", background: active ? `${LIME}18` : "transparent", color: active ? LIME : MUTED, border: `1px solid ${active ? `${LIME}40` : BORDER}`, fontWeight: active ? 600 : 400 }}
+              style={{ padding: "0.35rem 0.75rem", borderRadius: "2px", fontSize: "0.8125rem", textDecoration: "none", background: active ? `${LIME}18` : "transparent", color: active ? LIME : MUTED, border: `1px solid ${active ? `${LIME}40` : BORDER}`, fontWeight: active ? 600 : 400 }}
             >
               {t.label}
             </a>
@@ -98,8 +98,8 @@ export default async function ActiviteitenPage({
         <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem" }}>
           {[
             { value: "", label: "Alle" },
-            { value: "inkomend", label: "↓ Inkomend" },
-            { value: "uitgaand", label: "↑ Uitgaand" },
+            { value: "inkomend", label: "Inkomend" },
+            { value: "uitgaand", label: "Uitgaand" },
           ].map((r) => {
             const active = (richting ?? "") === r.value;
             const href = r.value
@@ -109,7 +109,7 @@ export default async function ActiviteitenPage({
               <a
                 key={r.value}
                 href={href}
-                style={{ padding: "0.35rem 0.75rem", borderRadius: "3px", fontSize: "0.78rem", textDecoration: "none", background: active ? `${LIME}18` : "transparent", color: active ? LIME : MUTED, border: `1px solid ${active ? `${LIME}40` : BORDER}`, fontWeight: active ? 600 : 400 }}
+                style={{ padding: "0.35rem 0.75rem", borderRadius: "2px", fontSize: "0.8125rem", textDecoration: "none", background: active ? `${LIME}18` : "transparent", color: active ? LIME : MUTED, border: `1px solid ${active ? `${LIME}40` : BORDER}`, fontWeight: active ? 600 : 400 }}
               >
                 {r.label}
               </a>
@@ -118,7 +118,7 @@ export default async function ActiviteitenPage({
         </div>
       </div>
 
-      <div style={{ padding: "1.5rem 2.5rem" }}>
+      <div className="px-5 py-6 sm:px-8 lg:px-10">
         <ActiviteitFeed items={items} showRelaties bccEmail={bccEmail} />
       </div>
     </DashboardShell>

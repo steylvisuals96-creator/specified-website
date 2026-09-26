@@ -7,11 +7,12 @@ import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty } from "@/com
 import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
 import BedrijfCreateDrawer from "@/components/BedrijfCreateDrawer";
 import ZoekFilter from "@/components/ZoekFilter";
+import { SECTOR_LABEL } from "@/lib/labels";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const statusKleur: Record<string, string> = {
-  prospect: "#60a5fa", actief: "#dffd7b", slapend: "#f59e0b", voormalig: "#6b7280",
+  prospect: "#8fb3d9", actief: "#dffd7b", slapend: "#d9a86c", voormalig: "#6f6d62",
 };
 
 const statusLabel: Record<string, string> = {
@@ -35,16 +36,16 @@ export default async function BedrijvenPage({ searchParams }: { searchParams: Pr
   const docs = await payload.find({ collection: "bedrijven", limit: 100, sort: "naam", where });
 
   return (
-    <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Bedrijven"
         subtitle={`${docs.totalDocs} klanten`}
         actions={<BedrijfCreateDrawer />}
       />
-      <div style={{ padding: "0.75rem 2.5rem 0" }}>
+      <div className="px-5 sm:px-8 lg:px-10">
         <ZoekFilter placeholder="Zoek op naam, sector, contactpersoon…" defaultValue={q ?? ""} />
       </div>
-      <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
+      <div className="px-5 pt-6 pb-12 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen bedrijven toegevoegd."}</Empty> : (
           <Table headers={["Naam", "Sector", "Contactpersoon", "E-mail", "Status", ""]}>
             {docs.docs.map((doc: any) => (
@@ -54,12 +55,12 @@ export default async function BedrijvenPage({ searchParams }: { searchParams: Pr
                     {doc.naam}
                   </Link>
                 </TD>
-                <TD muted>{doc.sector || "—"}</TD>
+                <TD muted>{SECTOR_LABEL[doc.sector] ?? (doc.sector || "—")}</TD>
                 <TD muted>{doc.contactpersoon || "—"}</TD>
                 <TD muted>
                   {doc.email ? <a href={`mailto:${doc.email}`} style={{ color: "#dffd7b", textDecoration: "none" }}>{doc.email}</a> : "—"}
                 </TD>
-                <TD><StatusBadge label={statusLabel[doc.relatiestatus] || doc.relatiestatus} kleur={statusKleur[doc.relatiestatus] || "#6b7280"} /></TD>
+                <TD><StatusBadge label={statusLabel[doc.relatiestatus] || doc.relatiestatus} kleur={statusKleur[doc.relatiestatus] || "#6f6d62"} /></TD>
                 <TD>
                   <BedrijfEditDrawer id={doc.id} initial={{
                     naam: doc.naam, sector: doc.sector, grootte: doc.grootte,

@@ -12,7 +12,7 @@ export const Sollicitaties: CollectionConfig = {
   labels: { singular: "Sollicitatie", plural: "Sollicitaties" },
   admin: {
     useAsTitle: "titel",
-    group: "Recruitment",
+    group: "Ruwe gegevens",
     defaultColumns: ["titel", "kandidaat", "vacature", "status", "updatedAt"],
   },
   fields: [
@@ -59,7 +59,7 @@ export const Sollicitaties: CollectionConfig = {
         { label: "Interview gepland", value: "interview_gepland" },
         { label: "Interview afgerond", value: "interview_afgerond" },
         { label: "Aanbod uitgebracht", value: "aanbod" },
-        { label: "Geplaatst ✓", value: "geplaatst" },
+        { label: "Geplaatst", value: "geplaatst" },
         { label: "Niet weerhouden", value: "afgewezen" },
         { label: "Teruggetrokken", value: "teruggetrokken" },
       ],

@@ -6,7 +6,7 @@ export const Activiteiten: CollectionConfig = {
   labels: { singular: "Activiteit", plural: "Activiteiten" },
   admin: {
     useAsTitle: "onderwerp",
-    group: "Recruitment",
+    group: "Ruwe gegevens",
     defaultColumns: ["onderwerp", "type", "kandidaat", "bedrijf", "datum"],
   },
   // Dit is een communicatielogboek: onderwerp, inhoud, afzender en
@@ -30,10 +30,10 @@ export const Activiteiten: CollectionConfig = {
           defaultValue: "email",
           required: true,
           options: [
-            { label: "📧 E-mail", value: "email" },
-            { label: "📞 Telefoon", value: "telefoon" },
-            { label: "📅 Meeting", value: "meeting" },
-            { label: "📝 Notitie", value: "notitie" },
+            { label: "E-mail", value: "email" },
+            { label: "Telefoon", value: "telefoon" },
+            { label: "Afspraak", value: "meeting" },
+            { label: "Notitie", value: "notitie" },
           ],
         },
         {

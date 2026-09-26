@@ -1,15 +1,17 @@
 "use client";
 
+import { knopKlein, knopSecundair } from "@/lib/knoppen";
+
 import { useState, useTransition } from "react";
 import { updateKandidaat } from "@/app/(app)/dashboard/kandidaten/[id]/actions";
 
 const LIME = "#dffd7b";
-const DARK = "#1e1e21";
-const S1 = "#27272a";
-const S2 = "#323236";
-const BORDER = "rgba(255,255,255,0.08)";
-const MUTED = "rgba(255,255,255,0.4)";
-const TEXT = "#f0f0f0";
+const DARK = "var(--ink-900)";
+const S1 = "var(--ink-800)";
+const S2 = "var(--olive-600)";
+const BORDER = "var(--line)";
+const MUTED = "var(--bone-400)";
+const TEXT = "var(--bone-100)";
 
 const SECTOR_OPTIONS = [
   { label: "Civiele techniek", value: "civiel" },
@@ -59,7 +61,7 @@ const BRON_OPTIONS = [
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-      <label style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#666" }}>
+      <label style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)" }}>
         {label}
       </label>
       {children}
@@ -70,9 +72,9 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 const inputStyle: React.CSSProperties = {
   background: S1,
   border: `1px solid ${S2}`,
-  borderRadius: "4px",
+  borderRadius: "2px",
   color: TEXT,
-  fontSize: "0.85rem",
+  fontSize: "0.875rem",
   padding: "0.45rem 0.65rem",
   fontFamily: "inherit",
   width: "100%",
@@ -103,10 +105,13 @@ export default function KandidaatEditDrawer({
   id,
   initial,
   autoOpen,
+  groot,
 }: {
   id: string;
   initial: KandidaatData;
   autoOpen?: boolean;
+  /** Volle knophoogte, voor in een paginakop. */
+  groot?: boolean;
 }) {
   const [open, setOpen] = useState(autoOpen ?? false);
   const [form, setForm] = useState<KandidaatData>(initial);
@@ -131,23 +136,23 @@ export default function KandidaatEditDrawer({
       {/* Trigger button */}
       <button
         onClick={() => setOpen(true)}
-        style={{ display: "block", width: "100%", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: `${LIME}14`, color: LIME, fontSize: "0.78rem", fontWeight: 600, border: `1px solid ${LIME}30`, cursor: "pointer", fontFamily: "inherit" }}
+        className={groot ? knopSecundair : knopKlein}
       >
-        ✏️ Bewerken
+        Bewerken
       </button>
 
       {/* Backdrop */}
       {open && (
         <div
           onClick={() => setOpen(false)}
-          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 40, backdropFilter: "blur(2px)" }}
+          style={{ position: "fixed", inset: 0, background: "rgb(20 20 14 / 0.72)", zIndex: 40, backdropFilter: "blur(2px)" }}
         />
       )}
 
       {/* Drawer */}
       <div style={{
         position: "fixed", top: 0, right: 0, height: "100vh", width: "420px",
-        background: "#1e1e21", borderLeft: `1px solid ${BORDER}`,
+        background: "var(--ink-900)", borderLeft: `1px solid ${BORDER}`,
         zIndex: 50, display: "flex", flexDirection: "column",
         transform: open ? "translateX(0)" : "translateX(100%)",
         transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)",
@@ -157,9 +162,9 @@ export default function KandidaatEditDrawer({
         <div style={{ padding: "1.25rem 1.5rem", borderBottom: `1px solid ${BORDER}`, display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
           <div>
             <div style={{ fontSize: "1rem", fontWeight: 700, color: TEXT }}>Kandidaat bewerken</div>
-            <div style={{ fontSize: "0.73rem", color: "#555", marginTop: "0.1rem" }}>{form.voornaam} {form.achternaam}</div>
+            <div style={{ fontSize: "0.8125rem", color: "var(--bone-400)", marginTop: "0.1rem" }}>{form.voornaam} {form.achternaam}</div>
           </div>
-          <button onClick={() => setOpen(false)} style={{ background: "transparent", border: "none", color: "#555", cursor: "pointer", fontSize: "1.2rem", lineHeight: 1, padding: "0.25rem" }}>✕</button>
+          <button onClick={() => setOpen(false)} style={{ background: "transparent", border: "none", color: "var(--bone-400)", cursor: "pointer", fontSize: "1.2rem", lineHeight: 1, padding: "0.25rem" }}>✕</button>
         </div>
 
         {/* Form */}
@@ -262,13 +267,13 @@ export default function KandidaatEditDrawer({
           <button
             onClick={handleSave}
             disabled={isPending}
-            style={{ flex: 1, padding: "0.6rem 1rem", borderRadius: "4px", background: saved ? "#34d399" : LIME, color: "#1e1e21", fontWeight: 700, fontSize: "0.85rem", border: "none", cursor: isPending ? "wait" : "pointer", fontFamily: "inherit", transition: "background 0.2s" }}
+            style={{ flex: 1, padding: "0.6rem 1rem", borderRadius: "2px", background: saved ? "#9bd17f" : LIME, color: "var(--ink-900)", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: isPending ? "wait" : "pointer", fontFamily: "inherit", transition: "background 0.2s" }}
           >
-            {isPending ? "Opslaan…" : saved ? "✓ Opgeslagen" : "Opslaan"}
+            {isPending ? "Opslaan…" : saved ? "Opgeslagen" : "Opslaan"}
           </button>
           <button
             onClick={() => { setForm(initial); setOpen(false); }}
-            style={{ padding: "0.6rem 1rem", borderRadius: "4px", background: "transparent", color: MUTED, fontWeight: 600, fontSize: "0.82rem", border: `1px solid ${BORDER}`, cursor: "pointer", fontFamily: "inherit" }}
+            style={{ padding: "0.6rem 1rem", borderRadius: "2px", background: "transparent", color: MUTED, fontWeight: 600, fontSize: "0.875rem", border: `1px solid ${BORDER}`, cursor: "pointer", fontFamily: "inherit" }}
           >
             Annuleren
           </button>

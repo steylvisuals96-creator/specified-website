@@ -1,10 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-
-const BORDER = "rgba(255,255,255,0.08)";
-const TEXT = "#f0f0f0";
-const MUTED = "rgba(255,255,255,0.4)";
+import { useCallback, useEffect, useState } from "react";
 
 type Health = {
   reachable?: boolean;
@@ -13,11 +9,12 @@ type Health = {
 };
 
 const LABELS: Record<string, string> = {
-  website: "Website",
-  cms_vacatures: "CRM — vacatures",
-  cms_instellingen: "CRM — instellingen",
+  website: "website",
+  cms_vacatures: "vacatures",
+  cms_instellingen: "instellingen",
 };
 
+/** Eén rustige regel onderaan het overzicht; alleen opvallend als er iets mis is. */
 export default function SysteemStatus() {
   const [health, setHealth] = useState<Health | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,48 +39,38 @@ export default function SysteemStatus() {
   }, [load]);
 
   const healthy = health?.status === "ok";
-  const kleur = loading ? "#6b7280" : healthy ? "#34d399" : "#f87171";
-  const label = loading ? "Controleren…" : healthy ? "Alles operationeel" : "Probleem gedetecteerd";
+  const kapot = health?.checks ? Object.entries(health.checks).filter(([, ok]) => !ok).map(([k]) => LABELS[k] || k) : [];
+  const kleur = loading ? "var(--st-uit)" : healthy ? "var(--st-geplaatst)" : "var(--st-wacht)";
+  const tekst = loading
+    ? "Website en CMS controleren"
+    : healthy
+      ? "Website en CMS werken normaal"
+      : kapot.length
+        ? `Probleem met ${kapot.join(", ")}. Controleer de deploy of verwittig SteylVisuals.`
+        : "De website reageert niet. Controleer de deploy of verwittig SteylVisuals.";
 
   return (
-    <div style={{ padding: "1.25rem 1.5rem", border: `1px solid ${BORDER}`, borderRadius: "8px", background: "rgba(255,255,255,0.02)" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: health?.checks ? "1rem" : 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          <span style={{ width: 9, height: 9, borderRadius: "50%", background: kleur, boxShadow: `0 0 8px ${kleur}`, flexShrink: 0 }} />
-          <span style={{ fontSize: "0.9rem", fontWeight: 600, color: TEXT }}>Systeemstatus</span>
-          <span style={{ fontSize: "0.82rem", color: kleur, fontWeight: 500 }}>· {label}</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          {checkedAt && (
-            <span style={{ fontSize: "0.7rem", color: MUTED }}>
-              {checkedAt.toLocaleTimeString("nl-BE", { hour: "2-digit", minute: "2-digit" })}
-            </span>
-          )}
-          <button onClick={() => { setLoading(true); load(); }} style={{ background: "transparent", border: `1px solid ${BORDER}`, borderRadius: "4px", color: MUTED, fontSize: "0.72rem", padding: "0.3rem 0.6rem", cursor: "pointer", fontFamily: "inherit" }}>
-            ↻ Ververs
-          </button>
-        </div>
-      </div>
-
-      {health?.checks && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "0.5rem" }}>
-          {Object.entries(health.checks).map(([key, ok]) => (
-            <div key={key} style={{ display: "flex", alignItems: "center", gap: "0.45rem", fontSize: "0.78rem", color: MUTED }}>
-              <span style={{ color: ok ? "#34d399" : "#f87171", fontSize: "0.7rem" }}>{ok ? "●" : "●"}</span>
-              {LABELS[key] || key}
-              <span style={{ marginLeft: "auto", color: ok ? "#34d399" : "#f87171", fontWeight: 600, fontSize: "0.72rem" }}>
-                {ok ? "OK" : "DOWN"}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {health && !health.reachable && !loading && (
-        <div style={{ fontSize: "0.78rem", color: "#f87171", marginTop: "0.5rem" }}>
-          De website reageert niet. Controleer de deploy of neem contact op met de beheerder.
-        </div>
-      )}
+    <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm" role="status" aria-live="polite">
+      <span className="status text-bone-400" style={{ "--status-kleur": kleur } as React.CSSProperties}>
+        <span className={healthy || loading ? undefined : "text-bone-100"}>{tekst}</span>
+      </span>
+      <span className="flex items-center gap-4 text-bone-600">
+        {checkedAt && (
+          <span className="tabular">
+            Gecontroleerd om {checkedAt.toLocaleTimeString("nl-BE", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            setLoading(true);
+            load();
+          }}
+          className="text-bone-400 underline-offset-4 hover:text-lime-300 hover:underline"
+        >
+          Opnieuw controleren
+        </button>
+      </span>
     </div>
   );
 }

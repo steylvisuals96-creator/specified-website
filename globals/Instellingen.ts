@@ -11,7 +11,7 @@ export const Instellingen: GlobalConfig = {
     update: alleenBeheerder,
   },
   admin: {
-    group: "Instellingen",
+    group: "Ruwe gegevens",
   },
   fields: [
     {

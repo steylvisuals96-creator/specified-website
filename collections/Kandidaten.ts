@@ -14,7 +14,7 @@ export const Kandidaten: CollectionConfig = {
   labels: { singular: "Kandidaat", plural: "Kandidaten" },
   admin: {
     useAsTitle: "naam",
-    group: "Recruitment",
+    group: "Ruwe gegevens",
     defaultColumns: ["naam", "functietitel", "sector", "status", "updatedAt"],
   },
   fields: [

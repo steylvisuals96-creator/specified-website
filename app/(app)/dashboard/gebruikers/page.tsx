@@ -25,13 +25,13 @@ export default async function GebruikersPage() {
   const docs = await payload.find({ collection: "gebruikers", limit: 100, sort: "-createdAt", user, overrideAccess: false });
 
   return (
-    <DashboardShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Gebruikers"
         subtitle={`${docs.totalDocs} gebruikers`}
         actions={<GebruikerCreateDrawer />}
       />
-      <div style={{ padding: "1.5rem 2.5rem" }}>
+      <div className="px-5 py-6 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>Nog geen gebruikers.</Empty> : (
           <Table headers={["Naam", "E-mail", "Rol", "Aangemaakt", ""]}>
             {docs.docs.map((doc: any) => (

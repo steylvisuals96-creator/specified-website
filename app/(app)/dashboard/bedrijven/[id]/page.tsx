@@ -11,12 +11,12 @@ import ActiviteitAddDrawer from "@/components/ActiviteitAddDrawer";
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const LIME = "#dffd7b";
-const MUTED = "rgba(255,255,255,0.4)";
-const BORDER = "rgba(255,255,255,0.08)";
-const TEXT = "#f0f0f0";
+const MUTED = "var(--bone-400)";
+const BORDER = "var(--line)";
+const TEXT = "var(--bone-100)";
 
 const statusKleur: Record<string, string> = {
-  prospect: "#60a5fa", actief: "#dffd7b", slapend: "#f59e0b", voormalig: "#6b7280",
+  prospect: "#8fb3d9", actief: "#dffd7b", slapend: "#d9a86c", voormalig: "#6f6d62",
 };
 const statusLabel: Record<string, string> = {
   prospect: "Prospect", actief: "Actief", slapend: "Slapend", voormalig: "Voormalig",
@@ -26,8 +26,8 @@ function InfoRow({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
   return (
     <div style={{ display: "flex", gap: "0.75rem", padding: "0.5rem 0", borderBottom: `1px solid ${BORDER}` }}>
-      <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.08em", width: "8rem", flexShrink: 0 }}>{label}</span>
-      <span style={{ fontSize: "0.82rem", color: MUTED }}>{value}</span>
+      <span style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)", width: "8rem", flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: "0.875rem", color: MUTED }}>{value}</span>
     </div>
   );
 }
@@ -69,25 +69,23 @@ export default async function BedrijfDetailPage({ params }: { params: Promise<{ 
   }));
 
   return (
-    <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title={b.naam}
         subtitle="Bedrijf profiel"
-        actions={<LimeBtn href="/dashboard/bedrijven" outline>← Terug</LimeBtn>}
+        actions={<LimeBtn href="/dashboard/bedrijven" outline>Terug</LimeBtn>}
       />
 
       <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 0, height: "calc(100vh - 90px)" }}>
         {/* Sidebar */}
         <div style={{ borderRight: `1px solid ${BORDER}`, padding: "1.5rem", overflowY: "auto" }}>
           <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{ width: "3rem", height: "3rem", borderRadius: "50%", background: "#fb923c18", border: "1.5px solid #fb923c40", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.4rem", marginBottom: "0.75rem" }}>
-              🏢
-            </div>
+            <div className="kop mb-3 grid size-14 place-items-center bg-ink-700 text-[1.6rem] text-bone-400" aria-hidden>{String(b.naam ?? "").split(" ").map((w: string) => w[0]).slice(0, 2).join("")}</div>
             <div style={{ fontSize: "1.2rem", fontWeight: 700, color: TEXT, marginBottom: "0.25rem" }}>{b.naam}</div>
             {b.relatiestatus && (
               <StatusBadge
                 label={statusLabel[b.relatiestatus] || b.relatiestatus}
-                kleur={statusKleur[b.relatiestatus] || "#6b7280"}
+                kleur={statusKleur[b.relatiestatus] || "#6f6d62"}
               />
             )}
           </div>
@@ -116,7 +114,7 @@ export default async function BedrijfDetailPage({ params }: { params: Promise<{ 
 
         {/* Activity feed */}
         <div style={{ padding: "1.5rem 2rem", overflowY: "auto" }}>
-          <div style={{ fontSize: "0.7rem", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1rem" }}>
+          <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)", marginBottom: "1rem" }}>
             {activiteiten.totalDocs} activiteiten
           </div>
           <ActiviteitFeed items={items} showRelaties bccEmail={bccEmail} />

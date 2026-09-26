@@ -44,24 +44,24 @@ export default function MediaUpload({
       <div
         onClick={() => inputRef.current?.click()}
         style={{
-          border: "2px dashed #2a2a2a", borderRadius: "8px", padding: "1.5rem",
-          background: "#0d0d0d", cursor: "pointer", textAlign: "center",
+          border: "2px dashed var(--olive-600)", borderRadius: "2px", padding: "1.5rem",
+          background: "var(--ink-900)", cursor: "pointer", textAlign: "center",
           transition: "border-color 0.2s", position: "relative", overflow: "hidden",
           minHeight: preview ? "180px" : "100px",
         }}
         onMouseEnter={e => (e.currentTarget.style.borderColor = "#dffd7b")}
-        onMouseLeave={e => (e.currentTarget.style.borderColor = "#2a2a2a")}
+        onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--olive-600)")}
       >
         {preview ? (
-          <img src={preview} alt="" style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "contain", borderRadius: "4px" }} />
+          <img src={preview} alt="" style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "contain", borderRadius: "2px" }} />
         ) : (
-          <div style={{ color: "#444", fontSize: "0.82rem" }}>
+          <div style={{ color: "var(--olive-600)", fontSize: "0.875rem" }}>
             <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>+</div>
             {label}
           </div>
         )}
         {uploading && (
-          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#dffd7b", fontSize: "0.82rem" }}>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", color: "#dffd7b", fontSize: "0.875rem" }}>
             Uploaden...
           </div>
         )}
@@ -71,7 +71,7 @@ export default function MediaUpload({
         <button
           type="button"
           onClick={() => { setPreview(null); setMediaId(null); }}
-          style={{ marginTop: "0.5rem", background: "transparent", border: "none", color: "#666", cursor: "pointer", fontSize: "0.75rem" }}
+          style={{ marginTop: "0.5rem", background: "transparent", border: "none", color: "var(--bone-400)", cursor: "pointer", fontSize: "0.8125rem" }}
         >
           Verwijderen
         </button>

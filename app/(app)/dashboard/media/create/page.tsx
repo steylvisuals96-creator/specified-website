@@ -21,10 +21,10 @@ export default async function MediaCreatePage() {
   }
 
   return (
-    <FormShell activePath="/dashboard/media" userName={(user as any).naam || user.email} title="Bestand uploaden" backHref="/dashboard/media" actions={<SaveBtn form="main-form" label="Klaar" />}>
+    <FormShell activePath="/dashboard/media" userName={(user as any).naam || user.email} rol={(user as any).rol} title="Bestand uploaden" backHref="/dashboard/media" actions={<SaveBtn form="main-form" label="Klaar" />}>
       <form id="main-form" action={create}>
         <FormSection title="Bestand">
-          <div style={{ color: "#888", fontSize: "0.82rem", marginBottom: "1rem" }}>
+          <div style={{ color: "var(--bone-400)", fontSize: "0.875rem", marginBottom: "1rem" }}>
             Klik op het vak om een bestand te selecteren. Het wordt direct geüpload.
           </div>
           <MediaUpload name="file" label="Bestand of afbeelding uploaden" />

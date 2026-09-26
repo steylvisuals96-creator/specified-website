@@ -5,12 +5,12 @@ import { useState, useTransition } from "react";
 import { moveSollicitatie } from "@/app/(app)/dashboard/pipeline/actions";
 
 const LIME = "#dffd7b";
-const DARK = "#1e1e21";
-const S2 = "#2d2d30";
-const S3 = "#323236";
-const BORDER = "rgba(255,255,255,0.08)";
-const MUTED = "rgba(255,255,255,0.45)";
-const TEXT = "#ffffff";
+const DARK = "var(--ink-900)";
+const S2 = "var(--olive-600)";
+const S3 = "var(--olive-600)";
+const BORDER = "var(--line)";
+const MUTED = "var(--bone-400)";
+const TEXT = "var(--bone-100)";
 
 export type KanbanCard = {
   id: string;
@@ -29,14 +29,14 @@ export type KanbanColumn = {
 };
 
 const KOLOMMEN: { id: string; label: string; kleur: string }[] = [
-  { id: "nieuw",            label: "Nieuw",         kleur: "#60a5fa" },
+  { id: "nieuw",            label: "Nieuw",         kleur: "#8fb3d9" },
   { id: "screening",        label: "Screening",      kleur: LIME },
-  { id: "tel_gescreend",   label: "Gescreend",      kleur: "#a78bfa" },
-  { id: "voorgesteld",      label: "Voorgesteld",    kleur: "#fb923c" },
-  { id: "interview_gepland",label: "Interview",      kleur: "#f472b6" },
-  { id: "interview_afgerond", label: "Afgerond",    kleur: "#e879f9" },
-  { id: "aanbod",           label: "Aanbod",         kleur: "#facc15" },
-  { id: "geplaatst",        label: "Geplaatst ✓",   kleur: "#34d399" },
+  { id: "tel_gescreend",   label: "Gescreend",      kleur: "#b5a1d8" },
+  { id: "voorgesteld",      label: "Voorgesteld",    kleur: "#d9a86c" },
+  { id: "interview_gepland",label: "Interview",      kleur: "#d9a86c" },
+  { id: "interview_afgerond", label: "Afgerond",    kleur: "#b5a1d8" },
+  { id: "aanbod",           label: "Aanbod",         kleur: "#d9a86c" },
+  { id: "geplaatst",        label: "Geplaatst",   kleur: "#9bd17f" },
 ];
 
 function dagen(d: number) {
@@ -79,10 +79,9 @@ export default function KanbanBoard({ initialColumns }: { initialColumns: Kanban
               {/* Column header */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.5rem 0.75rem", marginBottom: "0.5rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: kol.kleur, flexShrink: 0 }} />
-                  <span style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: TEXT }}>{kol.label}</span>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 700, color: TEXT }}>{kol.label}</span>
                 </div>
-                <span style={{ fontSize: "0.65rem", background: S3, color: MUTED, borderRadius: 3, padding: "0.1rem 0.4rem", fontWeight: 600 }}>{col.cards.length}</span>
+                <span style={{ fontSize: "0.8125rem", background: S3, color: MUTED, borderRadius: 2, padding: "0.1rem 0.4rem", fontWeight: 600 }}>{col.cards.length}</span>
               </div>
 
               {/* Droppable area */}
@@ -93,8 +92,8 @@ export default function KanbanBoard({ initialColumns }: { initialColumns: Kanban
                     {...provided.droppableProps}
                     style={{
                       minHeight: 120,
-                      background: snapshot.isDraggingOver ? "rgba(223,253,123,0.04)" : "rgba(255,255,255,0.02)",
-                      borderRadius: 8,
+                      background: snapshot.isDraggingOver ? "rgba(223,253,123,0.04)" : "var(--ink-800)",
+                      borderRadius: 2,
                       border: snapshot.isDraggingOver ? `1px solid rgba(223,253,123,0.2)` : `1px solid ${BORDER}`,
                       padding: "0.5rem",
                       transition: "all 0.15s",
@@ -108,10 +107,10 @@ export default function KanbanBoard({ initialColumns }: { initialColumns: Kanban
                             {...prov.draggableProps}
                             {...prov.dragHandleProps}
                             style={{
-                              background: snap.isDragging ? "#323236" : S2,
+                              background: snap.isDragging ? "var(--olive-600)" : S2,
                               border: `1px solid ${snap.isDragging ? "rgba(223,253,123,0.3)" : BORDER}`,
                               borderLeft: `3px solid ${kol.kleur}`,
-                              borderRadius: 6,
+                              borderRadius: 2,
                               padding: "0.7rem 0.75rem",
                               marginBottom: "0.5rem",
                               cursor: "grab",
@@ -119,19 +118,19 @@ export default function KanbanBoard({ initialColumns }: { initialColumns: Kanban
                               ...prov.draggableProps.style,
                             }}
                           >
-                            <div style={{ fontSize: "0.8rem", fontWeight: 600, color: TEXT, marginBottom: "0.25rem", lineHeight: 1.3 }}>
+                            <div style={{ fontSize: "0.875rem", fontWeight: 600, color: TEXT, marginBottom: "0.25rem", lineHeight: 1.3 }}>
                               {card.kandidaat}
                             </div>
-                            <div style={{ fontSize: "0.7rem", color: MUTED, marginBottom: "0.4rem", lineHeight: 1.3 }}>
+                            <div style={{ fontSize: "0.8125rem", color: MUTED, marginBottom: "0.4rem", lineHeight: 1.3 }}>
                               {card.vacature}
                             </div>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                               {card.sector && (
-                                <span style={{ fontSize: "0.6rem", color: kol.kleur, background: `${kol.kleur}15`, padding: "0.15rem 0.45rem", borderRadius: 3, fontWeight: 600 }}>
+                                <span style={{ fontSize: "0.8125rem", color: "var(--bone-400)", border: "1px solid var(--olive-600)", padding: "0.1rem 0.45rem", borderRadius: 2 }}>
                                   {card.sector}
                                 </span>
                               )}
-                              <span style={{ fontSize: "0.6rem", color: MUTED, marginLeft: "auto" }}>{dagen(card.dagen)}</span>
+                              <span style={{ fontSize: "0.8125rem", color: MUTED, marginLeft: "auto" }}>{dagen(card.dagen)}</span>
                             </div>
                           </div>
                         )}
@@ -139,7 +138,7 @@ export default function KanbanBoard({ initialColumns }: { initialColumns: Kanban
                     ))}
                     {provided.placeholder}
                     {col.cards.length === 0 && (
-                      <div style={{ textAlign: "center", padding: "1.5rem 0.5rem", color: "#333", fontSize: "0.72rem" }}>Sleep hier</div>
+                      <div style={{ textAlign: "center", padding: "1.5rem 0.5rem", color: "var(--olive-600)", fontSize: "0.8125rem" }}>Sleep hier</div>
                     )}
                   </div>
                 )}

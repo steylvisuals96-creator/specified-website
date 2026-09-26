@@ -1,374 +1,393 @@
 /* ═══════════════════════════════════════════════════
-   SPECIFIED — CMS Admin Theme
-   Avenir + Bebas Neue · Lime #dffd7b · Dark #1e1e21
+   Specified — thema voor /admin (Payload)
+   Dezelfde tokens en letters als /dashboard (app/globals.css) en de website
+   (specified-website/DESIGN.md), zodat de twee omgevingen één geheel vormen.
 ═══════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@1&display=swap");
 
-/* ── FONT STACK ── */
 :root {
-  --avenir: 'Avenir LT Std', 'Avenir', 'Century Gothic', 'Trebuchet MS', sans-serif;
-  --bebas: 'Bebas Neue', var(--avenir);
+  --ink-900: #14140e;
+  --ink-800: #1d1e16;
+  --ink-700: #25261d;
+  --olive-600: #3a3f2a;
+  --line: rgb(233 231 221 / 0.09);
+  --bone-100: #e9e7dd;
+  --bone-400: #a6a496;
+  --bone-600: #6f6d62;
+  --lime-300: #dffd7b;
 
-  /* Payload v3 font variable — controls all body text */
-  --font-body: 500 14px/1.6 var(--avenir);
+  --sv-sans: "Instrument Sans", system-ui, sans-serif;
+  --sv-display: "Bebas Neue", "Arial Narrow", sans-serif;
 
-  /* ── Payload accent ramp → Specified lime ── */
-  --color-base-0:    #ffffff;
-  --color-base-50:   #f5ffe0;
-  --color-base-100:  #eeff9c;
-  --color-base-150:  #e8fe8a;
-  --color-base-200:  #e5fe96;
-  --color-base-250:  #e2fd84;
-  --color-base-300:  #dffd7b;
-  --color-base-350:  #cef05a;
-  --color-base-400:  #bfe040;
-  --color-base-450:  #aecf2a;
-  --color-base-500:  #9cbd18;
-  --color-base-550:  #87a810;
-  --color-base-600:  #72920a;
-  --color-base-650:  #5e7b06;
-  --color-base-700:  #4b6404;
-  --color-base-750:  #3a4f03;
-  --color-base-800:  #2c3d02;
-  --color-base-850:  #1e2c01;
-  --color-base-900:  #131c00;
-  --color-base-950:  #0a0f00;
-  --color-base-1000: #000000;
-
-  /* Error stays red */
-  --color-error-300: #f87171;
-  --color-error-400: #ef4444;
-  --color-error-500: #dc2626;
+  /* Payload-variabelen */
+  --font-body: var(--sv-sans);
+  --style-radius-s: 2px;
+  --style-radius-m: 2px;
+  --style-radius-l: 2px;
+  --color-success-500: var(--lime-300);
+  --color-error-300: #e8a39a;
+  --color-error-400: #e07a6a;
+  --color-error-500: #d06050;
 }
 
-/* ── DARK THEME ── */
-html[data-theme='dark'],
-[data-theme='dark'] {
-  --theme-elevation-0:    #1e1e21;
-  --theme-elevation-50:   #222225;
-  --theme-elevation-100:  #27272a;
-  --theme-elevation-150:  #2a2a2d;
-  --theme-elevation-200:  #2d2d30;
-  --theme-elevation-250:  #323236;
-  --theme-elevation-300:  #3a3a3e;
-  --theme-elevation-350:  #444448;
-  --theme-elevation-400:  #525256;
-  --theme-elevation-450:  #666669;
-  --theme-elevation-500:  #7a7a7d;
-  --theme-elevation-550:  #949497;
-  --theme-elevation-600:  #adadaf;
-  --theme-elevation-650:  #c5c5c7;
-  --theme-elevation-700:  #d8d8da;
-  --theme-elevation-750:  #e8e8ea;
-  --theme-elevation-800:  #f0f0f1;
-  --theme-elevation-850:  #f5f5f6;
-  --theme-elevation-900:  #f9f9fa;
-  --theme-elevation-1000: #ffffff;
-  --theme-text:           #e4e4e6;
-  --theme-bg:             #1e1e21;
-  --theme-input-bg:       #27272a;
-  --theme-border-color:   #2d2d30;
+/* Warme ramp van canvas naar tekst; Payload bouwt alle vlakken hierop. */
+html[data-theme="dark"],
+html[data-theme="light"],
+[data-theme="dark"],
+[data-theme="light"] {
+  --theme-elevation-0: #14140e;
+  --theme-elevation-50: #191a13;
+  --theme-elevation-100: #1d1e16;
+  --theme-elevation-150: #22231a;
+  --theme-elevation-200: #25261d;
+  --theme-elevation-250: #2d2f23;
+  --theme-elevation-300: #3a3f2a;
+  --theme-elevation-350: #4a4d3c;
+  --theme-elevation-400: #5c5e4f;
+  --theme-elevation-450: #6f6d62;
+  --theme-elevation-500: #838174;
+  --theme-elevation-550: #95938a;
+  --theme-elevation-600: #a6a496;
+  --theme-elevation-650: #b8b6aa;
+  --theme-elevation-700: #c8c6bb;
+  --theme-elevation-750: #d6d4ca;
+  --theme-elevation-800: #e0ded4;
+  --theme-elevation-850: #e5e3d9;
+  --theme-elevation-900: #e9e7dd;
+  --theme-elevation-950: #efede4;
+  --theme-elevation-1000: #f5f4ee;
+  --theme-text: var(--bone-100);
+  --theme-bg: var(--ink-900);
+  --theme-input-bg: var(--ink-900);
+  --theme-border-color: var(--olive-600);
+  --theme-success-500: var(--lime-300);
+  color-scheme: dark;
 }
-
-/* Force dark always */
-html { color-scheme: dark; }
-
-/* ── GLOBAL ── */
-*, *::before, *::after { box-sizing: border-box; }
 
 body {
-  font-family: var(--avenir) !important;
-  background: #1e1e21 !important;
-  color: #e0e0e2 !important;
-  -webkit-font-smoothing: antialiased !important;
+  font-family: var(--sv-sans) !important;
+  background: var(--ink-900) !important;
+  color: var(--bone-100) !important;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: var(--lime-300);
+  color: var(--ink-900);
+}
+input,
+textarea {
+  caret-color: var(--lime-300);
+}
+* {
+  scrollbar-color: var(--olive-600) var(--ink-900);
+}
+:focus-visible {
+  outline: 2px solid var(--lime-300) !important;
+  outline-offset: 2px !important;
+}
+td,
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── HEADINGS: Bebas Neue ── */
-h1, h2, h3, h4, h5,
-[class*="heading"],
-[class*="collection-list__header"] h1,
-[class*="render-title"] {
-  font-family: var(--bebas) !important;
+/* ── Koppen: alleen de paginatitel in Bebas, zoals op /dashboard ── */
+h1,
+.render-title,
+.doc-header__title {
+  font-family: var(--sv-display) !important;
   font-weight: 400 !important;
-  letter-spacing: 0.04em !important;
-  color: #f0f0f0 !important;
-  line-height: 1 !important;
+  text-transform: uppercase;
+  letter-spacing: 0 !important;
+  line-height: 0.95 !important;
+  color: var(--bone-100) !important;
 }
-h1 { font-size: 2.6rem !important; }
-h2 { font-size: 1.9rem !important; }
-h3 { font-size: 1.4rem !important; }
-
-/* Payload puts the page title in a specific tag pattern */
-[class*="render-title"] * {
-  font-family: var(--bebas) !important;
+h1 {
+  font-size: 3rem !important;
+}
+h2,
+h3,
+h4 {
+  font-family: var(--sv-sans) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--bone-100) !important;
+}
+.dashboard__group > h2,
+.dashboard__label {
+  font-family: var(--sv-display) !important;
   font-weight: 400 !important;
-  letter-spacing: 0.04em !important;
+  font-size: 1.75rem !important;
+  text-transform: uppercase;
 }
 
-/* ── SCROLLBAR ── */
-* { scrollbar-color: #2d2d30 #1e1e21; scrollbar-width: thin; }
-
-/* ── SIDEBAR NAV ── */
-nav a, nav button, nav span {
-  font-family: var(--avenir) !important;
-  font-size: 0.82rem !important;
+/* ── Navigatie ── */
+.nav {
+  background: var(--ink-900) !important;
+  border-right: 1px solid var(--line) !important;
+}
+.nav__wrap {
+  padding-top: 0.5rem !important;
+}
+.sv-menu {
+  margin: 0 calc(var(--nav-padding-inline-start, 1.25rem) * -1) 1.5rem;
+}
+.sv-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sv-menu__groep + .sv-menu__groep {
+  margin-top: 1.5rem;
+}
+.sv-menu__titel {
+  margin: 0 0 0.375rem;
+  padding: 0 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--bone-600);
+}
+.sv-menu__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--bone-400) !important;
+  text-decoration: none;
+  transition: background-color 150ms, color 150ms;
+}
+.sv-menu__link:hover {
+  background: var(--ink-700);
+  color: var(--bone-100) !important;
+}
+.nav-group__toggle,
+.nav-group__label {
+  font-family: var(--sv-sans) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--bone-600) !important;
+}
+.nav__link {
+  font-size: 0.9375rem !important;
+  color: var(--bone-400) !important;
+}
+.nav__link:hover {
+  color: var(--bone-100) !important;
+}
+.nav__link-indicator {
+  background: var(--lime-300) !important;
+  width: 3px !important;
+}
+[aria-current="page"],
+.nav__link.active {
+  color: var(--lime-300) !important;
 }
 
-/* Active nav item: lime accent via Payload's CSS var */
-[aria-current="page"] {
-  color: #dffd7b !important;
+/* ── Knoppen: rechthoekig, limoen voor de hoofdactie ── */
+.btn {
+  font-family: var(--sv-sans) !important;
+  font-weight: 600 !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
+}
+.btn--style-primary {
+  background: var(--lime-300) !important;
+  color: var(--ink-900) !important;
+  border: 0 !important;
+}
+.btn--style-primary:hover:not(:disabled) {
+  background: var(--bone-100) !important;
+}
+.btn--style-secondary,
+.btn--style-pill,
+.btn--style-subtle {
+  background: transparent !important;
+  color: var(--bone-100) !important;
+  box-shadow: inset 0 0 0 1px var(--olive-600) !important;
+}
+.btn--style-secondary:hover,
+.btn--style-pill:hover,
+.btn--style-subtle:hover {
+  color: var(--lime-300) !important;
+  box-shadow: inset 0 0 0 1px var(--lime-300) !important;
+}
+.btn--style-pill {
+  border-radius: 2px !important;
 }
 
-/* ── TABLE ── */
+/* Kaarten op het /admin-overzicht */
+.card {
+  background: var(--ink-800) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.card:hover {
+  border-color: var(--olive-600) !important;
+}
+.card__title {
+  font-family: var(--sv-sans) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+.card__actions .btn {
+  background: transparent !important;
+  color: var(--bone-400) !important;
+  box-shadow: inset 0 0 0 1px var(--olive-600) !important;
+}
+.card__actions .btn:hover {
+  color: var(--lime-300) !important;
+  box-shadow: inset 0 0 0 1px var(--lime-300) !important;
+}
+
+/* ── Tabellen ── */
 table {
   border-collapse: collapse !important;
-  width: 100% !important;
 }
-
 th {
-  font-family: var(--avenir) !important;
-  font-size: 0.65rem !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: #dffd7b !important;
-  background: #222225 !important;
-  padding: 0.75rem 1rem !important;
-  white-space: nowrap !important;
-  border-bottom: 1px solid #2d2d30 !important;
+  font-family: var(--sv-sans) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--bone-400) !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--line) !important;
+  white-space: nowrap;
 }
-
 td {
-  font-family: var(--avenir) !important;
-  font-size: 0.85rem !important;
-  color: #94949a !important;
-  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-  padding: 0.8rem 1rem !important;
-  vertical-align: middle !important;
+  font-size: 0.875rem !important;
+  color: var(--bone-100) !important;
+  border-bottom: 1px solid var(--line) !important;
 }
-
 tr:hover td {
-  background: rgba(255,255,255,0.02) !important;
+  background: var(--ink-800) !important;
 }
-
-/* First cell (name/title) brighter */
-td:first-child a,
-td:first-child {
-  color: #e0e0e4 !important;
-  font-weight: 600 !important;
-}
-
-/* Clickable table row links */
 td a {
   color: inherit !important;
   text-decoration: none !important;
 }
-td a:hover { color: #dffd7b !important; }
+td a:hover {
+  color: var(--lime-300) !important;
+}
 
-/* ── INPUTS ── */
+/* ── Formulieren ── */
+.field-label,
+label {
+  font-family: var(--sv-sans) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--bone-400) !important;
+}
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]),
 textarea,
-select {
-  font-family: var(--avenir) !important;
-  font-size: 0.88rem !important;
-  font-weight: 500 !important;
-  background: #27272a !important;
-  border: 1px solid #323236 !important;
-  color: #f0f0f0 !important;
-  border-radius: 4px !important;
-  padding: 0.5rem 0.75rem !important;
+select,
+.rs__control {
+  font-family: var(--sv-sans) !important;
+  background: var(--ink-900) !important;
+  border: 1px solid var(--olive-600) !important;
+  border-radius: 2px !important;
+  color: var(--bone-100) !important;
+  box-shadow: none !important;
 }
-
+input:not([type="checkbox"]):not([type="radio"]):hover,
+textarea:hover,
+.rs__control:hover {
+  border-color: var(--bone-600) !important;
+}
 input:focus,
 textarea:focus,
-select:focus {
-  border-color: #dffd7b !important;
-  box-shadow: 0 0 0 2px rgba(223,253,123,0.1) !important;
+select:focus,
+.rs__control--is-focused {
+  border-color: var(--lime-300) !important;
+  box-shadow: none !important;
   outline: none !important;
 }
-
-/* ── LABELS ── */
-label {
-  font-family: var(--avenir) !important;
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  color: #666669 !important;
+input::placeholder,
+textarea::placeholder,
+.rs__placeholder {
+  color: var(--bone-600) !important;
 }
-
-/* ── BUTTONS ── */
-/* Payload renders primary buttons with data-button-style or specific roles */
-button,
-[role="button"] {
-  font-family: var(--avenir) !important;
-  font-weight: 600 !important;
-  font-size: 0.82rem !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
-}
-
-/* "Create New" and primary action buttons — target by color variable inheritance */
-button[style*="background"],
-a[style*="background"] {
-  font-family: var(--avenir) !important;
-}
-
-/* Payload v3 uses CSS vars for button colors — these override the base colour */
-:root {
-  --color-base-mid: #dffd7b;
-}
-
-/* Target Payload's own button classes via partial match on data attributes */
-[data-button-style="primary"],
-button[aria-label*="Create"],
-button[aria-label*="Save"],
-a[href*="create"] button {
-  background: #dffd7b !important;
-  color: #1e1e21 !important;
-  border: none !important;
-  box-shadow: 0 1px 8px rgba(223,253,123,0.12) !important;
-}
-
-[data-button-style="primary"]:hover {
-  background: #cef05a !important;
-}
-
-/* "Create New" pill in collection header */
-a[href$="/create"] {
-  background: #dffd7b !important;
-  color: #1e1e21 !important;
-  font-family: var(--avenir) !important;
-  font-weight: 700 !important;
-  font-size: 0.82rem !important;
-  border-radius: 4px !important;
-  padding: 0.4rem 1rem !important;
-  text-decoration: none !important;
-  border: none !important;
-}
-a[href$="/create"]:hover { background: #cef05a !important; }
-
-/* ── STATUS / BADGE cells ── */
-[class*="status"],
-[class*="pill"],
-[class*="badge"] {
-  border-radius: 3px !important;
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  font-family: var(--avenir) !important;
-}
-
-/* ── CHECKBOX ── */
 input[type="checkbox"],
 input[type="radio"] {
-  accent-color: #dffd7b;
+  accent-color: var(--lime-300);
+}
+.rs__menu {
+  background: var(--ink-800) !important;
+  border: 1px solid var(--olive-600) !important;
+  border-radius: 2px !important;
+}
+.rs__option--is-focused {
+  background: var(--ink-700) !important;
+  color: var(--bone-100) !important;
+}
+.rs__option--is-selected {
+  background: var(--ink-700) !important;
+  color: var(--lime-300) !important;
+}
+.rs__single-value {
+  color: var(--bone-100) !important;
+}
+.field-description {
+  font-size: 0.8125rem !important;
+  color: var(--bone-400) !important;
+}
+.collapsible__header,
+.collapsible__toggle {
+  font-family: var(--sv-sans) !important;
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--bone-100) !important;
+}
+.dropzone {
+  border: 1px dashed var(--olive-600) !important;
+  border-radius: 2px !important;
+  background: var(--ink-800) !important;
+}
+.dropzone:hover {
+  border-color: var(--lime-300) !important;
 }
 
-/* ── FOCUS RING ── */
-:focus-visible {
-  outline: 2px solid rgba(223,253,123,0.45) !important;
-  outline-offset: 2px !important;
+/* ── Statuslabels (pills) worden rechthoekig en rustig ── */
+.pill {
+  border-radius: 2px !important;
+  font-family: var(--sv-sans) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
 }
 
-/* ── REACT-SELECT (relationship fields) ── */
-[class*="rs__control"] {
-  background: #27272a !important;
-  border-color: #323236 !important;
-  border-radius: 4px !important;
+.toast--success {
+  border-left: 3px solid var(--lime-300) !important;
 }
-[class*="rs__control--is-focused"] {
-  border-color: #dffd7b !important;
-  box-shadow: 0 0 0 2px rgba(223,253,123,0.1) !important;
-}
-[class*="rs__menu"] {
-  background: #27272a !important;
-  border: 1px solid #323236 !important;
-  border-radius: 4px !important;
-}
-[class*="rs__option--is-focused"] {
-  background: rgba(223,253,123,0.07) !important;
-  color: #f0f0f0 !important;
-}
-[class*="rs__option--is-selected"] {
-  background: rgba(223,253,123,0.15) !important;
-  color: #dffd7b !important;
-}
-[class*="rs__single-value"],
-[class*="rs__placeholder"] {
-  color: #a0a0a4 !important;
-  font-family: var(--avenir) !important;
-  font-size: 0.88rem !important;
+.pagination__page[aria-current="page"],
+.clickable-arrow:hover {
+  color: var(--lime-300) !important;
 }
 
-/* ── SEARCH BAR ── */
-[class*="search"] input,
-input[placeholder*="Search"],
-input[placeholder*="Zoek"] {
-  background: #27272a !important;
-  border-color: #323236 !important;
-  color: #f0f0f0 !important;
+/* ── Inlogscherm ── */
+.login__brand img,
+.template-minimal .logo img {
+  height: 36px !important;
 }
 
-/* ── TOAST ── */
-[class*="toast--success"] { border-left: 3px solid #dffd7b !important; }
-
-/* ── UPLOAD / DROPZONE ── */
-[class*="dropzone"] {
-  border: 2px dashed #323236 !important;
-  border-radius: 6px !important;
-  background: #222225 !important;
-}
-[class*="dropzone"]:hover { border-color: #dffd7b !important; }
-
-/* ── FIELD DESCRIPTIONS ── */
-[class*="field-description"],
-[class*="field__description"] {
-  font-size: 0.75rem !important;
-  color: #666669 !important;
-  font-family: var(--avenir) !important;
-}
-
-/* ── COLLAPSIBLE panels ── */
-[class*="collapsible__header"],
-[class*="collapsible"] > button {
-  font-family: var(--avenir) !important;
-  font-weight: 700 !important;
-  font-size: 0.78rem !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
-  color: #888 !important;
-}
-
-/* ── PAGINATION ── */
-[class*="pagination"] button {
-  font-family: var(--avenir) !important;
-  font-size: 0.78rem !important;
-}
-[class*="pagination"] [aria-current="page"] {
-  background: rgba(223,253,123,0.1) !important;
-  color: #dffd7b !important;
-}
-
-/* ── COLUMNS / FILTERS buttons in list view ── */
-[class*="list-controls"] button,
-[class*="list-header"] button {
-  font-family: var(--avenir) !important;
-  font-size: 0.78rem !important;
-  background: #27272a !important;
-  border: 1px solid #323236 !important;
-  color: #94949a !important;
-  border-radius: 4px !important;
-}
-[class*="list-controls"] button:hover,
-[class*="list-header"] button:hover {
-  border-color: #dffd7b !important;
-  color: #dffd7b !important;
-}
-
-/* ── NO CONTENT empty state ── */
-[class*="no-results"],
-[class*="empty"] {
-  color: #444448 !important;
-  font-family: var(--avenir) !important;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

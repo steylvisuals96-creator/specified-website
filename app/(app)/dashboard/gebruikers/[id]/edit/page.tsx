@@ -32,7 +32,7 @@ export default async function GebruikerEditPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <FormShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email} title={d.naam || d.email} backHref="/dashboard/gebruikers"
+    <FormShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email} rol={(user as any).rol} title={d.naam || d.email} backHref="/dashboard/gebruikers"
       actions={<><DeleteBtn /><SaveBtn form="main-form" /></>}>
       <form id="main-form" action={update}>
         <FormSection>

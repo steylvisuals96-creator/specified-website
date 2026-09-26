@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
-import { Bebas_Neue } from "next/font/google";
+import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "../globals.css";
 
-// Dezelfde display-letter als de website. Stond al in DashboardShell, maar
-// werd hier nooit geladen — de koppen vielen daardoor stil terug op Avenir.
+// Dezelfde letters als de website (specified-website/DESIGN.md).
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
   subsets: ["latin"],
   weight: "400",
+});
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument-sans",
+  subsets: ["latin"],
+});
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="nl"
-      className={`${bebasNeue.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
