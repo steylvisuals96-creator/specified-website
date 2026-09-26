@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
   try {
     const base64 = token.split(".")[1];
     const decoded = JSON.parse(Buffer.from(base64, "base64url").toString("utf-8"));
-    if (decoded?.rol !== "beheerder") {
+    if (decoded?.rol !== "beheerder" && decoded?.rol !== "creator") {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   } catch {

@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
+import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import FormShell, { Field, SelectField, FormSection, FormRow, SaveBtn, DeleteBtn } from "@/components/FormShell";
@@ -35,11 +36,10 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
 
   async function save(fd: FormData) {
     "use server";
-    const cfg = await configPromise;
-    const p = await getPayload({ config: cfg as any });
+    const { payload: p, als } = await payloadAlsGebruiker();
 
     if (fd.get("_action") === "delete") {
-      await p.delete({ collection: "blog" as any, id });
+      await p.delete({ ...als, collection: "blog" as any, id });
       redirect("/dashboard/blog");
     }
 
@@ -50,6 +50,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
     };
 
     await p.update({
+      ...als,
       collection: "blog" as any,
       id,
       data: {

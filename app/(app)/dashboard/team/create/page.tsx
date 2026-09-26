@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
+import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import FormShell, { Field, SelectField, CheckboxField, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
@@ -17,10 +18,10 @@ export default async function TeamCreatePage() {
 
   async function create(fd: FormData) {
     "use server";
-    const cfg = await configPromise;
-    const p = await getPayload({ config: cfg as any });
+    const { payload: p, als } = await payloadAlsGebruiker();
     const html = fd.get("bio") as string;
     const result = await p.create({
+      ...als,
       collection: "team", data: {
         naam: fd.get("naam"), functie: fd.get("functie") || undefined,
         email: fd.get("email") || undefined, telefoon: fd.get("telefoon") || undefined,

@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
+import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import FormShell, { Field, SelectField, CheckboxField, FormSection, FormRow, SaveBtn, DeleteBtn } from "@/components/FormShell";
@@ -23,11 +24,11 @@ export default async function TeamEditPage({ params }: { params: Promise<{ id: s
 
   async function update(fd: FormData) {
     "use server";
-    const cfg = await configPromise;
-    const p = await getPayload({ config: cfg as any });
-    if (fd.get("_action") === "delete") { await p.delete({ collection: "team", id }); redirect("/dashboard/team"); }
+    const { payload: p, als } = await payloadAlsGebruiker();
+    if (fd.get("_action") === "delete") { await p.delete({ ...als, collection: "team", id }); redirect("/dashboard/team"); }
     const html = fd.get("bio") as string;
     await p.update({
+      ...als,
       collection: "team", id, data: {
         naam: fd.get("naam"), functie: fd.get("functie") || undefined,
         email: fd.get("email") || undefined, telefoon: fd.get("telefoon") || undefined,
