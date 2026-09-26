@@ -70,6 +70,7 @@ Totaal Higgsfield: 27,5 credits.
 - `public/videos/hero-turbine-1080.webm` (0,9 MB), `-1080.mp4` (1,2 MB), `-720.mp4` (0,5 MB, mobiel); poster = eerste frame
 - Video laadt na eerste weergave, pauzeert buiten beeld, niet bij reduced motion/databesparing
 - Scroll-rotatie vervangen door zoom (liet randen zien, melding Sam); beeld bedekt de hero altijd
+- Daarna op vraag van Sam: video afspelen met de scroll. Hero pint 130%, turbine als framereeks op canvas (desktop 114 frames/3,1 MB, mobiel 76/1,0 MB, progressief geladen). Autoplay-video en MP4/WebM verwijderd.
 - Later: video naar Cloudflare R2 verhuizen (playbook), nu in `public/`
 - Totaal Higgsfield: 57,5 credits
 

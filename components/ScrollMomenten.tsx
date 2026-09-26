@@ -15,24 +15,7 @@ export default function ScrollMomenten() {
     const mm = gsap.matchMedia();
 
     mm.add("(prefers-reduced-motion: no-preference)", () => {
-      // Hero: de turbine (videolus) zoomt licht in, de kop schuift weg. Geen
-      // rotatie meer: die liet de randen van het beeld zien.
-      gsap.fromTo(".hero__beeld", { scale: 1 }, {
-        scale: 1.15,
-        ease: "none",
-        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.8 },
-      });
-      gsap.to(".hero__title", {
-        yPercent: -22,
-        ease: "none",
-        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.5 },
-      });
-      gsap.to(".hero__copy", {
-        y: -60,
-        opacity: 0.2,
-        ease: "none",
-        scrollTrigger: { trigger: ".hero", start: "top top", end: "60% top", scrub: 0.5 },
-      });
+      // Hero: zie HeroScrub (pint en koppelt de turbine-frames aan de scroll).
 
       // Diensten: de beelden openen zich als een sluiter.
       gsap.utils.toArray<HTMLElement>(".split__beeld").forEach((kader) => {

@@ -98,7 +98,7 @@ Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij i
 
 **Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
 doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
-limoen lichtaccent. Hero: videolus `videos/hero-turbine-*` (Kling 3.0, naadloos via crossfade) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
+limoen lichtaccent. Hero: scroll-gestuurde turbine (Kling 3.0-lus als framereeks `videos/turbine-frames/{desktop,mobiel}/*.webp`, 114/76 frames, 3,1/1,0 MB) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
 `bedrijven-installatie.jpg`.
 
 **Handtekening** — SVG-pad in `--lime-300`, 3px streek, ronde uiteinden. Staat naast of onder een
@@ -139,7 +139,7 @@ Easing standaard exponentieel uit (`cubic-bezier(0.22,1,0.36,1)`); naast transfo
 | --- | --- | --- |
 | Hero-laadsequentie (één keer) | Kopregels schuiven van onder hun eigen masker in (per regel, 80ms stagger), daarna tekent de handtekening zichzelf (`stroke-dashoffset`) | kop 700ms `cubic-bezier(0.22,1,0.36,1)`; handtekening 1200ms `ease-in-out`, start na 400ms |
 | Hero-rotator | Woord wisselt elke 2,6 s (engineer, shape, unlock, build, define of CMS `hero_woorden`), schuift van onder in; de handtekening wist en hertekent zich bij elk woord | woord 620ms; handtekening 1100ms |
-| Hero (scroll) | Turbine draait mee (tot 28°) en zoomt licht; kop schuift omhoog; intro vervaagt | scrub |
+| Hero (scroll, gepind) | Hero pint 130% schermhoogte; de scroll speelt de turbine-frames af (vooruit/terug); intro vervaagt, beeld zoomt tot 110%, kop schuift op het einde weg | scrub 0,4 |
 | Diensten (scroll) | Beeld opent als een sluiter (`clip-path` inset → 0) en zoomt uit | scrub |
 | Vacatures (scroll, eenmalig) | Eén limoen veeg golft over de rijen | 0,35 s in + 0,4 s uit, 90ms stagger |
 | Founders (scroll) | Foto schuift trager dan de pagina (diepte) | scrub |

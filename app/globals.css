@@ -293,12 +293,12 @@ body::after {
 }
 .hero__beeld { position: absolute; inset: 0; z-index: 0; }
 .hero__beeld { overflow: hidden; }
-.hero__beeld img, .hero__video {
+.hero__beeld img, .hero__canvas {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 78% 20%;
 }
-.hero__video { opacity: 0; transition: opacity 400ms ease-out; }
-.hero__video[data-speelt="true"] { opacity: 1; }
+.hero__beeld img { object-fit: cover; object-position: 78% 20%; }
+.hero__canvas { opacity: 0; transition: opacity 300ms ease-out; }
+.hero__canvas[data-klaar="true"] { opacity: 1; }
 /* De scroll-zoom schaalt de hele laag vanuit het midden, nooit onder 100%:
    zo kan er nooit een rand van het beeld zichtbaar worden. */
 .hero__beeld { will-change: transform; }
@@ -354,7 +354,7 @@ body::after {
 
 @media (max-width: 899px) {
   .hero__inner { min-height: 88svh; }
-  .hero__beeld img, .hero__video { object-position: 70% 0%; }
+  .hero__beeld img { object-position: 70% 0%; }
   .hero__signature { width: 70vw; right: -4%; bottom: -10%; }
 }
 
