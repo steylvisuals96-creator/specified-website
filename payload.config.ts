@@ -1,5 +1,6 @@
 import { buildConfig } from "payload";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
 import path from "path";
@@ -106,9 +107,27 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
-  db: mongooseAdapter({
-    url: process.env.MONGODB_URI || "",
-  }),
+  // Database: Supabase (Postgres) zodra DATABASE_URI gezet is, anders nog de
+  // oude MongoDB. Dat laatste bestaat alleen voor de overstap en het
+  // migratiescript (scripts/migreer-naar-supabase.ts) en verdwijnt daarna.
+  db: process.env.DATABASE_URI
+    ? postgresAdapter({
+        pool: {
+          connectionString: process.env.DATABASE_URI,
+          // Serverless (Vercel): kleine pool, de Supabase-pooler doet de rest.
+          max: 5,
+        },
+        // Eigen schema: Supabase stelt alleen "public" open via zijn Data API,
+        // dus deze tabellen zijn niet via de publieke Supabase-API bereikbaar.
+        schemaName: "payload",
+        idType: "uuid",
+        // Schema-wijzigingen alleen via migraties, nooit stil automatisch.
+        push: false,
+        migrationDir: path.resolve(dirname, "migrations"),
+      })
+    : mongooseAdapter({
+        url: process.env.MONGODB_URI || "",
+      }),
   upload: {
     limits: {
       fileSize: 10000000,
