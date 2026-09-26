@@ -9,8 +9,8 @@ import ZoekFilter from "@/components/ZoekFilter";
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const statusKleur: Record<string, string> = {
-  gepubliceerd: "#34d399",
-  concept: "#6b7280",
+  gepubliceerd: "#9bd17f",
+  concept: "#6f6d62",
 };
 const statusLabel: Record<string, string> = {
   gepubliceerd: "Gepubliceerd",
@@ -36,16 +36,16 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   });
 
   return (
-    <DashboardShell activePath="/dashboard/blog" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/blog" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Blog"
         subtitle={`${docs.totalDocs} artikels`}
-        actions={<LimeBtn href="/dashboard/blog/create">+ Nieuw artikel</LimeBtn>}
+        actions={<LimeBtn href="/dashboard/blog/create">Nieuw artikel</LimeBtn>}
       />
-      <div style={{ padding: "0.75rem 2.5rem 0" }}>
+      <div className="px-5 sm:px-8 lg:px-10">
         <ZoekFilter placeholder="Zoek op titel of samenvatting…" defaultValue={q ?? ""} />
       </div>
-      <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
+      <div className="px-5 pt-6 pb-12 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? (
           <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen artikels geschreven."}</Empty>
         ) : (
@@ -60,7 +60,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 <TD>
                   <StatusBadge
                     label={statusLabel[doc.status] || doc.status}
-                    kleur={statusKleur[doc.status] || "#6b7280"}
+                    kleur={statusKleur[doc.status] || "#6f6d62"}
                   />
                 </TD>
                 <TD muted>{doc.publicatiedatum ? fmtDate(doc.publicatiedatum) : "—"}</TD>
@@ -68,9 +68,9 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 <TD>
                   <Link
                     href={`/dashboard/blog/${doc.id}/edit`}
-                    style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: "rgba(223,253,123,0.08)", color: "#dffd7b", fontSize: "0.78rem", fontWeight: 600, border: "1px solid rgba(223,253,123,0.19)", textDecoration: "none" }}
+                    style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "2px", background: "rgba(223,253,123,0.08)", color: "#dffd7b", fontSize: "0.8125rem", fontWeight: 600, border: "1px solid rgba(223,253,123,0.19)", textDecoration: "none" }}
                   >
-                    ✏️ Bewerken
+                    Bewerken
                   </Link>
                 </TD>
               </tr>

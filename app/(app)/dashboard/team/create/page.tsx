@@ -35,7 +35,7 @@ export default async function TeamCreatePage() {
   }
 
   return (
-    <FormShell activePath="/dashboard/team" userName={(user as any).naam || user.email} title="Nieuw teamlid" backHref="/dashboard/team" actions={<SaveBtn form="main-form" />}>
+    <FormShell activePath="/dashboard/team" userName={(user as any).naam || user.email} rol={(user as any).rol} title="Nieuw teamlid" backHref="/dashboard/team" actions={<SaveBtn form="main-form" />}>
       <form id="main-form" action={create}>
         <FormSection title="Foto">
           <MediaUpload name="foto" label="Profielfoto uploaden" />
@@ -54,7 +54,7 @@ export default async function TeamCreatePage() {
             <Field label="Telefoon" name="telefoon" placeholder="+32 ..." />
           </FormRow>
           <div style={{ marginBottom: "1.25rem" }}>
-            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#4a4a4a", marginBottom: "0.5rem" }}>Bio</div>
+            <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "#4a4a4a", marginBottom: "0.5rem" }}>Bio</div>
             <RichTextEditor name="bio" />
           </div>
           <FormRow>

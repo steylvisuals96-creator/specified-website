@@ -56,7 +56,7 @@ export const Gebruikers: CollectionConfig = {
   },
   admin: {
     useAsTitle: "naam",
-    group: "Instellingen",
+    group: "Ruwe gegevens",
   },
   access: {
     read: lezen,

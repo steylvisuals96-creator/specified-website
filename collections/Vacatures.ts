@@ -17,7 +17,7 @@ export const Vacatures: CollectionConfig = {
   labels: { singular: "Vacature", plural: "Vacatures" },
   admin: {
     useAsTitle: "titel",
-    group: "Recruitment",
+    group: "Ruwe gegevens",
     defaultColumns: ["titel", "sector", "type", "status", "updatedAt"],
   },
   fields: [

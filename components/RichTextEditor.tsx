@@ -12,12 +12,12 @@ const BTN = (props: { onClick: () => void; active?: boolean; title: string; chil
     title={props.title}
     style={{
       background: props.active ? "rgba(250,203,4,0.15)" : "transparent",
-      border: "1px solid " + (props.active ? "#facb04" : "#2a2a2a"),
-      color: props.active ? "#facb04" : "#888",
-      borderRadius: "4px",
+      border: "1px solid " + (props.active ? "#d9a86c" : "var(--olive-600)"),
+      color: props.active ? "#d9a86c" : "var(--bone-400)",
+      borderRadius: "2px",
       padding: "4px 8px",
       cursor: "pointer",
-      fontSize: "0.75rem",
+      fontSize: "0.8125rem",
       fontWeight: 600,
       lineHeight: 1,
       minWidth: "28px",
@@ -56,7 +56,7 @@ const RichTextEditor = forwardRef<RichTextEditorHandle, { name: string; defaultV
     <div>
       <input type="hidden" name={name} value={html} />
       {editor && (
-        <div style={{ border: "1px solid #222", borderRadius: "6px", overflow: "hidden", background: "#141414" }}>
+        <div style={{ border: "1px solid #222", borderRadius: "2px", overflow: "hidden", background: "#141414" }}>
           {/* Toolbar */}
           <div style={{
             display: "flex", gap: "4px", padding: "8px 10px",
@@ -73,8 +73,8 @@ const RichTextEditor = forwardRef<RichTextEditorHandle, { name: string; defaultV
             <BTN onClick={() => {
               const url = window.prompt("URL:");
               if (url) editor.chain().focus().setLink({ href: url }).run();
-            }} active={editor.isActive("link")} title="Link">🔗</BTN>
-            <BTN onClick={() => editor.chain().focus().unsetLink().run()} title="Link verwijderen">✕</BTN>
+            }} active={editor.isActive("link")} title="Link toevoegen">Link</BTN>
+            <BTN onClick={() => editor.chain().focus().unsetLink().run()} title="Link verwijderen">Ontkoppel</BTN>
           </div>
           {/* Editor */}
           <EditorContent
@@ -90,10 +90,10 @@ const RichTextEditor = forwardRef<RichTextEditorHandle, { name: string; defaultV
         .tiptap h3 { font-family: 'Cinzel', serif; font-size: 0.95rem; color: #d8d2c8; margin: 0.8em 0 0.4em; }
         .tiptap ul, .tiptap ol { padding-left: 1.4em; margin: 0.5em 0; }
         .tiptap li { margin-bottom: 0.25em; }
-        .tiptap blockquote { border-left: 3px solid #facb04; padding-left: 1em; color: #888; font-style: italic; margin: 0.75em 0; }
-        .tiptap a { color: #facb04; text-decoration: underline; }
-        .tiptap hr { border: none; border-top: 1px solid #2a2a2a; margin: 1em 0; }
-        .tiptap p.is-editor-empty:first-child::before { color: #444; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
+        .tiptap blockquote { border-left: 3px solid #d9a86c; padding-left: 1em; color: var(--bone-400); font-style: italic; margin: 0.75em 0; }
+        .tiptap a { color: #d9a86c; text-decoration: underline; }
+        .tiptap hr { border: none; border-top: 1px solid var(--olive-600); margin: 1em 0; }
+        .tiptap p.is-editor-empty:first-child::before { color: var(--olive-600); content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
       `}</style>
     </div>
   );

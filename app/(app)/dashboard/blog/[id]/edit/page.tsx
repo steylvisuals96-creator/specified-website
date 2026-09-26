@@ -73,6 +73,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
     <FormShell
       activePath="/dashboard/blog"
       userName={(user as any).naam || user.email}
+      rol={(user as any).rol}
       title="Artikel bewerken"
       backHref="/dashboard/blog"
       actions={<SaveBtn form="main-form" />}
@@ -82,7 +83,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
           <Field label="Titel" name="titel" required defaultValue={doc.titel} />
           <Field label="Korte samenvatting" name="samenvatting" type="textarea" rows={3} defaultValue={doc.samenvatting} />
           <div style={{ marginBottom: "1.25rem" }}>
-            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#666", marginBottom: "0.5rem" }}>
+            <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)", marginBottom: "0.5rem" }}>
               Inhoud
             </div>
             <RichTextEditor name="inhoud" defaultValue={inhoudHtml} />
@@ -111,7 +112,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
             <Field label="URL (slug)" name="slug" defaultValue={doc.slug} />
           </FormRow>
           {doc.status === "gepubliceerd" && doc.slug && (
-            <p style={{ fontSize: "0.78rem", color: "#666", marginTop: "-0.5rem" }}>
+            <p style={{ fontSize: "0.8125rem", color: "var(--bone-400)", marginTop: "-0.5rem" }}>
               Live op:{" "}
               <a href={`https://specified-website.vercel.app/blog/${doc.slug}`} target="_blank" rel="noopener noreferrer" style={{ color: "#dffd7b" }}>
                 /blog/{doc.slug}

@@ -42,7 +42,7 @@ export default async function TeamEditPage({ params }: { params: Promise<{ id: s
   }
 
   return (
-    <FormShell activePath="/dashboard/team" userName={(user as any).naam || user.email} title={d.naam} backHref="/dashboard/team"
+    <FormShell activePath="/dashboard/team" userName={(user as any).naam || user.email} rol={(user as any).rol} title={d.naam} backHref="/dashboard/team"
       actions={<><DeleteBtn /><SaveBtn form="main-form" /></>}>
       <form id="main-form" action={update}>
         <FormSection title="Foto">
@@ -62,7 +62,7 @@ export default async function TeamEditPage({ params }: { params: Promise<{ id: s
             <Field label="Telefoon" name="telefoon" defaultValue={d.telefoon} />
           </FormRow>
           <div style={{ marginBottom: "1.25rem" }}>
-            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#4a4a4a", marginBottom: "0.5rem" }}>Bio</div>
+            <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "#4a4a4a", marginBottom: "0.5rem" }}>Bio</div>
             <RichTextEditor name="bio" defaultValue={bioHtml} />
           </div>
           <FormRow>

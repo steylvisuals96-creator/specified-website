@@ -2,29 +2,30 @@
 import DashboardShell, { PageHeader, LimeBtn } from "./DashboardShell";
 
 const LIME = "#dffd7b";
-const BORDER = "rgba(255,255,255,0.08)";
-const S1 = "#27272a";
-const MUTED = "rgba(255,255,255,0.4)";
-const TEXT = "#f0f0f0";
+const BORDER = "var(--line)";
+const S1 = "var(--ink-800)";
+const MUTED = "var(--bone-400)";
+const TEXT = "var(--bone-100)";
 
 export default function FormShell({
-  activePath, userName, title, backHref, children, actions,
+  activePath, userName, rol, title, backHref, children, actions,
 }: {
   activePath: string;
   userName: string;
+  rol?: string | null;
   title: string;
   backHref: string;
   children: React.ReactNode;
   actions?: React.ReactNode;
 }) {
   return (
-    <DashboardShell activePath={activePath} userName={userName}>
-      <div style={{ position: "sticky", top: 0, zIndex: 20, background: "#1e1e21" }}>
+    <DashboardShell activePath={activePath} userName={userName} rol={rol}>
+      <div style={{ position: "sticky", top: 0, zIndex: 20, background: "var(--ink-900)" }}>
         <PageHeader
           title={title}
           actions={
             <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-              <LimeBtn href={backHref} outline>← Annuleren</LimeBtn>
+              <LimeBtn href={backHref} outline>Annuleren</LimeBtn>
               {actions}
             </div>
           }
@@ -41,7 +42,7 @@ export function FormSection({ title, children }: { title?: string; children: Rea
   return (
     <div style={{ marginBottom: "2rem" }}>
       {title && (
-        <div style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: LIME, marginBottom: "1rem", paddingBottom: "0.5rem", borderBottom: `1px solid ${BORDER}` }}>
+        <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: LIME, marginBottom: "1rem", paddingBottom: "0.5rem", borderBottom: `1px solid ${BORDER}` }}>
           {title}
         </div>
       )}
@@ -60,8 +61,8 @@ export function FormRow({ children }: { children: React.ReactNode }) {
 
 const inputBase: React.CSSProperties = {
   background: S1, border: `1px solid rgba(255,255,255,0.1)`, color: TEXT,
-  borderRadius: "4px", padding: "0.55rem 0.75rem", fontSize: "0.85rem",
-  fontFamily: "var(--font-avenir)", width: "100%", outline: "none",
+  borderRadius: "2px", padding: "0.55rem 0.75rem", fontSize: "0.875rem",
+  fontFamily: "inherit", width: "100%", outline: "none",
 };
 
 export function Field({
@@ -72,7 +73,7 @@ export function Field({
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", marginBottom: children ? 0 : "1.25rem" }}>
-      <label style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#666" }}>
+      <label style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)" }}>
         {label}{required && <span style={{ color: LIME, marginLeft: "2px" }}>*</span>}
       </label>
       {children ?? (
@@ -103,7 +104,7 @@ export function SelectField({
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", marginBottom: "1.25rem" }}>
-      <label style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#666" }}>
+      <label style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)" }}>
         {label}{required && <span style={{ color: LIME, marginLeft: "2px" }}>*</span>}
       </label>
       <select
@@ -121,7 +122,7 @@ export function CheckboxField({ label, name, defaultChecked }: { label: string; 
   return (
     <label style={{ display: "flex", alignItems: "center", gap: "0.6rem", cursor: "pointer", marginBottom: "1.25rem" }}>
       <input type="checkbox" name={name} defaultChecked={defaultChecked} value="true" style={{ accentColor: LIME, width: "16px", height: "16px" }} />
-      <span style={{ fontSize: "0.85rem", color: MUTED }}>{label}</span>
+      <span style={{ fontSize: "0.875rem", color: MUTED }}>{label}</span>
     </label>
   );
 }
@@ -137,7 +138,7 @@ export function SaveBtn({ label = "Opslaan", form }: { label?: string; form?: st
   return (
     <button
       type="submit" form={form}
-      style={{ background: LIME, color: "#1e1e21", border: "none", borderRadius: "4px", padding: "0.55rem 1.25rem", fontWeight: 700, fontSize: "0.82rem", cursor: "pointer", letterSpacing: "0.02em", fontFamily: "var(--font-avenir)" }}
+      style={{ background: LIME, color: "var(--ink-900)", border: "none", borderRadius: "2px", padding: "0.55rem 1.25rem", fontWeight: 700, fontSize: "0.875rem", cursor: "pointer", fontFamily: "inherit" }}
     >
       {label}
     </button>
@@ -149,7 +150,7 @@ export function DeleteBtn({ label = "Verwijderen" }: { label?: string }) {
     <button
       type="submit" name="_action" value="delete"
       onClick={(e) => { if (!confirm("Zeker verwijderen?")) e.preventDefault(); }}
-      style={{ background: "transparent", color: "#ef4444", border: "1px solid #ef444440", borderRadius: "4px", padding: "0.5rem 1rem", fontWeight: 600, fontSize: "0.78rem", cursor: "pointer", fontFamily: "var(--font-avenir)" }}
+      style={{ background: "transparent", color: "#ef4444", border: "1px solid #ef444440", borderRadius: "2px", padding: "0.5rem 1rem", fontWeight: 600, fontSize: "0.8125rem", cursor: "pointer", fontFamily: "inherit" }}
     >
       {label}
     </button>
@@ -162,7 +163,7 @@ export function TabBar({ tabs, active, onSelect }: { tabs: string[]; active: str
       {tabs.map(t => (
         <button
           key={t} type="button" onClick={() => onSelect(t)}
-          style={{ background: "transparent", border: "none", borderBottom: `2px solid ${t === active ? LIME : "transparent"}`, color: t === active ? LIME : "#555", padding: "0.65rem 1.1rem", cursor: "pointer", fontSize: "0.8rem", fontWeight: t === active ? 600 : 400, fontFamily: "var(--font-avenir)", transition: "all 0.15s" }}
+          style={{ background: "transparent", border: "none", borderBottom: `2px solid ${t === active ? LIME : "transparent"}`, color: t === active ? LIME : "var(--bone-600)", padding: "0.65rem 1.1rem", cursor: "pointer", fontSize: "0.875rem", fontWeight: t === active ? 600 : 400, fontFamily: "inherit", transition: "all 0.15s" }}
         >
           {t}
         </button>

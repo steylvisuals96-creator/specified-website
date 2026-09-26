@@ -11,10 +11,10 @@ import ZoekFilter from "@/components/ZoekFilter";
 const configPromise = import("@payload-config").then((m) => m.default);
 
 const statusKleur: Record<string, string> = {
-  nieuw: "#dffd7b", screening: "#60a5fa", tel_gescreend: "#f59e0b",
-  voorgesteld: "#a78bfa", interview_gepland: "#f472b6",
-  interview_afgerond: "#e879f9", aanbod: "#34d399",
-  geplaatst: "#34d399", afgewezen: "#6b7280",
+  nieuw: "#dffd7b", screening: "#8fb3d9", tel_gescreend: "#d9a86c",
+  voorgesteld: "#b5a1d8", interview_gepland: "#d9a86c",
+  interview_afgerond: "#b5a1d8", aanbod: "#9bd17f",
+  geplaatst: "#9bd17f", afgewezen: "#6f6d62",
 };
 
 const statusLabel: Record<string, string> = {
@@ -55,16 +55,16 @@ export default async function SollicitatiePage({ searchParams }: { searchParams:
     : docs.docs;
 
   return (
-    <DashboardShell activePath="/dashboard/sollicitaties" userName={(user as any).naam || user.email}>
+    <DashboardShell activePath="/dashboard/sollicitaties" userName={(user as any).naam || user.email} rol={(user as any).rol}>
       <PageHeader
         title="Sollicitaties"
         subtitle={`${docs.totalDocs} sollicitaties`}
         actions={<SollicitatieCreateDrawer kandidaten={kandidaatOpties} vacatures={vacatureOpties} />}
       />
-      <div style={{ padding: "0.75rem 2.5rem 0" }}>
+      <div className="px-5 sm:px-8 lg:px-10">
         <ZoekFilter placeholder="Zoek op kandidaat of vacature…" defaultValue={q ?? ""} />
       </div>
-      <div style={{ padding: "1rem 2.5rem 1.5rem" }}>
+      <div className="px-5 pt-6 pb-12 sm:px-8 lg:px-10">
         {filtered.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen sollicitaties aangemaakt."}</Empty> : (
           <Table headers={["Kandidaat", "Vacature", "Status", "Consultant", "Bijgewerkt", ""]}>
             {filtered.map((doc: any) => {
@@ -80,11 +80,11 @@ export default async function SollicitatiePage({ searchParams }: { searchParams:
                     </Link>
                   </TD>
                   <TD muted>{vacatureTitel}</TD>
-                  <TD><StatusBadge label={statusLabel[doc.status] || doc.status} kleur={statusKleur[doc.status] || "#6b7280"} /></TD>
+                  <TD><StatusBadge label={statusLabel[doc.status] || doc.status} kleur={statusKleur[doc.status] || "#6f6d62"} /></TD>
                   <TD muted>{typeof doc.consultant === "object" ? doc.consultant?.email : "—"}</TD>
                   <TD muted>{fmtDate(doc.updatedAt)}</TD>
                   <TD>
-                    <SollicitatieEditDrawer id={doc.id} titel={`${kandidaatNaam} → ${vacatureTitel}`} initial={{
+                    <SollicitatieEditDrawer id={doc.id} titel={`${kandidaatNaam} voor ${vacatureTitel}`} initial={{
                       status: doc.status, datum_sollicitatie: doc.datum_sollicitatie,
                       datum_interview: doc.datum_interview, startdatum: doc.startdatum, notities: doc.notities,
                     }} />

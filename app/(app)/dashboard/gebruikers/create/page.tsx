@@ -29,7 +29,7 @@ export default async function GebruikerCreatePage() {
   }
 
   return (
-    <FormShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email} title="Nieuwe gebruiker" backHref="/dashboard/gebruikers" actions={<SaveBtn form="main-form" />}>
+    <FormShell activePath="/dashboard/gebruikers" userName={(user as any).naam || user.email} rol={(user as any).rol} title="Nieuwe gebruiker" backHref="/dashboard/gebruikers" actions={<SaveBtn form="main-form" />}>
       <form id="main-form" action={create}>
         <FormSection>
           <Field label="Naam" name="naam" required placeholder="Voornaam Achternaam" />

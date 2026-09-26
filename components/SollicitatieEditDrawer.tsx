@@ -1,14 +1,16 @@
 "use client";
 
+import { knopKlein } from "@/lib/knoppen";
+
 import { useState, useTransition } from "react";
 import { updateSollicitatie } from "@/app/(app)/dashboard/sollicitaties/[id]/actions";
 
 const LIME = "#dffd7b";
-const S1 = "#27272a";
-const S2 = "#323236";
-const BORDER = "rgba(255,255,255,0.08)";
-const MUTED = "rgba(255,255,255,0.4)";
-const TEXT = "#f0f0f0";
+const S1 = "var(--ink-800)";
+const S2 = "var(--olive-600)";
+const BORDER = "var(--line)";
+const MUTED = "var(--bone-400)";
+const TEXT = "var(--bone-100)";
 
 const STATUS_OPTIONS = [
   { label: "Nieuw", value: "nieuw" },
@@ -18,18 +20,18 @@ const STATUS_OPTIONS = [
   { label: "Interview gepland", value: "interview_gepland" },
   { label: "Interview afgerond", value: "interview_afgerond" },
   { label: "Aanbod uitgebracht", value: "aanbod" },
-  { label: "Geplaatst ✓", value: "geplaatst" },
+  { label: "Geplaatst", value: "geplaatst" },
   { label: "Niet weerhouden", value: "afgewezen" },
   { label: "Teruggetrokken", value: "teruggetrokken" },
 ];
 
-const inputStyle: React.CSSProperties = { background: S1, border: `1px solid ${S2}`, borderRadius: "4px", color: TEXT, fontSize: "0.85rem", padding: "0.45rem 0.65rem", fontFamily: "inherit", width: "100%", outline: "none" };
+const inputStyle: React.CSSProperties = { background: S1, border: `1px solid ${S2}`, borderRadius: "2px", color: TEXT, fontSize: "0.875rem", padding: "0.45rem 0.65rem", fontFamily: "inherit", width: "100%", outline: "none" };
 const selectStyle: React.CSSProperties = { ...inputStyle, cursor: "pointer" };
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-      <label style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#666" }}>{label}</label>
+      <label style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)" }}>{label}</label>
       {children}
     </div>
   );
@@ -64,19 +66,19 @@ export default function SollicitatieEditDrawer({ id, initial, titel }: { id: str
 
   return (
     <>
-      <button onClick={() => setOpen(true)} style={{ display: "block", width: "100%", textAlign: "center", padding: "0.5rem", borderRadius: "4px", background: `${LIME}14`, color: LIME, fontSize: "0.78rem", fontWeight: 600, border: `1px solid ${LIME}30`, cursor: "pointer", fontFamily: "inherit" }}>
-        ✏️ Bewerken
+      <button onClick={() => setOpen(true)} className={knopKlein}>
+        Bewerken
       </button>
 
-      {open && <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 40, backdropFilter: "blur(2px)" }} />}
+      {open && <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, background: "rgb(20 20 14 / 0.72)", zIndex: 40, backdropFilter: "blur(2px)" }} />}
 
-      <div style={{ position: "fixed", top: 0, right: 0, height: "100vh", width: "420px", background: "#1e1e21", borderLeft: `1px solid ${BORDER}`, zIndex: 50, display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)", transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)" }}>
+      <div style={{ position: "fixed", top: 0, right: 0, height: "100vh", width: "420px", background: "var(--ink-900)", borderLeft: `1px solid ${BORDER}`, zIndex: 50, display: "flex", flexDirection: "column", transform: open ? "translateX(0)" : "translateX(100%)", transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)" }}>
         <div style={{ padding: "1.25rem 1.5rem", borderBottom: `1px solid ${BORDER}`, display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
           <div>
             <div style={{ fontSize: "1rem", fontWeight: 700, color: TEXT }}>Sollicitatie bewerken</div>
-            {titel && <div style={{ fontSize: "0.73rem", color: "#555", marginTop: "0.1rem" }}>{titel}</div>}
+            {titel && <div style={{ fontSize: "0.8125rem", color: "var(--bone-400)", marginTop: "0.1rem" }}>{titel}</div>}
           </div>
-          <button onClick={() => setOpen(false)} style={{ background: "transparent", border: "none", color: "#555", cursor: "pointer", fontSize: "1.2rem", padding: "0.25rem" }}>✕</button>
+          <button onClick={() => setOpen(false)} style={{ background: "transparent", border: "none", color: "var(--bone-400)", cursor: "pointer", fontSize: "1.2rem", padding: "0.25rem" }}>✕</button>
         </div>
 
         <div style={{ flex: 1, padding: "1.25rem 1.5rem", display: "flex", flexDirection: "column", gap: "1rem", overflowY: "auto" }}>
@@ -104,10 +106,10 @@ export default function SollicitatieEditDrawer({ id, initial, titel }: { id: str
         </div>
 
         <div style={{ padding: "1rem 1.5rem", borderTop: `1px solid ${BORDER}`, display: "flex", gap: "0.75rem", flexShrink: 0 }}>
-          <button onClick={handleSave} disabled={isPending} style={{ flex: 1, padding: "0.6rem 1rem", borderRadius: "4px", background: saved ? "#34d399" : LIME, color: "#1e1e21", fontWeight: 700, fontSize: "0.85rem", border: "none", cursor: isPending ? "wait" : "pointer", fontFamily: "inherit", transition: "background 0.2s" }}>
-            {isPending ? "Opslaan…" : saved ? "✓ Opgeslagen" : "Opslaan"}
+          <button onClick={handleSave} disabled={isPending} style={{ flex: 1, padding: "0.6rem 1rem", borderRadius: "2px", background: saved ? "#9bd17f" : LIME, color: "var(--ink-900)", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: isPending ? "wait" : "pointer", fontFamily: "inherit", transition: "background 0.2s" }}>
+            {isPending ? "Opslaan…" : saved ? "Opgeslagen" : "Opslaan"}
           </button>
-          <button onClick={() => { setForm(initial); setOpen(false); }} style={{ padding: "0.6rem 1rem", borderRadius: "4px", background: "transparent", color: MUTED, fontWeight: 600, fontSize: "0.82rem", border: `1px solid ${BORDER}`, cursor: "pointer", fontFamily: "inherit" }}>
+          <button onClick={() => { setForm(initial); setOpen(false); }} style={{ padding: "0.6rem 1rem", borderRadius: "2px", background: "transparent", color: MUTED, fontWeight: 600, fontSize: "0.875rem", border: `1px solid ${BORDER}`, cursor: "pointer", fontFamily: "inherit" }}>
             Annuleren
           </button>
         </div>
