@@ -43,6 +43,9 @@ function acro(node: SVGTextElement, tekst: string) {
 
 type Letter = {
   g: SVGGElement;
+  /** Eindpositie t.o.v. de beginstand (staand: het woord draait naar horizontaal). */
+  ex?: number;
+  ey?: number;
   vul: SVGTextElement;
   lijn: SVGTextElement;
   co?: SVGGElement;
@@ -59,6 +62,10 @@ type Delen = {
   as: SVGLineElement;
   eindY: number;
   eindVul: number;
+  /** Staand: de lettergroep die op het einde groter wordt om de breedte te vullen. */
+  woordG?: SVGGElement;
+  eindSchaal?: number;
+  eindMidden?: [number, number];
 };
 
 function lettertype() {
@@ -190,8 +197,20 @@ function bouwStaand(svg: SVGSVGElement): Delen {
     const leider = el("polyline", { class: "tek__leider tek__leider--dik", points: `${ax},${ay} 430,${ay} 452,${ay}` }, co);
     acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2 }, co), TEKENING_CALLOUTS[i][0]);
     el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32 }, co).textContent = TEKENING_CALLOUTS[i][1];
-    return { g, vul, lijn, dx, dy, co, leider, cy };
+    return { g, vul, lijn, dx, dy, co, leider, cy, w, basis };
   });
+
+  // Einde: het woord draait terug naar horizontaal, gecentreerd boven de kop,
+  // en schaalt zodat het de breedte van het blad vult.
+  const spatie = 8, eindBasis = 560;
+  const breedte = letters.reduce((a, l) => a + l.w, 0) + spatie * (letters.length - 1);
+  let ex = 450 - breedte / 2;
+  letters.forEach((l) => {
+    const midden = ex + l.w / 2;
+    Object.assign(l, { ex: midden - 240, ey: eindBasis - l.basis });
+    ex += l.w + spatie;
+  });
+  const eindSchaal = Math.min(1.45, 780 / breedte);
 
   const y1 = letters[0].cy + letters[0].dy - 60, y2 = letters[8].cy + letters[8].dy + 60, mx = 96;
   const maat = el("g", { opacity: 0 }, svg);
@@ -200,16 +219,25 @@ function bouwStaand(svg: SVGSVGElement): Delen {
   const my = (y1 + y2) / 2;
   el("text", { class: "tek__maattekst tek__maattekst--groot", x: mx - 18, y: my, transform: `rotate(-90 ${mx - 18} ${my})` }, maat).textContent = TEKENING.maatlijn;
 
+  // Titelblok op telefoon: groter getekend, want de viewBox schaalt hier ~0,43x
+  // (tekst van 32/40 eenheden wordt ~14/17 px op het scherm).
   const tb = el("g", { opacity: 0 }, svg);
-  const bx = 430, by = 1300, bw = 420, bh = 250;
+  const bx = 336, by = 1236, bw = 510, bh = 290, kol = 250;
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
-  el("line", { class: "tek__blok", x1: bx, y1: by + 90, x2: bx + bw, y2: by + 90 }, tb);
-  el("text", { class: "tek__label tek__label--groot", x: bx + 20, y: by + 34 }, tb).textContent = "Project";
-  el("text", { class: "tek__waarde tek__waarde--groot", x: bx + 20, y: by + 72 }, tb).textContent = TEKENING.titelblok.project;
-  el("text", { class: "tek__label tek__label--groot", x: bx + 20, y: by + 124 }, tb).textContent = TEKENING.titelblok.akkoord;
-  const hand = el("path", { class: "tek__hand tek__hand--dik", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 20} ${by + 130}) scale(.66)` }, tb);
+  el("line", { class: "tek__blok", x1: bx, y1: by + 112, x2: bx + bw, y2: by + 112 }, tb);
+  el("line", { class: "tek__blok", x1: bx + kol, y1: by + 112, x2: bx + kol, y2: by + bh }, tb);
+  const lab = (x: number, y: number, t: string) => (el("text", { class: "tek__label tek__label--groot", x, y }, tb).textContent = t);
+  const waa = (x: number, y: number, t: string) => (el("text", { class: "tek__waarde tek__waarde--groot", x, y }, tb).textContent = t);
+  lab(bx + 22, by + 42, "Project");
+  waa(bx + 22, by + 90, TEKENING.titelblok.project);
+  const [stad, regio] = TEKENING.titelblok.locatie.split(", ");
+  lab(bx + 22, by + 158, "Locatie");
+  waa(bx + 22, by + 206, `${stad},`);
+  waa(bx + 22, by + 252, regio ?? "");
+  lab(bx + kol + 22, by + 158, "Goedgekeurd");
+  const hand = el("path", { class: "tek__hand tek__hand--dik", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + kol + 12} ${by + 168}) scale(.44)` }, tb);
 
-  return { letters, maat, titelblok: tb, hand, as, eindY: 0, eindVul: 0.22 };
+  return { letters, maat, titelblok: tb, hand, as, eindY: 0, eindVul: 1, woordG: lettersG, eindSchaal, eindMidden: [450, eindBasis - 54] };
 }
 
 /** Eén tijdlijn voor beide oriëntaties, gestuurd door de scroll. */
@@ -245,11 +273,15 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(d.hand, { strokeDashoffset: 0, duration: 1, autoRound: false }, 4.4)
     // 4. Het woord klikt samen in limoen, de kop verschijnt.
     .to(d.as, { opacity: 0, duration: 0.5 }, 5.3)
-    .to(d.titelblok, { opacity: d.eindVul === 1 ? 0.6 : 0, duration: 0.5 }, 5.3)
-    .to(L.map((l) => l.g), { x: 0, y: d.eindY, duration: 1.2, ease: "power2.inOut" }, 5.4)
+    .to(d.titelblok, { opacity: d.woordG ? 0 : 0.6, duration: 0.5 }, 5.3)
+    .to(L.map((l) => l.g), { x: (i) => L[i].ex ?? 0, y: (i) => L[i].ey ?? d.eindY, duration: 1.2, ease: "power2.inOut" }, 5.4)
     .to(L.map((l) => l.vul), { fillOpacity: d.eindVul, fill: "#dffd7b", duration: 0.8 }, 6.0)
     .to(L.map((l) => l.lijn), { strokeOpacity: d.eindVul === 1 ? 0 : 0.5, duration: 0.6 }, 6.0)
-    .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.4)
+    .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.4);
+  if (d.woordG && d.eindSchaal && d.eindMidden) {
+    tl.to(d.woordG, { scale: d.eindSchaal, svgOrigin: `${d.eindMidden[0]} ${d.eindMidden[1]}`, duration: 0.8, ease: "power2.inOut" }, 5.9);
+  }
+  tl
     .to({}, { duration: 0.6 });
 }
 

@@ -363,9 +363,9 @@ body::after {
 .tek__maattekst--groot { font-size: 26px; }
 .tek__blok { fill: none; stroke: var(--bone-400); stroke-width: 1; }
 .tek__label { fill: var(--bone-400); font: 500 13px var(--font-sans), sans-serif; }
-.tek__label--groot { font-size: 24px; }
+.tek__label--groot { font-size: 32px; }
 .tek__waarde { fill: var(--bone-100); font: 500 17px var(--font-sans), sans-serif; }
-.tek__waarde--groot { font-size: 30px; }
+.tek__waarde--groot { font-size: 40px; }
 .tek__hand { fill: none; stroke: var(--lime-300); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .tek__hand--dik { stroke-width: 4; }
 
