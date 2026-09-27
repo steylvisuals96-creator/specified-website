@@ -563,8 +563,8 @@ html.lenis, html.lenis body { height: auto; }
 a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom,
 a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { fill: var(--lime-300); }
 @media (prefers-reduced-motion: no-preference) {
-  a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom { animation: logo-kom 620ms cubic-bezier(0.34, 1.56, 0.64, 1); }
-  a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { animation: logo-boog 620ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom { animation: logo-kom 620ms var(--ease-out); }
+  a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { animation: logo-boog 620ms var(--ease-out); }
 }
 @keyframes logo-kom { 0% { transform: none; } 35% { transform: translateY(-22%); } 100% { transform: none; } }
 @keyframes logo-boog { 0% { transform: none; } 35% { transform: translateY(26%); } 100% { transform: none; } }
