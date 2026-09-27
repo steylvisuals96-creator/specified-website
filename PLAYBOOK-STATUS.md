@@ -149,10 +149,10 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 - [x] Supabase: payload-schema niet via de Data API bereikbaar, anon/authenticated zonder rechten, advisor 0 waarschuwingen
 - [x] Geen geheimen in repo (Semgrep secrets 0)
 - [ ] Media: uploads via R2 (private, ondertekende links), scroll-frames nog op Vercel i.p.v. R2
-- [x] Security-headers actief (CMS live; website na merge opnieuw controleren)
+- [x] Security-headers actief op CMS en website (live gecontroleerd)
 - [x] supply-chain, semgrep, insecure-defaults (handmatig), security-review fase 5
 - [ ] /security-review op de back-end redesign en fase 6-wijzigingen
 - [x] SEO: metadata, OG-beeld, sitemap
-- [ ] Redesign gemerged naar main en live gecontroleerd
+- [x] Redesign gemerged naar main en live gecontroleerd (2026-09-27): alle pagina's 200, 6 security-headers, deelbeeld, JSON-LD, geen consolefouten
 - [ ] Admin-handleiding en retainer-afspraken bezorgd aan klant (handleiding klaar, retainer door Sam)
 - Inspiratie-richting gebruikt: Signatuurmerk
