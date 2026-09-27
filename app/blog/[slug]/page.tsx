@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { getBlogPost, getBlogPosts, formatDatum } from "@/lib/blog";
+import { preconnect } from "react-dom";
+import { coverBron, getBlogPost, getBlogPosts, formatDatum } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -45,6 +46,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function BlogArtikel({ params }: { params: Promise<{ slug: string }> }) {
+  // Coverbeelden komen meestal van Unsplash: verbinding meteen openen.
+  preconnect("https://images.unsplash.com");
   const { slug } = await params;
   const [post, settings] = await Promise.all([getBlogPost(slug), getSettings()]);
   if (!post) notFound();
@@ -72,12 +75,12 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
         <article style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem" }}>
           <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
             <Link href="/blog" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none" }}>
-              ← Terug naar blog
+              Terug naar blog
             </Link>
 
             <div style={{ display: "flex", gap: "1rem", alignItems: "center", margin: "2rem 0 1rem", flexWrap: "wrap" }}>
               {post.publicatiedatum && (
-                <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--lime)" }}>
+                <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>
                   {formatDatum(post.publicatiedatum)}
                 </span>
               )}
@@ -108,12 +111,14 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
             )}
 
             {post.coverUrl && (
-              <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: "8px", marginBottom: "3rem" }}>
+              <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: 0, marginBottom: "3rem" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={post.coverUrl}
+                  {...coverBron(post.coverUrl)}
+                  sizes="(min-width: 900px) 800px, 100vw"
+                  fetchPriority="high"
                   alt={post.titel}
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                  className="foto-grade" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
             )}

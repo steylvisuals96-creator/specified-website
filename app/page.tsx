@@ -1,14 +1,16 @@
+import { SITE_URL } from "@/lib/site";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
 import Split from "@/components/Split";
 import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
-import PageShapes from "@/components/PageShapes";
-import Marquee from "@/components/Marquee";
+import Disciplines from "@/components/Disciplines";
+import ScrollMomenten from "@/components/ScrollMomenten";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
+
+const DAG = 24 * 60 * 60 * 1000;
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -64,6 +66,7 @@ async function getRecentJobs() {
         location: v.locatie ?? "België",
         sector: SECTOR_LABEL[v.sector] ?? v.sector ?? "",
         ervaring: v.ervaringsniveau ? ERVARING_LABEL[v.ervaringsniveau] ?? v.ervaringsniveau : "",
+        dagen: v.createdAt ? Math.floor((Date.now() - new Date(v.createdAt).getTime()) / DAG) : undefined,
       }));
   } catch {
     return [];
@@ -73,11 +76,27 @@ async function getRecentJobs() {
 export default async function Home() {
   const [jobs, settings, team] = await Promise.all([getRecentJobs(), getSettings(), getTeam()]);
 
+  // Organisatiegegevens voor zoekmachines (JSON-LD); < geëscaped zoals in de blog.
+  const organisatie = {
+    "@context": "https://schema.org",
+    "@type": "EmploymentAgency",
+    name: "Specified",
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/team/logo_specified.svg`,
+    email: settings.contact_email || "info@specified.be",
+    ...(settings.telefoon ? { telephone: settings.telefoon } : {}),
+    address: { "@type": "PostalAddress", addressLocality: "Kontich", addressCountry: "BE" },
+    areaServed: "BE",
+  };
+
   return (
     <>
-      <PageShapes />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organisatie).replace(/</g, "\\u003c") }}
+      />
       <Nav />
-      <main style={{ position: "relative", zIndex: 1 }}>
+      <main>
         <Hero
           prefix={settings.hero_prefix}
           woorden={settings.hero_woorden}
@@ -86,13 +105,13 @@ export default async function Home() {
           ctaPrimary={settings.hero_cta_tekst}
           ctaSecondary={settings.hero_cta_2_tekst}
         />
-        <Marquee items={settings.sectoren?.map((s) => s.naam)} />
-        <Stats items={settings.statistieken} />
+        <Disciplines items={settings.sectoren?.map((s) => s.naam)} />
         <Split settings={settings} />
         <Jobs jobs={jobs} titel={settings.jobs_titel} linkTekst={settings.jobs_link_tekst} />
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
         <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
+      <ScrollMomenten />
       <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
     </>
   );

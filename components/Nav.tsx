@@ -1,9 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
 // volledige vacaturepagina; de rest scrollt naar een sectie op de homepage.
@@ -17,176 +16,78 @@ const NAV_ITEMS = [
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Escape sluit het mobiele menu, zoals bezoekers verwachten.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   return (
-    <motion.header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        backgroundColor: "var(--dark-2)",
-        borderBottom: "1px solid",
-        borderColor: `rgba(255,255,255,${borderOpacity})`,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "0 clamp(1.5rem, 5vw, 4rem)",
-          height: "72px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo */}
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+    <header className="site-nav" data-scrolled={scrolled || menuOpen}>
+      <div className="wrap site-nav__bar">
+        <Link href="/" className="site-nav__logo" aria-label="Specified, naar de homepage">
           <Image
             src="/images/team/logo_specified.svg"
-            alt="Specified"
+            alt=""
             width={140}
             height={36}
-            style={{ filter: "brightness(0) invert(1)", height: "28px", width: "auto" }}
+            style={{ filter: "brightness(0) invert(0.92)", height: "26px", width: "auto" }}
             priority
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "2.5rem",
-          }}
-          className="hidden md:flex nav-desktop"
-        >
+        <nav className="site-nav__links nav-desktop" aria-label="Hoofdmenu">
           {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              style={{
-                color: "var(--muted)",
-                textDecoration: "none",
-                fontSize: "0.875rem",
-                fontWeight: 400,
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--white)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
-            >
+            <Link key={item.label} href={item.href} className="site-nav__link">
               {item.label}
             </Link>
           ))}
-          <motion.a
-            href="/#contact"
-            style={{
-              backgroundColor: "var(--lime)",
-              color: "var(--dark)",
-              padding: "0.6rem 1.4rem",
-              borderRadius: "100px",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-          >
+          <a href="/#contact" className="btn btn-primary site-nav__cta">
             Neem contact op
-          </motion.a>
+          </a>
         </nav>
 
-        {/* Mobile burger */}
         <button
-          className="md:hidden nav-burger"
+          type="button"
+          className="site-nav__burger nav-burger"
           onClick={() => setMenuOpen(!menuOpen)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            padding: "4px",
-          }}
-          aria-label="Menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobiel-menu"
+          aria-label={menuOpen ? "Menu sluiten" : "Menu openen"}
         >
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                display: "block",
-                width: "24px",
-                height: "1.5px",
-                backgroundColor: "var(--white)",
-                transition: "all 0.3s",
-                transformOrigin: "center",
-                transform:
-                  menuOpen && i === 0
-                    ? "rotate(45deg) translate(4.5px, 4.5px)"
-                    : menuOpen && i === 2
-                    ? "rotate(-45deg) translate(4.5px, -4.5px)"
-                    : menuOpen && i === 1
-                    ? "opacity: 0; scaleX(0)"
-                    : "none",
-                opacity: menuOpen && i === 1 ? 0 : 1,
-              }}
-            />
-          ))}
+          <span data-open={menuOpen} />
+          <span data-open={menuOpen} />
         </button>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{
-            borderTop: "1px solid var(--border)",
-            padding: "1.5rem clamp(1.5rem, 5vw, 4rem)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1.25rem",
-          }}
-        >
+        <nav id="mobiel-menu" className="site-nav__mobile" aria-label="Mobiel menu">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              style={{
-                color: "var(--white)",
-                textDecoration: "none",
-                fontSize: "1.1rem",
-                fontWeight: 400,
-              }}
+              className="site-nav__mobile-link display"
             >
               {item.label}
             </Link>
           ))}
-          <a
-            href="/#contact"
-            onClick={() => setMenuOpen(false)}
-            style={{
-              backgroundColor: "var(--lime)",
-              color: "var(--dark)",
-              padding: "0.75rem 1.4rem",
-              borderRadius: "100px",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              textDecoration: "none",
-              textAlign: "center",
-              marginTop: "0.5rem",
-            }}
-          >
+          <a href="/#contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
             Neem contact op
           </a>
-        </motion.div>
+        </nav>
       )}
-    </motion.header>
+    </header>
   );
 }

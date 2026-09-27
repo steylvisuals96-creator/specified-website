@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { getBlogPosts, formatDatum } from "@/lib/blog";
+import { preconnect } from "react-dom";
+import { coverBron, getBlogPosts, formatDatum } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -18,6 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BlogIndex() {
+  // Coverbeelden komen meestal van Unsplash: verbinding meteen openen.
+  preconnect("https://images.unsplash.com");
   const [posts, settings] = await Promise.all([getBlogPosts(), getSettings()]);
 
   return (
@@ -50,7 +53,7 @@ export default async function BlogIndex() {
               </p>
             ) : (
               <div className="blog-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
-                {posts.map((post) => (
+                {posts.map((post, i) => (
                   <Link
                     key={post.id}
                     href={`/blog/${post.slug}`}
@@ -59,7 +62,7 @@ export default async function BlogIndex() {
                       flexDirection: "column",
                       textDecoration: "none",
                       border: "1px solid var(--border)",
-                      borderRadius: "8px",
+                      borderRadius: 0,
                       overflow: "hidden",
                       backgroundColor: "rgba(255,255,255,0.02)",
                     }}
@@ -68,15 +71,18 @@ export default async function BlogIndex() {
                       <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden" }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={post.coverUrl}
+                          {...coverBron(post.coverUrl)}
+                          sizes="(min-width: 900px) 33vw, 100vw"
+                          loading={i === 0 ? "eager" : "lazy"}
+                          fetchPriority={i === 0 ? "high" : undefined}
                           alt={post.titel}
-                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                          className="foto-grade" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                         />
                       </div>
                     )}
                     <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                       {post.publicatiedatum && (
-                        <span style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--lime)" }}>
+                        <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>
                           {formatDatum(post.publicatiedatum)}
                         </span>
                       )}

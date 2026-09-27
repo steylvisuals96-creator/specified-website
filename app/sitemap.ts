@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 import { getBlogPosts } from "@/lib/blog";
 
-const SITE_URL = "https://specified-website.vercel.app";
 
 export const revalidate = 3600;
 

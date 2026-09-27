@@ -24,6 +24,7 @@ export function writeConsent(value: ConsentValue) {
   } catch {
     /* opslag geweigerd: de keuze geldt dan alleen voor deze pagina-sessie */
   }
+  document.documentElement.dataset.consent = value;
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
 }
 
@@ -34,6 +35,7 @@ export function clearConsent() {
   } catch {
     /* niets te wissen */
   }
+  delete document.documentElement.dataset.consent;
   window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: null }));
 }
 
@@ -49,3 +51,10 @@ export function onConsentChange(handler: () => void): () => void {
     window.removeEventListener("storage", storage);
   };
 }
+
+/**
+ * Draait inline in <head>, vóór de eerste weergave: markeert <html> als er al
+ * gekozen is, zodat CSS de (server-gerenderde) banner meteen verbergt. Zo
+ * verschijnt hij nooit laat en flitst hij nooit op bij terugkerende bezoekers.
+ */
+export const CONSENT_HEAD_SCRIPT = `try{var c=localStorage.getItem(${JSON.stringify(CONSENT_KEY)});if(c==="accepted"||c==="declined")document.documentElement.dataset.consent=c}catch(e){}`;

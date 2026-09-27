@@ -1,0 +1,158 @@
+# Playbook-status — Specified redesign
+
+Skill: `/nieuwe-website` · Branch: `redesign/signatuurmerk` · Gestart: 2026-09-25
+
+## Keuzes
+- Aanpak: redesign front-end, bestaande Payload-CMS (`specified-cms`, MongoDB + R2) blijft.
+- Richting: **Signatuurmerk** (dir_signatuurmerk), leidend.
+- Admin: bestaande CMS; rollen `beheerder`/`consultant` — creator-rol nog te bespreken (fase 4).
+
+## Fase 0 — Intake & referentie
+- [x] Klant, aanpak en richting bepaald
+- [x] Huidige site geanalyseerd (Behouden / Vervangen / Content)
+- [ ] Visuele referentie goedgekeurd
+- [x] Portretten vrijstaand gemaakt (macOS Vision, randen 2px ingekort): `public/images/team/tom-vrijstaand.png`, `simon-vrijstaand.png`. Beperking: gsm-foto's 768×1024; fotoshoot later sterker.
+- [x] 5 ontwerpbeelden gegenereerd (Higgsfield, GPT Image 2.5 high/2K, 13,75 credits, akkoord Sam): `design/referentie/1-hero … 5-contact.jpg`
+- [x] Referentie goedgekeurd door Sam (poort 0 ok)
+
+Let op bij bouwen: gezichten in de referentie zijn AI-hertekend (op de site de echte foto's); cijfers 240+/94%/3 wk en 'Sinds 2024' zijn placeholders, echte waarden komen uit de CMS of van de klant.
+
+### Behouden
+Logo/wordmark SPECIFIED · kleuren #1E1E21 / #323236 + limoen #DFFD7B · Bebas Neue koppen, Avenir tekst ·
+belofte "We engineer possibilities" · alle content via CMS · cookieconsent, security-headers, revalidate 60.
+
+### Vervangen
+Pill-knoppen (radius 100px) · ↗-pijltjes · standaard sectie-opbouw · stats die "0+" tonen vóór animatie ·
+geen signature scroll-moment.
+
+### Content (uit CMS)
+Hero, 8 disciplines, 4 stats, kandidaten/bedrijven, 5 recentste vacatures, founders Tom Wijdooghe & Simon Claeys, info@specified.be, Kontich.
+
+## Fase 1 — Design-systeem
+- [x] `DESIGN.md` geschreven (frontend-design): palet, typografie (Bebas Neue + Instrument Serif Italic + Instrument Sans i.p.v. niet-geladen Avenir), layout, componenten, motion, staten
+- [x] Getoetst aan impeccable craft-floor: contrast ok (14,9 / 7,4 / 16,3:1); toegevoegd: browser-oppervlakken, lege/fout-staten, zichtbaar-zonder-JS, maatvoering 66ch
+- [x] Door Sam gezien (poort 1 ok)
+- Afwijkingen t.o.v. referentie: vacature-nummers 01–04 worden 'dagen online'; geen middle-dot-reeksen; geen mono-font; CursorGlow verdwijnt
+
+## Fase 2 — Project & assets
+- [x] Bestaand project hergebruikt (redesign), branch `redesign/signatuurmerk`, Vercel via GitHub-push
+- [x] Motion-pakket (15 skills) in `.claude/skills/`, in `.gitignore` (niet meeleveren)
+- [x] `gsap` + `@gsap/react` geïnstalleerd; fonts Instrument Sans + Instrument Serif Italic via next/font
+- [x] `npm run build` slaagt
+- [x] Assets: vrijstaande portretten aanwezig; geen video of 3D nodig voor dit ontwerp (geen extra Higgsfield-kost)
+- [ ] Handtekeningen Tom & Simon (op papier) — placeholder tot aangeleverd
+- [ ] Echte cijfers van Specified: CMS `statistieken` is leeg; live site toont hardcoded fallback (200+, 98%, 3 wk, 50+) uit `components/Stats.tsx`. Tot bevestiging tonen we geen cijfers.
+
+Beslissing: geen smooth-scroll-laag (Lenis) — DESIGN.md vraagt stille motion; native scroll + één ScrollTrigger-scrub.
+
+## Fase 3 — Front-end & scroll (klaar)
+- [x] Tokens + basis (globals.css), oude variabelen gealiast zodat vacatures/blog/juridisch meekleuren
+- [x] Nav, typografische hero (CSS-laadsequentie + handtekening), disciplines-scroll (GSAP ScrollTrigger scrub), diensten, vacatures (versheid ≤ 30 dagen), founders, contact, footer-band
+- [x] Cut-outs geschrapt op vraag van Sam; hero zonder gezichten
+- [x] 5 AI-sfeerbeelden gegenereerd (13,75 credits, akkoord Sam), 3 gebruikt: turbine (hero), engineer op de rug (kandidaten, olijf-gegraded), schakelkasten (bedrijven)
+- [x] Gecontroleerd op 1440×900 en 375×812: geen horizontale scroll, hero past in het scherm
+- [x] `turbopack.root` gezet: package.json in home-map verstoorde de dev-watcher
+- [ ] Vacatures in CMS zijn ~90 dagen oud (versheid-cijfer daarom verborgen) — navragen bij Specified
+- [ ] Bio Tom is Engels, Simon Nederlands — navragen bij Specified
+- [x] Reduced motion: hero-sequentie, footer-band en disciplines-scrub staan achter `prefers-reduced-motion`; vacaturepagina (framer-motion) in `MotionConfig reducedMotion="user"`
+- [x] Subpagina's (vacatures, blog, blogartikel, juridisch, 404, cookiebanner) in de huisstijl: geen ↗/←, radius 0, geen kapitalen-labels of eyebrows, ", " i.p.v. " · ", blogfoto's gegraded
+- [x] Gecontroleerd op 375, 768 en 1440 px, geen horizontale scroll; productiebuild lokaal nagekeken (Vercel-preview zit achter login)
+- Poort 3: gehaald
+
+Totaal Higgsfield: 27,5 credits.
+
+## Tussenstap — hero-video (klaar)
+- Rotator + hertekenende handtekening + scroll-moment per sectie: klaar (commit f94a6d7)
+- Turbine als naadloze videolus: 2 Kling 3.0 Pro-varianten (10 s, geen geluid, start = eind = `hero-turbine`), 30 credits, akkoord Sam
+  - traag: Higgsfield job `0395f015-8b97-43e2-ab1d-d17c8727fd93`
+  - sneller: Higgsfield job `757a6ba6-e614-4cf6-b870-24f22abcb926`
+- Gekozen: variant 'sneller'; naad weggewerkt met 0,6 s crossfade (laatste↔eerste frame 98,6% gelijk)
+- `public/videos/hero-turbine-1080.webm` (0,9 MB), `-1080.mp4` (1,2 MB), `-720.mp4` (0,5 MB, mobiel); poster = eerste frame
+- Video laadt na eerste weergave, pauzeert buiten beeld, niet bij reduced motion/databesparing
+- Scroll-rotatie vervangen door zoom (liet randen zien, melding Sam); beeld bedekt de hero altijd
+- Daarna op vraag van Sam: video afspelen met de scroll. Hero pint 130%, turbine als framereeks op canvas (desktop 114 frames/3,1 MB, mobiel 76/1,0 MB, progressief geladen). Autoplay-video en MP4/WebM verwijderd.
+- Later: video naar Cloudflare R2 verhuizen (playbook), nu in `public/`
+- Totaal Higgsfield: 57,5 credits
+
+## Fase 4 — Back-end & admin (live)
+Bestaande Payload-CMS (`specified-cms`, MongoDB + R2), branch `fase4/rollen-en-beveiliging`.
+- [x] **Lek gedicht:** 11 server actions schreven zonder login-check via de Local API (overrideAccess). Nu: `lib/serverPayload.ts` controleert login en schrijft als de gebruiker.
+- [x] Rollen: `creator` (Sam) > `beheerder` > `consultant`; creator onzichtbaar/onaantastbaar voor de klant; consultant kan eigen rol niet wijzigen
+- [x] Instellingen alleen door beheerder/creator te wijzigen; rol in JWT (`/admin` werkte voorheen voor niemand)
+- [x] `seed-users.ts` met hardgecodeerde wachtwoorden verwijderd; `seed-creator.ts` leest alles uit env
+- [x] Getest op lokale testdatabase: 14/14 rolscenario's + dashboard/admin-redirects
+- [x] PR steylvisuals96-creator/specified-cms#1 gemerged door Sam, Vercel-deploy geslaagd; live gecontroleerd: publieke content 200, gebruikers/kandidaten/instellingen-wijzigen anoniem 403, /admin → login, website laadt vacatures
+- [ ] **Sam:** creator-account in productie seeden (eigen wachtwoord, via env) — Claude typt geen wachtwoorden
+- [ ] **Specified:** Tom & Simon wachtwoord wijzigen (stond in git-geschiedenis van de privé-repo)
+- [ ] MFA voor creator: Payload heeft geen ingebouwde MFA — plugin of SSO nodig
+- [ ] Audit-log (wie wijzigde wat): nog niet aanwezig
+- [ ] Overblijfselen vastgoed in `dashboard/team/create` en `team/[id]/edit` (velden bestaan niet in Team-collectie)
+- Homepage-inhoud: disciplines (`sectoren`) en cijfers (`statistieken`) zijn in het instellingen-dashboard in te vullen; beide nu leeg
+
+## Fase 4b — Supabase i.p.v. MongoDB (live)
+Keuze Sam 2026-09-26: Specified-CMS naar Supabase, zoals het playbook.
+- [x] Supabase-project `specified-cms` (ref htkcrkafetzbnpznektz, Frankfurt, Free, $0)
+- [x] Branch `fase4b/supabase` (specified-cms): Postgres-adapter, schema `payload` (niet via Data API, anon/authenticated zonder rechten), migratie, migratiescript, `overstap-supabase.sh`, `docs/MIGRATIE-SUPABASE.md`
+- [x] Lokaal getest (Postgres 17 + MongoDB): aantallen, relaties, uploads, arrays, rich text, datums, login met oud wachtwoord, 14 rolscenario's, website-API, CMS-build
+- [x] Overstap-script gedraaid 2026-09-26 09:32 (alle aantallen kloppen, 0 relatiefouten, datums behouden, creator = steylvisuals96@gmail.com); read-only Atlas-gebruiker `migratie` (tijdelijk, 1 week)
+- [x] PR steylvisuals96-creator/specified-cms#2 gemerged, `DATABASE_URI` in Vercel (Production + Preview), redeploy: live API geeft Supabase-ID's, website 200, inloggen werkt
+- [x] Supabase-beveiligingsadvies: 0 waarschuwingen; anon/authenticated geen toegang tot schema `payload`
+- [ ] Na 30 dagen: MongoDB/Atlas en `MONGODB_URI` opruimen
+- Let op: `~/specified-cms/.vercel` wees naar `som-vastgoed-cms`; opnieuw gekoppeld aan `specified-cms`
+
+## Volgende: back-end redesign (na fase 5)
+- Sam: /admin (Payload) en /dashboard (eigen UI) voelen als twee apps; één back-end in Signatuurmerk-stijl. Eerst 2–3 ontwerpbeelden (± 8,25 credits, akkoord), dan shadcn + DESIGN.md-tokens, /admin gethemed, één menu.
+
+## Fase 5 — Veiligheid (klaar, live 2026-09-26)
+- [x] Supply chain: CMS Payload 3.85→3.90.2 + Next 16.2.9→16.3.6 (kritieke middleware-bypass, Payload account-unlock); website Next 16.3.6. Audit: CMS 0 kritiek/hoog (5 matig, alleen dev), website 0
+- [x] Semgrep (OWASP, Next, React, TS, JS, secrets): 0 bevindingen (124 + 54 bestanden)
+- [x] insecure-defaults (handmatig, plugin niet geïnstalleerd): CMS-headers toegevoegd, media alleen rasterbeelden, login-lockout 5×/15 min, sessie 8 u, geen interne foutmeldingen
+- [x] Website: 3 XSS-lekken in blog gedicht (javascript:-links, koptags, JSON-LD)
+- [x] Supabase-advies: 0 waarschuwingen; migratie payload_3_90 op productie gezet (additief) vóór merge
+- [x] /security-review op CMS-branch: geen kwetsbaarheden geïntroduceerd
+- [x] CMS #3 en website #1 gemerged en live. Gecontroleerd op productie: headers op CMS en website, /admin en API zonder login 401/307, upload zonder login 401, gebruikerslijst afgeschermd, blog + JSON-LD en vacatures uit de CMS renderen
+- Lockout (5×/15 min) enkel lokaal getest; niet op productie om geen echte accounts te blokkeren
+- Redesign-branch heeft dezelfde website-fixes al (commits 94f2589, c8aa10b)
+
+## Back-end redesign (klaar, live 2026-09-26)
+- [x] Ontwerpreferentie: 3 beelden (overzicht, kandidatenlijst, kandidaatpagina) via Higgsfield, ±8,25 credits, in specified-cms/design/referentie/
+- [x] /dashboard en /admin in dezelfde huisstijl als de website (tokens uit DESIGN.md, Bebas + Instrument, radius 2px, geen emoji/pijltjes/kapitalen-labels)
+- [x] Eén gedeeld menu (lib/menu.ts) in beide omgevingen; Payload-collecties ingeklapt onder "Ruwe gegevens"
+- [x] Nieuw: overzicht, kandidatenlijst met filters, kandidaatpagina met voortgangslijn, status wijzigen en snelle notitie
+- [x] Verouderde importMap.ts verwijderd (blokkeerde nieuwe admin-componenten); importmap-script bewaart de R2-uploadcomponent
+- PR steylvisuals96-creator/specified-cms#4 gemerged; live inlogscherm gecontroleerd
+- Nog na te kijken door Sam met een echt account: /dashboard en /admin ingelogd op productie
+
+## Fase 6
+Nog niet gestart.
+
+## Fase 6 — QA & oplevering (bezig, 2026-09-27)
+Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
+
+- [x] Hero-scroll opnieuw opgebouwd: CSS sticky i.p.v. GSAP-pin (geen layout shift), frames laden pas na de pagina. Getest op 375, 768 en 1440 px
+- [x] Lighthouse mobiel: home 95, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100 op alle drie. CLS 0
+- [ ] LCP < 2,5 s: vacatures 2,1 s ok; home 2,9 s (heroposter), blog 3,2 s (externe Unsplash-covers). Te verbeteren: covers via de CMS-media i.p.v. externe links
+- [x] Cookiebanner server-gerenderd (verschijnt niet meer laat), in huisstijl, keuzes gelijkwaardig
+- [x] SEO: metadataBase + SITE_URL (lib/site.ts), canonical absoluut, deelbeeld 1200x630, OG/Twitter, EmploymentAgency JSON-LD, sitemap + robots
+- [x] Scan op Claude-patronen: laatste middenpunt en vinkje weg, kleinste tekst 13px
+- [x] Admin-handleiding: specified-cms/docs/ADMIN-HANDLEIDING.md (branch docs/admin-handleiding)
+
+### Opleverchecklist
+- [x] Visuele referentie goedgekeurd (door Sam; klant nog niet gezien)
+- [x] DESIGN.md in repo, tokens gebruikt in site en admin
+- [x] Geen Claude-patronen
+- [x] Scroll werkt op 375px, 768px en desktop
+- [ ] `prefers-reduced-motion`: in de code afgehandeld (geen sticky, geen scrub), niet in een browser geëmuleerd
+- [ ] Lighthouse mobiel ≥ 90 ok, LCP < 2,5 s nog niet op home en blog
+- [x] Rollen getest (creator/beheerder/consultant, 14/14 scenario's)
+- [ ] Creator-MFA: nog niet ingesteld
+- [x] Supabase: payload-schema niet via de Data API bereikbaar, anon/authenticated zonder rechten, advisor 0 waarschuwingen
+- [x] Geen geheimen in repo (Semgrep secrets 0)
+- [ ] Media: uploads via R2 (private, ondertekende links), scroll-frames nog op Vercel i.p.v. R2
+- [x] Security-headers actief (CMS live; website na merge opnieuw controleren)
+- [x] supply-chain, semgrep, insecure-defaults (handmatig), security-review fase 5
+- [ ] /security-review op de back-end redesign en fase 6-wijzigingen
+- [x] SEO: metadata, OG-beeld, sitemap
+- [ ] Redesign gemerged naar main en live gecontroleerd
+- [ ] Admin-handleiding en retainer-afspraken bezorgd aan klant (handleiding klaar, retainer door Sam)
+- Inspiratie-richting gebruikt: Signatuurmerk
