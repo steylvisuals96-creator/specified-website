@@ -165,3 +165,6 @@ Tweestapslogin creator, MongoDB/Atlas opruimen, domeinverhuis + R2 (november). N
 
 ### Hero: technische tekening (live 2026-09-27)
 Rotor geschrapt. SPECIFIED als technische tekening met acrostichon-callouts; positionering als engineering consultancy met eigen consultants; teksten uit specified.be in lib/inhoud.ts (CMS-teksten nog voorbeeld). PR #3 gemerged. Homepage 2,2 MB -> 288 KB, Lighthouse mobiel 97/100/100/100.
+
+### Hero-polish (live 2026-09-27)
+Laadmoment, natekenen van de contour, callout-pop, logo-gloed; logo-hover (nav/footer), CAD-vizier als muiswijzer, Lenis vloeiend scrollen op desktop. PR #4 gemerged. Lighthouse mobiel 95/100/100/100.
