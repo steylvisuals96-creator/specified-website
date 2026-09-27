@@ -39,7 +39,8 @@ export default function Hero({
             src="/images/beeld/hero-turbine-poster.jpg"
             alt=""
             fill
-            priority
+            preload
+            quality={60}
             sizes="100vw"
           />
           <HeroScrub />

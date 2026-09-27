@@ -46,7 +46,24 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
 ];
 
+const cmsHost = (() => {
+  try {
+    return new URL(CMS_URL).hostname;
+  } catch {
+    return "specified-cms.vercel.app";
+  }
+})();
+
 const nextConfig: NextConfig = {
+  // Coverbeelden van de blog: alleen deze hosts via next/image (components/Cover.tsx).
+  images: {
+    formats: ["image/avif", "image/webp"],
+    qualities: [60, 70, 75],
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: cmsHost, pathname: "/api/media/**" },
+    ],
+  },
   // Er staat een package.json in de home-map van de ontwikkelaar; zonder dit kiest
   // Turbopack die map als root en mist het wijzigingen in dit project.
   turbopack: { root: process.cwd() },

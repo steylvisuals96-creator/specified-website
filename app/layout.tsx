@@ -26,6 +26,9 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   style: "italic",
+  // Alleen een accent (handtekening-woorden); niet laten concurreren met het
+  // hoofdbeeld bij het laden. Met display swap verschijnt het even later.
+  preload: false,
 });
 
 export const metadata: Metadata = {

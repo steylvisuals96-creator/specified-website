@@ -128,24 +128,3 @@ export function formatDatum(iso?: string): string {
   }
 }
 
-/**
- * Coverafbeeldingen zijn vrije URL's uit de CMS. Voor Unsplash (dat de maat via
- * de URL kiest) geven we de browser een srcset, zodat een kaartje geen beeld van
- * 1200px binnenhaalt. Andere hosts blijven ongewijzigd.
- */
-export function coverBron(url: string) {
-  try {
-    const u = new URL(url);
-    if (u.hostname !== "images.unsplash.com") return { src: url };
-    const maat = (w: number) => {
-      const v = new URL(u);
-      v.searchParams.set("w", String(w));
-      v.searchParams.set("q", "70");
-      v.searchParams.set("auto", "format");
-      return `${v.toString()} ${w}w`;
-    };
-    return { src: maat(800).split(" ")[0], srcSet: [480, 800, 1200, 1600].map(maat).join(", ") };
-  } catch {
-    return { src: url };
-  }
-}
