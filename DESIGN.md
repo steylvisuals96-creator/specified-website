@@ -98,8 +98,19 @@ Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij i
 
 **Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
 doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
-limoen lichtaccent. Hero: scroll-gestuurde turbine (Kling 3.0-lus als framereeks `videos/turbine-frames/{desktop,mobiel}/*.webp`, 95/76 frames op 1912/1200 px, 4,7/1,9 MB) met poster `images/beeld/hero-turbine-poster.jpg`; diensten: `kandidaten-engineer.jpg`,
-`bedrijven-installatie.jpg`.
+limoen lichtaccent. Diensten: `kandidaten-engineer.jpg`, `bedrijven-installatie.jpg`. De hero gebruikt
+geen beeld meer (zie Hero: technische tekening); de turbine is op 2026-09-27 geschrapt.
+
+**Positionering** — Specified is een engineering consultancy firm met eigen consultants die bij klanten
+worden ingezet (elektromechanisch, voor de industrie), geen klassiek recruitmentbureau. Alle teksten
+komen van hun huidige site specified.be, in `lib/inhoud.ts` (CMS-teksten zijn voorlopig voorbeeld).
+
+**Hero: technische tekening** — `components/HeroTekening.tsx`. Het woord SPECIFIED op een tekenblad
+(raster 48px, dubbele rand, vakaanduiding A–D en 1–6). Scrollend wordt het een tekening: letters als
+limoen contour, uit elkaar met een streep-punt-middellijn, elke letter een callout. De callouts vormen
+een acrostichon (Studies, Projecten, Elektromechanica, Consultants, Industrie, Focus, Integratie, Extra
+mile, Drive); de eerste letter staat in limoen. Daarna een titelblok met de handtekening, en het woord
+klikt in limoen samen onder de kop. Staand scherm: het woord rechtop, callouts rechts.
 
 **Handtekening** — SVG-pad in `--lime-300`, 3px streek, ronde uiteinden. Staat naast of onder een
 portret, nooit over een gezicht. Doel: echte handtekeningen van Tom en Simon (op papier, gevectoriseerd);
@@ -128,7 +139,7 @@ Geen AI-hertekende gezichten, geen uitgeknipte foto's.
 
 ## Motion
 
-Eén laadmoment, een doorlopende rotator in de hero, en per sectie één eigen scroll-moment (keuze Sam 2026-09-26: de site moet voelbaar scrollen). Elk moment heeft een ander karakter; nooit dezelfde fade op elke sectie.
+Eén doorlopend scroll-verhaal in de hero (de technische tekening), en per sectie één eigen scroll-moment (keuze Sam 2026-09-26: de site moet voelbaar scrollen). Elk moment heeft een ander karakter; nooit dezelfde fade op elke sectie.
 
 Basisregel: alles is zichtbaar in de HTML zonder JavaScript. Animatie verfraait een pagina die al af is;
 de beginstaat wordt pas door JS gezet vlak voor het afspelen (geen verborgen content bij trage JS).
@@ -137,10 +148,7 @@ Easing standaard exponentieel uit (`cubic-bezier(0.22,1,0.36,1)`); naast transfo
 
 | Moment | Wat | Timing |
 | --- | --- | --- |
-| Hero-laadsequentie (één keer) | Kopregels schuiven van onder hun eigen masker in (per regel, 80ms stagger), daarna tekent de handtekening zichzelf (`stroke-dashoffset`) | kop 700ms `cubic-bezier(0.22,1,0.36,1)`; handtekening 1200ms `ease-in-out`, start na 400ms |
-| Hero-rotator | Woord wisselt elke 2,6 s (engineer, shape, unlock, build, define of CMS `hero_woorden`), schuift van onder in | 620ms |
-| Handtekening (scroll) | Schrijft zich met de scroll tijdens de gepinde hero (0–800 px op desktop), wist bij terugscrollen; zonder JS/reduced motion volledig zichtbaar | scrub |
-| Hero (scroll, gepind) | Hero pint 130% schermhoogte; de scroll speelt de turbine-frames af (vooruit/terug); intro vervaagt, beeld zoomt tot 110%, kop schuift op het einde weg | scrub 0,4 |
+| Hero: technische tekening (scroll, sticky) | Blad blijft 420vh staan (CSS sticky + echt ruimte-element). Volgorde: vulling → contour en letters uit elkaar; middellijn; callouts tekenen zich letter per letter; maatlijn; callouts wijken; titelblok en handtekening; woord klikt in limoen samen; kop en knoppen verschijnen. Zonder JS of met reduced motion: woord, kop en knoppen stilstaand | scrub 0,8 |
 | Diensten (scroll) | Beeld opent als een sluiter (`clip-path` inset → 0) en zoomt uit | scrub |
 | Vacatures (scroll, eenmalig) | Eén limoen veeg golft over de rijen | 0,35 s in + 0,4 s uit, 90ms stagger |
 | Founders (scroll) | Foto schuift trager dan de pagina (diepte) | scrub |

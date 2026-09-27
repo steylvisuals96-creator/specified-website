@@ -167,11 +167,6 @@ body::after {
   .nav-burger { display: none !important; }
 }
 
-/* Hero: titel niet laten overlopen op smalle schermen */
-@media (max-width: 767px) {
-  .hero-title { font-size: clamp(2.6rem, 11vw, 4.5rem) !important; max-width: 100% !important; }
-  .hero-word { min-width: 4ch !important; }
-}
 
 /* Vacaturepagina: één kolom op mobiel, detail niet sticky */
 @media (max-width: 767px) {
@@ -285,83 +280,94 @@ body::after {
 .site-nav__mobile-link:hover { color: var(--lime-300); }
 .site-nav__mobile .btn { margin-top: 1.5rem; align-self: flex-start; }
 
-/* ─── Hero (typografisch) ───────────────────────────── */
-.hero { position: relative; overflow: hidden; }
-/* Scrollruimte voor de turbine: de hero blijft 130vh staan terwijl de frames
-   meescrollen. In CSS, zodat ze er al is vóór JS laadt (geen verspringing).
-   Een echt element, geen padding: sticky telt alleen de inhoud van de ouder. */
-.hero-spoor__ruimte { display: none; }
-@media (prefers-reduced-motion: no-preference) {
-  .hero-spoor__ruimte { display: block; height: 130vh; }
-  .hero-spoor > .hero { position: sticky; top: 0; }
-}
-.hero__inner {
-  position: relative; min-height: 100svh;
-  padding-top: calc(76px + clamp(32px, 6vw, 96px));
-  padding-bottom: clamp(28px, 4vw, 56px);
-  display: grid; grid-template-rows: 1fr auto; row-gap: clamp(32px, 5vw, 72px);
-}
-.hero__beeld { position: absolute; inset: 0; z-index: 0; }
-.hero__beeld { overflow: hidden; }
-.hero__beeld img, .hero__canvas {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-}
-.hero__beeld img { object-fit: cover; object-position: 78% 20%; }
-.hero__canvas { opacity: 0; transition: opacity 300ms ease-out; }
-.hero__canvas[data-klaar="true"] { opacity: 1; }
-/* De scroll-zoom schaalt de hele laag vanuit het midden, nooit onder 100%:
-   zo kan er nooit een rand van het beeld zichtbaar worden. */
-.hero__beeld { will-change: transform; }
-.hero__beeld::after {
-  content: ""; position: absolute; inset: 0; z-index: 1;
+/* ─── Hero: SPECIFIED als technische tekening ─────────────
+   components/HeroTekening.tsx. Het blad blijft staan (sticky) terwijl de
+   tekening scrollt; de scrollruimte is een echt element (.tekening__ruimte),
+   want sticky telt alleen de inhoud van de ouder, niet zijn padding. */
+.tekening { position: relative; }
+.tekening__blad {
+  position: relative; height: 100svh; min-height: 560px; overflow: hidden;
+  /* Tekenblad: raster van 48px, de enige plek waar een raster thuishoort. */
   background:
-    linear-gradient(to bottom, rgba(20, 20, 14, 0.7) 0, transparent 140px),
-    linear-gradient(to top, var(--ink-900) 0%, rgba(20, 20, 14, 0.55) 38%, transparent 70%),
-    linear-gradient(to right, rgba(20, 20, 14, 0.85) 0%, rgba(20, 20, 14, 0.2) 55%, transparent 80%);
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 48px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 48px 100%,
+    var(--ink-900);
 }
-.hero__copy {
-  position: relative; z-index: 1;
-  justify-self: start; align-self: start; max-width: 30rem;
-  display: flex; flex-direction: column; gap: 1.75rem;
+.tekening__blad::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(70% 60% at 50% 55%, transparent 40%, var(--ink-900) 100%);
 }
-.hero__copy .lead { color: var(--bone-100); }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.hero__title {
-  font-size: clamp(3.5rem, min(20.5vw, 27svh), 20rem); line-height: 0.86;
-  color: var(--bone-100); position: relative; z-index: 1;
-}
-.hero__line { display: block; overflow: hidden; padding-top: 0.05em; margin-top: -0.05em; }
-.hero__line > span { display: block; }
-.hero__brand { color: var(--lime-300); }
-/* Rotator: het woord wisselt binnen een masker, zodat het van onder inschuift. */
-.hero__rotator {
-  display: inline-block; vertical-align: top; overflow: hidden; color: var(--lime-300);
-  padding-top: 0.05em; margin-top: -0.05em;
-}
-.hero__woord { display: inline-block; }
+.tekening__ruimte { display: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero__woord { animation: hero-woord 620ms var(--ease-out) both; }
+  .tekening__blad { position: sticky; top: 0; }
+  .tekening__ruimte { display: block; height: 420vh; }
 }
-@keyframes hero-woord { from { transform: translateY(100%); } }
-.hero__signature {
-  position: absolute; z-index: 2; pointer-events: none;
-  width: min(46vw, 640px); right: -2%; bottom: -6%;
-  stroke: var(--lime-300); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
-  overflow: visible;
+.tekening__svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+
+/* Het woord in HTML: staat er bij de eerste weergave (snel, ook zonder JS) en
+   maakt plaats voor de SVG-tekening zodra die gebouwd is. Maten volgen de
+   viewBox (1600x900, letters 300 hoog; staand 900x1600, letters 150). */
+.tekening__woord {
+  position: absolute; inset: 0; z-index: 2; margin: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: min(0.625vw, 1.11svh); color: var(--bone-100);
+  font-size: min(18.75vw, 33.3svh); line-height: 1; padding-bottom: min(4vw, 7svh);
+  transition: opacity 400ms var(--ease-out);
+}
+.tekening[data-klaar] .tekening__woord { opacity: 0; }
+@media (orientation: portrait) and (max-width: 759px) {
+  .tekening__woord {
+    flex-direction: column; justify-content: center; align-items: flex-start;
+    padding: 0 0 0 calc(min(100vw, 56.25svh) * 0.2); gap: 0;
+    font-size: min(16.7vw, 9.4svh); line-height: 0.84;
+  }
 }
 
-/* Eén georkestreerde laadsequentie, in CSS zodat de pagina zonder JS af is. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero__line > span { animation: hero-rise 760ms var(--ease-out) both; }
-  .hero__line:nth-child(2) > span { animation-delay: 90ms; }
+.tekening__intro {
+  position: absolute; z-index: 3; left: 50%; bottom: 7svh; transform: translateX(-50%);
+  width: min(40rem, 100% - 40px); text-align: center; color: var(--bone-400); font-size: 1.0625rem; line-height: 1.5;
 }
-@keyframes hero-rise { from { transform: translateY(105%); } }
+.tekening__intro b { color: var(--bone-100); font-weight: 500; }
 
-@media (max-width: 899px) {
-  .hero__inner { min-height: 88svh; }
-  .hero__beeld img { object-position: 70% 0%; }
-  .hero__signature { width: 70vw; right: -4%; bottom: -10%; }
+.tekening__slot { position: absolute; z-index: 3; left: 0; right: 0; bottom: 9svh; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .tekening__slot { opacity: 0; }
+  .js .tekening__intro { opacity: 1; }
 }
+@media (prefers-reduced-motion: reduce) {
+  /* Rustige hero: woord bovenaan, kop en knoppen eronder, geen intro-hint. */
+  .tekening__woord { align-items: flex-start; padding-top: 18svh; }
+  .tekening__intro { display: none; }
+}
+.tekening__titel { font-size: clamp(3rem, 8.5vw, 8.5rem); line-height: 0.88; color: var(--bone-100); }
+.tekening__accent { color: var(--lime-300); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+/* SVG-onderdelen van de tekening */
+.tek__rand { fill: none; stroke: var(--olive-600); stroke-width: 1; }
+.tek__ref { fill: var(--bone-600); font: 500 13px var(--font-sans), sans-serif; text-anchor: middle; }
+.tek__vul { fill: var(--bone-100); }
+.tek__lijn { fill: none; stroke: var(--lime-300); stroke-width: 1.4; }
+.tek__lijn--dik { stroke-width: 1.8; }
+.tek__as { stroke: var(--lime-300); stroke-width: 1; stroke-dasharray: 26 6 4 6; }
+.tek__leider { fill: none; stroke: var(--lime-300); stroke-width: 1; }
+.tek__leider--dik { stroke-width: 1.6; }
+.tek__punt { fill: var(--lime-300); }
+.tek__rol { fill: var(--bone-100); font: 600 19px var(--font-sans), sans-serif; }
+.tek__rol--groot { font-size: 34px; }
+.tek__acro { fill: var(--lime-300); }
+.tek__sub { fill: var(--bone-400); font: italic 400 19px var(--font-serif), serif; }
+.tek__sub--groot { font-size: 30px; }
+.tek__maat { stroke: var(--bone-400); stroke-width: 1; }
+.tek__maattekst { fill: var(--bone-400); font: 500 14px var(--font-sans), sans-serif; text-anchor: middle; }
+.tek__maattekst--groot { font-size: 26px; }
+.tek__blok { fill: none; stroke: var(--bone-400); stroke-width: 1; }
+.tek__label { fill: var(--bone-600); font: 500 12px var(--font-sans), sans-serif; }
+.tek__label--groot { font-size: 22px; }
+.tek__waarde { fill: var(--bone-100); font: 500 17px var(--font-sans), sans-serif; }
+.tek__waarde--groot { font-size: 30px; }
+.tek__hand { fill: none; stroke: var(--lime-300); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.tek__hand--dik { stroke-width: 4; }
 
 /* ─── Disciplines (scroll-moment) ─────────────────────── */
 .disc { padding: var(--section-y) 0 calc(var(--section-y) * 0.6); overflow: hidden; }
@@ -375,7 +381,8 @@ body::after {
 .disc__row--serif { font-family: var(--font-serif), serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
 .disc__row--lime { color: var(--lime-300); }
 .disc__row:nth-child(even) { margin-left: -12vw; }
-.disc__note { margin-top: clamp(40px, 6vw, 80px); color: var(--bone-400); }
+.disc__kop { margin-bottom: clamp(40px, 6vw, 80px); }
+.disc__tekst { margin-top: 1rem; color: var(--bone-400); max-width: 52ch; }
 
 /* ─── Diensten ────────────────────────────────────────── */
 .split { padding: var(--section-y) 0; border-top: 1px solid var(--line); }

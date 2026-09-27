@@ -4,24 +4,16 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { CONSULTANTS } from "@/lib/inhoud";
+import { metAccent } from "@/lib/accent";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const FALLBACK = [
-  "Civiele techniek",
-  "Elektrotechniek",
-  "Werktuigbouwkunde",
-  "Bouw & infrastructuur",
-  "Energie & utilities",
-  "IT & software",
-  "Industrie & productie",
-  "Projectmanagement",
-];
 
-// Het scroll-moment van de pagina: de disciplines schuiven om en om mee met de
+// Onze consultants: de profielen van Specified schuiven om en om mee met de
 // scroll. Zonder JS of met reduced motion is het een stilstaande lijst.
 export default function Disciplines({ items }: { items?: string[] }) {
-  const lijst = items && items.length > 0 ? items : FALLBACK;
+  const lijst = items && items.length > 0 ? items : CONSULTANTS.profielen;
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -53,9 +45,12 @@ export default function Disciplines({ items }: { items?: string[] }) {
 
   return (
     <section ref={ref} className="disc" aria-labelledby="disc-titel">
-      <h2 id="disc-titel" className="sr-only">
-        Disciplines waarvoor we rekruteren
-      </h2>
+      <div className="wrap disc__kop">
+        <h2 id="disc-titel" className="display display-m">
+          {metAccent(`${CONSULTANTS.titel} ${CONSULTANTS.accent}`)}
+        </h2>
+        <p className="lead disc__tekst">{CONSULTANTS.tekst}</p>
+      </div>
       <ul className="sr-only">
         {lijst.map((d) => (
           <li key={d}>{d}</li>
@@ -74,10 +69,6 @@ export default function Disciplines({ items }: { items?: string[] }) {
         ))}
       </div>
 
-      <p className="wrap disc__note lead">
-        Van civiele techniek tot projectmanagement: we zoeken engineers voor{" "}
-        {lijst.length} disciplines, en kennen het vak van binnenuit.
-      </p>
     </section>
   );
 }
