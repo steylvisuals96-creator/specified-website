@@ -33,9 +33,9 @@ export default async function KandidatenPage({
         { functietitel: { like: q } },
       ],
     });
-  if (sector && sector in SECTOR_LABEL) voorwaarden.push({ sector: { equals: sector } });
-  if (niveau && niveau in NIVEAU_LABEL) voorwaarden.push({ ervaringsniveau: { equals: niveau } });
-  if (beschikbaarheid && beschikbaarheid in BESCHIKBAARHEID_LABEL)
+  if (sector && Object.hasOwn(SECTOR_LABEL, sector)) voorwaarden.push({ sector: { equals: sector } });
+  if (niveau && Object.hasOwn(NIVEAU_LABEL, niveau)) voorwaarden.push({ ervaringsniveau: { equals: niveau } });
+  if (beschikbaarheid && Object.hasOwn(BESCHIKBAARHEID_LABEL, beschikbaarheid))
     voorwaarden.push({ beschikbaarheid: { equals: beschikbaarheid } });
 
   const [docs, totaal] = await Promise.all([

@@ -158,10 +158,13 @@ export default async function KandidaatDetailPage({
             <Rij label="Jaren ervaring">{k.jaren_ervaring ?? undefined}</Rij>
             <Rij label="Gewenst salaris">{k.gewenst_salaris}</Rij>
             <Rij label="LinkedIn">
-              {k.linkedin && (
+              {/^https:\/\//i.test(String(k.linkedin ?? "")) ? (
                 <a href={k.linkedin} target="_blank" rel="noopener noreferrer" className={link}>
                   {String(k.linkedin).replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
                 </a>
+              ) : (
+                // Geen https-adres: tonen als tekst, nooit als link.
+                k.linkedin || undefined
               )}
             </Rij>
             <Rij label="CV">
