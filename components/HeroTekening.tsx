@@ -143,19 +143,19 @@ function bouwLiggend(svg: SVGSVGElement): Delen {
   el("text", { class: "tek__maattekst", x: (x1 + x2) / 2, y: 638 }, maat).textContent = TEKENING.maatlijn;
 
   const tb = el("g", { opacity: 0 }, svg);
-  const bx = 1084, by = 700, bw = 460, bh = 144;
+  const bx = 1084, by = 660, bw = 460, bh = 176;
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
-  el("line", { class: "tek__blok", x1: bx, y1: by + 48, x2: bx + bw, y2: by + 48 }, tb);
-  el("line", { class: "tek__blok", x1: bx + 262, y1: by + 48, x2: bx + 262, y2: by + bh }, tb);
+  el("line", { class: "tek__blok", x1: bx, y1: by + 54, x2: bx + bw, y2: by + 54 }, tb);
+  el("line", { class: "tek__blok", x1: bx + 262, y1: by + 54, x2: bx + 262, y2: by + bh }, tb);
   const veld = (lx: number, ly: number, label: string, waarde: string) => {
     el("text", { class: "tek__label", x: lx, y: ly }, tb).textContent = label;
     el("text", { class: "tek__waarde", x: lx, y: ly + 22 }, tb).textContent = waarde;
   };
-  veld(bx + 14, by + 18, "Project", TEKENING.titelblok.project);
-  veld(bx + 14, by + 70, "Locatie", TEKENING.titelblok.locatie);
-  veld(bx + 14, by + 110, "Waarden", TEKENING.titelblok.waarden);
-  el("text", { class: "tek__label", x: bx + 276, y: by + 70 }, tb).textContent = TEKENING.titelblok.akkoord;
-  const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 76}) scale(.31)` }, tb);
+  veld(bx + 14, by + 20, "Project", TEKENING.titelblok.project);
+  veld(bx + 14, by + 76, "Locatie", TEKENING.titelblok.locatie);
+  veld(bx + 14, by + 126, "Waarden", TEKENING.titelblok.waarden);
+  el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = TEKENING.titelblok.akkoord;
+  const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 88}) scale(.31)` }, tb);
 
   return { letters, maat, titelblok: tb, hand, as, eindY: -150, eindVul: 1 };
 }
@@ -245,7 +245,7 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(d.hand, { strokeDashoffset: 0, duration: 1, autoRound: false }, 4.4)
     // 4. Het woord klikt samen in limoen, de kop verschijnt.
     .to(d.as, { opacity: 0, duration: 0.5 }, 5.3)
-    .to(d.titelblok, { opacity: d.eindVul === 1 ? 0.35 : 0, duration: 0.5 }, 5.3)
+    .to(d.titelblok, { opacity: d.eindVul === 1 ? 0.6 : 0, duration: 0.5 }, 5.3)
     .to(L.map((l) => l.g), { x: 0, y: d.eindY, duration: 1.2, ease: "power2.inOut" }, 5.4)
     .to(L.map((l) => l.vul), { fillOpacity: d.eindVul, fill: "#dffd7b", duration: 0.8 }, 6.0)
     .to(L.map((l) => l.lijn), { strokeOpacity: d.eindVul === 1 ? 0 : 0.5, duration: 0.6 }, 6.0)
