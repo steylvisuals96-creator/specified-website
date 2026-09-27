@@ -162,3 +162,6 @@ Pas na akkoord van Specified op de nieuwe site; gepland voor november 2026. Tege
 
 ### Na de demofase (afgesproken 2026-09-27)
 Tweestapslogin creator, MongoDB/Atlas opruimen, domeinverhuis + R2 (november). Nu eerst: design perfectioneren.
+
+### Hero: technische tekening (live 2026-09-27)
+Rotor geschrapt. SPECIFIED als technische tekening met acrostichon-callouts; positionering als engineering consultancy met eigen consultants; teksten uit specified.be in lib/inhoud.ts (CMS-teksten nog voorbeeld). PR #3 gemerged. Homepage 2,2 MB -> 288 KB, Lighthouse mobiel 97/100/100/100.
