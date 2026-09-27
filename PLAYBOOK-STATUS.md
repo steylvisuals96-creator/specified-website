@@ -135,7 +135,7 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 - [x] Cookiebanner server-gerenderd (verschijnt niet meer laat), in huisstijl, keuzes gelijkwaardig
 - [x] SEO: metadataBase + SITE_URL (lib/site.ts), canonical absoluut, deelbeeld 1200x630, OG/Twitter, EmploymentAgency JSON-LD, sitemap + robots
 - [x] Scan op Claude-patronen: laatste middenpunt en vinkje weg, kleinste tekst 13px
-- [x] Admin-handleiding: specified-cms/docs/ADMIN-HANDLEIDING.md (branch docs/admin-handleiding)
+- [x] Admin-handleiding: specified-cms/docs/ADMIN-HANDLEIDING.md (gemerged in main)
 
 ### Opleverchecklist
 - [x] Visuele referentie goedgekeurd (door Sam; klant nog niet gezien)
