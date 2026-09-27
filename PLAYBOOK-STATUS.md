@@ -151,7 +151,7 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 - [ ] Media: uploads via R2 (private, ondertekende links), scroll-frames nog op Vercel i.p.v. R2
 - [x] Security-headers actief op CMS en website (live gecontroleerd)
 - [x] supply-chain, semgrep, insecure-defaults (handmatig), security-review fase 5
-- [ ] /security-review op de back-end redesign en fase 6-wijzigingen
+- [x] Security review op back-end redesign en fase 6 (2026-09-27): geen high/critical; Semgrep 0/0; 3 kleine verstevigingen in steylvisuals96-creator/specified-cms#6
 - [x] SEO: metadata, OG-beeld, sitemap
 - [x] Redesign gemerged naar main en live gecontroleerd (2026-09-27): alle pagina's 200, 6 security-headers, deelbeeld, JSON-LD, geen consolefouten
 - [ ] Admin-handleiding en retainer-afspraken bezorgd aan klant (handleiding klaar, retainer door Sam)
