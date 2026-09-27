@@ -156,3 +156,6 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 - [x] Redesign gemerged naar main en live gecontroleerd (2026-09-27): alle pagina's 200, 6 security-headers, deelbeeld, JSON-LD, geen consolefouten
 - [ ] Admin-handleiding en retainer-afspraken bezorgd aan klant (handleiding klaar, retainer door Sam)
 - Inspiratie-richting gebruikt: Signatuurmerk
+
+### Domeinverhuis naar specified.be
+Pas na akkoord van Specified op de nieuwe site; gepland voor november 2026. Tot dan blijft de site op specified-website.vercel.app en draait specified.be de oude site. Bij de verhuis: domein naar Vercel, `NEXT_PUBLIC_SITE_URL=https://specified.be` in Vercel, CORS-lijst in de CMS nakijken, sitemap/canonical live controleren.
