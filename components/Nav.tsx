@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "@/components/Logo";
 import { useEffect, useState } from "react";
 
 // Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
@@ -37,14 +37,7 @@ export default function Nav() {
     <header className="site-nav" data-scrolled={scrolled || menuOpen}>
       <div className="wrap site-nav__bar">
         <Link href="/" className="site-nav__logo" aria-label="Specified, naar de homepage">
-          <Image
-            src="/images/team/logo_specified.svg"
-            alt=""
-            width={140}
-            height={36}
-            style={{ filter: "brightness(0) invert(0.92)", height: "26px", width: "auto" }}
-            priority
-          />
+          <Logo className="logo--nav" />
         </Link>
 
         <nav className="site-nav__links nav-desktop" aria-label="Hoofdmenu">

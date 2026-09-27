@@ -78,6 +78,9 @@ type Delen = {
   eindSchaal: number;
   eindMidden: [number, number];
   titelblokEinde: number;
+  kader: SVGGElement;
+  /** Geschatte omtreklengte van een letter, om de contour te laten tekenen. */
+  contour: number;
 };
 
 function lettertype() {
@@ -109,8 +112,8 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
   const fBlok = Math.min(1.6, Math.max(1, 0.85 / schaal));
 
   const kader = el("g", {}, svg);
-  el("rect", { class: "tek__rand", x: 40, y: -off + 40, width: 1520, height: H - 80 }, kader);
-  el("rect", { class: "tek__rand", x: 56, y: -off + 56, width: 1488, height: H - 112 }, kader);
+  el("rect", { class: "tek__rand", x: 40, y: -off + 40, width: 1520, height: H - 80, pathLength: 1 }, kader);
+  el("rect", { class: "tek__rand", x: 56, y: -off + 56, width: 1488, height: H - 112, pathLength: 1 }, kader);
   "ABCD".split("").forEach((c, i) => {
     const y = -off + 56 + ((H - 112) * (i + 0.5)) / 4 + 4;
     el("text", { class: "tek__ref", x: 48, y }, kader).textContent = c;
@@ -122,7 +125,7 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     el("text", { class: "tek__ref", x, y: H - off - 44 }, kader).textContent = String(n);
   });
   const as = el("line", { class: "tek__as", x1: 80, y1: 450, x2: 1520, y2: 450 }, svg);
-  const woordG = el("g", {}, svg);
+  const woordG = el("g", { class: "tek__woord" }, svg);
   const coG = el("g", {}, svg);
 
   const woord = "SPECIFIED".split("");
@@ -215,6 +218,8 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     eindSchaal: Math.min(1, 1380 / logoB),
     eindMidden: [800, basis - kap / 2 + eindY],
     titelblokEinde: 0.6,
+    kader,
+    contour: 1600,
   };
 }
 
@@ -227,10 +232,10 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
   const font = lettertype();
 
   const kader = el("g", {}, svg);
-  el("rect", { class: "tek__rand", x: -offX + 24, y: 24, width: W - 48, height: 1552 }, kader);
-  el("rect", { class: "tek__rand", x: -offX + 38, y: 38, width: W - 76, height: 1524 }, kader);
+  el("rect", { class: "tek__rand", x: -offX + 24, y: 24, width: W - 48, height: 1552, pathLength: 1 }, kader);
+  el("rect", { class: "tek__rand", x: -offX + 38, y: 38, width: W - 76, height: 1524, pathLength: 1 }, kader);
   const as = el("line", { class: "tek__as", x1: 240, y1: 110, x2: 240, y2: 1490 }, svg);
-  const woordG = el("g", {}, svg);
+  const woordG = el("g", { class: "tek__woord" }, svg);
   const coG = el("g", {}, svg);
 
   const woord = "SPECIFIED".split("");
@@ -306,6 +311,8 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
     eindSchaal: Math.min(1.8, (W - 140) / logoB),
     eindMidden: [450, eindBasis - kap / 2],
     titelblokEinde: 0,
+    kader,
+    contour: 800,
   };
 }
 
@@ -318,7 +325,7 @@ function tijdlijn(root: HTMLElement, d: Delen) {
   });
   gsap.set(d.hand, { strokeDasharray: 1, strokeDashoffset: 1 });
   gsap.set(d.as, { opacity: 0 });
-  gsap.set(L.map((l) => l.lijn), { strokeOpacity: 0 });
+  gsap.set(L.map((l) => l.lijn), { strokeOpacity: 0, strokeDasharray: d.contour, strokeDashoffset: d.contour });
   gsap.set(d.kom, { y: -d.merkAfstand });
   gsap.set(d.boog, { y: d.merkAfstand });
 
@@ -330,12 +337,16 @@ function tijdlijn(root: HTMLElement, d: Delen) {
   // 1. Merk wordt tekening: vulling weg, contour erin, letters uit elkaar.
   tl.to(".tekening__intro", { opacity: 0, y: -20, duration: 0.4 }, 0)
     .to(L.map((l) => l.vul), { fillOpacity: 0, duration: 1 }, 0.2)
-    .to(L.map((l) => l.lijn), { strokeOpacity: 1, duration: 0.8 }, 0.2)
+    .to(L.map((l) => l.lijn), { strokeOpacity: 1, duration: 0.3 }, 0.15)
+    // De contour tekent zichzelf rond elke letter, alsof iemand hem natrekt.
+    .to(L.map((l) => l.lijn), { strokeDashoffset: 0, duration: 1.1, stagger: 0.05, ease: "power1.inOut" }, 0.15)
     .to(L.map((l) => l.g), { x: (i) => L[i].dx, y: (i) => L[i].dy, duration: 1.4, ease: "power1.inOut" }, 0.3)
     .to(d.as, { opacity: 0.6, duration: 0.6 }, 0.9)
     // 2. Callouts tekenen zich, letter voor letter.
-    .to(co, { opacity: 1, duration: 0.3, stagger: 0.16 }, 1.8)
-    .to(L.map((l) => l.leider), { strokeDashoffset: 0, duration: 0.5, stagger: 0.16 }, 1.8)
+    .to(co, { opacity: 1, duration: 0.2, stagger: 0.16 }, 1.8)
+    .from(co.map((g) => g.querySelector("circle")), { scale: 0, transformOrigin: "50% 50%", duration: 0.25, stagger: 0.16, ease: "back.out(3)" }, 1.8)
+    .to(L.map((l) => l.leider), { strokeDashoffset: 0, duration: 0.5, stagger: 0.16 }, 1.85)
+    .from(co.flatMap((g) => Array.from(g.querySelectorAll("text"))), { opacity: 0, x: 14, duration: 0.35, stagger: 0.08, ease: "power2.out" }, 2.05)
     // 3. Callouts wijken; het titelblok komt en Specified tekent af.
     .to(co, { opacity: 0, duration: 0.5 }, 3.7)
     .to(d.titelblok, { opacity: 1, duration: 0.4 }, 4.0)
@@ -347,8 +358,11 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(L.map((l) => l.vul), { fillOpacity: 1, fill: "#dffd7b", duration: 0.8 }, 5.9)
     .to(L.map((l) => l.lijn), { strokeOpacity: 0, duration: 0.6 }, 5.9)
     .to(d.woordG, { scale: d.eindSchaal, svgOrigin: `${d.eindMidden[0]} ${d.eindMidden[1]}`, duration: 0.8, ease: "power2.inOut" }, 5.8)
-    .to(d.kom, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.2)
-    .to(d.boog, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.35)
+    .to(d.kom, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, 6.2)
+    .to(d.boog, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, 6.35)
+    // Het logo licht één keer op wanneer de helften samenklikken.
+    .to(d.woordG, { filter: "drop-shadow(0 0 22px rgba(223, 253, 123, 0.5))", duration: 0.25 }, 6.9)
+    .to(d.woordG, { filter: "drop-shadow(0 0 0px rgba(223, 253, 123, 0))", duration: 0.6 }, 7.15)
     .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.6)
     .to({}, { duration: 0.6 });
   return tl;
@@ -375,6 +389,7 @@ export default function HeroTekening() {
           let tl: gsap.core.Timeline | null = null;
           let verhouding = 0;
           let actief = true;
+          let geladen = false;
 
           const opruimen = () => {
             tl?.scrollTrigger?.kill();
@@ -395,9 +410,19 @@ export default function HeroTekening() {
             verhouding = vw / vh;
             opruimen();
             const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh);
-            root.dataset.klaar = "true";
             tl = tijdlijn(root, delen);
             ScrollTrigger.refresh();
+            // Laadmoment (alleen de eerste keer, bovenaan de pagina): de rand van
+            // het blad tekent zich, daarna neemt de tekening het woord over zodra
+            // de HTML-letters opgerezen zijn.
+            const eerste = !geladen && scrollY < 40;
+            geladen = true;
+            if (eerste) {
+              gsap.fromTo(delen.kader.querySelectorAll("rect"), { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut", stagger: 0.15, autoRound: false });
+              gsap.from(delen.kader.querySelectorAll("text"), { opacity: 0, duration: 0.8, delay: 0.9, stagger: 0.02 });
+            }
+            const wacht = eerste ? Math.max(0, 950 - performance.now()) : 0;
+            setTimeout(() => actief && (root.dataset.klaar = "true"), wacht);
           };
           document.fonts.ready.then(bouw);
 

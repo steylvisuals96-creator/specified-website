@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 import CookieVoorkeurenLink from "@/components/CookieVoorkeurenLink";
 
@@ -19,13 +19,7 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
 
       <div className="wrap footer__rij">
         <Link href="/" aria-label="Specified, naar de homepage">
-          <Image
-            src="/images/team/logo_specified.svg"
-            alt=""
-            width={120}
-            height={30}
-            style={{ filter: "brightness(0) invert(0.92)", height: "22px", width: "auto" }}
-          />
+          <Logo className="logo--footer" />
         </Link>
         <nav className="footer__links" aria-label="Footer">
           <Link href="/privacy">Privacy</Link>

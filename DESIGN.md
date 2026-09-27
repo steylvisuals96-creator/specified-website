@@ -154,6 +154,11 @@ Easing standaard exponentieel uit (`cubic-bezier(0.22,1,0.36,1)`); naast transfo
 | Founders (scroll) | Foto schuift trager dan de pagina (diepte) | scrub |
 | Contact (scroll) | Kop groeit van 82% naar volle maat; onderlijn onder het e-mailadres trekt zich | scrub |
 | Disciplines (scroll-scrub) | Rijen bewegen horizontaal met de scroll, om en om links/rechts, GSAP ScrollTrigger `scrub: 0.6` | gekoppeld aan scroll, geen eigen duur |
+| Hero-laadmoment (één keer) | Letters van SPECIFIED rijzen per letter op (40ms stagger), de rand van het blad tekent zich | 820ms `cubic-bezier(0.22,1,0.36,1)`; rand 1,6 s |
+| Hero: natekenen (scroll) | Contour tekent zich rond elke letter terwijl de vulling vervaagt; callout-punten ploppen (back.out), labels schuiven in; beeldmerk klikt met lichte overshoot en het logo licht één keer op | scrub |
+| Logo nav/footer (gebruiker) | Hover/focus: kom en boog wijken uit elkaar en klikken in limoen terug | 620ms `cubic-bezier(0.22,1,0.36,1)` |
+| Vizier (muiswijzer) | CAD-vizierkruis in limoen (verschil-overvloei); boven klikbaar een kader van vier hoekjes; boven het blad x/y-coördinaten; alleen `pointer: fine`, tekstvelden houden de tekstcursor | 200ms |
+| Vloeiend scrollen | Lenis (lerp 0,1) op desktop met muis/trackpad, gekoppeld aan gsap.ticker; nooit op touch of bij reduced motion | doorlopend |
 | Vacaturerij (gebruiker) | Limoen balk schuift van links in | 220ms `cubic-bezier(0.2,0,0,1)` |
 | Knoppen (gebruiker) | Kleurwissel | 160ms ease-out |
 
