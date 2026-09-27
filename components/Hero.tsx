@@ -69,6 +69,8 @@ export default function Hero({
           </h1>
         </div>
       </section>
+    {/* Scrollruimte van de turbine (130vh); de hero blijft er sticky boven staan. */}
+    <div className="hero-spoor__ruimte" aria-hidden="true" />
     </div>
   );
 }

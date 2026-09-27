@@ -286,9 +286,11 @@ body::after {
 /* ─── Hero (typografisch) ───────────────────────────── */
 .hero { position: relative; overflow: hidden; }
 /* Scrollruimte voor de turbine: de hero blijft 130vh staan terwijl de frames
-   meescrollen. In CSS, zodat ze er al is vóór JS laadt (geen verspringing). */
+   meescrollen. In CSS, zodat ze er al is vóór JS laadt (geen verspringing).
+   Een echt element, geen padding: sticky telt alleen de inhoud van de ouder. */
+.hero-spoor__ruimte { display: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-spoor { padding-bottom: 130vh; }
+  .hero-spoor__ruimte { display: block; height: 130vh; }
   .hero-spoor > .hero { position: sticky; top: 0; }
 }
 .hero__inner {
