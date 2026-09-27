@@ -159,3 +159,6 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 
 ### Domeinverhuis naar specified.be
 Pas na akkoord van Specified op de nieuwe site; gepland voor november 2026. Tegelijk: scroll-frames naar R2 op media.specified.be (afgesproken met Sam 2026-09-27). Tot dan blijft de site op specified-website.vercel.app en draait specified.be de oude site. Bij de verhuis: domein naar Vercel, `NEXT_PUBLIC_SITE_URL=https://specified.be` in Vercel, CORS-lijst in de CMS nakijken, sitemap/canonical live controleren.
+
+### Na de demofase (afgesproken 2026-09-27)
+Tweestapslogin creator, MongoDB/Atlas opruimen, domeinverhuis + R2 (november). Nu eerst: design perfectioneren.
