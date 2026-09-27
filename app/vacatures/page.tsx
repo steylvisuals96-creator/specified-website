@@ -87,7 +87,7 @@ async function getVacatures() {
           opdrachtgever: og
             ? [SECTOR_LABEL[og.sector] ?? og.sector, GROOTTE_LABEL[og.grootte] ?? og.grootte]
                 .filter(Boolean)
-                .join(" · ")
+                .join(", ")
             : "",
           beschrijving: lexicalToParagraphs(v.beschrijving),
           profiel: (v.vereisten ?? []).map((r: any) => r.punt).filter(Boolean),

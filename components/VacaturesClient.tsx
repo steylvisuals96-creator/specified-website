@@ -48,7 +48,7 @@ function FilterGroep({
           het afbreken onder het label door en oogde de rij rafelig. */}
       <legend
         style={{
-          fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: "var(--muted)",
+          fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--muted)",
           padding: 0, marginBottom: "0.6rem",
         }}
       >
@@ -179,7 +179,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                     {job.type}
                   </span>
                   <span style={{ color: selected === job.id ? "var(--lime)" : "var(--muted)", fontSize: "1rem", transition: "color 0.2s" }}>
@@ -202,13 +202,13 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
             >
               <div>
                 <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0", color: selectedJob.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${selectedJob.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: selectedJob.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${selectedJob.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                     {selectedJob.type}
                   </span>
                   {[selectedJob.location, selectedJob.ervaring, selectedJob.salaris, selectedJob.opdrachtgever]
                     .filter(Boolean)
                     .map((chip) => (
-                      <span key={chip} style={{ fontSize: "0.65rem", fontWeight: 500, color: "var(--muted)", border: "1px solid var(--border)", padding: "0.25rem 0.75rem", borderRadius: 0 }}>
+                      <span key={chip} style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--muted)", border: "1px solid var(--border)", padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                         {chip}
                       </span>
                     ))}
@@ -227,7 +227,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.profiel.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Jouw profiel</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Jouw profiel</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.profiel.map((p) => (
                       <li key={p} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -241,7 +241,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.niceToHave.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Nice to have</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Nice to have</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.niceToHave.map((n) => (
                       <li key={n} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -255,11 +255,11 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.aanbod.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Wat we bieden</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Wat we bieden</p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.aanbod.map((a) => (
                       <li key={a} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
-                        <span style={{ color: "var(--lime)", flexShrink: 0 }}>✓</span>
+                        <span aria-hidden style={{ width: 12, height: 2, marginTop: "0.65em", background: "var(--lime)", flexShrink: 0 }} />
                         {a}
                       </li>
                     ))}
