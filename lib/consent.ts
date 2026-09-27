@@ -53,8 +53,9 @@ export function onConsentChange(handler: () => void): () => void {
 }
 
 /**
- * Draait inline in <head>, vóór de eerste weergave: markeert <html> als er al
+ * Draait inline in <head>, vóór de eerste weergave. Zet .js op <html> (de hero
+ * verbergt dan de kop tot de tekening hem toont) en markeert <html> als er al
  * gekozen is, zodat CSS de (server-gerenderde) banner meteen verbergt. Zo
  * verschijnt hij nooit laat en flitst hij nooit op bij terugkerende bezoekers.
  */
-export const CONSENT_HEAD_SCRIPT = `try{var c=localStorage.getItem(${JSON.stringify(CONSENT_KEY)});if(c==="accepted"||c==="declined")document.documentElement.dataset.consent=c}catch(e){}`;
+export const CONSENT_HEAD_SCRIPT = `document.documentElement.classList.add("js");try{var c=localStorage.getItem(${JSON.stringify(CONSENT_KEY)});if(c==="accepted"||c==="declined")document.documentElement.dataset.consent=c}catch(e){}`;

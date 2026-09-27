@@ -1,6 +1,7 @@
 import { SITE_URL } from "@/lib/site";
 import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
+import HeroTekening from "@/components/HeroTekening";
+import { CONSULTANTS, DIENSTEN, JOBS, META } from "@/lib/inhoud";
 import Split from "@/components/Split";
 import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
@@ -16,12 +17,10 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSettings();
   return {
-    title: s.meta_titel || "Specified — We Engineer Possibilities",
-    description:
-      s.meta_beschrijving ||
-      "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
+    // Positionering uit lib/inhoud.ts; de CMS-metavelden bevatten nog voorbeeldtekst.
+    title: META.titel,
+    description: META.beschrijving,
   };
 }
 
@@ -79,7 +78,8 @@ export default async function Home() {
   // Organisatiegegevens voor zoekmachines (JSON-LD); < geëscaped zoals in de blog.
   const organisatie = {
     "@context": "https://schema.org",
-    "@type": "EmploymentAgency",
+    "@type": "ProfessionalService",
+    description: META.beschrijving,
     name: "Specified",
     url: SITE_URL,
     logo: `${SITE_URL}/images/team/logo_specified.svg`,
@@ -97,17 +97,10 @@ export default async function Home() {
       />
       <Nav />
       <main>
-        <Hero
-          prefix={settings.hero_prefix}
-          woorden={settings.hero_woorden}
-          suffix={settings.hero_suffix}
-          subtitle={settings.hero_subtitel}
-          ctaPrimary={settings.hero_cta_tekst}
-          ctaSecondary={settings.hero_cta_2_tekst}
-        />
-        <Disciplines items={settings.sectoren?.map((s) => s.naam)} />
-        <Split settings={settings} />
-        <Jobs jobs={jobs} titel={settings.jobs_titel} linkTekst={settings.jobs_link_tekst} />
+        <HeroTekening />
+        <Disciplines items={CONSULTANTS.profielen} />
+        <Split kolommen={DIENSTEN} />
+        <Jobs jobs={jobs} titel={JOBS.titel} linkTekst={JOBS.linkTekst} />
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
         <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
