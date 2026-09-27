@@ -494,3 +494,22 @@ body::after {
 
 /* Foto's uit de CMS (blog) krijgen dezelfde donkere grade als de rest van de site. */
 .foto-grade { filter: saturate(0.55) brightness(0.78) contrast(1.1); }
+
+/* ─── Cookiebanner ─────────────────────────────────────── */
+.cookie-banner {
+  position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 9990;
+  max-width: 480px; margin: 0 auto; padding: 1.25rem 1.4rem;
+  background: var(--ink-800); border: 1px solid var(--line);
+}
+html[data-consent] .cookie-banner { display: none; }
+.cookie-banner p { color: var(--bone-400); font-size: 0.875rem; line-height: 1.55; margin-bottom: 1rem; }
+.cookie-banner a { color: var(--bone-100); text-decoration: underline; text-underline-offset: 3px; }
+.cookie-banner a:hover { color: var(--lime-300); }
+.cookie-banner__keuzes { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.cookie-banner__keuzes button {
+  flex: 1; min-width: 140px; min-height: 44px; padding: 0.7rem 1rem;
+  font: 600 0.875rem/1 var(--font-sans), system-ui, sans-serif;
+  background: var(--bone-100); color: var(--ink-900); border: 0; cursor: pointer;
+  transition: background-color 160ms ease-out;
+}
+.cookie-banner__keuzes button:hover { background: var(--lime-300); }

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
+import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
+import { SITE_URL } from "@/lib/site";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import HashScroll from "@/components/HashScroll";
 
@@ -27,8 +29,16 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Specified — We Engineer Possibilities",
   description: "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
+  openGraph: {
+    type: "website",
+    locale: "nl_BE",
+    siteName: "Specified",
+    url: "/",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -40,7 +50,10 @@ export default function RootLayout({
     // data-scroll-behavior is vereist sinds Next.js 16: het framework overschrijft
     // `scroll-behavior: smooth` niet langer zelf tijdens route-overgangen, waardoor
     // navigeren zonder dit attribuut traag naar boven glijdt in plaats van te springen.
-    <html lang="nl" className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth">
+    <html lang="nl" className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT }} />
+      </head>
       <body className="min-h-full flex flex-col">
         <HashScroll />
         {children}

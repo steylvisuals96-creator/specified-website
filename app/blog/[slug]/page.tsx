@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { getBlogPost, getBlogPosts, formatDatum } from "@/lib/blog";
+import { preconnect } from "react-dom";
+import { coverBron, getBlogPost, getBlogPosts, formatDatum } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 
@@ -45,6 +46,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function BlogArtikel({ params }: { params: Promise<{ slug: string }> }) {
+  // Coverbeelden komen meestal van Unsplash: verbinding meteen openen.
+  preconnect("https://images.unsplash.com");
   const { slug } = await params;
   const [post, settings] = await Promise.all([getBlogPost(slug), getSettings()]);
   if (!post) notFound();
@@ -111,7 +114,9 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
               <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: 0, marginBottom: "3rem" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={post.coverUrl}
+                  {...coverBron(post.coverUrl)}
+                  sizes="(min-width: 900px) 800px, 100vw"
+                  fetchPriority="high"
                   alt={post.titel}
                   className="foto-grade" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />

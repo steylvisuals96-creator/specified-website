@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/site";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Split from "@/components/Split";
@@ -75,8 +76,25 @@ async function getRecentJobs() {
 export default async function Home() {
   const [jobs, settings, team] = await Promise.all([getRecentJobs(), getSettings(), getTeam()]);
 
+  // Organisatiegegevens voor zoekmachines (JSON-LD); < geëscaped zoals in de blog.
+  const organisatie = {
+    "@context": "https://schema.org",
+    "@type": "EmploymentAgency",
+    name: "Specified",
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/team/logo_specified.svg`,
+    email: settings.contact_email || "info@specified.be",
+    ...(settings.telefoon ? { telephone: settings.telefoon } : {}),
+    address: { "@type": "PostalAddress", addressLocality: "Kontich", addressCountry: "BE" },
+    areaServed: "BE",
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organisatie).replace(/</g, "\\u003c") }}
+      />
       <Nav />
       <main>
         <Hero

@@ -4,8 +4,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@/lib/consent";
 
+/**
+ * Wordt op de server al gerenderd, zodat hij bij de eerste weergave staat in
+ * plaats van na het laden van JS. Wie al koos, ziet hem nooit: het scriptje in
+ * <head> zet html[data-consent] en de CSS (.cookie-banner) verbergt hem.
+ */
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const sync = () => setVisible(readConsent() === null);
@@ -21,55 +26,19 @@ export default function CookieBanner() {
   if (!visible) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-label="Cookievoorkeuren"
-      style={{
-        position: "fixed",
-        bottom: "1rem",
-        left: "1rem",
-        right: "1rem",
-        maxWidth: "480px",
-        margin: "0 auto",
-        background: "var(--dark)",
-        border: "1px solid var(--border)",
-        borderRadius: 0,
-        padding: "1.25rem 1.4rem",
-        zIndex: 9990,
-        boxShadow: "0 12px 40px rgba(0,0,0,0.45)",
-        cursor: "auto",
-      }}
-    >
-      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.85rem", lineHeight: 1.55, marginBottom: "1rem" }}>
-        We gebruiken noodzakelijke cookies om de site te laten werken en — met jouw toestemming —
-        analytische cookies om hem te verbeteren. Meer info in ons{" "}
-        <Link href="/cookies" style={{ color: "var(--lime)", textDecoration: "underline" }}>cookiebeleid</Link>.
+    <div role="dialog" aria-label="Cookievoorkeuren" className="cookie-banner">
+      <p>
+        We gebruiken noodzakelijke cookies om de site te laten werken en, met jouw toestemming, analytische
+        cookies om hem te verbeteren. Meer info in ons <Link href="/cookies">cookiebeleid</Link>.
       </p>
-      <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-        {/* Beide keuzes krijgen exact hetzelfde gewicht: zelfde vorm, maat,
-            letterdikte en contrast. De EDPB-richtsnoeren vereisen dat weigeren
-            even makkelijk is als aanvaarden; een spookknop naast een gevulde
-            knop stuurt de keuze en is daarmee geen vrije toestemming. */}
-        <button
-          type="button"
-          onClick={() => choose("accepted")}
-          style={{
-            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: 0,
-            background: "var(--lime)", color: "var(--dark)", fontWeight: 600,
-            fontSize: "0.82rem", border: "1px solid var(--lime)", cursor: "pointer", fontFamily: "inherit",
-          }}
-        >
+      {/* Beide keuzes krijgen exact hetzelfde gewicht: zelfde vorm, maat,
+          letterdikte en contrast. De EDPB-richtsnoeren vereisen dat weigeren
+          even makkelijk is als aanvaarden. */}
+      <div className="cookie-banner__keuzes">
+        <button type="button" onClick={() => choose("accepted")}>
           Alles accepteren
         </button>
-        <button
-          type="button"
-          onClick={() => choose("declined")}
-          style={{
-            flex: 1, minWidth: "140px", minHeight: "44px", padding: "0.7rem 1rem", borderRadius: 0,
-            background: "var(--white)", color: "var(--dark)", fontWeight: 600,
-            fontSize: "0.82rem", border: "1px solid var(--white)", cursor: "pointer", fontFamily: "inherit",
-          }}
-        >
+        <button type="button" onClick={() => choose("declined")}>
           Enkel noodzakelijke
         </button>
       </div>
