@@ -37,11 +37,13 @@ html {
 
 /* De header is vast en 72px hoog. Zonder deze marge belandt de sectiekop
    eronder en lijkt het alsof je op de verkeerde plek bent geland. */
+/* Menulinks springen voorbij de lege bovenmarge van de sectie, tot net onder
+   de navigatie (88px) met wat lucht, in plaats van op de rand van de sectie. */
 #diensten,
 #jobs,
 #over-ons,
 #contact {
-  scroll-margin-top: 88px;
+  scroll-margin-top: calc(88px + 40px - var(--section-y));
 }
 
 body {
@@ -386,6 +388,8 @@ body::after {
 .split__tekst { color: var(--bone-400); max-width: 46ch; margin-bottom: 0.75rem; }
 @media (min-width: 900px) {
   .split__grid { grid-template-columns: 1fr 1fr; }
+  /* Liggend op desktop: beeld, kop en tekst passen samen op één scherm. */
+  .split__beeld { aspect-ratio: 3 / 2; max-height: none; }
   .split__col { padding: 0 clamp(32px, 5vw, 80px) 0 0; }
   .split__col + .split__col { border-top: 0; border-left: 1px solid var(--line); padding: 0 0 0 clamp(32px, 5vw, 80px); }
 }

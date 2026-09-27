@@ -53,7 +53,8 @@ export default function HashScroll() {
         if (Date.now() < deadline) raf = requestAnimationFrame(settle);
         return;
       }
-      const offset = el.getBoundingClientRect().top - 88; // header + scroll-margin
+      const marge = parseFloat(getComputedStyle(el).scrollMarginTop); // uit de CSS, zelfde als een gewone ankersprong
+      const offset = el.getBoundingClientRect().top - (Number.isFinite(marge) ? marge : 88);
       if (Math.abs(offset) > 2) {
         window.scrollBy({ top: offset, behavior: "auto" });
         if (Date.now() < deadline) raf = requestAnimationFrame(settle);
