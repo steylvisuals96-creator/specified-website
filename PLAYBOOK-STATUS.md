@@ -131,7 +131,7 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 
 - [x] Hero-scroll opnieuw opgebouwd: CSS sticky i.p.v. GSAP-pin (geen layout shift), frames laden pas na de pagina. Getest op 375, 768 en 1440 px
 - [x] Lighthouse mobiel: home 95, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100 op alle drie. CLS 0
-- [ ] LCP < 2,5 s: vacatures 2,1 s ok; home 2,9 s (heroposter), blog 3,2 s (externe Unsplash-covers). Te verbeteren: covers via de CMS-media i.p.v. externe links
+- [~] LCP (2026-09-27, na covers via next/image, hero-preload, lichter icoon): vacatures 2,0 s ok; blog 2,6 s; home 2,7-2,9 s. Rest: de full-screen heroposter deelt de trage 4G-simulatie met de JS-bundels
 - [x] Cookiebanner server-gerenderd (verschijnt niet meer laat), in huisstijl, keuzes gelijkwaardig
 - [x] SEO: metadataBase + SITE_URL (lib/site.ts), canonical absoluut, deelbeeld 1200x630, OG/Twitter, EmploymentAgency JSON-LD, sitemap + robots
 - [x] Scan op Claude-patronen: laatste middenpunt en vinkje weg, kleinste tekst 13px
@@ -143,12 +143,12 @@ Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
 - [x] Geen Claude-patronen
 - [x] Scroll werkt op 375px, 768px en desktop
 - [ ] `prefers-reduced-motion`: in de code afgehandeld (geen sticky, geen scrub), niet in een browser geëmuleerd
-- [ ] Lighthouse mobiel ≥ 90 ok, LCP < 2,5 s nog niet op home en blog
+- [~] Lighthouse mobiel ≥ 90 ok (94-99); LCP net boven 2,5 s op home (2,7-2,9) en blog (2,6)
 - [x] Rollen getest (creator/beheerder/consultant, 14/14 scenario's)
 - [ ] Creator-MFA: nog niet ingesteld
 - [x] Supabase: payload-schema niet via de Data API bereikbaar, anon/authenticated zonder rechten, advisor 0 waarschuwingen
 - [x] Geen geheimen in repo (Semgrep secrets 0)
-- [ ] Media: uploads via R2 (private, ondertekende links), scroll-frames nog op Vercel i.p.v. R2
+- [ ] Media: uploads via R2 (private, ondertekende links). Scroll-frames (6,6 MB) nog op Vercel: R2 pas zinvol met een eigen domein op Cloudflare (r2.dev is alleen voor testen) — samen met de domeinverhuis in november
 - [x] Security-headers actief op CMS en website (live gecontroleerd)
 - [x] supply-chain, semgrep, insecure-defaults (handmatig), security-review fase 5
 - [x] Security review op back-end redesign en fase 6 (2026-09-27): geen high/critical; Semgrep 0/0; 3 kleine verstevigingen in steylvisuals96-creator/specified-cms#6
