@@ -125,3 +125,34 @@ Keuze Sam 2026-09-26: Specified-CMS naar Supabase, zoals het playbook.
 
 ## Fase 6
 Nog niet gestart.
+
+## Fase 6 — QA & oplevering (bezig, 2026-09-27)
+Gemeten op een lokale productiebuild (Vercel-preview zit achter login).
+
+- [x] Hero-scroll opnieuw opgebouwd: CSS sticky i.p.v. GSAP-pin (geen layout shift), frames laden pas na de pagina. Getest op 375, 768 en 1440 px
+- [x] Lighthouse mobiel: home 95, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100 op alle drie. CLS 0
+- [ ] LCP < 2,5 s: vacatures 2,1 s ok; home 2,9 s (heroposter), blog 3,2 s (externe Unsplash-covers). Te verbeteren: covers via de CMS-media i.p.v. externe links
+- [x] Cookiebanner server-gerenderd (verschijnt niet meer laat), in huisstijl, keuzes gelijkwaardig
+- [x] SEO: metadataBase + SITE_URL (lib/site.ts), canonical absoluut, deelbeeld 1200x630, OG/Twitter, EmploymentAgency JSON-LD, sitemap + robots
+- [x] Scan op Claude-patronen: laatste middenpunt en vinkje weg, kleinste tekst 13px
+- [x] Admin-handleiding: specified-cms/docs/ADMIN-HANDLEIDING.md (branch docs/admin-handleiding)
+
+### Opleverchecklist
+- [x] Visuele referentie goedgekeurd (door Sam; klant nog niet gezien)
+- [x] DESIGN.md in repo, tokens gebruikt in site en admin
+- [x] Geen Claude-patronen
+- [x] Scroll werkt op 375px, 768px en desktop
+- [ ] `prefers-reduced-motion`: in de code afgehandeld (geen sticky, geen scrub), niet in een browser geëmuleerd
+- [ ] Lighthouse mobiel ≥ 90 ok, LCP < 2,5 s nog niet op home en blog
+- [x] Rollen getest (creator/beheerder/consultant, 14/14 scenario's)
+- [ ] Creator-MFA: nog niet ingesteld
+- [x] Supabase: payload-schema niet via de Data API bereikbaar, anon/authenticated zonder rechten, advisor 0 waarschuwingen
+- [x] Geen geheimen in repo (Semgrep secrets 0)
+- [ ] Media: uploads via R2 (private, ondertekende links), scroll-frames nog op Vercel i.p.v. R2
+- [x] Security-headers actief (CMS live; website na merge opnieuw controleren)
+- [x] supply-chain, semgrep, insecure-defaults (handmatig), security-review fase 5
+- [ ] /security-review op de back-end redesign en fase 6-wijzigingen
+- [x] SEO: metadata, OG-beeld, sitemap
+- [ ] Redesign gemerged naar main en live gecontroleerd
+- [ ] Admin-handleiding en retainer-afspraken bezorgd aan klant (handleiding klaar, retainer door Sam)
+- Inspiratie-richting gebruikt: Signatuurmerk
