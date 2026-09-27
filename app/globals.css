@@ -312,10 +312,31 @@ body::after {
   position: absolute; inset: 76px 0 0; z-index: 2; margin: 0;
   display: flex; align-items: center; justify-content: center;
   gap: min(0.625vw, 1.11svh); color: var(--bone-100);
-  font-size: min(18.75vw, calc((100svh - 76px) / 3)); line-height: 1; padding-bottom: min(4vw, 7svh);
-  transition: opacity 400ms var(--ease-out);
+  font-size: min(18.75vw, calc((100svh - 76px) / 3)); line-height: 1;
+  /* Optisch midden van Bebas-kapitalen ligt iets lager dan het midden van de regel. */
+  transform: translateY(0.053em);
+  transition: opacity 260ms var(--ease-out);
 }
 .tekening[data-klaar] .tekening__woord { opacity: 0; }
+/* De SVG-letters komen pas bij de overdracht, zodat er nooit twee woorden tegelijk staan. */
+.tek__woord { transition: opacity 420ms var(--ease-out) 180ms; }
+.tekening:not([data-klaar]) .tek__woord { opacity: 0; }
+/* Laadmoment: de letters rijzen één voor één op (alleen transform, dus de
+   tekst telt meteen als weergegeven voor de laadsnelheid). */
+.tekening__woord span { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .tekening__woord { overflow: hidden; }
+  .js .tekening__woord span { animation: tek-rijs 820ms var(--ease-out) both; }
+  .js .tekening__woord span:nth-child(2) { animation-delay: 40ms; }
+  .js .tekening__woord span:nth-child(3) { animation-delay: 80ms; }
+  .js .tekening__woord span:nth-child(4) { animation-delay: 120ms; }
+  .js .tekening__woord span:nth-child(5) { animation-delay: 160ms; }
+  .js .tekening__woord span:nth-child(6) { animation-delay: 200ms; }
+  .js .tekening__woord span:nth-child(7) { animation-delay: 240ms; }
+  .js .tekening__woord span:nth-child(8) { animation-delay: 280ms; }
+  .js .tekening__woord span:nth-child(9) { animation-delay: 320ms; }
+}
+@keyframes tek-rijs { from { transform: translateY(105%); } }
 @media (orientation: portrait) {
   .tekening__woord {
     flex-direction: column; justify-content: center; align-items: flex-start;
@@ -523,3 +544,82 @@ html[data-consent] .cookie-banner { display: none; }
   transition: background-color 160ms ease-out;
 }
 .cookie-banner__keuzes button:hover { background: var(--lime-300); }
+
+/* ─── Lenis (vloeiend scrollen, components/VloeiendScrollen.tsx) ─── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ─── Logo (components/Logo.tsx) ─────────────────────────
+   Rust: alles in bone. Hover/focus op de logolink: de kom en de boog van het
+   beeldmerk wijken even uit elkaar en klikken in limoen terug samen, zoals in
+   het eindbeeld van de hero. */
+.logo { display: block; width: auto; overflow: visible; }
+.logo--nav { height: 26px; }
+.logo--footer { height: 22px; }
+.logo__woord, .logo__kom, .logo__boog { fill: var(--bone-100); transition: fill 240ms var(--ease-out); }
+.logo__kom, .logo__boog { transform-box: fill-box; transform-origin: center; }
+a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom,
+a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { fill: var(--lime-300); }
+@media (prefers-reduced-motion: no-preference) {
+  a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom { animation: logo-kom 620ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { animation: logo-boog 620ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+}
+@keyframes logo-kom { 0% { transform: none; } 35% { transform: translateY(-22%); } 100% { transform: none; } }
+@keyframes logo-boog { 0% { transform: none; } 35% { transform: translateY(26%); } 100% { transform: none; } }
+
+/* ─── Vizier: muiswijzer (components/Vizier.tsx) ─────────── */
+html.vizier-aan, html.vizier-aan * { cursor: none; }
+html.vizier-aan input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]),
+html.vizier-aan textarea, html.vizier-aan [contenteditable="true"] { cursor: text; }
+.vizier {
+  position: fixed; left: 0; top: 0; z-index: 10000; pointer-events: none;
+  /* Verschil-overvloei: donker op limoen knoppen, limoen op het donkere blad. */
+  mix-blend-mode: difference;
+  width: 0; height: 0; opacity: 0; transition: opacity 160ms ease-out;
+}
+.vizier[data-zichtbaar="true"] { opacity: 1; }
+.vizier[data-stand="typen"] { opacity: 0; }
+.vizier__lijn, .vizier__hoek, .vizier__coord { position: absolute; left: 0; top: 0; }
+/* Kruis met open midden: 30px lijnen, 8px gat, zoals een CAD-vizier. */
+.vizier__lijn--h {
+  width: 30px; height: 1.5px; transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, var(--lime-300) 0 37%, transparent 37% 63%, var(--lime-300) 63%);
+}
+.vizier__lijn--v {
+  width: 1.5px; height: 30px; transform: translate(-50%, -50%);
+  background: linear-gradient(180deg, var(--lime-300) 0 37%, transparent 37% 63%, var(--lime-300) 63%);
+}
+.vizier__lijn { transition: transform 200ms var(--ease-out), opacity 200ms var(--ease-out); }
+/* Kader van vier hoekjes, zichtbaar boven iets klikbaars. */
+.vizier__hoek {
+  width: 8px; height: 8px; border: 0 solid var(--lime-300); opacity: 0;
+  transition: transform 220ms var(--ease-out), opacity 160ms ease-out;
+}
+.vizier__hoek--lb { border-top-width: 1.5px; border-left-width: 1.5px; transform: translate(-10px, -10px); }
+.vizier__hoek--rb { border-top-width: 1.5px; border-right-width: 1.5px; transform: translate(2px, -10px); }
+.vizier__hoek--lo { border-bottom-width: 1.5px; border-left-width: 1.5px; transform: translate(-10px, 2px); }
+.vizier__hoek--ro { border-bottom-width: 1.5px; border-right-width: 1.5px; transform: translate(2px, 2px); }
+.vizier[data-stand="klik"] .vizier__lijn { opacity: 0; }
+.vizier[data-stand="klik"] .vizier__lijn--h { transform: translate(-50%, -50%) scaleX(0.2); }
+.vizier[data-stand="klik"] .vizier__lijn--v { transform: translate(-50%, -50%) scaleY(0.2); }
+.vizier[data-stand="klik"] .vizier__hoek { opacity: 1; }
+.vizier[data-stand="klik"] .vizier__hoek--lb { transform: translate(-20px, -20px); }
+.vizier[data-stand="klik"] .vizier__hoek--rb { transform: translate(12px, -20px); }
+.vizier[data-stand="klik"] .vizier__hoek--lo { transform: translate(-20px, 12px); }
+.vizier[data-stand="klik"] .vizier__hoek--ro { transform: translate(12px, 12px); }
+.vizier[data-druk="true"][data-stand="klik"] .vizier__hoek--lb { transform: translate(-15px, -15px); }
+.vizier[data-druk="true"][data-stand="klik"] .vizier__hoek--rb { transform: translate(7px, -15px); }
+.vizier[data-druk="true"][data-stand="klik"] .vizier__hoek--lo { transform: translate(-15px, 7px); }
+.vizier[data-druk="true"][data-stand="klik"] .vizier__hoek--ro { transform: translate(7px, 7px); }
+/* Coördinaten naast het vizier, alleen boven het tekenblad. */
+.vizier__coord {
+  transform: translate(18px, 14px); white-space: pre; opacity: 0;
+  font: 500 11px/1 var(--font-sans), sans-serif; font-variant-numeric: tabular-nums; color: var(--bone-400);
+  transition: opacity 160ms ease-out;
+}
+.vizier[data-coord="true"] .vizier__coord { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .vizier__lijn, .vizier__hoek, .vizier__coord, .vizier { transition: none; }
+}

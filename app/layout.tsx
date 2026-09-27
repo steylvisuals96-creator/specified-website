@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
+import VloeiendScrollen from "@/components/VloeiendScrollen";
+import Vizier from "@/components/Vizier";
 import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
 import { SITE_URL } from "@/lib/site";
 import AnalyticsGate from "@/components/AnalyticsGate";
@@ -59,6 +61,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <HashScroll />
+        <VloeiendScrollen />
+        <Vizier />
         {children}
         <CookieBanner />
         <AnalyticsGate />
