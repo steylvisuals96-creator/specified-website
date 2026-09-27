@@ -12,7 +12,7 @@ export async function updateKandidaat(id: string, data: Record<string, any>) {
 
 /** Pipeline-status wijzigen en dat meteen als notitie in de tijdlijn zetten. */
 export async function zetKandidaatStatus(id: string, status: string) {
-  if (!(status in KANDIDAAT_STATUS)) throw new Error("Onbekende status.");
+  if (!Object.hasOwn(KANDIDAAT_STATUS, status)) throw new Error("Onbekende status.");
   const { payload, als } = await payloadAlsGebruiker();
   await payload.update({ ...als, collection: "kandidaten", id, data: { status: status as any } });
   await payload.create({

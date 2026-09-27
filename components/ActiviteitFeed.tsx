@@ -49,8 +49,12 @@ function outlookUrl(item: ActiviteitItem) {
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(item.onderwerp)}&startdt=${start.toISOString()}&enddt=${end.toISOString()}&body=${encodeURIComponent(item.inhoud ?? "")}`;
 }
 
+// Afzenders van inkomende mail komen van buitenaf. Alleen een kaal adres mag in
+// de mailto-link, zodat niemand er extra ontvangers of een eigen tekst in stopt.
+const KAAL_ADRES = /^[^\s@?&#=,;:<>"'()]+@[^\s@?&#=,;:<>"'()]+\.[a-z]{2,}$/i;
+
 function replyHref(item: ActiviteitItem, bccEmail?: string) {
-  const to = item.van ?? "";
+  const to = item.van && KAAL_ADRES.test(item.van) ? item.van : "";
   const subject = encodeURIComponent(`Re: ${item.onderwerp}`);
   const body = encodeURIComponent(`\n\n---\nOp ${fmtDatum(item.datum)} om ${fmtTijd(item.datum)} schreef ${item.van}:\n\n${item.inhoud ?? ""}`);
   const bcc = bccEmail ? `&bcc=${encodeURIComponent(bccEmail)}` : "";
