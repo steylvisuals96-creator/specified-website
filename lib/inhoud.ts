@@ -27,7 +27,6 @@ export const TEKENING_CALLOUTS: [string, string][] = [
 export const TEKENING = {
   intro: "Engineering consultancy uit Antwerpen: onze eigen consultants versterken jouw projecten.",
   scrollHint: "Scroll om de specificatie te openen.",
-  maatlijn: "Engineering consultancy, elektromechanisch, voor de industrie",
   titelblok: {
     project: "We are here to stay", // home
     locatie: "Kontich, Antwerpen",

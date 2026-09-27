@@ -12,8 +12,12 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * De hero als technische tekening. Tijdens het scrollen wordt het woord
  * SPECIFIED een tekening: de letters worden contouren en schuiven uit elkaar,
  * elke letter krijgt een callout (een acrostichon met wat Specified doet), een
- * titelblok wordt afgetekend met de handtekening, en daarna klikt het woord in
- * limoen weer samen onder de kop.
+ * titelblok wordt afgetekend met de handtekening. Op het einde klikt het woord
+ * in limoen samen en valt het beeldmerk erbij (kom van boven, boog van onder):
+ * het eindbeeld is het echte logo, onder de kop.
+ *
+ * Het blad vult het scherm in elke verhouding: de tekening zelf is 1600x900
+ * (liggend) of 900x1600 (staand) en de viewBox groeit mee in hoogte of breedte.
  *
  * Zonder JS of met "beweging beperken" blijft het een rustige hero: het woord,
  * de kop en de knoppen, zonder scrollruimte.
@@ -22,6 +26,13 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const NS = "http://www.w3.org/2000/svg";
 const HANDTEKENING =
   "M8 132 C 40 96, 70 40, 92 36 C 112 32, 104 96, 86 118 C 70 138, 60 104, 96 86 C 128 70, 140 64, 150 76 C 160 90, 142 112, 150 116 C 160 120, 178 84, 194 70 C 204 62, 206 84, 198 102 C 192 118, 206 118, 220 100 C 236 80, 246 62, 262 60 C 276 58, 268 88, 280 92 C 294 96, 306 70, 322 62 C 336 56, 330 84, 344 86 C 380 88, 460 52, 552 30";
+// Het beeldmerk van Specified (zelfde paden als het logo), 26,3 breed en 24,4 hoog.
+const MERK_KOM =
+  "M.5,0c0,1.7.3,3.4,1,4.9.6,1.6,1.6,3,2.8,4.2,1.2,1.2,2.6,2.2,4.2,2.8s3.2,1,4.9,1,3.4-.3,4.9-1c1.6-.6,3-1.6,4.2-2.8s2.1-2.6,2.8-4.2C25.9,3.3,26.3,1.7,26.3,0Z";
+const MERK_BOOG =
+  "M1.2,16.4c1,2.4,2.6,4.4,4.8,5.8,2.1,1.4,4.7,2.2,7.2,2.2s5.1-.8,7.3-2.2c2.2-1.4,3.8-3.5,4.8-5.9l-4-1.6c-.7,1.6-1.8,2.9-3.2,3.9-1.4,1-3.1,1.5-4.8,1.5s-3.4-.5-4.8-1.4c-1.4-.9-2.5-2.3-3.2-3.9l-4,1.7Z";
+const MERK_B = 26.3;
+const MERK_H = 24.4;
 
 type Attrs = Record<string, string | number>;
 function el<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Attrs, parent?: Element): SVGElementTagNameMap[K] {
@@ -43,29 +54,30 @@ function acro(node: SVGTextElement, tekst: string) {
 
 type Letter = {
   g: SVGGElement;
-  /** Eindpositie t.o.v. de beginstand (staand: het woord draait naar horizontaal). */
-  ex?: number;
-  ey?: number;
   vul: SVGTextElement;
   lijn: SVGTextElement;
-  co?: SVGGElement;
-  leider?: SVGPolylineElement;
+  co: SVGGElement;
+  leider: SVGPolylineElement;
+  /** Uit-elkaar-stand (tekening) en eindstand, beide t.o.v. de beginstand. */
   dx: number;
   dy: number;
+  ex: number;
+  ey: number;
 };
 
 type Delen = {
   letters: Letter[];
-  maat: SVGGElement;
   titelblok: SVGGElement;
   hand: SVGPathElement;
   as: SVGLineElement;
-  eindY: number;
-  eindVul: number;
-  /** Staand: de lettergroep die op het einde groter wordt om de breedte te vullen. */
-  woordG?: SVGGElement;
-  eindSchaal?: number;
-  eindMidden?: [number, number];
+  woordG: SVGGElement;
+  /** Beeldmerk: twee helften die op het einde binnenkomen. */
+  kom: SVGGElement;
+  boog: SVGGElement;
+  merkAfstand: number;
+  eindSchaal: number;
+  eindMidden: [number, number];
+  titelblokEinde: number;
 };
 
 function lettertype() {
@@ -73,29 +85,49 @@ function lettertype() {
   return v || "'Bebas Neue', sans-serif";
 }
 
-/** Liggend (desktop, tablet): het woord horizontaal, callouts erboven en eronder. */
-function bouwLiggend(svg: SVGSVGElement): Delen {
-  svg.setAttribute("viewBox", "0 0 1600 900");
+/** Beeldmerk als twee groepen, linksboven op (x, y), zo hoog als `hoogte`. */
+function merk(parent: SVGGElement, x: number, y: number, hoogte: number) {
+  const s = hoogte / MERK_H;
+  const kom = el("g", { opacity: 0 }, parent);
+  el("path", { class: "tek__merk", d: MERK_KOM, transform: `translate(${x} ${y}) scale(${s})` }, kom);
+  const boog = el("g", { opacity: 0 }, parent);
+  el("path", { class: "tek__merk", d: MERK_BOOG, transform: `translate(${x} ${y}) scale(${s})` }, boog);
+  return { kom, boog };
+}
+
+/** Liggend (desktop, tablet dwars): het woord horizontaal, callouts erboven en eronder. */
+function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
+  // De tekening is 1600x900; op een hoger scherm groeit het blad mee in hoogte.
+  const H = Math.max(900, Math.round((1600 * vh) / vw));
+  const off = (H - 900) / 2;
+  svg.setAttribute("viewBox", `0 ${-off} 1600 ${H}`);
   const font = lettertype();
+  // Op kleinere schermen wordt de tekening verkleind; tekst en titelblok groeien
+  // mee zodat ze leesbaar blijven (callouts min. ~14px, titelblok min. ~12px).
+  const schaal = vw / 1600;
+  const fTekst = Math.min(1.35, Math.max(1, 0.75 / schaal));
+  const fBlok = Math.min(1.6, Math.max(1, 0.85 / schaal));
+
   const kader = el("g", {}, svg);
-  el("rect", { class: "tek__rand", x: 40, y: 40, width: 1520, height: 820 }, kader);
-  el("rect", { class: "tek__rand", x: 56, y: 56, width: 1488, height: 788 }, kader);
+  el("rect", { class: "tek__rand", x: 40, y: -off + 40, width: 1520, height: H - 80 }, kader);
+  el("rect", { class: "tek__rand", x: 56, y: -off + 56, width: 1488, height: H - 112 }, kader);
   "ABCD".split("").forEach((c, i) => {
-    const y = 56 + (788 * (i + 0.5)) / 4 + 4;
+    const y = -off + 56 + ((H - 112) * (i + 0.5)) / 4 + 4;
     el("text", { class: "tek__ref", x: 48, y }, kader).textContent = c;
     el("text", { class: "tek__ref", x: 1552, y }, kader).textContent = c;
   });
   [1, 2, 3, 4, 5, 6].forEach((n, i) => {
     const x = 56 + (1488 * (i + 0.5)) / 6;
-    el("text", { class: "tek__ref", x, y: 52 }, kader).textContent = String(n);
-    el("text", { class: "tek__ref", x, y: 856 }, kader).textContent = String(n);
+    el("text", { class: "tek__ref", x, y: -off + 52 }, kader).textContent = String(n);
+    el("text", { class: "tek__ref", x, y: H - off - 44 }, kader).textContent = String(n);
   });
   const as = el("line", { class: "tek__as", x1: 80, y1: 450, x2: 1520, y2: 450 }, svg);
-  const lettersG = el("g", {}, svg);
+  const woordG = el("g", {}, svg);
   const coG = el("g", {}, svg);
 
   const woord = "SPECIFIED".split("");
   const grootte = 300;
+  const kap = grootte * 0.72; // hoogte van een hoofdletter in Bebas
   const basis = 450 + grootte * 0.35;
   const meet = el("text", { "font-family": font, "font-size": grootte, y: -999 }, svg);
   const breedtes = woord.map((c) => {
@@ -105,11 +137,19 @@ function bouwLiggend(svg: SVGSVGElement): Delen {
   meet.remove();
   const spatie = 10;
   const totaal = breedtes.reduce((a, b) => a + b, 0) + spatie * (woord.length - 1);
-  let x = 800 - totaal / 2;
-  const uit = 1.36;
+  const start = 800 - totaal / 2;
 
-  const letters: (Letter & { x: number; w: number; top: number; bot: number; cx: number })[] = woord.map((c, i) => {
-    const g = el("g", {}, lettersG);
+  // Eindbeeld: beeldmerk + woord als één logo, gecentreerd, in het bovenste derde.
+  const tussen = kap * 0.22;
+  const merkB = MERK_B * (kap / MERK_H);
+  const verschuif = (merkB + tussen) / 2; // het woord maakt plaats voor het merk
+  const eindY = Math.round(0.33 * H - off - 450);
+  const m = merk(woordG, start + verschuif - tussen - merkB, basis - kap + eindY, kap);
+
+  let x = start;
+  const uit = 1.36;
+  const letters = woord.map((c, i) => {
+    const g = el("g", {}, woordG);
     const vul = el("text", { class: "tek__vul", "font-family": font, "font-size": grootte, x, y: basis }, g);
     vul.textContent = c;
     const lijn = el("text", { class: "tek__lijn", "font-family": font, "font-size": grootte, x, y: basis }, g);
@@ -118,39 +158,37 @@ function bouwLiggend(svg: SVGSVGElement): Delen {
     const midden = x + w / 2;
     const dx = (midden - 800) * (uit - 1);
     const dy = (i % 2 ? 1 : -1) * 34;
-    const r = { g, vul, lijn, dx, dy, x, w, cx: midden + dx, top: basis - grootte * 0.72 + dy, bot: basis + dy };
-    x += w + spatie;
-    return r;
-  });
+    const cx = midden + dx;
+    const top = basis - kap + dy;
+    const bot = basis + dy;
 
-  letters.forEach((l, i) => {
     const boven = i % 2 === 0;
-    const ax = l.cx;
-    const ay = boven ? l.top - 14 : l.bot + 14;
+    const ay = boven ? top - 14 : bot + 14;
     const ky = i === 0 || i === 8 ? 124 : boven ? 170 + (i % 4 === 0 ? 0 : 44) : 730 - (i % 4 === 1 ? 0 : 44);
     const links = (i < 4 && i !== 0) || i === 8; // buitenste letters wijzen naar binnen
-    const kx = ax + (links ? -24 : 24);
+    const kx = cx + (links ? -24 : 24);
     const eind = kx + (links ? -70 : 70);
-    const g = el("g", { opacity: 0 }, coG);
-    el("circle", { class: "tek__punt", cx: ax, cy: ay, r: 3.5 }, g);
-    const leider = el("polyline", { class: "tek__leider", points: `${ax},${ay} ${kx},${ky} ${eind},${ky}` }, g);
+    const co = el("g", { opacity: 0 }, coG);
+    el("circle", { class: "tek__punt", cx, cy: ay, r: 3.5 }, co);
+    const leider = el("polyline", { class: "tek__leider", points: `${cx},${ay} ${kx},${ky} ${eind},${ky}` }, co);
     const tx = eind + (links ? -12 : 12);
     const anchor = links ? "end" : "start";
-    acro(el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor }, g), TEKENING_CALLOUTS[i][0]);
-    el("text", { class: "tek__sub", x: tx, y: ky + 20, "text-anchor": anchor }, g).textContent = TEKENING_CALLOUTS[i][1];
-    l.co = g;
-    l.leider = leider;
+    const rol = el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor }, co);
+    rol.style.fontSize = `${19 * fTekst}px`;
+    acro(rol, TEKENING_CALLOUTS[i][0]);
+    const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor }, co);
+    sub.style.fontSize = `${19 * fTekst}px`;
+    sub.textContent = TEKENING_CALLOUTS[i][1];
+
+    x += w + spatie;
+    return { g, vul, lijn, co, leider, dx, dy, ex: verschuif, ey: eindY };
   });
 
-  const x1 = letters[0].x + letters[0].dx;
-  const x2 = letters[8].x + letters[8].w + letters[8].dx;
-  const maat = el("g", { opacity: 0 }, svg);
-  el("line", { class: "tek__maat", x1, y1: 612, x2, y2: 612 }, maat);
-  [x1, x2].forEach((xx) => el("line", { class: "tek__maat", x1: xx, y1: 602, x2: xx, y2: 622 }, maat));
-  el("text", { class: "tek__maattekst", x: (x1 + x2) / 2, y: 638 }, maat).textContent = TEKENING.maatlijn;
-
+  // Titelblok rechtsonder in het blad, met de handtekening als goedkeuring.
   const tb = el("g", { opacity: 0 }, svg);
-  const bx = 1084, by = 660, bw = 460, bh = 176;
+  const bx = 1084, bw = 460, bh = 176, by = 900 + off - 240;
+  // Groeit vanuit de hoek rechtsonder, zodat het in het blad blijft staan.
+  tb.setAttribute("transform", `translate(${(bx + bw) * (1 - fBlok)} ${(by + bh) * (1 - fBlok)}) scale(${fBlok})`);
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
   el("line", { class: "tek__blok", x1: bx, y1: by + 54, x2: bx + bw, y2: by + 54 }, tb);
   el("line", { class: "tek__blok", x1: bx + 262, y1: by + 54, x2: bx + 262, y2: by + bh }, tb);
@@ -164,60 +202,78 @@ function bouwLiggend(svg: SVGSVGElement): Delen {
   el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = TEKENING.titelblok.akkoord;
   const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 88}) scale(.31)` }, tb);
 
-  return { letters, maat, titelblok: tb, hand, as, eindY: -150, eindVul: 1 };
+  const logoB = merkB + tussen + totaal;
+  return {
+    letters,
+    titelblok: tb,
+    hand,
+    as,
+    woordG,
+    kom: m.kom,
+    boog: m.boog,
+    merkAfstand: kap * 0.6,
+    eindSchaal: Math.min(1, 1380 / logoB),
+    eindMidden: [800, basis - kap / 2 + eindY],
+    titelblokEinde: 0.6,
+  };
 }
 
-/** Staand (telefoon): het woord rechtop, letter onder letter, callouts rechts. */
-function bouwStaand(svg: SVGSVGElement): Delen {
-  svg.setAttribute("viewBox", "0 0 900 1600");
+/** Staand (telefoon, tablet rechtop): het woord rechtop, letter onder letter, callouts rechts. */
+function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
+  // De tekening is 900x1600; op een breder scherm groeit het blad mee in breedte.
+  const W = Math.max(900, Math.round((1600 * vw) / vh));
+  const offX = (W - 900) / 2;
+  svg.setAttribute("viewBox", `${-offX} 0 ${W} 1600`);
   const font = lettertype();
+
   const kader = el("g", {}, svg);
-  el("rect", { class: "tek__rand", x: 24, y: 24, width: 852, height: 1552 }, kader);
-  el("rect", { class: "tek__rand", x: 38, y: 38, width: 824, height: 1524 }, kader);
+  el("rect", { class: "tek__rand", x: -offX + 24, y: 24, width: W - 48, height: 1552 }, kader);
+  el("rect", { class: "tek__rand", x: -offX + 38, y: 38, width: W - 76, height: 1524 }, kader);
   const as = el("line", { class: "tek__as", x1: 240, y1: 110, x2: 240, y2: 1490 }, svg);
-  const lettersG = el("g", {}, svg);
+  const woordG = el("g", {}, svg);
   const coG = el("g", {}, svg);
 
   const woord = "SPECIFIED".split("");
-  const grootte = 150, stap = 126;
+  const grootte = 150;
+  const stap = 126;
+  const kap = grootte * 0.72;
   const start = 800 - (stap * woord.length) / 2;
-  const letters = woord.map((c, i) => {
+  const opbouw = woord.map((c, i) => {
     const basis = start + (i + 1) * stap - 14;
-    const g = el("g", {}, lettersG);
+    const g = el("g", {}, woordG);
     const vul = el("text", { class: "tek__vul", "font-family": font, "font-size": grootte, x: 240, y: basis, "text-anchor": "middle" }, g);
     vul.textContent = c;
     const lijn = el("text", { class: "tek__lijn tek__lijn--dik", "font-family": font, "font-size": grootte, x: 240, y: basis, "text-anchor": "middle" }, g);
     lijn.textContent = c;
-    const w = vul.getComputedTextLength();
-    const cy = basis - grootte * 0.36;
-    const dy = (cy - 800) * 0.2, dx = (i % 2 ? 1 : -1) * 36;
-    const ax = 240 + dx + w / 2 + 12, ay = cy + dy;
+    return { g, vul, lijn, basis, w: vul.getComputedTextLength() };
+  });
+
+  // Eindbeeld: het woord draait naar horizontaal met het beeldmerk ervoor,
+  // gecentreerd boven de kop, en schaalt daarna tot de breedte van het blad.
+  const spatie = 8;
+  const eindBasis = 560;
+  const tussen = kap * 0.22;
+  const merkB = MERK_B * (kap / MERK_H);
+  const woordB = opbouw.reduce((a, l) => a + l.w, 0) + spatie * (woord.length - 1);
+  const logoB = merkB + tussen + woordB;
+  let ex = 450 - logoB / 2 + merkB + tussen;
+  const m = merk(woordG, 450 - logoB / 2, eindBasis - kap, kap);
+
+  const letters = opbouw.map((l, i) => {
+    const cy = l.basis - grootte * 0.36;
+    const dy = (cy - 800) * 0.2;
+    const dx = (i % 2 ? 1 : -1) * 36;
+    const ax = 240 + dx + l.w / 2 + 12;
+    const ay = cy + dy;
     const co = el("g", { opacity: 0 }, coG);
     el("circle", { class: "tek__punt", cx: ax, cy: ay, r: 5 }, co);
     const leider = el("polyline", { class: "tek__leider tek__leider--dik", points: `${ax},${ay} 430,${ay} 452,${ay}` }, co);
     acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2 }, co), TEKENING_CALLOUTS[i][0]);
     el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32 }, co).textContent = TEKENING_CALLOUTS[i][1];
-    return { g, vul, lijn, dx, dy, co, leider, cy, w, basis };
-  });
-
-  // Einde: het woord draait terug naar horizontaal, gecentreerd boven de kop,
-  // en schaalt zodat het de breedte van het blad vult.
-  const spatie = 8, eindBasis = 560;
-  const breedte = letters.reduce((a, l) => a + l.w, 0) + spatie * (letters.length - 1);
-  let ex = 450 - breedte / 2;
-  letters.forEach((l) => {
     const midden = ex + l.w / 2;
-    Object.assign(l, { ex: midden - 240, ey: eindBasis - l.basis });
     ex += l.w + spatie;
+    return { g: l.g, vul: l.vul, lijn: l.lijn, co, leider, dx, dy, ex: midden - 240, ey: eindBasis - l.basis };
   });
-  const eindSchaal = Math.min(1.45, 780 / breedte);
-
-  const y1 = letters[0].cy + letters[0].dy - 60, y2 = letters[8].cy + letters[8].dy + 60, mx = 96;
-  const maat = el("g", { opacity: 0 }, svg);
-  el("line", { class: "tek__maat", x1: mx, y1, x2: mx, y2 }, maat);
-  [y1, y2].forEach((yy) => el("line", { class: "tek__maat", x1: mx - 12, y1: yy, x2: mx + 12, y2: yy }, maat));
-  const my = (y1 + y2) / 2;
-  el("text", { class: "tek__maattekst tek__maattekst--groot", x: mx - 18, y: my, transform: `rotate(-90 ${mx - 18} ${my})` }, maat).textContent = TEKENING.maatlijn;
 
   // Titelblok op telefoon: groter getekend, want de viewBox schaalt hier ~0,43x
   // (tekst van 32/40 eenheden wordt ~14/17 px op het scherm).
@@ -237,22 +293,36 @@ function bouwStaand(svg: SVGSVGElement): Delen {
   lab(bx + kol + 22, by + 158, "Goedgekeurd");
   const hand = el("path", { class: "tek__hand tek__hand--dik", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + kol + 12} ${by + 168}) scale(.44)` }, tb);
 
-  return { letters, maat, titelblok: tb, hand, as, eindY: 0, eindVul: 1, woordG: lettersG, eindSchaal, eindMidden: [450, eindBasis - 54] };
+  return {
+    letters,
+    titelblok: tb,
+    hand,
+    as,
+    woordG,
+    kom: m.kom,
+    boog: m.boog,
+    merkAfstand: kap * 0.9,
+    // Zo breed als het blad toelaat, met wat marge, maar niet absurd groot op een tablet.
+    eindSchaal: Math.min(1.8, (W - 140) / logoB),
+    eindMidden: [450, eindBasis - kap / 2],
+    titelblokEinde: 0,
+  };
 }
 
 /** Eén tijdlijn voor beide oriëntaties, gestuurd door de scroll. */
 function tijdlijn(root: HTMLElement, d: Delen) {
-  const { letters: L } = d;
+  const L = d.letters;
   L.forEach((l) => {
-    if (!l.leider) return;
     const len = l.leider.getTotalLength();
     gsap.set(l.leider, { strokeDasharray: len, strokeDashoffset: len });
   });
   gsap.set(d.hand, { strokeDasharray: 1, strokeDashoffset: 1 });
   gsap.set(d.as, { opacity: 0 });
   gsap.set(L.map((l) => l.lijn), { strokeOpacity: 0 });
+  gsap.set(d.kom, { y: -d.merkAfstand });
+  gsap.set(d.boog, { y: d.merkAfstand });
 
-  const co = L.map((l) => l.co!);
+  const co = L.map((l) => l.co);
   const tl = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: { trigger: root, start: "top top", end: "bottom bottom", scrub: 0.8 },
@@ -265,24 +335,23 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(d.as, { opacity: 0.6, duration: 0.6 }, 0.9)
     // 2. Callouts tekenen zich, letter voor letter.
     .to(co, { opacity: 1, duration: 0.3, stagger: 0.16 }, 1.8)
-    .to(L.map((l) => l.leider!), { strokeDashoffset: 0, duration: 0.5, stagger: 0.16 }, 1.8)
-    .to(d.maat, { opacity: 1, duration: 0.4 }, 3.2)
+    .to(L.map((l) => l.leider), { strokeDashoffset: 0, duration: 0.5, stagger: 0.16 }, 1.8)
     // 3. Callouts wijken; het titelblok komt en Specified tekent af.
-    .to([...co, d.maat], { opacity: 0, duration: 0.5 }, 3.9)
-    .to(d.titelblok, { opacity: 1, duration: 0.4 }, 4.2)
-    .to(d.hand, { strokeDashoffset: 0, duration: 1, autoRound: false }, 4.4)
-    // 4. Het woord klikt samen in limoen, de kop verschijnt.
-    .to(d.as, { opacity: 0, duration: 0.5 }, 5.3)
-    .to(d.titelblok, { opacity: d.woordG ? 0 : 0.6, duration: 0.5 }, 5.3)
-    .to(L.map((l) => l.g), { x: (i) => L[i].ex ?? 0, y: (i) => L[i].ey ?? d.eindY, duration: 1.2, ease: "power2.inOut" }, 5.4)
-    .to(L.map((l) => l.vul), { fillOpacity: d.eindVul, fill: "#dffd7b", duration: 0.8 }, 6.0)
-    .to(L.map((l) => l.lijn), { strokeOpacity: d.eindVul === 1 ? 0 : 0.5, duration: 0.6 }, 6.0)
-    .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.4);
-  if (d.woordG && d.eindSchaal && d.eindMidden) {
-    tl.to(d.woordG, { scale: d.eindSchaal, svgOrigin: `${d.eindMidden[0]} ${d.eindMidden[1]}`, duration: 0.8, ease: "power2.inOut" }, 5.9);
-  }
-  tl
+    .to(co, { opacity: 0, duration: 0.5 }, 3.7)
+    .to(d.titelblok, { opacity: 1, duration: 0.4 }, 4.0)
+    .to(d.hand, { strokeDashoffset: 0, duration: 1, autoRound: false }, 4.2)
+    // 4. Het woord klikt samen in limoen en het beeldmerk valt erbij: het logo.
+    .to(d.as, { opacity: 0, duration: 0.5 }, 5.2)
+    .to(d.titelblok, { opacity: d.titelblokEinde, duration: 0.5 }, 5.2)
+    .to(L.map((l) => l.g), { x: (i) => L[i].ex, y: (i) => L[i].ey, duration: 1.2, ease: "power2.inOut" }, 5.3)
+    .to(L.map((l) => l.vul), { fillOpacity: 1, fill: "#dffd7b", duration: 0.8 }, 5.9)
+    .to(L.map((l) => l.lijn), { strokeOpacity: 0, duration: 0.6 }, 5.9)
+    .to(d.woordG, { scale: d.eindSchaal, svgOrigin: `${d.eindMidden[0]} ${d.eindMidden[1]}`, duration: 0.8, ease: "power2.inOut" }, 5.8)
+    .to(d.kom, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.2)
+    .to(d.boog, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.35)
+    .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.6)
     .to({}, { duration: 0.6 });
+  return tl;
 }
 
 export default function HeroTekening() {
@@ -295,37 +364,63 @@ export default function HeroTekening() {
       const svg = svgRef.current;
       if (!root || !svg) return;
       const mm = gsap.matchMedia();
-      let geannuleerd = false;
 
       mm.add(
         {
-          liggend: "(prefers-reduced-motion: no-preference) and ((orientation: landscape) or (min-width: 760px))",
-          staand: "(prefers-reduced-motion: no-preference) and (orientation: portrait) and (max-width: 759px)",
+          liggend: "(prefers-reduced-motion: no-preference) and (orientation: landscape)",
+          staand: "(prefers-reduced-motion: no-preference) and (orientation: portrait)",
         },
         (ctx) => {
           const { staand } = ctx.conditions as { liggend: boolean; staand: boolean };
-          // Pas bouwen als Bebas geladen is: de letterbreedtes worden gemeten.
-          document.fonts.ready.then(() => {
-            if (geannuleerd) return;
-            ctx.add(() => {
-              svg.replaceChildren();
-              const delen = staand ? bouwStaand(svg) : bouwLiggend(svg);
-              root.dataset.klaar = "true";
-              tijdlijn(root, delen);
-              ScrollTrigger.refresh();
-            });
-          });
-          return () => {
+          let tl: gsap.core.Timeline | null = null;
+          let verhouding = 0;
+          let actief = true;
+
+          const opruimen = () => {
+            tl?.scrollTrigger?.kill();
+            tl?.kill();
+            tl = null;
+            gsap.set([".tekening__intro", ".tekening__slot"], { clearProps: "opacity,transform" });
             svg.replaceChildren();
             delete root.dataset.klaar;
+          };
+
+          // Bouwen na het laden van Bebas (letterbreedtes worden gemeten), en
+          // opnieuw als de verhouding van het blad merkbaar verandert.
+          const bouw = () => {
+            if (!actief) return;
+            const blad = svg.getBoundingClientRect();
+            const vw = blad.width || innerWidth;
+            const vh = blad.height || innerHeight;
+            verhouding = vw / vh;
+            opruimen();
+            const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh);
+            root.dataset.klaar = "true";
+            tl = tijdlijn(root, delen);
+            ScrollTrigger.refresh();
+          };
+          document.fonts.ready.then(bouw);
+
+          let wacht: ReturnType<typeof setTimeout> | undefined;
+          const opResize = () => {
+            clearTimeout(wacht);
+            wacht = setTimeout(() => {
+              const b = svg.getBoundingClientRect();
+              if (b.height && Math.abs(b.width / b.height - verhouding) > 0.04) bouw();
+            }, 200);
+          };
+          addEventListener("resize", opResize);
+
+          return () => {
+            actief = false;
+            clearTimeout(wacht);
+            removeEventListener("resize", opResize);
+            opruimen();
           };
         },
       );
 
-      return () => {
-        geannuleerd = true;
-        mm.revert();
-      };
+      return () => mm.revert();
     },
     { scope: ref },
   );

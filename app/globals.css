@@ -302,20 +302,21 @@ body::after {
   .tekening__blad { position: sticky; top: 0; }
   .tekening__ruimte { display: block; height: 420vh; }
 }
-.tekening__svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+/* Het blad begint onder de navigatie (76px), zodat rand en vakaanduiding zichtbaar blijven. */
+.tekening__svg { position: absolute; top: 76px; left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - 76px); z-index: 2; }
 
 /* Het woord in HTML: staat er bij de eerste weergave (snel, ook zonder JS) en
    maakt plaats voor de SVG-tekening zodra die gebouwd is. Maten volgen de
    viewBox (1600x900, letters 300 hoog; staand 900x1600, letters 150). */
 .tekening__woord {
-  position: absolute; inset: 0; z-index: 2; margin: 0;
+  position: absolute; inset: 76px 0 0; z-index: 2; margin: 0;
   display: flex; align-items: center; justify-content: center;
   gap: min(0.625vw, 1.11svh); color: var(--bone-100);
-  font-size: min(18.75vw, 33.3svh); line-height: 1; padding-bottom: min(4vw, 7svh);
+  font-size: min(18.75vw, calc((100svh - 76px) / 3)); line-height: 1; padding-bottom: min(4vw, 7svh);
   transition: opacity 400ms var(--ease-out);
 }
 .tekening[data-klaar] .tekening__woord { opacity: 0; }
-@media (orientation: portrait) and (max-width: 759px) {
+@media (orientation: portrait) {
   .tekening__woord {
     flex-direction: column; justify-content: center; align-items: flex-start;
     padding: 0 0 0 calc(min(100vw, 56.25svh) * 0.2); gap: 0;
@@ -358,9 +359,7 @@ body::after {
 .tek__acro { fill: var(--lime-300); }
 .tek__sub { fill: var(--bone-400); font: italic 400 19px var(--font-serif), serif; }
 .tek__sub--groot { font-size: 30px; }
-.tek__maat { stroke: var(--bone-400); stroke-width: 1; }
-.tek__maattekst { fill: var(--bone-400); font: 500 14px var(--font-sans), sans-serif; text-anchor: middle; }
-.tek__maattekst--groot { font-size: 26px; }
+.tek__merk { fill: var(--lime-300); }
 .tek__blok { fill: none; stroke: var(--bone-400); stroke-width: 1; }
 .tek__label { fill: var(--bone-400); font: 500 13px var(--font-sans), sans-serif; }
 .tek__label--groot { font-size: 32px; }
