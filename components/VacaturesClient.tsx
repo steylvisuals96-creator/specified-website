@@ -132,8 +132,8 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
             {titel || "Jouw volgende stap."}
           </h1>
           <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "480px", lineHeight: 1.6 }}>
-            {filtered.length} vacature{filtered.length !== 1 ? "s" : ""} gevonden
-            {typeOmschrijving && ` — ${typeOmschrijving} in engineering`}.
+            {filtered.length} vacature{filtered.length !== 1 ? "s" : ""} als engineering consultant bij Specified
+            {typeOmschrijving ? `, ${typeOmschrijving}` : ""}.
           </p>
         </motion.div>
 

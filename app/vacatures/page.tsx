@@ -1,13 +1,14 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import VacaturesClient from "@/components/VacaturesClient";
+import { JOBS } from "@/lib/inhoud";
 import { getSettings, CMS_URL } from "@/lib/settings";
 
 export const revalidate = 60; // refresh elke minuut
 
 export const metadata = {
-  title: "Vacatures — Specified",
-  description: "Bekijk alle openstaande engineering vacatures bij Specified. Vaste en interim posities in bouw, infra, manufacturing en meer.",
+  title: "Word consultant — Specified",
+  description: "Word engineering consultant bij Specified: openstaande profielen voor civil, electrical, automation en mechanical engineers.",
 };
 
 const SECTOR_LABEL: Record<string, string> = {
@@ -109,7 +110,7 @@ export default async function VacaturesPage() {
       <main>
         <VacaturesClient
           vacatures={vacatures}
-          titel={settings.vacatures_titel}
+          titel={JOBS.titel}
           contactEmail={settings.contact_email}
         />
       </main>

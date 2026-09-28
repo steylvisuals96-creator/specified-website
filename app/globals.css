@@ -279,6 +279,11 @@ body::after {
 }
 .site-nav__mobile-link:hover { color: var(--lime-300); }
 .site-nav__mobile .btn { margin-top: 1.5rem; align-self: flex-start; }
+.site-nav__mobile-contact {
+  margin-top: auto; padding-top: 2rem; display: flex; flex-direction: column; gap: 0.35rem;
+  color: var(--bone-400); font-size: 0.9375rem;
+}
+.site-nav__mobile-contact a { color: var(--bone-100); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--olive-600); }
 
 /* ─── Hero: SPECIFIED als technische tekening ─────────────
    components/HeroTekening.tsx. Het blad blijft staan (sticky) terwijl de
@@ -337,11 +342,16 @@ body::after {
   .js .tekening__woord span:nth-child(9) { animation-delay: 320ms; }
 }
 @keyframes tek-rijs { from { transform: translateY(105%); } }
+/* Staand: dezelfde maten als de SVG-tekening (viewBox 900x1600, letters 150
+   hoog op x = 240, rijen van 126), zodat de overdracht naadloos is. --s is de
+   schaal van één viewBox-eenheid naar het scherm. */
 @media (orientation: portrait) {
+  .tekening__blad { --s: min(100vw / 900, (100svh - 76px) / 1600); }
   .tekening__woord {
-    flex-direction: column; justify-content: center; align-items: flex-start;
-    padding: 0 0 0 calc(min(100vw, 56.25svh) * 0.2); gap: 0;
-    font-size: min(16.7vw, 9.4svh); line-height: 0.84;
+    left: calc(50% - 210 * var(--s)); right: auto;
+    transform: translate(-50%, 0.053em);
+    flex-direction: column; justify-content: center; align-items: center; padding: 0; gap: 0;
+    font-size: calc(150 * var(--s)); line-height: 0.84;
   }
 }
 
@@ -350,6 +360,15 @@ body::after {
   width: min(40rem, 100% - 40px); text-align: center; color: var(--bone-400); font-size: 1.0625rem; line-height: 1.5;
 }
 .tekening__intro b { color: var(--bone-100); font-weight: 500; }
+@media (orientation: portrait) {
+  /* De intro staat rechts van de letterkolom, in de lege ruimte waar later
+     de callouts komen, en niet onderaan onder een eventuele cookiebanner. */
+  .tekening__intro {
+    left: calc(50% - 40 * var(--s)); right: 20px; top: calc(38px + 50%); bottom: auto;
+    width: auto; transform: translateY(-50%); text-align: left; font-size: 1rem;
+  }
+  .tekening__intro span { display: block; margin-top: 0.75rem; }
+}
 
 .tekening__slot { position: absolute; z-index: 3; left: 0; right: 0; bottom: 9svh; }
 @media (prefers-reduced-motion: no-preference) {
@@ -534,6 +553,12 @@ body::after {
 }
 html[data-consent] .cookie-banner { display: none; }
 .cookie-banner p { color: var(--bone-400); font-size: 0.875rem; line-height: 1.55; margin-bottom: 1rem; }
+/* Telefoon: compacter, zodat hij de hero niet voor een derde bedekt. */
+@media (max-width: 600px) {
+  .cookie-banner { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; padding: 0.9rem 1rem; }
+  .cookie-banner p { font-size: 0.8125rem; line-height: 1.45; margin-bottom: 0.75rem; }
+  .cookie-banner__keuzes button { min-width: 0; min-height: 44px; padding: 0.6rem 0.75rem; }
+}
 .cookie-banner a { color: var(--bone-100); text-decoration: underline; text-underline-offset: 3px; }
 .cookie-banner a:hover { color: var(--lime-300); }
 .cookie-banner__keuzes { display: flex; flex-wrap: wrap; gap: 0.6rem; }

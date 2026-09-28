@@ -86,3 +86,11 @@ export const META = {
   beschrijving:
     "Belgische engineering consultancy, gespecialiseerd in elektromechanica voor de industrie. Onze eigen consultants ondersteunen projecten, onderhoud en studies.",
 };
+
+/** Contactgegevens zoals op specified.be (home, footer). */
+export const CONTACT = {
+  email: "info@specified.be",
+  telefoon: "+32 472 69 94 62",
+  telefoonLink: "+32472699462",
+  plaats: "Kontich, Antwerpen",
+};
