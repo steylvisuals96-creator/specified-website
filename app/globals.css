@@ -269,12 +269,7 @@ body::after {
 .site-nav__burger span[data-open="true"]:first-child { transform: translateY(4.5px) rotate(45deg); }
 .site-nav__burger span[data-open="true"]:last-child { transform: translateY(-4.5px) rotate(-45deg); }
 .site-nav__mobile {
-  /* Zelfde tekenblad als de hero. */
-  background:
-    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 48px,
-    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 48px 100%,
-    var(--ink-900);
-  border-top: 1px solid var(--line);
+  background: var(--ink-900); border-top: 1px solid var(--line);
   padding: 1.5rem var(--gutter) 2rem; display: flex; flex-direction: column; gap: 0.25rem;
   min-height: calc(100svh - 76px);
 }
