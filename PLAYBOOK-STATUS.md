@@ -168,3 +168,6 @@ Rotor geschrapt. SPECIFIED als technische tekening met acrostichon-callouts; pos
 
 ### Hero-polish (live 2026-09-27)
 Laadmoment, natekenen van de contour, callout-pop, logo-gloed; logo-hover (nav/footer), CAD-vizier als muiswijzer, Lenis vloeiend scrollen op desktop. PR #4 gemerged. Lighthouse mobiel 95/100/100/100.
+
+### Mobiel geoptimaliseerd (live 2026-09-28)
+Hero-opening (woord uitgelijnd met tekening, intro naast de letters), compactere cookiebanner, mobiel menu met contact, vacaturepagina "Word consultant.". Getest op 360/390/430 px. PR #5 gemerged.
