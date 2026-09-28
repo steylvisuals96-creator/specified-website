@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import { CONTACT } from "@/lib/inhoud";
 import { useEffect, useState } from "react";
 
 // Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
@@ -79,6 +80,11 @@ export default function Nav() {
           <a href="/#contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
             Neem contact op
           </a>
+          <div className="site-nav__mobile-contact">
+            <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            <a href={`tel:${CONTACT.telefoonLink}`}>{CONTACT.telefoon}</a>
+            <span>{CONTACT.plaats}</span>
+          </div>
         </nav>
       )}
     </header>

@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const naam = s.naam || "Specified";
   return {
     title: `Blog — ${naam}`,
-    description: "Inzichten, tips en verhalen over engineering, carrière en recruitment.",
+    description: "Inzichten, tips en verhalen over engineering, consultancy en carrière.",
     alternates: { canonical: "/blog" },
   };
 }
@@ -42,7 +42,7 @@ export default async function BlogIndex() {
               Blog
             </h1>
             <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "520px", lineHeight: 1.6, marginBottom: "3.5rem" }}>
-              Inzichten, tips en verhalen over engineering, carrière en recruitment.
+              Inzichten, tips en verhalen over engineering, consultancy en carrière.
             </p>
 
             {posts.length === 0 ? (
