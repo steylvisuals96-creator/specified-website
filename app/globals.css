@@ -375,11 +375,26 @@ body::after {
   .js .tekening__slot { opacity: 0; }
   .js .tekening__intro { opacity: 1; }
 }
+/* Stilstaande hero (beweging beperken, of geen JS): het eindbeeld van de
+   tekening zonder animatie. Het logo (beeldmerk + woord) in limoen bovenaan,
+   de kop en knoppen eronder. Hogere specificiteit dan de staande regels. */
+.tekening__merk { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  /* Rustige hero: woord bovenaan, kop en knoppen eronder, geen intro-hint. */
-  .tekening__woord { align-items: flex-start; padding-top: 18svh; }
-  .tekening__intro { display: none; }
+  .tekening .tekening__woord {
+    inset: 76px 0 auto 0; height: calc((100svh - 76px) * 0.5); transform: none;
+    flex-direction: row; align-items: center; justify-content: center; gap: 0.02em; padding: 0;
+    font-size: min(calc((100vw - 48px) / 4.4), 18svh); line-height: 1; color: var(--lime-300);
+  }
+  .tekening .tekening__merk { display: block; height: 0.72em; width: auto; margin-right: 0.2em; fill: var(--lime-300); }
+  .tekening .tekening__intro { display: none; }
 }
+html:not(.js) .tekening .tekening__woord {
+  inset: 76px 0 auto 0; height: calc((100svh - 76px) * 0.5); transform: none;
+  flex-direction: row; align-items: center; justify-content: center; gap: 0.02em; padding: 0;
+  font-size: min(calc((100vw - 48px) / 4.4), 18svh); line-height: 1; color: var(--lime-300);
+}
+html:not(.js) .tekening .tekening__merk { display: block; height: 0.72em; width: auto; margin-right: 0.2em; fill: var(--lime-300); }
+html:not(.js) .tekening .tekening__intro { display: none; }
 .tekening__titel { font-size: clamp(3rem, 8.5vw, 8.5rem); line-height: 0.88; color: var(--bone-100); }
 .tekening__accent { color: var(--lime-300); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }

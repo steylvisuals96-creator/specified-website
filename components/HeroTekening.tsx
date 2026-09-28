@@ -456,6 +456,12 @@ export default function HeroTekening() {
         <svg ref={svgRef} className="tekening__svg" aria-hidden="true" focusable="false" />
         {/* Staat er meteen (ook zonder JS); de tekening neemt het over zodra ze gebouwd is. */}
         <p className="tekening__woord display" aria-hidden="true">
+          {/* Beeldmerk: alleen zichtbaar in de stilstaande versie (beweging
+              beperkt of geen JS), die het eindbeeld van de tekening toont. */}
+          <svg className="tekening__merk" viewBox="0 0 26.3 24.4" focusable="false">
+            <path d={MERK_KOM} />
+            <path d={MERK_BOOG} />
+          </svg>
           {"SPECIFIED".split("").map((c, i) => (
             <span key={i}>{c}</span>
           ))}
