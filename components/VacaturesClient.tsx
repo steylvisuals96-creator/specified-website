@@ -2,6 +2,7 @@
 
 import { motion, MotionConfig } from "framer-motion";
 import { useState } from "react";
+import T from "@/components/T";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -129,7 +130,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
           style={{ marginBottom: "3rem" }}
         >
           <h1 className="vac-title" style={{ fontFamily: "var(--font-bebas)", fontSize: "clamp(4rem, 9vw, 8rem)", fontWeight: 400, letterSpacing: "0.01em", lineHeight: 0.95, color: "var(--white)", marginBottom: "1.5rem" }}>
-            {titel || "Jouw volgende stap."}
+            <T k="jobs.titel" d={titel || "Jouw volgende stap."} />
           </h1>
           <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "480px", lineHeight: 1.6 }}>
             {filtered.length} vacature{filtered.length !== 1 ? "s" : ""} als engineering consultant bij Specified
@@ -159,7 +160,9 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
           {/* Job list */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             {filtered.length === 0 && (
-              <p style={{ color: "var(--muted)", padding: "2rem 0" }}>Geen vacatures gevonden voor deze filters.</p>
+              <p style={{ color: "var(--muted)", padding: "2rem 0" }}>
+                <T k="vacatures.geen" />
+              </p>
             )}
             {filtered.map((job, i) => (
               <motion.button
@@ -183,7 +186,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                     {job.type}
                   </span>
                   <span style={{ color: selected === job.id ? "var(--lime)" : "var(--muted)", fontSize: "1rem", transition: "color 0.2s" }}>
-                    {selected === job.id ? "Sluiten" : "Bekijk"}
+                    {selected === job.id ? <T k="vacatures.sluiten" vast /> : <T k="vacatures.bekijk" vast />}
                   </span>
                 </div>
               </motion.button>
@@ -227,7 +230,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.profiel.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Jouw profiel</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}><T k="vacatures.profiel" /></p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.profiel.map((p) => (
                       <li key={p} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -241,7 +244,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.niceToHave.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Nice to have</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}><T k="vacatures.nice" /></p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.niceToHave.map((n) => (
                       <li key={n} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
@@ -255,7 +258,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
 
               {selectedJob.aanbod.length > 0 && (
                 <div>
-                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}>Wat we bieden</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)", marginBottom: "0.75rem" }}><T k="vacatures.aanbod" /></p>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.aanbod.map((a) => (
                       <li key={a} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>

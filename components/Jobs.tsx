@@ -1,4 +1,4 @@
-import { metAccent } from "@/lib/accent";
+import T from "@/components/T";
 
 type Job = {
   title: string;
@@ -21,17 +21,18 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
     <section id="jobs" className="jobs">
       <div className="wrap">
         <div className="jobs__kop">
-          <h2 className="display display-l">{metAccent(titel || "Vind jouw volgende stap.")}</h2>
+          <h2 className="display display-l">
+            <T k="jobs.titel" d={titel || "Vind jouw volgende stap."} accent />
+          </h2>
         </div>
 
         {jobs.length === 0 ? (
           <div className="jobs__leeg">
             <p className="lead">
-              Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook
-              buiten de openstaande jobs.
+              <T k="jobs.leeg" />
             </p>
             <a href="mailto:info@specified.be?subject=Open%20sollicitatie" className="btn btn-primary">
-              Stuur een open sollicitatie
+              <T k="jobs.leeg_knop" />
             </a>
           </div>
         ) : (
@@ -63,7 +64,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
         )}
 
         <a href="/vacatures" className="btn btn-secondary jobs__alle">
-          {linkTekst || "Bekijk alle vacatures"}
+          <T k="jobs.link_tekst" d={linkTekst || "Bekijk alle vacatures"} />
         </a>
       </div>
     </section>

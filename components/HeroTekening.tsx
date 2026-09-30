@@ -4,7 +4,9 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { HERO, TEKENING, TEKENING_CALLOUTS } from "@/lib/inhoud";
+import { TEKENING, TEKENING_CALLOUTS } from "@/lib/inhoud";
+import T from "@/components/T";
+import { useTeksten } from "@/components/admin/TeksProvider";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -24,6 +26,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  */
 
 const NS = "http://www.w3.org/2000/svg";
+
+// De teksten in de getekende delen (callouts, titelblok) worden met JavaScript in de
+// SVG gezet, niet door React. Deze functie geeft daarvoor de live tekst uit het CRM,
+// en anders de standaard.
+type Kies = (k: string, d: string) => string;
 const HANDTEKENING =
   "M8 132 C 40 96, 70 40, 92 36 C 112 32, 104 96, 86 118 C 70 138, 60 104, 96 86 C 128 70, 140 64, 150 76 C 160 90, 142 112, 150 116 C 160 120, 178 84, 194 70 C 204 62, 206 84, 198 102 C 192 118, 206 118, 220 100 C 236 80, 246 62, 262 60 C 276 58, 268 88, 280 92 C 294 96, 306 70, 322 62 C 336 56, 330 84, 344 86 C 380 88, 460 52, 552 30";
 // Het beeldmerk van Specified (zelfde paden als het logo), 26,3 breed en 24,4 hoog.
@@ -99,7 +106,7 @@ function merk(parent: SVGGElement, x: number, y: number, hoogte: number) {
 }
 
 /** Liggend (desktop, tablet dwars): het woord horizontaal, callouts erboven en eronder. */
-function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
+function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number, kies: Kies): Delen {
   // De tekening is 1600x900; op een hoger scherm groeit het blad mee in hoogte.
   const H = Math.max(900, Math.round((1600 * vh) / vw));
   const off = (H - 900) / 2;
@@ -178,10 +185,10 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     const anchor = links ? "end" : "start";
     const rol = el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor }, co);
     rol.style.fontSize = `${19 * fTekst}px`;
-    acro(rol, TEKENING_CALLOUTS[i][0]);
+    acro(rol, kies(`tekening.callout.${i}.titel`, TEKENING_CALLOUTS[i][0]));
     const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor }, co);
     sub.style.fontSize = `${19 * fTekst}px`;
-    sub.textContent = TEKENING_CALLOUTS[i][1];
+    sub.textContent = kies(`tekening.callout.${i}.sub`, TEKENING_CALLOUTS[i][1]);
 
     x += w + spatie;
     return { g, vul, lijn, co, leider, dx, dy, ex: verschuif, ey: eindY };
@@ -199,10 +206,10 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     el("text", { class: "tek__label", x: lx, y: ly }, tb).textContent = label;
     el("text", { class: "tek__waarde", x: lx, y: ly + 22 }, tb).textContent = waarde;
   };
-  veld(bx + 14, by + 20, "Project", TEKENING.titelblok.project);
-  veld(bx + 14, by + 76, "Locatie", TEKENING.titelblok.locatie);
-  veld(bx + 14, by + 126, "Waarden", TEKENING.titelblok.waarden);
-  el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = TEKENING.titelblok.akkoord;
+  veld(bx + 14, by + 20, "Project", kies("tekening.titelblok.project", TEKENING.titelblok.project));
+  veld(bx + 14, by + 76, "Locatie", kies("tekening.titelblok.locatie", TEKENING.titelblok.locatie));
+  veld(bx + 14, by + 126, "Waarden", kies("tekening.titelblok.waarden", TEKENING.titelblok.waarden));
+  el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = kies("tekening.titelblok.akkoord", TEKENING.titelblok.akkoord);
   const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 88}) scale(.31)` }, tb);
 
   const logoB = merkB + tussen + totaal;
@@ -224,7 +231,7 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
 }
 
 /** Staand (telefoon, tablet rechtop): het woord rechtop, letter onder letter, callouts rechts. */
-function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
+function bouwStaand(svg: SVGSVGElement, vw: number, vh: number, kies: Kies): Delen {
   // De tekening is 900x1600; op een breder scherm groeit het blad mee in breedte.
   const W = Math.max(900, Math.round((1600 * vw) / vh));
   const offX = (W - 900) / 2;
@@ -273,8 +280,8 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
     const co = el("g", { opacity: 0 }, coG);
     el("circle", { class: "tek__punt", cx: ax, cy: ay, r: 5 }, co);
     const leider = el("polyline", { class: "tek__leider tek__leider--dik", points: `${ax},${ay} 430,${ay} 452,${ay}` }, co);
-    acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2 }, co), TEKENING_CALLOUTS[i][0]);
-    el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32 }, co).textContent = TEKENING_CALLOUTS[i][1];
+    acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2 }, co), kies(`tekening.callout.${i}.titel`, TEKENING_CALLOUTS[i][0]));
+    el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32 }, co).textContent = kies(`tekening.callout.${i}.sub`, TEKENING_CALLOUTS[i][1]);
     const midden = ex + l.w / 2;
     ex += l.w + spatie;
     return { g: l.g, vul: l.vul, lijn: l.lijn, co, leider, dx, dy, ex: midden - 240, ey: eindBasis - l.basis };
@@ -290,8 +297,8 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
   const lab = (x: number, y: number, t: string) => (el("text", { class: "tek__label tek__label--groot", x, y }, tb).textContent = t);
   const waa = (x: number, y: number, t: string) => (el("text", { class: "tek__waarde tek__waarde--groot", x, y }, tb).textContent = t);
   lab(bx + 22, by + 42, "Project");
-  waa(bx + 22, by + 90, TEKENING.titelblok.project);
-  const [stad, regio] = TEKENING.titelblok.locatie.split(", ");
+  waa(bx + 22, by + 90, kies("tekening.titelblok.project", TEKENING.titelblok.project));
+  const [stad, regio] = kies("tekening.titelblok.locatie", TEKENING.titelblok.locatie).split(", ");
   lab(bx + 22, by + 158, "Locatie");
   waa(bx + 22, by + 206, `${stad},`);
   waa(bx + 22, by + 252, regio ?? "");
@@ -369,6 +376,7 @@ function tijdlijn(root: HTMLElement, d: Delen) {
 }
 
 export default function HeroTekening() {
+  const { tekst } = useTeksten();
   const ref = useRef<HTMLElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -409,7 +417,7 @@ export default function HeroTekening() {
             const vh = blad.height || innerHeight;
             verhouding = vw / vh;
             opruimen();
-            const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh);
+            const delen = staand ? bouwStaand(svg, vw, vh, tekst) : bouwLiggend(svg, vw, vh, tekst);
             tl = tijdlijn(root, delen);
             ScrollTrigger.refresh();
             // Laadmoment (alleen de eerste keer, bovenaan de pagina): de rand van
@@ -467,21 +475,21 @@ export default function HeroTekening() {
           ))}
         </p>
         <p className="tekening__intro">
-          <b>{TEKENING.intro}</b> <span>{TEKENING.scrollHint}</span>
+          <b><T k="tekening.intro" /></b> <span><T k="tekening.scroll_hint" /></span>
         </p>
         <div className="tekening__slot">
           <div className="wrap">
             <h1 id="hero-titel" className="display tekening__titel">
-              {HERO.prefix} <span className="tekening__accent">{HERO.woord}</span>
+              <T k="hero.prefix" /> <span className="tekening__accent"><T k="hero.woord" /></span>
               <br />
-              {HERO.suffix}
+              <T k="hero.suffix" />
             </h1>
             <div className="hero__actions">
               <a href="#contact" className="btn btn-primary">
-                {HERO.ctaBedrijven}
+                <T k="hero.cta_bedrijven" />
               </a>
               <a href="/vacatures" className="btn btn-secondary">
-                {HERO.ctaEngineers}
+                <T k="hero.cta_engineers" />
               </a>
             </div>
           </div>

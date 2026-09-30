@@ -6,6 +6,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { CONSULTANTS } from "@/lib/inhoud";
 import { metAccent } from "@/lib/accent";
+import T from "@/components/T";
+import { useTeksten } from "@/components/admin/TeksProvider";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -15,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export default function Disciplines({ items }: { items?: string[] }) {
   const lijst = items && items.length > 0 ? items : CONSULTANTS.profielen;
   const ref = useRef<HTMLElement>(null);
+  const { bewerken, tekst } = useTeksten();
 
   useGSAP(
     () => {
@@ -47,13 +50,23 @@ export default function Disciplines({ items }: { items?: string[] }) {
     <section ref={ref} className="disc" aria-labelledby="disc-titel">
       <div className="wrap disc__kop">
         <h2 id="disc-titel" className="display display-m">
-          {metAccent(`${CONSULTANTS.titel} ${CONSULTANTS.accent}`)}
+          {bewerken ? (
+            <>
+              <T k="consultants.titel" /> <T k="consultants.accent" />
+            </>
+          ) : (
+            metAccent(`${tekst("consultants.titel")} ${tekst("consultants.accent")}`)
+          )}
         </h2>
-        <p className="lead disc__tekst">{CONSULTANTS.tekst}</p>
+        <p className="lead disc__tekst">
+          <T k="consultants.tekst" />
+        </p>
       </div>
       <ul className="sr-only">
-        {lijst.map((d) => (
-          <li key={d}>{d}</li>
+        {lijst.map((d, i) => (
+          <li key={d}>
+            <T k={`consultants.profiel.${i}`} d={d} vast />
+          </li>
         ))}
       </ul>
 
@@ -63,8 +76,12 @@ export default function Disciplines({ items }: { items?: string[] }) {
             key={d}
             className={`disc__row ${i % 2 === 1 ? "disc__row--serif" : "display"} ${i === 3 ? "disc__row--lime" : ""}`}
           >
-            <span>{d}</span>
-            <span>{d}</span>
+            <span>
+              <T k={`consultants.profiel.${i}`} d={d} vast />
+            </span>
+            <span>
+              <T k={`consultants.profiel.${i}`} d={d} vast />
+            </span>
           </div>
         ))}
       </div>

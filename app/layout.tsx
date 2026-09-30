@@ -8,6 +8,8 @@ import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
 import { SITE_URL } from "@/lib/site";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import HashScroll from "@/components/HashScroll";
+import TeksProvider from "@/components/admin/TeksProvider";
+import { haalTeksten } from "@/lib/tekstenServer";
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
@@ -46,11 +48,14 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Aanpassingen uit het CRM (leeg als er geen zijn of het CRM niet bereikbaar is).
+  const teksten = await haalTeksten();
+
   return (
     // data-scroll-behavior is vereist sinds Next.js 16: het framework overschrijft
     // `scroll-behavior: smooth` niet langer zelf tijdens route-overgangen, waardoor
@@ -63,7 +68,7 @@ export default function RootLayout({
         <HashScroll />
         <VloeiendScrollen />
         <Vizier />
-        {children}
+        <TeksProvider waarden={teksten}>{children}</TeksProvider>
         <CookieBanner />
         <AnalyticsGate />
       </body>

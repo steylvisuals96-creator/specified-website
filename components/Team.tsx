@@ -1,4 +1,5 @@
 import { rolLabel, type TeamMember } from "@/lib/settings";
+import T from "@/components/T";
 
 const FALLBACK: TeamMember[] = [
   {
@@ -36,8 +37,10 @@ export default function Team({
     <section id="over-ons" className="team">
       <div className="wrap">
         <h2 className="display display-l team__kop">
-          {titel || "Twee founders."}{" "}
-          <span className="human team__accent">{titelAccent || "Eén missie."}</span>
+          <T k="team.titel" d={titel || "Twee founders."} />{" "}
+          <span className="human team__accent">
+            <T k="team.accent" d={titelAccent || "Eén missie."} />
+          </span>
         </h2>
 
         <div className="team__grid">

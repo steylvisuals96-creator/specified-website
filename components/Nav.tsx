@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import T from "@/components/T";
 import { CONTACT } from "@/lib/inhoud";
 import { useEffect, useState } from "react";
 
 // Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
 // volledige vacaturepagina; de rest scrollt naar een sectie op de homepage.
 const NAV_ITEMS = [
-  { label: "Diensten", href: "/#diensten" },
-  { label: "Jobs", href: "/vacatures" },
-  { label: "Blog", href: "/blog" },
-  { label: "Over ons", href: "/#over-ons" },
-  { label: "Contact", href: "/#contact" },
+  { k: "nav.diensten", href: "/#diensten" },
+  { k: "nav.jobs", href: "/vacatures" },
+  { k: "nav.blog", href: "/blog" },
+  { k: "nav.over_ons", href: "/#over-ons" },
+  { k: "nav.contact", href: "/#contact" },
 ];
 
 export default function Nav() {
@@ -43,12 +44,12 @@ export default function Nav() {
 
         <nav className="site-nav__links nav-desktop" aria-label="Hoofdmenu">
           {NAV_ITEMS.map((item) => (
-            <Link key={item.label} href={item.href} className="site-nav__link">
-              {item.label}
+            <Link key={item.k} href={item.href} className="site-nav__link">
+              <T k={item.k} />
             </Link>
           ))}
           <a href="/#contact" className="btn btn-primary site-nav__cta">
-            Neem contact op
+            <T k="nav.cta" />
           </a>
         </nav>
 
@@ -69,16 +70,16 @@ export default function Nav() {
         <nav id="mobiel-menu" className="site-nav__mobile" aria-label="Mobiel menu">
           {NAV_ITEMS.map((item) => (
             <Link
-              key={item.label}
+              key={item.k}
               href={item.href}
               onClick={() => setMenuOpen(false)}
               className="site-nav__mobile-link display"
             >
-              {item.label}
+              <T k={item.k} />
             </Link>
           ))}
           <a href="/#contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
-            Neem contact op
+            <T k="nav.cta" />
           </a>
           <div className="site-nav__mobile-contact">
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>

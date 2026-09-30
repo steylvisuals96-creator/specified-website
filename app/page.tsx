@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import Disciplines from "@/components/Disciplines";
 import ScrollMomenten from "@/components/ScrollMomenten";
 import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
+import { haalTeksten } from "@/lib/tekstenServer";
+import { kies } from "@/lib/tekstenBasis";
 
 const DAG = 24 * 60 * 60 * 1000;
 import type { Metadata } from "next";
@@ -17,10 +19,12 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
+  // Positionering uit lib/inhoud.ts; de CMS-metavelden bevatten nog voorbeeldtekst.
+  // Aanpasbaar via het admin-balkje (Alle teksten > Zoekmachines).
+  const teksten = await haalTeksten();
   return {
-    // Positionering uit lib/inhoud.ts; de CMS-metavelden bevatten nog voorbeeldtekst.
-    title: META.titel,
-    description: META.beschrijving,
+    title: kies(teksten, "meta.titel", META.titel),
+    description: kies(teksten, "meta.beschrijving", META.beschrijving),
   };
 }
 

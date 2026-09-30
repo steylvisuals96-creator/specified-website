@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import CookieVoorkeurenLink from "@/components/CookieVoorkeurenLink";
+import T from "@/components/T";
 
 export default function Footer({ linkedin, footerTekst }: { linkedin?: string; footerTekst?: string } = {}) {
   const linkedinUrl = linkedin || "https://www.linkedin.com/company/specified-be";
@@ -22,14 +23,20 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
           <Logo className="logo--footer" />
         </Link>
         <nav className="footer__links" aria-label="Footer">
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/cookies">Cookies</Link>
+          <Link href="/privacy">
+            <T k="footer.privacy" />
+          </Link>
+          <Link href="/cookies">
+            <T k="footer.cookies" />
+          </Link>
           <CookieVoorkeurenLink />
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
-            LinkedIn
+            <T k="footer.linkedin" />
           </a>
         </nav>
-        <p className="meta">{bedrijfsregel}</p>
+        <p className="meta">
+          <T k="footer.bedrijfsregel" d={bedrijfsregel} />
+        </p>
       </div>
     </footer>
   );

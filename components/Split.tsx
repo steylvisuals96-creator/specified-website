@@ -1,4 +1,5 @@
 import Image from "next/image";
+import T from "@/components/T";
 
 type Kolom = { id: string; kop: string; titel: string; tekst: string; cta: string; href: string; knop: string; beeld: string };
 
@@ -13,11 +14,17 @@ export default function Split({ kolommen }: { kolommen: Kolom[] }) {
             <div className="split__beeld">
               <Image src={k.beeld} alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
             </div>
-            <h2 className="display display-m">{k.kop}</h2>
-            <p className="split__titel">{k.titel}</p>
-            <p className="split__tekst">{k.tekst}</p>
+            <h2 className="display display-m">
+              <T k={`diensten.${k.id}.kop`} d={k.kop} />
+            </h2>
+            <p className="split__titel">
+              <T k={`diensten.${k.id}.titel`} d={k.titel} />
+            </p>
+            <p className="split__tekst">
+              <T k={`diensten.${k.id}.tekst`} d={k.tekst} />
+            </p>
             <a href={k.href} className={`btn ${k.knop}`}>
-              {k.cta}
+              <T k={`diensten.${k.id}.cta`} d={k.cta} />
             </a>
           </div>
         ))}
