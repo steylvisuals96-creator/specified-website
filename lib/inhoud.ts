@@ -77,7 +77,7 @@ export const DIENSTEN = [
 ];
 
 export const JOBS = {
-  titel: "Word consultant.", // Jobs: "Help build the future as an Engineering Consultant at Specified!"
+  titel: "Word onze collega.", // Jobs: "Help build the future as an Engineering Consultant at Specified!"
   linkTekst: "Alle vacatures",
 };
 

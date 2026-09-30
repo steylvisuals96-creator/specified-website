@@ -7,7 +7,7 @@ import { getSettings, CMS_URL } from "@/lib/settings";
 export const revalidate = 60; // refresh elke minuut
 
 export const metadata = {
-  title: "Word consultant — Specified",
+  title: "Word onze collega — Specified",
   description: "Word engineering consultant bij Specified: openstaande profielen voor civil, electrical, automation en mechanical engineers.",
 };
 
