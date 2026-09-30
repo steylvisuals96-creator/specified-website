@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacybeleid" updated="5 juli 2026">
+    <LegalPage title="Privacybeleid" updated="30 september 2026">
       <p>
         Specified BV hecht veel belang aan de bescherming van je persoonsgegevens en respecteert
         je privacy. In dit privacybeleid leggen we uit welke gegevens we verzamelen, waarom, en
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
       <p>Afhankelijk van je interactie met ons verzamelen we:</p>
       <ul>
         <li><strong>Contactgegevens:</strong> naam, e-mailadres, telefoonnummer.</li>
-        <li><strong>Sollicitatiegegevens:</strong> cv, functietitel, ervaring, sector en beschikbaarheid wanneer je solliciteert of je kandidaat stelt.</li>
+        <li><strong>Sollicitatiegegevens:</strong> cv, functietitel, ervaring, sector en beschikbaarheid wanneer je solliciteert of je kandidaat stelt. Via het sollicitatieformulier op onze website vragen we je naam, e-mailadres, telefoonnummer (optioneel) en een motivatie (optioneel).</li>
         <li><strong>Bedrijfsgegevens:</strong> contactpersoon en bedrijfsgegevens wanneer je als opdrachtgever contact opneemt.</li>
         <li><strong>Technische gegevens:</strong> beperkte, geanonimiseerde gebruiksgegevens van de website (zie ons <a href="/cookies">cookiebeleid</a>).</li>
       </ul>
@@ -38,6 +38,13 @@ export default function PrivacyPage() {
         <li>Het begeleiden van sollicitaties en het matchen van kandidaten met vacatures (rechtsgrond: uitvoering van een overeenkomst of jouw toestemming).</li>
         <li>Het onderhouden van de relatie met opdrachtgevers (rechtsgrond: uitvoering van een overeenkomst).</li>
       </ul>
+
+      <p>
+        Solliciteer je via het formulier op onze website, dan geef je daarvoor uitdrukkelijk
+        toestemming door een vakje aan te vinken. We leggen vast wanneer je die toestemming gaf.
+        Je kan ze op elk moment intrekken via <a href="mailto:info@specified.be">info@specified.be</a>;
+        dat heeft geen invloed op de verwerking die al gebeurd is.
+      </p>
 
       <h2>4. Bewaartermijn</h2>
       <p>

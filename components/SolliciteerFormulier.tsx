@@ -136,7 +136,7 @@ export default function SolliciteerFormulier({
       <label style={{ display: "flex", gap: "0.7rem", alignItems: "flex-start", fontSize: "0.8rem", color: "var(--muted)", lineHeight: 1.5 }}>
         <input name="akkoord" type="checkbox" required style={{ marginTop: "0.2rem", accentColor: "#dffd7b" }} />
         <span>
-          Ik ga ermee akkoord dat Specified mijn gegevens gebruikt voor deze sollicitatie, zoals beschreven in de{" "}
+          Ik ga ermee akkoord dat Specified mijn gegevens gebruikt voor deze sollicitatie en ze tot 2 jaar na ons laatste contact bewaart, zoals beschreven in de{" "}
           <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--lime)" }}>
             privacyverklaring
           </a>
