@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import SolliciteerFormulier from "@/components/SolliciteerFormulier";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -91,6 +92,8 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
   const [activeType, setActiveType] = useState(ALLE);
   const [activeErvaring, setActiveErvaring] = useState(ALLE);
   const [selected, setSelected] = useState<string | number | null>(null);
+  // Voor welke vacature het sollicitatieformulier openstaat (één tegelijk).
+  const [solliciteren, setSolliciteren] = useState<string | number | null>(null);
 
   const filtered = vacatures.filter(
     (v) =>
@@ -266,12 +269,21 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                 </div>
               )}
 
-              <a
-                href={`mailto:${mail}?subject=Sollicitatie: ${selectedJob.title}`}
-                style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "1rem 2rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 600, textDecoration: "none", textAlign: "center" as const }}
-              >
-                Solliciteer voor deze job
-              </a>
+              {solliciteren === selectedJob.id ? (
+                <SolliciteerFormulier
+                  vacatureId={selectedJob.id}
+                  vacatureTitel={selectedJob.title}
+                  fallbackMail={mail}
+                />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setSolliciteren(selectedJob.id)}
+                  style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "1rem 2rem", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 600, border: "none", cursor: "pointer", textAlign: "center" as const }}
+                >
+                  Solliciteer voor deze job
+                </button>
+              )}
             </motion.div>
           )}
         </div>
