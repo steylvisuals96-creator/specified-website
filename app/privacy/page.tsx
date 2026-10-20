@@ -1,7 +1,7 @@
 import LegalPage from "@/components/LegalPage";
 
 export const metadata = {
-  title: "Privacybeleid — Specified",
+  title: "Privacybeleid - Specified",
   description: "Hoe Specified BV omgaat met je persoonsgegevens conform de GDPR.",
 };
 

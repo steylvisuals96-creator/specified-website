@@ -35,7 +35,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Specified — We Engineer Possibilities",
+  title: "Specified - We Engineer Possibilities",
   description: "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
   openGraph: {
     type: "website",
