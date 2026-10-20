@@ -107,7 +107,7 @@ export default async function VacaturesPage() {
   return (
     <>
       <Nav />
-      <main>
+      <main id="inhoud">
         <VacaturesClient
           vacatures={vacatures}
           titel={JOBS.titel}

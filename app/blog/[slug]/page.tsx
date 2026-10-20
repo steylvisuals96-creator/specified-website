@@ -69,7 +69,7 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <Nav />
-      <main>
+      <main id="inhoud">
         <article style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem" }}>
           <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
             <Link href="/blog" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none" }}>
@@ -103,7 +103,7 @@ export default async function BlogArtikel({ params }: { params: Promise<{ slug: 
             </h1>
 
             {post.samenvatting && (
-              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.1rem", lineHeight: 1.65, marginBottom: "2.5rem" }}>
+              <p style={{ color: "var(--bone-soft)", fontSize: "1.1rem", lineHeight: 1.65, marginBottom: "2.5rem" }}>
                 {post.samenvatting}
               </p>
             )}

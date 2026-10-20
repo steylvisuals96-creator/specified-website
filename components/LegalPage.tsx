@@ -16,6 +16,7 @@ export default async function LegalPage({
     <>
       <Nav />
       <main
+        id="inhoud"
         style={{
           maxWidth: "760px",
           margin: "0 auto",
@@ -53,7 +54,7 @@ export default async function LegalPage({
           margin: 2.5rem 0 0.75rem;
         }
         .legal-body p, .legal-body li {
-          color: rgba(255,255,255,0.7);
+          color: var(--bone-soft);
           font-size: 0.95rem;
           line-height: 1.7;
           margin-bottom: 0.9rem;

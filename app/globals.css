@@ -7,6 +7,11 @@
   --olive-600: #3a3f2a;
   --bone-100: #e9e7dd;
   --bone-400: #a6a496;
+  --bone-600: #8a887b; /* referentieletters en -cijfers op het tekenblad */
+  --bone-soft: rgba(233, 231, 221, 0.7); /* lopende tekst op het donker, iets stiller dan bone-100 */
+  --wash: rgba(233, 231, 221, 0.04); /* vlakje boven het canvas */
+  --wash-faint: rgba(233, 231, 221, 0.02);
+  --line-strong: rgba(233, 231, 221, 0.2);
   --lime-300: #dffd7b;
   --line: rgba(233, 231, 221, 0.14);
 
@@ -72,6 +77,13 @@ html {
   outline: 2px solid var(--lime-300);
   outline-offset: 3px;
 }
+
+.skip-link {
+  position: fixed; left: 12px; top: -100px; z-index: 10001;
+  padding: 0.75rem 1.1rem; background: var(--lime-300); color: var(--ink-900);
+  font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -467,7 +479,7 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 .disc__row {
   display: flex; gap: 0.6em; white-space: nowrap; width: max-content;
   font-size: clamp(3.25rem, 9vw, 8.5rem); line-height: 1; padding: 0.04em 0;
-  color: var(--bone-100); border-bottom: 1px solid var(--line); will-change: transform;
+  color: var(--bone-100); border-bottom: 1px solid var(--line);
 }
 .disc__row.display { line-height: 0.95; }
 .disc__row--serif { font-family: var(--font-serif), serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }

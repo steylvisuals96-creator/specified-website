@@ -64,7 +64,7 @@ function FilterGroep({
             aria-pressed={isActief}
             onClick={() => onKies(w)}
             style={{
-              padding: "0.45rem 1.1rem", borderRadius: 0, fontSize: "0.8rem", fontWeight: 500,
+              padding: "0 1.1rem", minHeight: 44, borderRadius: 0, fontSize: "0.8rem", fontWeight: 500,
               cursor: "pointer", transition: "background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out", border: "1px solid",
               borderColor: isActief ? "var(--lime)" : "var(--border)",
               backgroundColor: isActief ? "var(--lime)" : "transparent",
@@ -198,7 +198,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
               animate={{ opacity: 1, transform: "translateX(0px)" }}
               transition={{ duration: 0.25, ease: EASE }}
               className="vac-detail"
-              style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", borderRadius: 0, padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
+              style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "var(--wash)", border: "1px solid var(--border)", borderRadius: 0, padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
             >
               <div>
                 <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", flexWrap: "wrap" }}>
