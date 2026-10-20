@@ -387,6 +387,44 @@ body::after {
   .js .tekening__slot { opacity: 0; }
   .js .tekening__intro { opacity: 1; }
 }
+/* Constante beweging op het blad: een scanlijn en twee maatlijnen. Alleen
+   transform en opacity, onder de tekening (z-index 1), niet bij reduced motion. */
+.tekening__ambient { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .tekening__ambient { display: block; position: absolute; inset: 76px 0 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .tek-scan {
+    position: absolute; top: 0; bottom: 0; left: 0; width: 2px; background: var(--lime-300); opacity: 0.35;
+    animation: tek-scan 11s linear infinite; will-change: transform;
+  }
+  .tek-scan::after {
+    content: ""; position: absolute; top: 0; bottom: 0; right: 2px; width: min(14vw, 160px);
+    background: linear-gradient(90deg, transparent, rgba(223, 253, 123, 0.07));
+  }
+  .tek-maat { position: absolute; }
+  .tek-maat--h { left: 8%; right: 8%; top: 40px; height: 1px; }
+  .tek-maat--v { right: 3.5%; top: 20%; bottom: 20%; width: 1px; }
+  .tek-maat__lijn { position: absolute; inset: 0; background: var(--lime-300); opacity: 0.6; }
+  .tek-maat--h .tek-maat__lijn { transform-origin: left; animation: tek-maat-x 9s ease-in-out infinite; }
+  .tek-maat--v .tek-maat__lijn { transform-origin: top; animation: tek-maat-y 9s ease-in-out 1.2s infinite; }
+  /* Maatstreepjes aan de uiteinden en het getal verschijnen als de lijn staat. */
+  .tek-maat::before, .tek-maat::after { content: ""; position: absolute; background: var(--lime-300); opacity: 0; animation: tek-maat-meta 9s ease-in-out infinite; }
+  .tek-maat--h::before, .tek-maat--h::after { top: -6px; width: 1px; height: 13px; }
+  .tek-maat--h::before { left: 0; } .tek-maat--h::after { right: 0; }
+  .tek-maat--v::before, .tek-maat--v::after { left: -6px; height: 1px; width: 13px; animation-delay: 1.2s; }
+  .tek-maat--v::before { top: 0; } .tek-maat--v::after { bottom: 0; }
+  .tek-maat__meta {
+    position: absolute; opacity: 0; color: var(--bone-400); font: 500 11px var(--font-sans), sans-serif;
+    font-variant-numeric: tabular-nums; white-space: nowrap; animation: tek-maat-meta 9s ease-in-out infinite;
+  }
+  .tek-maat--h .tek-maat__meta { left: 50%; bottom: 8px; transform: translateX(-50%); }
+  .tek-maat--v .tek-maat__meta { right: 10px; top: 50%; animation-delay: 1.2s; transform: translateY(-50%); }
+  @media (orientation: portrait) { .tek-maat--v { display: none; } }
+}
+@keyframes tek-scan { from { transform: translateX(-2vw); } to { transform: translateX(100vw); } }
+@keyframes tek-maat-x { 0% { transform: scaleX(0); opacity: 0.6; } 24%, 68% { transform: scaleX(1); opacity: 0.6; } 90%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes tek-maat-y { 0% { transform: scaleY(0); opacity: 0.6; } 24%, 68% { transform: scaleY(1); opacity: 0.6; } 90%, 100% { transform: scaleY(1); opacity: 0; } }
+@keyframes tek-maat-meta { 0%, 18% { opacity: 0; } 32%, 68% { opacity: 0.9; } 88%, 100% { opacity: 0; } }
+
 /* Stilstaande hero (beweging beperken, of geen JS): het eindbeeld van de
    tekening zonder animatie. Het logo (beeldmerk + woord) in limoen bovenaan,
    de kop en knoppen eronder. Hogere specificiteit dan de staande regels. */
