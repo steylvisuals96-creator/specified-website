@@ -1,6 +1,6 @@
 # 002 — Vacaturelijst: begrensde stagger, hardware-versnelde intrede
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a3980d2
 - **Severity**: MEDIUM
 - **Category**: Performance / purpose & frequency

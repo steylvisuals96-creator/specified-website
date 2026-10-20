@@ -4,11 +4,11 @@ Opgesteld op commit `a3980d2`, branch `preview/animatie-audit`.
 
 | # | Titel | Ernst | Status |
 |---|---|---|---|
-| 001 | `transition: all` vervangen (vacatures) | HIGH | TODO |
-| 002 | Vacaturelijst: begrensde stagger, versnelde intrede | MEDIUM | TODO |
-| 003 | Detailpaneel korter en versneld | MEDIUM | TODO |
-| 004 | Hover-beweging alleen op hover-apparaten | MEDIUM | TODO |
-| 005 | Limoenveeg: ease-out | MEDIUM | TODO |
+| 001 | `transition: all` vervangen (vacatures) | HIGH | DONE |
+| 002 | Vacaturelijst: begrensde stagger, versnelde intrede | MEDIUM | DONE |
+| 003 | Detailpaneel korter en versneld | MEDIUM | DONE |
+| 004 | Hover-beweging alleen op hover-apparaten | MEDIUM | DONE |
+| 005 | Limoenveeg: ease-out | MEDIUM | DONE |
 
 ## Volgorde
 

@@ -1,6 +1,6 @@
 # 001 — Vervang `transition: all` door expliciete eigenschappen (vacatures)
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a3980d2
 - **Severity**: HIGH
 - **Category**: Performance / easing & duration

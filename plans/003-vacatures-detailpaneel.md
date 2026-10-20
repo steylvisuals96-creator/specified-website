@@ -1,6 +1,6 @@
 # 003 — Detailpaneel: korter en versneld
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a3980d2
 - **Severity**: MEDIUM
 - **Category**: Easing & duration / performance

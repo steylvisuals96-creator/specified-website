@@ -1,6 +1,6 @@
 # 004 — Beweging bij hover alleen op apparaten met echte hover
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a3980d2
 - **Severity**: MEDIUM
 - **Category**: Accessibility

@@ -1,6 +1,6 @@
 # 005 — Limoenveeg vacatures: ease-out in plaats van ease-in
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: a3980d2
 - **Severity**: MEDIUM
 - **Category**: Easing & duration

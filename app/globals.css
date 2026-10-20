@@ -470,11 +470,16 @@ html:not(.js) .tekening .tekening__intro { display: none; }
   background: var(--lime-300); transform: scaleX(0); transform-origin: left;
   transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
 }
-.jobs__rij:hover::before, .jobs__rij:focus-visible::before { transform: scaleX(1); }
-.jobs__rij:hover, .jobs__rij:focus-visible { color: var(--ink-900); }
-.jobs__rij:hover .jobs__meta, .jobs__rij:hover .jobs__vers-label,
+.jobs__rij:focus-visible::before { transform: scaleX(1); }
+.jobs__rij:focus-visible { color: var(--ink-900); }
 .jobs__rij:focus-visible .jobs__meta, .jobs__rij:focus-visible .jobs__vers-label,
-.jobs__rij:hover .jobs__getal, .jobs__rij:focus-visible .jobs__getal { color: var(--ink-900); }
+.jobs__rij:focus-visible .jobs__getal { color: var(--ink-900); }
+@media (hover: hover) and (pointer: fine) {
+  .jobs__rij:hover::before { transform: scaleX(1); }
+  .jobs__rij:hover { color: var(--ink-900); }
+  .jobs__rij:hover .jobs__meta, .jobs__rij:hover .jobs__vers-label,
+  .jobs__rij:hover .jobs__getal { color: var(--ink-900); }
+}
 .jobs__veeg {
   position: absolute; inset: 0 calc(var(--gutter) * -1); z-index: -1; pointer-events: none;
   background: var(--lime-300); transform: scaleX(0);
@@ -603,8 +608,12 @@ html.lenis, html.lenis body { height: auto; }
 a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom,
 a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { fill: var(--lime-300); }
 @media (prefers-reduced-motion: no-preference) {
-  a:hover > .logo .logo__kom, a:focus-visible > .logo .logo__kom { animation: logo-kom 620ms var(--ease-out); }
-  a:hover > .logo .logo__boog, a:focus-visible > .logo .logo__boog { animation: logo-boog 620ms var(--ease-out); }
+  a:focus-visible > .logo .logo__kom { animation: logo-kom 620ms var(--ease-out); }
+  a:focus-visible > .logo .logo__boog { animation: logo-boog 620ms var(--ease-out); }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  a:hover > .logo .logo__kom { animation: logo-kom 620ms var(--ease-out); }
+  a:hover > .logo .logo__boog { animation: logo-boog 620ms var(--ease-out); }
 }
 @keyframes logo-kom { 0% { transform: none; } 35% { transform: translateY(-22%); } 100% { transform: none; } }
 @keyframes logo-boog { 0% { transform: none; } 35% { transform: translateY(26%); } 100% { transform: none; } }
