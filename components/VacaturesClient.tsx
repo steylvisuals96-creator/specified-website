@@ -65,7 +65,7 @@ function FilterGroep({
             onClick={() => onKies(w)}
             style={{
               padding: "0.45rem 1.1rem", borderRadius: 0, fontSize: "0.8rem", fontWeight: 500,
-              cursor: "pointer", transition: "all 0.2s", border: "1px solid",
+              cursor: "pointer", transition: "background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out", border: "1px solid",
               borderColor: isActief ? "var(--lime)" : "var(--border)",
               backgroundColor: isActief ? "var(--lime)" : "transparent",
               color: isActief ? "var(--dark)" : "var(--muted)",
@@ -164,13 +164,13 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
             {filtered.map((job, i) => (
               <motion.button
                 key={job.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
+                initial={{ opacity: 0, transform: "translateY(12px)" }}
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                transition={{ duration: 0.25, delay: Math.min(i, 4) * 0.04, ease: EASE }}
                 type="button"
                 aria-expanded={selected === job.id}
                 onClick={() => setSelected(selected === job.id ? null : job.id)}
-                style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 1rem", borderBottom: "1px solid var(--border)", background: "none", cursor: "pointer", textAlign: "left", width: "100%", backgroundColor: selected === job.id ? "rgba(223,253,123,0.04)" : "transparent", borderLeft: selected === job.id ? "2px solid var(--lime)" : "2px solid transparent", transition: "all 0.2s" }}
+                style={{ display: "grid", gridTemplateColumns: "1fr auto", alignItems: "center", gap: "1rem", padding: "1.5rem 1rem", borderBottom: "1px solid var(--border)", background: "none", cursor: "pointer", textAlign: "left", width: "100%", backgroundColor: selected === job.id ? "rgba(223,253,123,0.04)" : "transparent", borderLeft: selected === job.id ? "2px solid var(--lime)" : "2px solid transparent", transition: "background-color 160ms ease-out, border-left-color 160ms ease-out" }}
               >
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                   <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--white)" }}>{job.title}</span>
@@ -182,7 +182,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                   <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: job.type === "Vast" ? "var(--lime)" : "var(--muted)", border: `1px solid ${job.type === "Vast" ? "rgba(223,253,123,0.3)" : "var(--border)"}`, padding: "0.25rem 0.75rem", borderRadius: 0 }}>
                     {job.type}
                   </span>
-                  <span style={{ color: selected === job.id ? "var(--lime)" : "var(--muted)", fontSize: "1rem", transition: "color 0.2s" }}>
+                  <span style={{ color: selected === job.id ? "var(--lime)" : "var(--muted)", fontSize: "1rem", transition: "color 160ms ease-out" }}>
                     {selected === job.id ? "Sluiten" : "Bekijk"}
                   </span>
                 </div>
@@ -194,9 +194,9 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
           {selectedJob && (
             <motion.div
               key={String(selectedJob.id)}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, ease: EASE }}
+              initial={{ opacity: 0, transform: "translateX(12px)" }}
+              animate={{ opacity: 1, transform: "translateX(0px)" }}
+              transition={{ duration: 0.25, ease: EASE }}
               className="vac-detail"
               style={{ position: "sticky", top: "calc(72px + 2rem)", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", borderRadius: 0, padding: "2.5rem", display: "flex", flexDirection: "column", gap: "2rem" }}
             >
