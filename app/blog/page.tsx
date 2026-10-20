@@ -24,7 +24,7 @@ export default async function BlogIndex() {
   return (
     <>
       <Nav />
-      <main>
+      <main id="inhoud">
         <section style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem", minHeight: "100svh" }}>
           <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
             <h1
@@ -62,7 +62,7 @@ export default async function BlogIndex() {
                       border: "1px solid var(--border)",
                       borderRadius: 0,
                       overflow: "hidden",
-                      backgroundColor: "rgba(255,255,255,0.02)",
+                      backgroundColor: "var(--wash-faint)",
                     }}
                   >
                     {post.coverUrl && (

@@ -11,6 +11,7 @@ export default function NotFound() {
     <>
       <Nav />
       <main
+        id="inhoud"
         style={{
           minHeight: "100svh",
           display: "flex",
@@ -43,7 +44,7 @@ export default function NotFound() {
           <Link href="/" style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>
             Naar de homepage
           </Link>
-          <Link href="/vacatures" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "var(--white)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 400, textDecoration: "none" }}>
+          <Link href="/vacatures" style={{ border: "1px solid var(--line-strong)", color: "var(--white)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 400, textDecoration: "none" }}>
             Bekijk vacatures
           </Link>
         </div>
