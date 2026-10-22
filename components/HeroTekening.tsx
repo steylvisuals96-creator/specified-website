@@ -453,19 +453,6 @@ export default function HeroTekening() {
   return (
     <section ref={ref} className="tekening" aria-labelledby="hero-titel">
       <div className="tekening__blad">
-        {/* Altijd in beweging, los van de scroll: een scanlijn en twee maatlijnen
-            die zich steeds opnieuw opbouwen. Alleen CSS, uit bij reduced motion. */}
-        <div className="tekening__ambient" aria-hidden="true">
-          <span className="tek-scan" />
-          <span className="tek-maat tek-maat--h">
-            <span className="tek-maat__lijn" />
-            <span className="tek-maat__meta">1 840 mm</span>
-          </span>
-          <span className="tek-maat tek-maat--v">
-            <span className="tek-maat__lijn" />
-            <span className="tek-maat__meta">420</span>
-          </span>
-        </div>
         <svg ref={svgRef} className="tekening__svg" aria-hidden="true" focusable="false" />
         {/* Staat er meteen (ook zonder JS); de tekening neemt het over zodra ze gebouwd is. */}
         <p className="tekening__woord display" aria-hidden="true">
