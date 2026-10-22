@@ -82,7 +82,7 @@ export const JOBS = {
 };
 
 export const META = {
-  titel: "Specified — Engineering consultancy",
+  titel: "Specified - Engineering consultancy",
   beschrijving:
     "Belgische engineering consultancy, gespecialiseerd in elektromechanica voor de industrie. Onze eigen consultants ondersteunen projecten, onderhoud en studies.",
 };

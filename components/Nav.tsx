@@ -19,11 +19,19 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Een onzichtbare strook van 24px bovenaan de pagina: zodra die uit beeld is,
+  // krijgt de navigatie zijn achtergrond. Geen scroll-handler nodig.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const strook = document.createElement("div");
+    strook.setAttribute("aria-hidden", "true");
+    strook.style.cssText = "position:absolute;top:0;left:0;width:1px;height:24px;pointer-events:none;";
+    document.body.prepend(strook);
+    const waarnemer = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting));
+    waarnemer.observe(strook);
+    return () => {
+      waarnemer.disconnect();
+      strook.remove();
+    };
   }, []);
 
   // Escape sluit het mobiele menu, zoals bezoekers verwachten.

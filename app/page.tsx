@@ -43,8 +43,8 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 const ERVARING_LABEL: Record<string, string> = {
-  junior: "Junior (0–2 jaar)",
-  medior: "Medior (2–5 jaar)",
+  junior: "Junior (0-2 jaar)",
+  medior: "Medior (2-5 jaar)",
   senior: "Senior (5+ jaar)",
   lead: "Lead / Expert",
 };

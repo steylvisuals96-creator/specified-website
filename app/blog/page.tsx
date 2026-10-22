@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
   const naam = s.naam || "Specified";
   return {
-    title: `Blog — ${naam}`,
+    title: `Blog - ${naam}`,
     description: "Inzichten, tips en verhalen over engineering, consultancy en carrière.",
     alternates: { canonical: "/blog" },
   };

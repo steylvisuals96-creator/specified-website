@@ -231,7 +231,7 @@ export default function VacaturesClient({ vacatures, titel, contactEmail }: { va
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     {selectedJob.profiel.map((p) => (
                       <li key={p} style={{ display: "flex", gap: "0.75rem", color: "var(--muted)", fontSize: "0.875rem", lineHeight: 1.5 }}>
-                        <span style={{ color: "var(--lime)", flexShrink: 0 }}>—</span>
+                        <span style={{ color: "var(--lime)", flexShrink: 0 }}>-</span>
                         {p}
                       </li>
                     ))}

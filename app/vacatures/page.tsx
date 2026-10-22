@@ -7,7 +7,7 @@ import { getSettings, CMS_URL } from "@/lib/settings";
 export const revalidate = 60; // refresh elke minuut
 
 export const metadata = {
-  title: "Word consultant — Specified",
+  title: "Word consultant - Specified",
   description: "Word engineering consultant bij Specified: openstaande profielen voor civil, electrical, automation en mechanical engineers.",
 };
 
@@ -30,16 +30,16 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 const ERVARING_LABEL: Record<string, string> = {
-  junior: "Junior (0–2 jaar)",
-  medior: "Medior (2–5 jaar)",
+  junior: "Junior (0-2 jaar)",
+  medior: "Medior (2-5 jaar)",
   senior: "Senior (5+ jaar)",
   lead: "Lead / Expert",
 };
 
 const GROOTTE_LABEL: Record<string, string> = {
   startup: "Startup (< 10)",
-  kmo: "KMO (10–50)",
-  middelgroot: "Middelgroot (50–250)",
+  kmo: "KMO (10-50)",
+  middelgroot: "Middelgroot (50-250)",
   groot: "Groot (250+)",
 };
 
