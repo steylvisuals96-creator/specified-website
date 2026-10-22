@@ -62,7 +62,7 @@ export default function Team({
                   {m.rol && <p className="team__rol">{rolLabel(m.rol)}</p>}
                   {m.bio && <p className="team__bio">{m.bio}</p>}
                   {m.linkedin && (
-                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="text-link">
+                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="text-link team__linkedin">
                       {m.voornaam} op LinkedIn
                     </a>
                   )}

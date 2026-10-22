@@ -18,7 +18,7 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
       </div>
 
       <div className="wrap footer__rij">
-        <Link href="/" aria-label="Specified, naar de homepage">
+        <Link href="/" className="footer__logo" aria-label="Specified, naar de homepage">
           <Logo className="logo--footer" />
         </Link>
         <nav className="footer__links" aria-label="Footer">

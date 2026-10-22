@@ -20,7 +20,10 @@ export default function Vizier() {
     const el = ref.current;
     const coord = coordRef.current;
     if (!el || !coord) return;
-    if (!matchMedia("(pointer: fine)").matches) return;
+    // Wie hoog contrast of geforceerde kleuren gebruikt, houdt de eigen
+    // (eventueel vergrote) systeemcursor.
+    const contrast = matchMedia("(forced-colors: active), (prefers-contrast: more)");
+    if (!matchMedia("(pointer: fine)").matches || contrast.matches) return;
 
     document.documentElement.classList.add("vizier-aan");
     let x = -100, y = -100, raf = 0;
@@ -53,13 +56,23 @@ export default function Vizier() {
     const neer = () => (el.dataset.druk = "true");
     const op = () => (el.dataset.druk = "false");
 
+    // Gaat hoog contrast aan tijdens het bezoek, dan valt het vizier weg.
+    const opContrast = () => {
+      if (!contrast.matches) return;
+      document.documentElement.classList.remove("vizier-aan");
+      removeEventListener("pointermove", beweeg);
+      el.dataset.zichtbaar = "false";
+    };
+
     addEventListener("pointermove", beweeg, { passive: true });
+    contrast.addEventListener("change", opContrast);
     document.addEventListener("pointerleave", weg);
     addEventListener("blur", weg);
     addEventListener("pointerdown", neer);
     addEventListener("pointerup", op);
     return () => {
       document.documentElement.classList.remove("vizier-aan");
+      contrast.removeEventListener("change", opContrast);
       cancelAnimationFrame(raf);
       removeEventListener("pointermove", beweeg);
       document.removeEventListener("pointerleave", weg);

@@ -6,6 +6,7 @@ import VloeiendScrollen from "@/components/VloeiendScrollen";
 import Vizier from "@/components/Vizier";
 import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
 import { SITE_URL } from "@/lib/site";
+import { META } from "@/lib/inhoud";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import HashScroll from "@/components/HashScroll";
 
@@ -36,7 +37,9 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Specified - We Engineer Possibilities",
-  description: "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
+  // Terugval voor pagina's zonder eigen beschrijving (o.a. de 404); dezelfde
+  // positionering als de homepage, niet de oude recruitment-tekst.
+  description: META.beschrijving,
   openGraph: {
     type: "website",
     locale: "nl_BE",
@@ -61,11 +64,13 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <a href="#inhoud" className="skip-link">Naar de inhoud</a>
+        {/* Vroeg in de DOM: de banner staat visueel onderaan, maar wie met het
+            toetsenbord werkt, komt hem meteen na de skip-link tegen. */}
+        <CookieBanner />
         <HashScroll />
         <VloeiendScrollen />
         <Vizier />
         {children}
-        <CookieBanner />
         <AnalyticsGate />
       </body>
     </html>

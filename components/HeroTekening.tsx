@@ -436,7 +436,23 @@ export default function HeroTekening() {
           };
           addEventListener("resize", opResize);
 
+          // Toetsenbord: de knoppen staan pas aan het einde van de tekening in
+          // beeld. Wie er met Tab op komt, springt naar dat eindbeeld; anders
+          // krijgt een onzichtbare knop de focus.
+          const slot = root.querySelector<HTMLElement>(".tekening__slot");
+          const naarEindbeeld = () => {
+            const st = tl?.scrollTrigger;
+            if (!st || st.progress > 0.99) return;
+            // "instant": de site zet scroll-behavior: smooth op html.
+            scrollTo({ top: st.end, behavior: "instant" });
+            ScrollTrigger.update();
+            st.getTween()?.progress(1);
+            tl?.progress(1);
+          };
+          slot?.addEventListener("focusin", naarEindbeeld);
+
           return () => {
+            slot?.removeEventListener("focusin", naarEindbeeld);
             actief = false;
             clearTimeout(wacht);
             removeEventListener("resize", opResize);
