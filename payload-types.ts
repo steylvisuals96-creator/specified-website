@@ -105,9 +105,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     instellingen: Instellingen;
+    website: Website;
   };
   globalsSelect: {
     instellingen: InstellingenSelect<false> | InstellingenSelect<true>;
+    website: WebsiteSelect<false> | WebsiteSelect<true>;
   };
   locale: null;
   widgets: {
@@ -879,6 +881,73 @@ export interface Instellingen {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website".
+ */
+export interface Website {
+  id: string;
+  /**
+   * De grote titel en de twee knoppen. Voorbeeld: 'We engineer possibilities.'
+   */
+  hero?: {
+    prefix?: string | null;
+    woord?: string | null;
+    suffix?: string | null;
+    ctaBedrijven?: string | null;
+    ctaEngineers?: string | null;
+  };
+  /**
+   * De tekst bij de tekening van het woord SPECIFIED. De tekening wordt opnieuw opgebouwd als je even stopt met typen.
+   */
+  tekening?: {
+    intro?: string | null;
+    scrollHint?: string | null;
+    project?: string | null;
+    locatie?: string | null;
+    waarden?: string | null;
+    akkoord?: string | null;
+  };
+  /**
+   * Negen regels, één per letter van SPECIFIED, in die volgorde. Het label begint met de letter.
+   */
+  callouts?:
+    | {
+        label: string;
+        tekst: string;
+        id?: string | null;
+      }[]
+    | null;
+  consultants?: {
+    titel?: string | null;
+    accent?: string | null;
+    tekst?: string | null;
+    profielen?:
+      | {
+          naam: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  diensten_bedrijven?: {
+    kop?: string | null;
+    titel?: string | null;
+    tekst?: string | null;
+    cta?: string | null;
+  };
+  diensten_engineers?: {
+    kop?: string | null;
+    titel?: string | null;
+    tekst?: string | null;
+    cta?: string | null;
+  };
+  jobs?: {
+    titel?: string | null;
+    linkTekst?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "instellingen_select".
  */
 export interface InstellingenSelect<T extends boolean = true> {
@@ -932,6 +1001,76 @@ export interface InstellingenSelect<T extends boolean = true> {
   over_tekst?: T;
   meta_titel?: T;
   meta_beschrijving?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website_select".
+ */
+export interface WebsiteSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        prefix?: T;
+        woord?: T;
+        suffix?: T;
+        ctaBedrijven?: T;
+        ctaEngineers?: T;
+      };
+  tekening?:
+    | T
+    | {
+        intro?: T;
+        scrollHint?: T;
+        project?: T;
+        locatie?: T;
+        waarden?: T;
+        akkoord?: T;
+      };
+  callouts?:
+    | T
+    | {
+        label?: T;
+        tekst?: T;
+        id?: T;
+      };
+  consultants?:
+    | T
+    | {
+        titel?: T;
+        accent?: T;
+        tekst?: T;
+        profielen?:
+          | T
+          | {
+              naam?: T;
+              id?: T;
+            };
+      };
+  diensten_bedrijven?:
+    | T
+    | {
+        kop?: T;
+        titel?: T;
+        tekst?: T;
+        cta?: T;
+      };
+  diensten_engineers?:
+    | T
+    | {
+        kop?: T;
+        titel?: T;
+        tekst?: T;
+        cta?: T;
+      };
+  jobs?:
+    | T
+    | {
+        titel?: T;
+        linkTekst?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
