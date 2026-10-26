@@ -102,33 +102,46 @@ function merk(parent: SVGGElement, x: number, y: number, hoogte: number) {
   return { kom, boog };
 }
 
-/** Liggend (desktop, tablet dwars): het woord horizontaal, callouts erboven en eronder. */
-function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
-  // De tekening is 1600x900; op een hoger scherm groeit het blad mee in hoogte.
+type Rect = { left: number; top: number; right: number; bottom: number };
+
+/**
+ * Liggend (desktop, tablet dwars): het woord horizontaal, callouts erboven en eronder.
+ * `kop` is de plek van de kop en knoppen in het eindbeeld (px t.o.v. het blad),
+ * zodat het eindlogo er altijd boven past en het titelblok er niet over valt.
+ */
+function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number, kop: Rect | null): Delen {
+  // De tekening is 1600x900; het blad groeit mee in hoogte (hoger scherm) of
+  // in breedte (breder scherm), zodat het kader altijd het hele scherm vult.
+  const W = Math.max(1600, Math.round((900 * vw) / vh));
   const H = Math.max(900, Math.round((1600 * vh) / vw));
+  const offX = (W - 1600) / 2;
   const off = (H - 900) / 2;
-  svg.setAttribute("viewBox", `0 ${-off} 1600 ${H}`);
+  svg.setAttribute("viewBox", `${-offX} ${-off} ${W} ${H}`);
   const font = lettertype();
   // Op kleinere schermen wordt de tekening verkleind; tekst en titelblok groeien
-  // mee zodat ze leesbaar blijven (callouts min. ~14px, titelblok min. ~12px).
-  const schaal = vw / 1600;
-  const fTekst = Math.min(1.35, Math.max(1, 0.75 / schaal));
+  // mee zodat ze leesbaar blijven (callouts min. ~12px, titelblok min. ~10px).
+  const schaal = Math.min(vw / 1600, vh / 900);
+  const fTekst = Math.min(1.9, Math.max(1, 0.75 / schaal));
   const fBlok = Math.min(1.6, Math.max(1, 0.85 / schaal));
+  // Laag liggend scherm (telefoon dwars): het eindlogo moet hoger en kleiner,
+  // anders botst het met de kop en de knoppen eronder.
+  const laag = vh < 444; // blad = scherm min navigatie (76px); zelfde grens als de CSS (520px)
 
   const kader = el("g", {}, svg);
-  el("rect", { class: "tek__rand", x: 40, y: -off + 40, width: 1520, height: H - 80, pathLength: 1 }, kader);
-  el("rect", { class: "tek__rand", x: 56, y: -off + 56, width: 1488, height: H - 112, pathLength: 1 }, kader);
+  const links0 = -offX;
+  el("rect", { class: "tek__rand", x: links0 + 40, y: -off + 40, width: W - 80, height: H - 80, pathLength: 1 }, kader);
+  el("rect", { class: "tek__rand", x: links0 + 56, y: -off + 56, width: W - 112, height: H - 112, pathLength: 1 }, kader);
   "ABCD".split("").forEach((c, i) => {
     const y = -off + 56 + ((H - 112) * (i + 0.5)) / 4 + 4;
-    el("text", { class: "tek__ref", x: 48, y }, kader).textContent = c;
-    el("text", { class: "tek__ref", x: 1552, y }, kader).textContent = c;
+    el("text", { class: "tek__ref", x: links0 + 48, y }, kader).textContent = c;
+    el("text", { class: "tek__ref", x: links0 + W - 48, y }, kader).textContent = c;
   });
   [1, 2, 3, 4, 5, 6].forEach((n, i) => {
-    const x = 56 + (1488 * (i + 0.5)) / 6;
+    const x = links0 + 56 + ((W - 112) * (i + 0.5)) / 6;
     el("text", { class: "tek__ref", x, y: -off + 52 }, kader).textContent = String(n);
     el("text", { class: "tek__ref", x, y: H - off - 44 }, kader).textContent = String(n);
   });
-  const as = el("line", { class: "tek__as", x1: 80, y1: 450, x2: 1520, y2: 450 }, svg);
+  const as = el("line", { class: "tek__as", x1: links0 + 80, y1: 450, x2: links0 + W - 80, y2: 450 }, svg);
   const woordG = el("g", { class: "tek__woord" }, svg);
   const coG = el("g", {}, svg);
 
@@ -147,10 +160,25 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
   const start = 800 - totaal / 2;
 
   // Eindbeeld: beeldmerk + woord als één logo, gecentreerd, in het bovenste derde.
+  // Op een laag scherm schuift het logo omhoog en krimpt het, zodat het vrij
+  // blijft van de kop eronder.
   const tussen = kap * 0.22;
   const merkB = MERK_B * (kap / MERK_H);
   const verschuif = (merkB + tussen) / 2; // het woord maakt plaats voor het merk
-  const eindY = Math.round(0.33 * H - off - 450);
+  const logoB = merkB + tussen + totaal;
+  const px = vw / W; // schermpixels per eenheid
+  let eindSchaal = Math.min(1, 1380 / logoB);
+  let midden = 0.33 * H - off;
+  if (kop) {
+    const boven = -off + 56 + 24 / px;
+    const onder = -off + kop.top / px - 32 / px;
+    const half = (kap * eindSchaal) / 2;
+    if (midden + half > onder) {
+      eindSchaal = Math.max(0.3, Math.min(eindSchaal, (onder - boven) / kap));
+      midden = Math.max(boven + (kap * eindSchaal) / 2, onder - (kap * eindSchaal) / 2);
+    }
+  }
+  const eindY = Math.round(midden - (basis - kap / 2));
   const m = merk(woordG, start + verschuif - tussen - merkB, basis - kap + eindY, kap);
 
   let x = start;
@@ -183,9 +211,12 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     const rol = el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor }, co);
     rol.style.fontSize = `${19 * fTekst}px`;
     acro(rol, T.callouts[i][0]);
-    const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor }, co);
-    sub.style.fontSize = `${19 * fTekst}px`;
-    sub.textContent = T.callouts[i][1];
+    // Op een laag scherm is er geen hoogte voor twee regels: alleen het label.
+    if (!laag) {
+      const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor }, co);
+      sub.style.fontSize = `${19 * fTekst}px`;
+      sub.textContent = T.callouts[i][1];
+    }
 
     x += w + spatie;
     return { g, vul, lijn, co, leider, dx, dy, ex: verschuif, ey: eindY };
@@ -193,7 +224,7 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
 
   // Titelblok rechtsonder in het blad, met de handtekening als goedkeuring.
   const tb = el("g", { opacity: 0 }, svg);
-  const bx = 1084, bw = 460, bh = 176, by = 900 + off - 240;
+  const bx = 1084 + offX, bw = 460, bh = 176, by = 900 + off - 240;
   // Groeit vanuit de hoek rechtsonder, zodat het in het blad blijft staan.
   tb.setAttribute("transform", `translate(${(bx + bw) * (1 - fBlok)} ${(by + bh) * (1 - fBlok)}) scale(${fBlok})`);
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
@@ -209,7 +240,11 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
   el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = T.tekening.akkoord;
   const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 88}) scale(.31)` }, tb);
 
-  const logoB = merkB + tussen + totaal;
+  // Het titelblok blijft half zichtbaar in het eindbeeld, tenzij het over de
+  // kop of de knoppen zou vallen.
+  const tbLinks = bx + bw - bw * fBlok;
+  const tbBoven = by + bh - bh * fBlok;
+  const botst = kop && (-offX + kop.right / px) > tbLinks - 16 / px && (-off + kop.bottom / px) > tbBoven - 16 / px;
   return {
     letters,
     titelblok: tb,
@@ -219,9 +254,9 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number): Delen {
     kom: m.kom,
     boog: m.boog,
     merkAfstand: kap * 0.6,
-    eindSchaal: Math.min(1, 1380 / logoB),
+    eindSchaal,
     eindMidden: [800, basis - kap / 2 + eindY],
-    titelblokEinde: 0.6,
+    titelblokEinde: laag || botst ? 0 : 0.6,
     kader,
     contour: 1600,
   };
@@ -320,6 +355,23 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
   };
 }
 
+/** Waar de kop en knoppen van het eindbeeld staan, t.o.v. het blad (px). */
+function kopVak(root: HTMLElement, blad: DOMRect): Rect | null {
+  const titel = root.querySelector(".tekening__titel");
+  const knoppen = root.querySelector(".hero__actions");
+  if (!titel || !knoppen) return null;
+  // De tekst zelf, niet het hele blok: de kop is smaller dan zijn container.
+  const bereik = document.createRange();
+  bereik.selectNodeContents(titel);
+  const vakken = [bereik.getBoundingClientRect(), ...Array.from(knoppen.children, (k) => k.getBoundingClientRect())];
+  return {
+    left: Math.min(...vakken.map((v) => v.left)) - blad.left,
+    top: Math.min(...vakken.map((v) => v.top)) - blad.top,
+    right: Math.max(...vakken.map((v) => v.right)) - blad.left,
+    bottom: Math.max(...vakken.map((v) => v.bottom)) - blad.top,
+  };
+}
+
 /** Eén tijdlijn voor beide oriëntaties, gestuurd door de scroll. */
 function tijdlijn(root: HTMLElement, d: Delen) {
   const L = d.letters;
@@ -415,7 +467,7 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
             const vh = blad.height || innerHeight;
             verhouding = vw / vh;
             opruimen();
-            const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh);
+            const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh, kopVak(root, blad));
             tl = tijdlijn(root, delen);
             ScrollTrigger.refresh();
             // Laadmoment (alleen de eerste keer, bovenaan de pagina): de rand van

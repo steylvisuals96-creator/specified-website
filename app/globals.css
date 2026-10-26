@@ -317,6 +317,9 @@ body::after {
 .tekening__ruimte { display: none; }
 @media (prefers-reduced-motion: no-preference) {
   .tekening__blad { position: sticky; top: 0; }
+  /* Het geanimeerde blad past altijd precies in het scherm, ook op een
+     telefoon dwars; anders valt de onderkant van de tekening weg. */
+  .js .tekening__blad { min-height: 0; }
   .tekening__ruimte { display: block; height: 420vh; }
 }
 /* Het blad begint onder de navigatie (76px), zodat rand en vakaanduiding zichtbaar blijven. */
@@ -410,6 +413,13 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 .tekening__titel { font-size: clamp(3rem, 8.5vw, 8.5rem); line-height: 0.88; color: var(--bone-100); }
 .tekening__accent { color: var(--lime-300); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+/* Laag liggend scherm (telefoon dwars): kop en knoppen compacter, zodat het
+   eindlogo erboven vrij blijft. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .tekening__titel { font-size: 10svh; }
+  .tekening__slot { bottom: 6svh; }
+  .tekening__slot .hero__actions { margin-top: 16px; }
+}
 
 /* SVG-onderdelen van de tekening */
 .tek__rand { fill: none; stroke: var(--olive-600); stroke-width: 1; }
