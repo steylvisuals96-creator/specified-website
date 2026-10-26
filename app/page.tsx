@@ -1,7 +1,8 @@
 import { SITE_URL } from "@/lib/site";
 import Nav from "@/components/Nav";
 import HeroTekening from "@/components/HeroTekening";
-import { CONSULTANTS, DIENSTEN, JOBS, META } from "@/lib/inhoud";
+import { META } from "@/lib/inhoud";
+import { getWebsite } from "@/lib/website";
 import Split from "@/components/Split";
 import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
@@ -73,7 +74,7 @@ async function getRecentJobs() {
 }
 
 export default async function Home() {
-  const [jobs, settings, team] = await Promise.all([getRecentJobs(), getSettings(), getTeam()]);
+  const [jobs, settings, team, website] = await Promise.all([getRecentJobs(), getSettings(), getTeam(), getWebsite()]);
 
   // Organisatiegegevens voor zoekmachines (JSON-LD); < geëscaped zoals in de blog.
   const organisatie = {
@@ -97,10 +98,10 @@ export default async function Home() {
       />
       <Nav />
       <main id="inhoud">
-        <HeroTekening />
-        <Disciplines items={CONSULTANTS.profielen} />
-        <Split kolommen={DIENSTEN} />
-        <Jobs jobs={jobs} titel={JOBS.titel} linkTekst={JOBS.linkTekst} />
+        <HeroTekening inhoud={website} />
+        <Disciplines inhoud={website.consultants} />
+        <Split kolommen={website.diensten} />
+        <Jobs jobs={jobs} titel={website.jobs.titel} linkTekst={website.jobs.linkTekst} />
         <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} />
         <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
