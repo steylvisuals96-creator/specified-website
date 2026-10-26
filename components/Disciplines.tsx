@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { CONSULTANTS } from "@/lib/inhoud";
+import { STANDAARD, type WebsiteInhoud } from "@/lib/website";
 import { metAccent } from "@/lib/accent";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -12,8 +12,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // Onze consultants: de profielen van Specified schuiven om en om mee met de
 // scroll. Zonder JS of met reduced motion is het een stilstaande lijst.
-export default function Disciplines({ items }: { items?: string[] }) {
-  const lijst = items && items.length > 0 ? items : CONSULTANTS.profielen;
+export default function Disciplines({ inhoud = STANDAARD.consultants }: { inhoud?: WebsiteInhoud["consultants"] }) {
+  const CONSULTANTS = inhoud;
+  const lijst = CONSULTANTS.profielen;
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(

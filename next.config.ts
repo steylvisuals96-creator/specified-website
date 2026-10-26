@@ -35,7 +35,7 @@ function maakCsp(frameAncestors: string) {
 }
 
 /** Alleen de voorbeeldpagina mag in een frame, en alleen van het CMS. */
-const VOORBEELD_PAD = "/blog/voorbeeld";
+const VOORBEELD_PADEN = ["/blog/voorbeeld", "/voorbeeld/:pad*"];
 const csp = maakCsp("'none'");
 const voorbeeldCsp = maakCsp(`${new URL(CMS_URL).origin}${dev ? " http://localhost:3003" : ""}`);
 
@@ -81,8 +81,8 @@ const nextConfig: NextConfig = {
       .filter((h) => h.key !== "X-Frame-Options")
       .map((h) => (h.key === "Content-Security-Policy" ? { ...h, value: voorbeeldCsp } : h));
     return [
-      { source: "/((?!blog/voorbeeld$).*)", headers: securityHeaders },
-      { source: VOORBEELD_PAD, headers: voorbeeldHeaders },
+      { source: "/((?!blog/voorbeeld$|voorbeeld/).*)", headers: securityHeaders },
+      ...VOORBEELD_PADEN.map((source) => ({ source, headers: voorbeeldHeaders })),
     ];
   },
 };
