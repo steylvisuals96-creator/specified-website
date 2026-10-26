@@ -16,21 +16,28 @@ const dev = process.env.NODE_ENV !== "production";
  * een externe URL zijn die de redactie zelf invult; die hosts vooraf opsommen
  * gaat niet.
  */
-const csp = [
-  "default-src 'self'",
-  "base-uri 'self'",
-  "object-src 'none'",
-  "frame-ancestors 'none'",
-  "form-action 'self'",
-  // 'unsafe-eval' alleen lokaal: React gebruikt eval() in dev-modus voor
-  // betere foutmeldingen, in productie nooit.
-  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  `connect-src 'self' ${CMS_URL} https://va.vercel-scripts.com https://vitals.vercel-insights.com`,
-  "upgrade-insecure-requests",
-].join("; ");
+function maakCsp(frameAncestors: string) {
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    `frame-ancestors ${frameAncestors}`,
+    "form-action 'self'",
+    // 'unsafe-eval' alleen lokaal: React gebruikt eval() in dev-modus voor
+    // betere foutmeldingen, in productie nooit.
+    `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    `connect-src 'self' ${CMS_URL} https://va.vercel-scripts.com https://vitals.vercel-insights.com`,
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+
+/** Alleen de voorbeeldpagina mag in een frame, en alleen van het CMS. */
+const VOORBEELD_PAD = "/blog/voorbeeld";
+const csp = maakCsp("'none'");
+const voorbeeldCsp = maakCsp(`${new URL(CMS_URL).origin}${dev ? " http://localhost:3003" : ""}`);
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
@@ -68,7 +75,15 @@ const nextConfig: NextConfig = {
   // Turbopack die map als root en mist het wijzigingen in dit project.
   turbopack: { root: process.cwd() },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    // De voorbeeldpagina krijgt dezelfde headers, behalve frame-ancestors en
+    // X-Frame-Options: die zouden het tonen in het CMS blokkeren.
+    const voorbeeldHeaders = securityHeaders
+      .filter((h) => h.key !== "X-Frame-Options")
+      .map((h) => (h.key === "Content-Security-Policy" ? { ...h, value: voorbeeldCsp } : h));
+    return [
+      { source: "/((?!blog/voorbeeld$).*)", headers: securityHeaders },
+      { source: VOORBEELD_PAD, headers: voorbeeldHeaders },
+    ];
   },
 };
 

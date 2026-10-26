@@ -68,7 +68,7 @@ export function lexicalToHtml(lexical: any): string {
 
 /* ── Data ophalen ─────────────────────────────────────────── */
 
-function mapPost(d: any): BlogPost {
+export function mapPost(d: any): BlogPost {
   const uploadUrl = d.cover?.url as string | undefined;
   const uploadFull = uploadUrl ? (uploadUrl.startsWith("http") ? uploadUrl : `${CMS_URL}${uploadUrl}`) : undefined;
   const coverUrl = uploadFull ?? (d.cover_url as string | undefined) ?? undefined;
