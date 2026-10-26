@@ -22,7 +22,11 @@ export async function middleware(req: NextRequest) {
   try {
     const base64 = token.split(".")[1];
     const decoded = JSON.parse(Buffer.from(base64, "base64url").toString("utf-8"));
-    if (decoded?.rol !== "beheerder" && decoded?.rol !== "creator") {
+    // Payloads beheer is voor de bouwer. De rest komt alleen bij de blog, waar
+    // het live voorbeeld zit; de rest van het werk gebeurt in /dashboard.
+    const blog = pathname === "/admin/collections/blog" || pathname.startsWith("/admin/collections/blog/");
+    const uitloggen = pathname === "/admin/logout";
+    if (decoded?.rol !== "creator" && !blog && !uitloggen) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   } catch {
