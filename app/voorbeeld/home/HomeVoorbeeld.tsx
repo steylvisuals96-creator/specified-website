@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Nav from "@/components/Nav";
 import HeroTekening from "@/components/HeroTekening";
 import Disciplines from "@/components/Disciplines";
@@ -28,10 +28,14 @@ export default function HomeVoorbeeld() {
   );
   const sleutel = JSON.stringify(heroDeel);
   const [hero, setHero] = useState({ sleutel, deel: heroDeel });
+  // Het uitstel hangt aan de inhoud (sleutel), niet aan elk nieuw bericht: een
+  // identiek bericht mag de timer niet telkens opnieuw starten.
+  const heroRef = useRef(heroDeel);
+  heroRef.current = heroDeel;
   useEffect(() => {
-    const t = setTimeout(() => setHero({ sleutel, deel: heroDeel }), 700);
+    const t = setTimeout(() => setHero({ sleutel, deel: heroRef.current }), 700);
     return () => clearTimeout(t);
-  }, [sleutel, heroDeel]);
+  }, [sleutel]);
 
   return (
     <>

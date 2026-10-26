@@ -23,6 +23,7 @@ export function useVoorbeeld(relaties: Record<string, string> = {}) {
   const [wacht, setWacht] = useState(true);
   const cache = useRef(new Map<string, any>());
   const relatiesRef = useRef(relaties);
+  const vorige = useRef("");
 
   useEffect(() => {
     async function haal(collectie: string, id: unknown) {
@@ -45,6 +46,10 @@ export function useVoorbeeld(relaties: Record<string, string> = {}) {
           d[veld] = await haal(collectie, d[veld]);
         }),
       );
+      // Hetzelfde bericht opnieuw (de editor herhaalt tot hij weet dat we luisteren): niets doen.
+      const json = JSON.stringify(d);
+      if (json === vorige.current) return;
+      vorige.current = json;
       setData(d);
       setWacht(false);
     }
