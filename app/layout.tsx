@@ -60,6 +60,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT }} />
       </head>
       <body className="min-h-full flex flex-col">
+        <a href="#inhoud" className="skip-link">Naar de inhoud</a>
         <HashScroll />
         <VloeiendScrollen />
         <Vizier />

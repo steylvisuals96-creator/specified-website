@@ -50,7 +50,7 @@ export default function ScrollMomenten() {
           .fromTo(
             vegen,
             { scaleX: 0, transformOrigin: "left center" },
-            { scaleX: 1, duration: 0.35, ease: "power2.in", stagger: 0.09 },
+            { scaleX: 1, duration: 0.35, ease: "power2.out", stagger: 0.09 },
           )
           .to(vegen, { scaleX: 0, transformOrigin: "right center", duration: 0.4, ease: "power2.out", stagger: 0.09 }, 0.3);
       }

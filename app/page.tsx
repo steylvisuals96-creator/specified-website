@@ -97,7 +97,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organisatie).replace(/</g, "\\u003c") }}
       />
       <Nav />
-      <main>
+      <main id="inhoud">
         <HeroTekening inhoud={website} />
         <Disciplines inhoud={website.consultants} />
         <Split kolommen={website.diensten} />

@@ -365,7 +365,7 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(d.kom, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, 6.2)
     .to(d.boog, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, 6.35)
     // Het logo licht één keer op wanneer de helften samenklikken.
-    .to(d.woordG, { filter: "drop-shadow(0 0 22px rgba(223, 253, 123, 0.5))", duration: 0.25 }, 6.9)
+    .to(d.woordG, { filter: "drop-shadow(0 0 18px rgba(223, 253, 123, 0.5))", duration: 0.25 }, 6.9)
     .to(d.woordG, { filter: "drop-shadow(0 0 0px rgba(223, 253, 123, 0))", duration: 0.6 }, 7.15)
     .to(".tekening__slot", { opacity: 1, duration: 0.6 }, 6.6)
     .to({}, { duration: 0.6 });
