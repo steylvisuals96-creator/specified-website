@@ -20,6 +20,8 @@ const doorverwijzingen: Doorverwijzing[] = [
   { slug: "kandidaten", detail: "detail" },
   { slug: "bedrijven", detail: "detail" },
   { slug: "sollicitaties", detail: "detail" },
+  { slug: "blog", detail: "edit", create: true },
+  { slug: "team", detail: "edit", create: true },
   { slug: "gebruikers", detail: "edit", create: true },
   // Media en activiteiten hebben alleen een overzicht, geen detailpagina.
   { slug: "media", create: true },
@@ -49,14 +51,6 @@ const nextConfig: NextConfig = {
     const rules = [
       { source: "/admin/globals/instellingen", destination: "/dashboard/instellingen/edit", permanent: false },
     ];
-
-    // Blog en team gaan de andere kant op: bewerken in Payload (live voorbeeld).
-    rules.push(
-      { source: "/dashboard/blog/create", destination: "/admin/collections/blog/create", permanent: false },
-      { source: "/dashboard/blog/:id/edit", destination: "/admin/collections/blog/:id", permanent: false },
-      { source: "/dashboard/team/create", destination: "/admin/collections/team/create", permanent: false },
-      { source: "/dashboard/team/:id/edit", destination: "/admin/collections/team/:id", permanent: false },
-    );
 
     for (const { slug, detail, create } of doorverwijzingen) {
       rules.push({ source: `/admin/collections/${slug}`, destination: `/dashboard/${slug}`, permanent: false });

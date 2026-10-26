@@ -8,7 +8,7 @@ const MUTED = "var(--bone-400)";
 const TEXT = "var(--bone-100)";
 
 export default function FormShell({
-  activePath, userName, rol, title, backHref, children, actions,
+  activePath, userName, rol, title, backHref, children, actions, wide,
 }: {
   activePath: string;
   userName: string;
@@ -17,6 +17,8 @@ export default function FormShell({
   backHref: string;
   children: React.ReactNode;
   actions?: React.ReactNode;
+  /** Volle breedte, voor een editor met live voorbeeld ernaast. */
+  wide?: boolean;
 }) {
   return (
     <DashboardShell activePath={activePath} userName={userName} rol={rol}>
@@ -31,9 +33,11 @@ export default function FormShell({
           }
         />
       </div>
-      <div style={{ padding: "2rem 2.5rem", maxWidth: "860px" }}>
-        {children}
-      </div>
+      {wide ? children : (
+        <div style={{ padding: "2rem 2.5rem", maxWidth: "860px" }}>
+          {children}
+        </div>
+      )}
     </DashboardShell>
   );
 }
@@ -66,10 +70,10 @@ const inputBase: React.CSSProperties = {
 };
 
 export function Field({
-  label, name, type = "text", required, defaultValue, placeholder, rows, children,
+  label, name, type = "text", required, defaultValue, placeholder, rows, maxLength, pattern, title, children,
 }: {
   label: string; name?: string; type?: string; required?: boolean;
-  defaultValue?: string | number; placeholder?: string; rows?: number; children?: React.ReactNode;
+  defaultValue?: string | number; placeholder?: string; rows?: number; maxLength?: number; pattern?: string; title?: string; children?: React.ReactNode;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", marginBottom: children ? 0 : "1.25rem" }}>
@@ -80,13 +84,13 @@ export function Field({
         type === "textarea" ? (
           <textarea
             name={name} rows={rows ?? 4} defaultValue={defaultValue}
-            placeholder={placeholder} required={required}
+            placeholder={placeholder} required={required} maxLength={maxLength}
             style={{ ...inputBase, resize: "vertical", lineHeight: 1.6 }}
           />
         ) : (
           <input
             type={type} name={name} defaultValue={defaultValue}
-            placeholder={placeholder} required={required}
+            placeholder={placeholder} required={required} maxLength={maxLength} pattern={pattern} title={title}
             step={type === "number" ? "any" : undefined}
             style={inputBase}
           />

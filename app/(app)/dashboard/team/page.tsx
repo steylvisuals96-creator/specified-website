@@ -28,7 +28,7 @@ export default async function TeamPage() {
       <PageHeader
         title="Team"
         subtitle={`${docs.totalDocs} teamleden`}
-        actions={<LimeBtn href="/admin/collections/team/create">Nieuw teamlid</LimeBtn>}
+        actions={<LimeBtn href="/dashboard/team/create">Nieuw teamlid</LimeBtn>}
       />
       <div className="px-5 py-6 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>Nog geen teamleden toegevoegd.</Empty> : (
@@ -56,7 +56,7 @@ export default async function TeamPage() {
                   </TD>
                   <TD>
                     <Link
-                      href={`/admin/collections/team/${doc.id}`}
+                      href={`/dashboard/team/${doc.id}/edit`}
                       style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "2px", background: "rgba(223,253,123,0.08)", color: "#dffd7b", fontSize: "0.8125rem", fontWeight: 600, border: "1px solid rgba(223,253,123,0.19)", textDecoration: "none" }}
                     >
                       Bewerken

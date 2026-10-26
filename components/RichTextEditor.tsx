@@ -38,6 +38,10 @@ const RichTextEditor = forwardRef<RichTextEditorHandle, { name: string; defaultV
     ],
     content: defaultValue || "",
     immediatelyRender: false,
+    // Tiptap 3 herrendert niet meer bij elke wijziging. Zonder dit blijft het
+    // verborgen veld hieronder op de beginwaarde staan en wordt bij opslaan een
+    // leeg artikel verstuurd; ook de knoppen (vet, kop) lichtten niet meer op.
+    shouldRerenderOnTransaction: true,
   });
 
   useEffect(() => {

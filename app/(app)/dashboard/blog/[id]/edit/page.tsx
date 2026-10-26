@@ -6,6 +6,7 @@ import { redirect, notFound } from "next/navigation";
 import FormShell, { Field, SelectField, FormSection, FormRow, SaveBtn, DeleteBtn } from "@/components/FormShell";
 import RichTextEditor from "@/components/RichTextEditor";
 import MediaUpload from "@/components/MediaUpload";
+import LiveEditor from "@/components/LiveEditor";
 import { htmlToLexical, lexicalToHtml } from "@/lib/lexical";
 
 const configPromise = import("@payload-config").then((m) => m.default);
@@ -71,6 +72,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
 
   return (
     <FormShell
+      wide
       activePath="/dashboard/blog"
       userName={(user as any).naam || user.email}
       rol={(user as any).rol}
@@ -78,6 +80,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
       backHref="/dashboard/blog"
       actions={<SaveBtn form="main-form" />}
     >
+      <LiveEditor soort="blog" voorbeeldPad="/blog/voorbeeld">
       <form id="main-form" action={save}>
         <FormSection title="Artikel">
           <Field label="Titel" name="titel" required defaultValue={doc.titel} />
@@ -131,6 +134,7 @@ export default async function BlogEditPage({ params }: { params: Promise<{ id: s
           <DeleteBtn label="Artikel verwijderen" />
         </div>
       </form>
+      </LiveEditor>
     </FormShell>
   );
 }

@@ -48,7 +48,7 @@ export const MENU: MenuGroep[] = [
   {
     titel: "Website",
     items: [
-      { href: "/admin/globals/website", label: "Homepage", icoon: "overzicht", alleenBeheerder: true },
+      { href: "/dashboard/homepage", label: "Homepage", icoon: "overzicht", alleenBeheerder: true },
       { href: "/dashboard/blog", label: "Blog", icoon: "blog" },
       { href: "/dashboard/team", label: "Team", icoon: "team" },
       { href: "/dashboard/media", label: "Media", icoon: "media" },

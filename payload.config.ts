@@ -37,13 +37,11 @@ function requireEnv(naam: string): string {
 const WEBSITE_URL = process.env.WEBSITE_URL ?? "https://specified-website.vercel.app";
 
 // Payloads eigen beheer is voor de bouwer. Klanten bewerken hun inhoud in het
-// dashboard, behalve de blog: die loopt via Payload, voor het live voorbeeld.
-// Alles behalve de blog verdwijnt daarom uit navigatie én routes voor wie geen
-// creator is. Dat is naast de toegangsregels en de middleware een derde laag.
+// dashboard (inclusief het live voorbeeld). Alles verdwijnt daarom uit
+// navigatie én routes voor wie geen creator is. Dat is naast de
+// toegangsregels en de middleware een derde laag.
 const ALLEEN_CREATOR = { hidden: ({ user }: { user?: any }) => !isCreator(user) };
-// Wat de redactie in Payload bewerkt, voor het live voorbeeld (blog, team,
-// homepage) en de uploads die daarbij horen (media).
-const VOOR_REDACTIE = ["blog", "team", "media", "website"];
+const VOOR_REDACTIE: string[] = [];
 const metBeperking = <T extends { slug: string; admin?: any }>(c: T): T =>
   VOOR_REDACTIE.includes(c.slug) ? c : { ...c, admin: { ...c.admin, ...ALLEEN_CREATOR } };
 

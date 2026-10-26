@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import FormShell, { Field, SelectField, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
 import RichTextEditor from "@/components/RichTextEditor";
 import MediaUpload from "@/components/MediaUpload";
+import LiveEditor from "@/components/LiveEditor";
 import { htmlToLexical } from "@/lib/lexical";
 
 const configPromise = import("@payload-config").then((m) => m.default);
@@ -55,6 +56,7 @@ export default async function BlogCreatePage() {
 
   return (
     <FormShell
+      wide
       activePath="/dashboard/blog"
       userName={(user as any).naam || user.email}
       rol={(user as any).rol}
@@ -62,6 +64,7 @@ export default async function BlogCreatePage() {
       backHref="/dashboard/blog"
       actions={<SaveBtn form="main-form" />}
     >
+      <LiveEditor soort="blog" voorbeeldPad="/blog/voorbeeld">
       <form id="main-form" action={create}>
         <FormSection title="Artikel">
           <Field label="Titel" name="titel" required placeholder="Bv. Zo vind je de juiste engineer" />
@@ -104,6 +107,7 @@ export default async function BlogCreatePage() {
 
         <SaveBtn />
       </form>
+      </LiveEditor>
     </FormShell>
   );
 }
