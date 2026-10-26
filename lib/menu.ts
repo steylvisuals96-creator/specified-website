@@ -26,6 +26,8 @@ export type MenuItem = {
   label: string;
   icoon: MenuIcoon;
   alleenBeheerder?: boolean;
+  /** Alleen voor de creator (de bouwer); ook beheerders van de klant zien het niet. */
+  alleenCreator?: boolean;
 };
 
 export type MenuGroep = { titel?: string; items: MenuItem[] };
@@ -56,14 +58,18 @@ export const MENU: MenuGroep[] = [
     items: [
       { href: "/dashboard/gebruikers", label: "Gebruikers", icoon: "gebruikers", alleenBeheerder: true },
       { href: "/dashboard/instellingen", label: "Instellingen", icoon: "instellingen", alleenBeheerder: true },
-      { href: "/admin", label: "Geavanceerd beheer", icoon: "beheer", alleenBeheerder: true },
+      { href: "/admin", label: "Geavanceerd beheer", icoon: "beheer", alleenCreator: true },
     ],
   },
 ];
 
 export function menuVoor(rol?: string | null): MenuGroep[] {
-  const beheerder = rol === "beheerder" || rol === "creator";
-  return MENU.map((g) => ({ ...g, items: g.items.filter((i) => beheerder || !i.alleenBeheerder) })).filter(
+  const creator = rol === "creator";
+  const beheerder = rol === "beheerder" || creator;
+  return MENU.map((g) => ({
+    ...g,
+    items: g.items.filter((i) => (beheerder || !i.alleenBeheerder) && (creator || !i.alleenCreator)),
+  })).filter(
     (g) => g.items.length > 0,
   );
 }

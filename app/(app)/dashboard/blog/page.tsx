@@ -40,7 +40,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
       <PageHeader
         title="Blog"
         subtitle={`${docs.totalDocs} artikels`}
-        actions={<LimeBtn href="/dashboard/blog/create">Nieuw artikel</LimeBtn>}
+        actions={<LimeBtn href="/admin/collections/blog/create">Nieuw artikel</LimeBtn>}
       />
       <div className="px-5 sm:px-8 lg:px-10">
         <ZoekFilter placeholder="Zoek op titel of samenvatting…" defaultValue={q ?? ""} />
@@ -53,7 +53,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>
-                  <Link href={`/dashboard/blog/${doc.id}/edit`} style={{ color: "inherit", textDecoration: "none" }}>
+                  <Link href={`/admin/collections/blog/${doc.id}`} style={{ color: "inherit", textDecoration: "none" }}>
                     {doc.titel}
                   </Link>
                 </TD>
@@ -67,7 +67,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 <TD muted>/blog/{doc.slug || "—"}</TD>
                 <TD>
                   <Link
-                    href={`/dashboard/blog/${doc.id}/edit`}
+                    href={`/admin/collections/blog/${doc.id}`}
                     style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "2px", background: "rgba(223,253,123,0.08)", color: "#dffd7b", fontSize: "0.8125rem", fontWeight: 600, border: "1px solid rgba(223,253,123,0.19)", textDecoration: "none" }}
                   >
                     Bewerken

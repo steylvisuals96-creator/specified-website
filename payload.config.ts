@@ -17,6 +17,7 @@ import { Documenten } from "./collections/Documenten";
 import { Gebruikers } from "./collections/Gebruikers";
 import { Activiteiten } from "./collections/Activiteiten";
 import { Instellingen } from "./globals/Instellingen";
+import { isCreator } from "./lib/access";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -30,6 +31,17 @@ function requireEnv(naam: string): string {
   }
   return waarde;
 }
+
+// De website waarin het live voorbeeld van een artikel getoond wordt.
+const WEBSITE_URL = process.env.WEBSITE_URL ?? "https://specified-website.vercel.app";
+
+// Payloads eigen beheer is voor de bouwer. Klanten bewerken hun inhoud in het
+// dashboard, behalve de blog: die loopt via Payload, voor het live voorbeeld.
+// Alles behalve de blog verdwijnt daarom uit navigatie én routes voor wie geen
+// creator is. Dat is naast de toegangsregels en de middleware een derde laag.
+const ALLEEN_CREATOR = { hidden: ({ user }: { user?: any }) => !isCreator(user) };
+const metBeperking = <T extends { slug: string; admin?: any }>(c: T): T =>
+  c.slug === "blog" ? c : { ...c, admin: { ...c.admin, ...ALLEEN_CREATOR } };
 
 const r2Enabled = !!(
   process.env.R2_ACCOUNT_ID &&
@@ -72,6 +84,17 @@ export default buildConfig({
   ],
   admin: {
     user: "gebruikers",
+    livePreview: {
+      collections: ["blog"],
+      // De pagina op de website luistert naar de berichten van Payload en
+      // toont wat er in het formulier staat, ook niet-bewaarde wijzigingen.
+      url: () => `${WEBSITE_URL}/blog/voorbeeld`,
+      openByDefault: true,
+      breakpoints: [
+        { name: "mobiel", label: "Mobiel", width: 390, height: 844 },
+        { name: "tablet", label: "Tablet", width: 768, height: 1024 },
+      ],
+    },
     // Niet automatisch: lokaal staat R2 uit en dan zou de dev-server de
     // S3-uploadcomponent uit de map halen. Nieuwe admin-componenten?
     // `npx tsx scripts/db-migratie.ts importmap`
@@ -102,8 +125,8 @@ export default buildConfig({
     Media,
     Documenten,
     Gebruikers,
-  ],
-  globals: [Instellingen],
+  ].map(metBeperking),
+  globals: [metBeperking(Instellingen)],
   editor: lexicalEditor(),
   // Geen fallback. Deze sleutel ondertekent de sessie-JWT's; een standaard-
   // waarde die in de repo staat, betekent dat iedereen met de broncode een
