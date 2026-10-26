@@ -2,9 +2,8 @@ export const dynamic = "force-dynamic";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardShell, { PageHeader, Table, TD, Empty } from "@/components/DashboardShell";
-import TeamEditDrawer from "@/components/TeamEditDrawer";
-import TeamCreateDrawer from "@/components/TeamCreateDrawer";
+import Link from "next/link";
+import DashboardShell, { PageHeader, LimeBtn, Table, TD, Empty } from "@/components/DashboardShell";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -29,7 +28,7 @@ export default async function TeamPage() {
       <PageHeader
         title="Team"
         subtitle={`${docs.totalDocs} teamleden`}
-        actions={<TeamCreateDrawer />}
+        actions={<LimeBtn href="/admin/collections/team/create">Nieuw teamlid</LimeBtn>}
       />
       <div className="px-5 py-6 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>Nog geen teamleden toegevoegd.</Empty> : (
@@ -56,14 +55,12 @@ export default async function TeamPage() {
                     </span>
                   </TD>
                   <TD>
-                    <TeamEditDrawer
-                      id={doc.id}
-                      initial={{
-                        voornaam: doc.voornaam, achternaam: doc.achternaam,
-                        rol: doc.rol, email: doc.email, linkedin: doc.linkedin,
-                        bio: doc.bio, volgorde: doc.volgorde, actief: doc.actief,
-                      }}
-                    />
+                    <Link
+                      href={`/admin/collections/team/${doc.id}`}
+                      style={{ display: "block", textAlign: "center", padding: "0.5rem", borderRadius: "2px", background: "rgba(223,253,123,0.08)", color: "#dffd7b", fontSize: "0.8125rem", fontWeight: 600, border: "1px solid rgba(223,253,123,0.19)", textDecoration: "none" }}
+                    >
+                      Bewerken
+                    </Link>
                   </TD>
                 </tr>
               );
