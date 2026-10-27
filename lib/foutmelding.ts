@@ -63,13 +63,16 @@ export function moetGemeldWorden(err: unknown): boolean {
   return true;
 }
 
-export async function meldFout(err: unknown, ctx: Context): Promise<void> {
+/** Wat er met een melding gebeurde; alleen nuttig voor het testscript. */
+export type Uitkomst = { verstuurd: boolean; reden: string };
+
+export async function meldFout(err: unknown, ctx: Context): Promise<Uitkomst> {
   try {
     const sleutel = process.env.RESEND_API_KEY;
     const aan = process.env.FOUTMELDING_AAN;
-    if (!sleutel || !aan) return;
-    if (process.env.NODE_ENV !== "production" && process.env.FOUTMELDING_TEST !== "1") return;
-    if (!moetGemeldWorden(err)) return;
+    if (!sleutel || !aan) return { verstuurd: false, reden: "RESEND_API_KEY of FOUTMELDING_AAN ontbreekt" };
+    if (process.env.NODE_ENV !== "production" && process.env.FOUTMELDING_TEST !== "1") return { verstuurd: false, reden: "niet in productie" };
+    if (!moetGemeldWorden(err)) return { verstuurd: false, reden: "gebruikersfout of Next-signaal" };
 
     const naam = err instanceof Error ? err.name : "Fout";
     const boodschap = err instanceof Error ? err.message : String(err);
@@ -79,10 +82,10 @@ export async function meldFout(err: unknown, ctx: Context): Promise<void> {
     const vorige = laatst.get(vingerafdruk);
     if (vorige && nu - vorige.tijd < UUR) {
       vorige.onderdrukt++;
-      return;
+      return { verstuurd: false, reden: "zelfde fout al gemaild dit uur" };
     }
     if (nu - venster.start >= UUR) venster = { start: nu, aantal: 0 };
-    if (venster.aantal >= MAX_PER_UUR) return;
+    if (venster.aantal >= MAX_PER_UUR) return { verstuurd: false, reden: `limiet van ${MAX_PER_UUR} per uur bereikt` };
     venster.aantal++;
     const onderdrukt = vorige?.onderdrukt ?? 0;
     laatst.set(vingerafdruk, { tijd: nu, onderdrukt: 0 });
@@ -107,7 +110,7 @@ export async function meldFout(err: unknown, ctx: Context): Promise<void> {
     ].filter((r) => r !== null);
 
     const uurVak = Math.floor(nu / UUR);
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${sleutel}`,
@@ -123,8 +126,12 @@ export async function meldFout(err: unknown, ctx: Context): Promise<void> {
       }),
       signal: AbortSignal.timeout(4000),
     });
-  } catch {
+    if (res.ok) return { verstuurd: true, reden: "aanvaard door Resend" };
+    const detail = await res.text().catch(() => "");
+    return { verstuurd: false, reden: `Resend antwoordde ${res.status}: ${detail.slice(0, 200)}` };
+  } catch (e) {
     // De melder mag zelf nooit iets laten mislukken.
+    return { verstuurd: false, reden: `Resend onbereikbaar: ${e instanceof Error ? e.message : String(e)}` };
   }
 }
 

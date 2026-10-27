@@ -150,10 +150,11 @@ Lokaal op Postgres 17 (2026-10-27): de dump bevat alle rijen, ook van een RLS-ta
    - `FOUTMELDING_AAN`: je e-mailadres (meerdere adressen scheid je met een komma)
    - optioneel `FOUTMELDING_VAN`, bv. `Specified monitoring <monitoring@specified.be>`, zodra het domein bij Resend geverifieerd is (na de domeinverhuis)
 4. Deploy beide projecten opnieuw.
-5. Proefmail:
+5. Proefmail (plak bij `read -s` je sleutel en druk Enter; hij verschijnt niet op het scherm en niet in je geschiedenis):
    ```bash
    cd ~/specified-cms
-   RESEND_API_KEY=re_... FOUTMELDING_AAN=jij@voorbeeld.be npx tsx scripts/test-foutmelding.ts
+   read -s RESEND_API_KEY && export RESEND_API_KEY
+   FOUTMELDING_AAN=steylvisuals96@gmail.com npx tsx scripts/test-foutmelding.ts
    ```
 
 Het gratis plan van Resend staat 100 mails per dag toe. Met de limiet hierboven blijf je daar ruim onder.
