@@ -9,8 +9,9 @@ begin
   end if;
 end $$;
 
-alter role backup_lezer with login password 'VUL_HIER_EEN_WACHTWOORD_IN'
-  nosuperuser nocreatedb nocreaterole noinherit noreplication connection limit 2;
+-- Alleen wachtwoord, login en verbindingslimiet: superuser, createdb, createrole
+-- en replication staan bij een nieuwe rol al uit (en Supabase laat ze niet wijzigen).
+alter role backup_lezer with login password 'VUL_HIER_EEN_WACHTWOORD_IN' connection limit 2;
 
 grant usage on schema payload to backup_lezer;
 grant select on all tables in schema payload to backup_lezer;
