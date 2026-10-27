@@ -119,7 +119,7 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 - **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload`, niet via de Data API bereikbaar, anon en authenticated hebben geen rechten. Migratie uit MongoDB op 2026-09-26.
 - **Cloudflare R2**: mediabucket (privé, ondertekende links) en aparte bucket `specified-backups`. De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
 - **GitHub Actions** (CMS): nachtelijke back-up, `.github/workflows/backup.yml`.
-- **Resend** (in uitvoering, 2026-10-27, nog niet gecommit in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een begrenzing op het aantal mails. Zodra het gecommit is, deze regel aanpassen.
+- **Resend** (live in de CMS sinds 2026-10-27): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
 
 ### Monitoring en back-ups
 
@@ -199,7 +199,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-27 22:31_
+_Bijgewerkt: 2026-10-27 22:33_
 
 ### Nog niet op main
 
@@ -212,11 +212,14 @@ _Bijgewerkt: 2026-10-27 22:31_
 
 **2026-10-27**
 
+- website: Draaiboek van de website, met script voor de wijzigingslog (`e09a7e5`)
+- website: Foutmeldingen per mail via Resend, met limiet (`05790bd`)
 - website: Bewerkmodus: titelblok van de tekening aanklikbaar (`ceb3bbc`)
 - website: Bewerkmodus: callouts van de tekening aanklikbaar (`3656ab7`)
 - website: Bewerkmodus: tekst onder de muis zoeken, ook onder de scrollhero-lagen (`059abe3`)
 - website: Favicon: alleen het groene beeldmerk, zonder donkere achtergrond (`e471df9`)
 - website: Bewerkmodus: klikbare teksten op de homepage-voorbeeldpagina (?bewerken) (`3155b60`)
+- cms: Foutmeldingen per mail via Resend, met limiet (`aa5dbcc`)
 - cms: Monitoring en nachtelijke back-ups (`258f609`)
 - cms: Pop-up: titelblok van de tekening bewerkbaar (`20662b5`)
 - cms: Pop-up: callouts van de tekening bewerkbaar (`a071c6e`)
