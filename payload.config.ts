@@ -108,6 +108,11 @@ export default buildConfig({
     importMap: { autoGenerate: false },
     meta: {
       titleSuffix: "— Specified CMS",
+      // Zelfde favicon als /dashboard en de website (app/icon.svg).
+      icons: [
+        { rel: "icon", type: "image/svg+xml", url: "/icon.svg" },
+        { rel: "apple-touch-icon", url: "/apple-icon.png" },
+      ],
     },
     components: {
       graphics: {
