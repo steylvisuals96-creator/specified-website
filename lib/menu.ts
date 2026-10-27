@@ -58,7 +58,10 @@ export const MENU: MenuGroep[] = [
     titel: "Beheer",
     items: [
       { href: "/dashboard/gebruikers", label: "Gebruikers", icoon: "gebruikers", alleenBeheerder: true },
-      { href: "/dashboard/instellingen", label: "Instellingen", icoon: "instellingen", alleenBeheerder: true },
+      // Voor de klant overbodig: de teksten passen ze aan via Homepage. Blijft
+      // voor de creator, want de website leest hier nog contact-e-mail,
+      // telefoon, LinkedIn, footertekst en bedrijfsnaam uit.
+      { href: "/dashboard/instellingen", label: "Instellingen", icoon: "instellingen", alleenCreator: true },
       { href: "/admin", label: "Geavanceerd beheer", icoon: "beheer", alleenCreator: true },
     ],
   },
