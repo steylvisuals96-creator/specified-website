@@ -68,16 +68,40 @@ export function rolLabel(value?: string): string {
   return value ? ROL_LABEL[value] ?? value : "";
 }
 
-export async function getSettings(): Promise<SiteSettings> {
+type Contact = { email?: string; telefoon?: string; linkedin?: string; footerTekst?: string };
+
+async function haalGlobal<T>(slug: string): Promise<Partial<T>> {
   try {
-    const res = await fetch(`${CMS_URL}/api/globals/instellingen`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return {};
-    return (await res.json()) as SiteSettings;
+    const res = await fetch(`${CMS_URL}/api/globals/${slug}`, { next: { revalidate: 60 } });
+    return res.ok ? ((await res.json()) as Partial<T>) : {};
   } catch {
     return {};
   }
+}
+
+const gevuld = (v: unknown): string | undefined => (typeof v === "string" && v.trim() ? v.trim() : undefined);
+
+/** Alleen https-links: een javascript:-link uit de CMS mag nooit in een href belanden. */
+export const veiligeLink = (v?: string): string | undefined => (v && /^https:\/\//i.test(v) ? v : undefined);
+
+/**
+ * Instellingen, met de contactgegevens uit de Homepage-editor (global
+ * "website", groep "contact"). Een leeg veld daar valt terug op Instellingen,
+ * waar ze vroeger stonden.
+ */
+export async function getSettings(): Promise<SiteSettings> {
+  const [s, website] = await Promise.all([
+    haalGlobal<SiteSettings>("instellingen"),
+    haalGlobal<{ contact?: Contact }>("website"),
+  ]);
+  const c: Contact = website.contact ?? {};
+  return {
+    ...s,
+    contact_email: gevuld(c.email) ?? gevuld(s.contact_email),
+    telefoon: gevuld(c.telefoon) ?? gevuld(s.telefoon),
+    linkedin: veiligeLink(gevuld(c.linkedin) ?? gevuld(s.linkedin)),
+    footer_tekst: gevuld(c.footerTekst) ?? gevuld(s.footer_tekst),
+  };
 }
 
 export async function getTeam(): Promise<TeamMember[]> {

@@ -9,6 +9,7 @@ import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { veiligeLink } from "@/lib/settings";
 import ScrollMomenten from "@/components/ScrollMomenten";
 import BewerkOverlay from "@/components/BewerkOverlay";
 import { samenvoegen, STANDAARD } from "@/lib/website";
@@ -48,10 +49,10 @@ export default function HomeVoorbeeld() {
         <Split kolommen={inhoud.diensten} />
         <Jobs jobs={[]} titel={inhoud.jobs.titel} linkTekst={inhoud.jobs.linkTekst} />
         <Team />
-        <CTA />
+        <CTA email={inhoud.contact.email || undefined} telefoon={inhoud.contact.telefoon || undefined} />
       </main>
       <ScrollMomenten />
-      <Footer />
+      <Footer linkedin={veiligeLink(inhoud.contact.linkedin)} footerTekst={inhoud.contact.footerTekst || undefined} />
     </>
   );
 }

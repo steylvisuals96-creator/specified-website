@@ -13,6 +13,8 @@ export type WebsiteInhoud = {
   consultants: { titel: string; accent: string; tekst: string; profielen: string[] };
   diensten: typeof DIENSTEN;
   jobs: typeof JOBS;
+  /** Leeg = de standaard van het onderdeel (CTA/Footer). */
+  contact: { email: string; telefoon: string; linkedin: string; footerTekst: string };
 };
 
 export const STANDAARD: WebsiteInhoud = {
@@ -22,6 +24,7 @@ export const STANDAARD: WebsiteInhoud = {
   consultants: CONSULTANTS,
   diensten: DIENSTEN,
   jobs: JOBS,
+  contact: { email: "", telefoon: "", linkedin: "", footerTekst: "" },
 };
 
 const tekst = (cms: unknown, terugval: string): string =>
@@ -75,6 +78,12 @@ export function samenvoegen(cms: any): WebsiteInhoud {
     jobs: {
       titel: tekst(c.jobs?.titel, S.jobs.titel),
       linkTekst: tekst(c.jobs?.linkTekst, S.jobs.linkTekst),
+    },
+    contact: {
+      email: tekst(c.contact?.email, ""),
+      telefoon: tekst(c.contact?.telefoon, ""),
+      linkedin: tekst(c.contact?.linkedin, ""),
+      footerTekst: tekst(c.contact?.footerTekst, ""),
     },
   };
 }

@@ -199,19 +199,19 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-27 22:33_
+_Bijgewerkt: 2026-10-27 22:44_
 
 ### Nog niet op main
 
 - website, branch `preview/audit-fixes-2`: 3 commit(s) voor op main
 - website, branch `preview/hero-beweging`: 1 commit(s) voor op main
 - website, branch `preview/streepjes-nav`: 1 commit(s) voor op main
-- cms, branch `blog-automatisering`: 2 commit(s) voor op main
 
 ### Op main
 
 **2026-10-27**
 
+- website: Draaiboek: Resend-foutmeldingen live, log ververst (`a8000ca`)
 - website: Draaiboek van de website, met script voor de wijzigingslog (`e09a7e5`)
 - website: Foutmeldingen per mail via Resend, met limiet (`05790bd`)
 - website: Bewerkmodus: titelblok van de tekening aanklikbaar (`ceb3bbc`)
@@ -219,13 +219,6 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Bewerkmodus: tekst onder de muis zoeken, ook onder de scrollhero-lagen (`059abe3`)
 - website: Favicon: alleen het groene beeldmerk, zonder donkere achtergrond (`e471df9`)
 - website: Bewerkmodus: klikbare teksten op de homepage-voorbeeldpagina (?bewerken) (`3155b60`)
-- cms: Foutmeldingen per mail via Resend, met limiet (`aa5dbcc`)
-- cms: Monitoring en nachtelijke back-ups (`258f609`)
-- cms: Pop-up: titelblok van de tekening bewerkbaar (`20662b5`)
-- cms: Pop-up: callouts van de tekening bewerkbaar (`a071c6e`)
-- cms: Favicon: alleen het groene beeldmerk, zonder donkere achtergrond (`2d7517f`)
-- cms: Op de pagina bewerken: klik een tekst, pas aan in een pop-up, opslaan (`17a2677`)
-- cms: Favicon: Specified-beeldmerk in plaats van het standaard Next-icoon (`0a09302`)
 
 **2026-10-26**
 
@@ -233,9 +226,6 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Live voorbeeld: gedeelde artikelweergave en stabiele hero-herbouw (`896c1d0`)
 - website: Homepage-teksten uit de CMS en live voorbeelden voor homepage en team (`032a46a`)
 - website: Live voorbeeld voor blogartikelen vanuit het CMS (`d7f0b5a`)
-- cms: Live editor in het dashboard: Homepage, Blog en Team met de website ernaast (`b979d21`)
-- cms: Live editor: homepage-teksten in de CMS, voorbeeld voor homepage en team (`3f0e725`)
-- cms: Live voorbeeld voor de blog in Payload; Geavanceerd beheer alleen voor de creator (`5b6a7c3`)
 
 **2026-10-22**
 
@@ -267,8 +257,6 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Vacatures en blog: geen middenpunt of vinkje meer, kleinste tekst naar 13px (`a6416a3`)
 - website: Fase 6: laadtijd en SEO (`839f834`)
 - website: Hero: scrollruimte als echt element, zodat sticky werkt (geen lege band meer) (`38a0f05`)
-- cms: Beveiliging na review back-end redesign: strengere links en statuscontrole (`506be38`)
-- cms: Admin-handleiding voor Specified (`adb7d27`)
 
 **2026-09-26**
 
@@ -282,12 +270,6 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Scherpere turbine-frames: volle bronresolutie, lichtere compressie, minder zoom (`3c4d06b`)
 - website: Turbine speelt af met de scroll: gepinde hero met framereeks op canvas (`2253e9b`)
 - website: Turbine als naadloze videolus in de hero, scroll-rotatie vervangen door zoom (`d913f93`)
-- cms: Back-office redesign: één huisstijl en één menu voor /dashboard en /admin (`af468b3`)
-- cms: Ontwerpreferentie back-end: dashboard, kandidatenlijst, kandidaat-detail (`21bfa53`)
-- cms: Beveiliging: headers, uploadbeperking, login-lockout, geen interne foutmeldingen (`8164aa1`)
-- cms: Beveiligingsupdates: Payload 3.90.2 en Next.js 16.3.6 (`4f2c1b9`)
-- cms: Overstap-script bouwt de adressen zelf uit de gekopieerde Atlas- en Supabase-regels (`7b2bdee`)
-- cms: Supabase (Postgres) als database, met migratiescript vanuit MongoDB (`8002fb7`)
 
 **2026-09-25**
 
@@ -300,24 +282,16 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Voeg Signatuurmerk-ontwerpreferenties per sectie toe (`f4192b9`)
 - website: Voeg vrijstaande founder-portretten toe voor Signatuurmerk (`a8dd605`)
 - website: Start redesign Signatuurmerk: playbook-status fase 0 (`630e639`)
-- cms: Beveilig server actions en voeg creator-rol toe (`09cca63`)
 
 **2026-07-26**
 
 - website: Zet security headers en maak de repo overdraagbaar (`a9e806f`)
 - website: Vacatures tonen waar een ingenieur echt op beslist (`6627a8f`)
 - website: Fix twee P0's: werkende cookieconsent en dode navigatie-anchors (`bbfba44`)
-- cms: Laad de huisstijl-fonts in het dashboard (`cf64589`)
-- cms: Beperk make-callback tot een allowlist en documenteer de overdracht (`8ccecc4`)
-- cms: Dicht twee API-lekken en verwijder overgenomen vastgoedcode (`4318167`)
-- cms: Beveilig CMS: sluit publieke API-toegang tot interne data af (`66843d6`)
 
 **2026-07-21**
 
 - website: Gebruik cover_url als fallback voor blogafbeeldingen zonder upload (`b74e833`)
-- cms: Verwijder tijdelijke seed-covers route (`06ee263`)
-- cms: Voeg cover_url veld toe aan Blog + fix seed-covers voor Vercel filesystem (`c796f1e`)
-- cms: Tijdelijk: seed-covers route voor voorbeeldblogafbeeldingen (`f229f87`)
 
 **2026-07-20**
 
@@ -325,9 +299,6 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Voeg blog toe aan website + SEO-fundament (`90d9534`)
 - website: Menu "Jobs" verwijst naar de volledige vacaturepagina (`d15923b`)
 - website: Fix teamfoto's: juiste uitsnede en portretformaat (`9ebc821`)
-- cms: Verwijder tijdelijke seed-route (voorbeeldblogs zijn aangemaakt) (`988c786`)
-- cms: Tijdelijke seed-route voor voorbeeldblogs (wordt hierna verwijderd) (`13c3072`)
-- cms: Voeg Blog toe aan CMS (`477d807`)
 
 **2026-07-19**
 
@@ -338,23 +309,10 @@ _Bijgewerkt: 2026-10-27 22:33_
 
 - website: Fix menulinks: verwijs naar homepage-secties vanaf elke pagina (`c511d8e`)
 - website: Vacaturepagina + legal footers uit CMS, 404-pagina, Speed Insights (`821d01b`)
-- cms: Opruiming: verwijder SOM Vastgoed-restanten uit Specified CMS (`aa62555`)
-- cms: Voeg vacatures_titel veld toe aan Instellingen (`913452e`)
-
-**2026-07-17**
-
-- cms: Fix SOM-gouden kleur → Specified lime in logo-upload & media-pagina (`142a3be`)
-
-**2026-07-16**
-
-- cms: Fix sticky formulier-header: maak main-gebied echte scroll-container (`c8a3b62`)
 
 **2026-07-15**
 
 - website: Website: alle homepage-content uit het CMS (`2dc8a29`)
-- cms: Maak formulier-header (Opslaan/Annuleren) sticky bij scrollen (`852c7f3`)
-- cms: Herbouw instellingen-dashboard voor Specified-website (`a84031c`)
-- cms: CMS: alle homepage-content aanpasbaar maken (`b2d340e`)
 
 **2026-07-11**
 
@@ -369,34 +327,10 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Koppel homepage aan CMS Instellingen-global (`75c43ce`)
 - website: Voeg privacybeleid, cookiebeleid en cookie-consent banner toe (`f5f6371`)
 - website: Homepage wow-effect: woord-wissel, marquee, count-up, cursor, grain (`1640231`)
-- cms: Voeg Systeemstatus-widget toe aan dashboard (`f2f1afe`)
-- cms: Maak Instellingen-global publiek leesbaar voor website-koppeling (`505a9c9`)
-- cms: Fix build errors: unused import, where types, scripts uit tsconfig (`96e1388`)
-
-**2026-07-04**
-
-- cms: Fix ZoekFilter: verwijder useSearchParams, gebruik defaultValue prop (`0ad6dbd`)
-- cms: Zoekbalken, CSV export, dashboard links fix, mobile CSS, Tom & Simon seed (`cfd501a`)
-- cms: Voeg bewerk-drawer toe aan gebruikers pagina met rol-veld (`8924629`)
-- cms: Verwijder admin.access uit payload.config (bestaat niet in v3) (`32ff3ab`)
-- cms: Fix admin.access signature voor Payload v3 (`1c4372a`)
-- cms: Blokkeer Payload admin voor niet-beheerders (`13cf53f`)
-- cms: Inline create drawers voor team, gebruikers en activiteiten (`536767a`)
-- cms: Vervang Payload admin link voor nieuwe vacature door inline drawer (`7570099`)
-- cms: Vervang Payload admin links door inline create drawers (`75ee448`)
-- cms: Fix SVG logo clipping in Payload admin by expanding viewBox (`63cc5c8`)
-- cms: Close all edit drawers automatically after save (`ace46f5`)
-- cms: Consistent '✏️ Bewerken' button on all list pages: kandidaten, bedrijven, sollicitaties, team (`85113a2`)
-- cms: Remove Payload admin links: bedrijven detail, team drawer, gebruikers cleanup (`9b78395`)
-- cms: Add VacatureEditDrawer — inline edit drawer in vacatures list (`6ce3635`)
-- cms: Fix autoOpen destructuring in KandidaatEditDrawer (`028b9eb`)
-- cms: Add edit pencil icon to kandidaten and vacatures list, auto-open drawer via ?edit=1 (`5cc5c14`)
 
 **2026-06-28**
 
 - website: Swap Jobs and Over ons in nav order (`ac28506`)
-- cms: Revalidate dashboard and sollicitaties cache after pipeline drag-drop (`cd2919b`)
-- cms: Fix tel_gescreend status showing as raw slug in sollicitaties overzicht (`b333f60`)
 
 **2026-06-27**
 
@@ -412,125 +346,11 @@ _Bijgewerkt: 2026-10-27 22:33_
 - website: Team section: fix Simon duplicate, add 7-shape 3D scroll animation with logo marks (`6be1317`)
 - website: Redesign team section: full-width cards with real photos, lime panels, 3D scroll shapes (`89b3873`)
 - website: Add real logo, team photos and footer from specified.be (`61d20d9`)
-- cms: Add Agenda page with meeting calendar export (Google, Outlook, .ics) (`025444c`)
-- cms: Fix build errors: remove invalid afterLogin route, move server action (`72639ff`)
-- cms: Restyle FormShell to Specified branding (lime, dark, Avenir) (`3c68d47`)
-- cms: Add inline activity drawer on kandidaat and bedrijf detail pages (`093c576`)
-- cms: Redirect to /dashboard after login instead of Payload admin (`a2c1566`)
-- cms: Add inline edit drawers for bedrijven, vacatures, sollicitaties (`374525c`)
-- cms: Add inline edit drawer on kandidaat detail page (`3cbf0dd`)
-- cms: Restyle Payload admin with Specified branding (`67a269b`)
-- cms: Auto-BCC logging address on reply button via Instellingen (`28226ef`)
-- cms: Make activity feed items expandable with full-text view and reply button (`5f24de6`)
-- cms: Add Activiteiten collection with full email activity logging system (`386da42`)
-- cms: Redirect /admin to /dashboard (`6cc997d`)
-- cms: Show counts on pie chart slices + total in center (`4b330cc`)
-- cms: Fix dashboard TS errors: avoid where spread, use as any for collections (`bc2f051`)
-- cms: Fix: remove useSearchParams (no Suspense boundary) (`ffae87b`)
-- cms: Add time range filter (vandaag/week/maand/kwartaal/alles) + trend badges on KPIs (`926499d`)
-- cms: Add customizable dashboard — toggle widgets via slide-in panel (`db38ebd`)
-- cms: Add recharts dashboard: sector bar chart, pipeline pie chart, improved KPIs (`145b844`)
-- cms: Add Kanban pipeline board with drag-and-drop (`8488494`)
-- cms: Rework admin CSS to use Payload v3 CSS variables correctly (`284dbdf`)
-- cms: Use Specified website fonts in CMS: Bebas Neue + Avenir, larger & bolder (`70785e0`)
-- cms: Rebuild custom dashboard with Specified branding and recruitment pages (`41ad79e`)
-- cms: Add Specified admin theme — lime #dffd7b on dark #1e1e21 (`5123c4b`)
-- cms: Init Specified CMS — HR recruitment voor engineering profielen (`6b19a62`)
-- cms: Fix: notificaties alleen bij echte website-leads (contactformulier/website) (`6b942e0`)
-- cms: Automatische duplicaatdetectie op e-mail, telefoonnummer en naam (`0e19c0b`)
-- cms: Salesforce-achtige leads tabel: checkboxes, bulk acties, merge, verwijderen (`7c26baa`)
-- cms: Fix build: verwijder ui-type veld zonder component in Instellingen (`0191271`)
 
 **2026-06-26**
 
 - website: Initial build: Specified website with homepage, vacatures page, fonts, team photos (`8f705b8`)
 - website: Initial commit from Create Next App (`6f15521`)
-- cms: Voeg 5 features toe: KPI dashboard, kalender, WhatsApp webhook, Google Calendar, Immoweb import (`3cc59cd`)
-- cms: Fix kanban drag: voeg useDroppable toe aan kolommen voor lege kolommen als drop target (`2d9bd45`)
-- cms: Lead pipeline uitbreiding: pipeline waarde, verlopen badge, makelaar filter, CSV export, tijdlijn, budget veld (`1b997d2`)
-- cms: Kanban pipeline voor leads: drag-and-drop per status kolom, optimistic updates (`3f0efd4`)
-- cms: Voeg Nieuwbouw collectie toe: naam, promotor, locatie, status, fotos, beschrijving (`e406d05`)
-- cms: Breid Instellingen global uit: hero, over ons, contact, statistieken, socials (`ce79265`)
-- cms: Herstel SOM branding in CMS admin: logo + icon via path strings in importMap (`bc16661`)
-- cms: Revert "Fix admin importMap: page was importing from empty importMap instead of the correct one" (`0f2e80d`)
-- cms: Fix importMap.ts: voeg S3ClientUploadHandler toe (TS bestand had prioriteit over .js) (`a38f63b`)
-
-**2026-06-25**
-
-- cms: Fix admin importMap: page was importing from empty importMap instead of the correct one (`3869f0c`)
-
-**2026-06-24**
-
-- cms: Fix importMap: voeg S3ClientUploadHandler toe van storage-s3 plugin (`6c75abe`)
-- cms: Fix CMS admin: verwijder custom components tijdelijk om admin werkend te krijgen (`09f47d3`)
-- cms: Fix CMS admin zwart scherm: registreer custom components in importMap (`459de5c`)
-- cms: Fix CMS admin zwart scherm: genereer importMap voor elk build (`802e458`)
-- cms: Verwijder tijdelijke seed-nieuws route na import (`520a304`)
-- cms: Seed nieuws: verwijder tijdelijke auth check voor eenmalige import (`ed7d347`)
-- cms: Voeg tijdelijke seed route toe voor 3 nieuwsberichten (`dcf4b1a`)
-- cms: Fix R2 opslag: vervang storage-r2 door storage-s3 voor Node.js/Vercel compatibiliteit (`6a75614`)
-- cms: Maak Nieuws en Testimonials collections publiek leesbaar via REST API (`076474a`)
-- cms: Trigger redeploy: activate Cloudflare R2 media storage (`182a8b8`)
-- cms: Fix server crash on edit page by adding use client to FormShell (`ec2abba`)
-
-**2026-06-23**
-
-- cms: Voeg Cloudflare R2 storage adapter toe voor media uploads (`aee8de2`)
-- cms: Verwijder tijdelijke seed route (`d2056cf`)
-- cms: Tijdelijke seed route voor demo panden (`99d8ac6`)
-- cms: Maak panden en media publiek leesbaar + voeg CORS toe voor website (`963f7f5`)
-- cms: Fix admin theme: gold accent via --color-base-*, dashboard component + card CSS (`b1114c0`)
-- cms: Fix: beforeListTable lowercase (TypeScript fout) (`3a4c32e`)
-- cms: Voeg verwijderknop met bevestiging en duplicate merge toe aan leads (`8d44ca0`)
-- cms: Wijs nieuwe taken automatisch toe aan beschikbare makelaar (`12915a4`)
-- cms: Voeg automatische bevestigingsmail toe aan leads (`4f11b0a`)
-- cms: Add contactformulier bron option and fix API to use it (`2effe99`)
-- cms: Fix bron value case: 'Website' -> 'website' to match collection enum (`9d1cd47`)
-- cms: Remove invalid admin.css config option, CSS already loaded via layout (`065c9b1`)
-- cms: Move admin CSS to styles/admin.css to avoid path issues (`66d9a5a`)
-- cms: Add CORS headers to /api/contact endpoint (`b75d487`)
-- cms: Add dark theme CSS to Payload admin panel (`364fb9f`)
-- cms: Add public /api/contact endpoint for website contact form (`60a6281`)
-
-**2026-06-22**
-
-- cms: Add Claude AI integration: lead analysis, pand description generator, Make.com callback (`2795883`)
-- cms: Add automations: auto-task on lead, appointment confirmation email, daily follow-up cron, weekly report cron, Zapier webhook (`a392119`)
-- cms: Fix instellingen: custom edit form, correct field names, fix redirect loop (`bda6ec0`)
-- cms: Redirect all /admin/collections/.../create and /:id routes to custom dashboard (`82637c7`)
-- cms: Build custom create/edit forms for all collections with TipTap rich text and file upload (`56170f3`)
-- cms: Improve Payload admin form styling: doc header, tabs, field layout, date picker (`9aa5afb`)
-- cms: Add custom dashboard pages for Media and Instellingen, redirect all admin URLs (`96a06b0`)
-- cms: Redirect Payload admin collection URLs to custom dashboard pages (`1ec35ca`)
-- cms: Vervang alle redirect pagina's door echte dashboard views (Pagina's, Nieuws, Team, FAQ, Getuigenissen, Gebruikers) (`2e8104f`)
-- cms: Fix: nuclear reset nav text-transform uppercase in Payload admin (`8715348`)
-- cms: Voeg redirect pagina's toe voor Pagina's, Nieuws, Team, FAQ, Media, Gebruikers, Instellingen (`64342e5`)
-- cms: Voeg detail pagina's toe voor Leads, Panden, Afspraken, Taken met statuswijziging (`9adf548`)
-- cms: Bouw custom dashboard pagina's: Leads, Panden, Afspraken, Taken (`5bd37bf`)
-- cms: Fix: nav items niet meer uppercase (`37f70bf`)
-- cms: Premium CMS theme: Cinzel + DM Sans, gold accents, verfijnde spacing (`39ecce7`)
-
-**2026-06-21**
-
-- cms: Fix schrijffout: binnengekomens → binnengekomen (`2f7da8c`)
-- cms: Trigger redeploy: fix webhook secret env var (`2f26fd3`)
-- cms: Fix: gebruik onboarding@resend.dev als afzender voor lead notificatie emails (`5de9f8d`)
-
-**2026-06-20**
-
-- cms: Voeg Taken collectie, toegewezen_aan op Leads en email notificaties toe (`c189399`)
-- cms: Restyle Payload admin to match dashboard look (dark + gold theme) (`383cee6`)
-- cms: Webhook endpoint voor automatische lead import vanuit website (`c35b367`)
-- cms: Volledig CMS uitgebouwd: Paginas, Nieuws, Team, Testimonials, FAQ, Afspraken + nieuw dashboard (`92ec313`)
-- cms: Dashboard: SOM logo, goud thema, consistente styling (`4e717ad`)
-- cms: Som Vastgoed brand theme: donker + goud, SOM logo in admin (`ecc6d52`)
-
-**2026-06-19**
-
-- cms: Force-dynamic op dashboard om MongoDB bij build te vermijden (`9878d57`)
-- cms: Fix Payload type mismatch voor serverFunction prop (`14dd869`)
-- cms: Init Som Vastgoed CMS met Payload — Panden, Leads, Media, Gebruikers (`9c47e35`)
-- cms: Initial commit from Create Next App (`18f92fa`)
 
 <!-- LOG-END -->
 
