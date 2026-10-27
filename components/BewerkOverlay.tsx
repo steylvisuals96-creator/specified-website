@@ -25,12 +25,39 @@ export default function BewerkOverlay() {
     const stijl = document.createElement("style");
     stijl.textContent =
       "[data-bewerk]{cursor:pointer;outline:2px solid transparent;outline-offset:4px;transition:outline-color .12s}" +
-      "[data-bewerk]:hover{outline-color:#dffd7b}";
+      "[data-bewerk]:hover,[data-bewerk].bewerk-hit{outline-color:#dffd7b}";
     document.head.append(stijl);
+
+    // Boven de scrollhero liggen lagen die klikken opvangen; daarom zoeken we de
+    // zichtbare bewerkbare tekst onder de muis zelf, niet via het klikdoel.
+    const zichtbaar = (el: Element) => {
+      for (let n: Element | null = el; n; n = n.parentElement) {
+        const s = getComputedStyle(n);
+        if (s.visibility === "hidden" || s.display === "none" || parseFloat(s.opacity) < 0.15) return false;
+      }
+      return true;
+    };
+    const vind = (x: number, y: number) => {
+      const treffers = [...document.querySelectorAll("[data-bewerk]")].filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom && zichtbaar(el);
+      });
+      return treffers.sort((a, b) => a.getBoundingClientRect().width * a.getBoundingClientRect().height - b.getBoundingClientRect().width * b.getBoundingClientRect().height)[0] ?? null;
+    };
+    let actief: Element | null = null;
+    const onMove = (e: MouseEvent) => {
+      const el = vind(e.clientX, e.clientY);
+      if (el === actief) return;
+      actief?.classList.remove("bewerk-hit");
+      actief = el;
+      el?.classList.add("bewerk-hit");
+      document.documentElement.style.cursor = el ? "pointer" : "";
+    };
+    document.addEventListener("mousemove", onMove, true);
 
     const onClick = (e: MouseEvent) => {
       const el = e.target instanceof Element ? e.target : null;
-      const doel = el?.closest("[data-bewerk]");
+      const doel = vind(e.clientX, e.clientY) ?? el?.closest("[data-bewerk]");
       if (doel) {
         e.preventDefault();
         e.stopPropagation();
@@ -45,6 +72,8 @@ export default function BewerkOverlay() {
     document.addEventListener("click", onClick, true);
     return () => {
       document.removeEventListener("click", onClick, true);
+      document.removeEventListener("mousemove", onMove, true);
+      document.documentElement.style.cursor = "";
       stijl.remove();
     };
   }, []);
