@@ -143,6 +143,18 @@ export default async function HomepageEditor({ searchParams }: { searchParams: P
             </FormRow>
           </FormSection>
 
+          <FormSection title="Contact en footer">
+            <p style={{ fontSize: "0.8125rem", color: "var(--bone-400)", marginBottom: "1rem" }}>
+              Staat in het contactblok en onderaan elke pagina. Een leeg telefoonveld verbergt het nummer.
+            </p>
+            <FormRow>
+              <Field label="Contact-e-mail" name="contact.email" type="email" defaultValue={w.contact?.email} placeholder="info@specified.be" maxLength={120} />
+              <Field label="Telefoon" name="contact.telefoon" type="tel" defaultValue={w.contact?.telefoon} placeholder="+32 3 123 45 67" maxLength={30} pattern="\+?[0-9 \(\)\.\/\-]{6,30}" title="Alleen cijfers, spaties en + ( ) . / -" />
+            </FormRow>
+            <Field label="LinkedIn-pagina" name="contact.linkedin" type="url" defaultValue={w.contact?.linkedin} placeholder="https://www.linkedin.com/company/specified-be" maxLength={200} pattern="https://([a-zA-Z]+\.)?linkedin\.com/.*" title="Het volledige adres, beginnend met https://www.linkedin.com/" />
+            <Field label="Regel onderaan (footer)" name="contact.footerTekst" defaultValue={w.contact?.footerTekst} placeholder="© 2026 Specified BV, Kontich, België" maxLength={120} />
+          </FormSection>
+
           <SaveBtn />
         </form>
       </LiveEditor>

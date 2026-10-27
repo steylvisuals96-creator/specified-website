@@ -140,5 +140,33 @@ export const Website: GlobalConfig = {
         { name: "linkTekst", type: "text", maxLength: 40, label: "Link naar alle vacatures", defaultValue: "Alle vacatures" },
       ],
     },
+    {
+      // Verhuisd uit Instellingen (2026-10-27). Leeg = de waarde uit Instellingen,
+      // en anders de standaard van de website.
+      name: "contact",
+      type: "group",
+      label: "Contact en footer",
+      admin: { description: "Getoond in het contactblok en de footer van elke pagina." },
+      fields: [
+        { name: "email", type: "email", label: "Contact-e-mail" },
+        {
+          name: "telefoon",
+          type: "text",
+          maxLength: 30,
+          label: "Telefoon",
+          validate: (v: string | null | undefined) =>
+            !v || /^\+?[0-9 ()./-]{6,30}$/.test(v) ? true : "Alleen cijfers, spaties en + ( ) . / -, bv. +32 3 123 45 67.",
+        },
+        {
+          name: "linkedin",
+          type: "text",
+          maxLength: 200,
+          label: "LinkedIn-pagina",
+          validate: (v: string | null | undefined) =>
+            !v || /^https:\/\/([a-z]+\.)?linkedin\.com\//i.test(v) ? true : "Plak het volledige adres, beginnend met https://www.linkedin.com/",
+        },
+        { name: "footerTekst", type: "text", maxLength: 120, label: "Regel onderaan (footer)" },
+      ],
+    },
   ],
 };

@@ -6,7 +6,7 @@ import { meldFout } from "@/lib/foutmelding";
 import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { isBeheerder } from "@/lib/access";
 
-const GROEPEN = ["hero", "tekening", "callouts", "consultants", "diensten_bedrijven", "diensten_engineers", "jobs"];
+const GROEPEN = ["hero", "tekening", "callouts", "consultants", "diensten_bedrijven", "diensten_engineers", "jobs", "contact"];
 
 /** Slaat de homepage-teksten op vanuit het scherm "op de pagina bewerken". */
 export async function bewaarHomepage(data: Record<string, any>): Promise<{ ok: boolean; fout?: string }> {

@@ -943,6 +943,15 @@ export interface Website {
     titel?: string | null;
     linkTekst?: string | null;
   };
+  /**
+   * Getoond in het contactblok en de footer van elke pagina.
+   */
+  contact?: {
+    email?: string | null;
+    telefoon?: string | null;
+    linkedin?: string | null;
+    footerTekst?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1070,6 +1079,14 @@ export interface WebsiteSelect<T extends boolean = true> {
     | {
         titel?: T;
         linkTekst?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        telefoon?: T;
+        linkedin?: T;
+        footerTekst?: T;
       };
   updatedAt?: T;
   createdAt?: T;
