@@ -5,7 +5,7 @@ import FormShell, { SaveBtn } from "./FormShell";
 
 const WEBSITE = process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://specified-website.vercel.app";
 
-type Veld = { label: string; max: number; lang?: boolean };
+type Veld = { label: string; max: number; lang?: boolean; pattern?: string; hint?: string };
 
 /** De teksten die op de pagina aanklikbaar zijn (data-bewerk op de website). */
 const VELDEN: Record<string, Veld> = {
@@ -16,6 +16,10 @@ const VELDEN: Record<string, Veld> = {
   "hero.ctaEngineers": { label: "Knop voor engineers", max: 40 },
   "tekening.intro": { label: "Inleiding", max: 140, lang: true },
   "tekening.scrollHint": { label: "Scrollhint", max: 60 },
+  "tekening.project": { label: "Titelblok: project", max: 40 },
+  "tekening.locatie": { label: "Titelblok: locatie (stad, regio)", max: 40, pattern: ".+, .+", hint: "Stad en regio met een komma en spatie, bv. Kontich, Antwerpen." },
+  "tekening.waarden": { label: "Titelblok: waarden", max: 40 },
+  "tekening.akkoord": { label: "Titelblok: goedkeuring", max: 40 },
   "consultants.titel": { label: "Titel", max: 20 },
   "consultants.accent": { label: "Accentwoord (in limoen)", max: 24 },
   "consultants.tekst": { label: "Tekst", max: 220, lang: true },
@@ -256,7 +260,7 @@ export default function PaginaEditor({
                   {veld.lang ? (
                     <textarea autoFocus={i === 0} rows={5} maxLength={veld.max} value={waarde} onChange={(e) => zetWaarde(e.target.value)} style={{ ...invoer, resize: "vertical", lineHeight: 1.6 }} />
                   ) : (
-                    <input autoFocus={i === 0} maxLength={veld.max} value={waarde} onChange={(e) => zetWaarde(e.target.value)} style={invoer} />
+                    <input autoFocus={i === 0} maxLength={veld.max} pattern={veld.pattern} title={veld.hint} value={waarde} onChange={(e) => zetWaarde(e.target.value)} style={invoer} />
                   )}
                 </label>
               );
