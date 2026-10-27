@@ -13,10 +13,10 @@ export default function Split({ kolommen }: { kolommen: Kolom[] }) {
             <div className="split__beeld">
               <Image src={k.beeld} alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
             </div>
-            <h2 className="display display-m">{k.kop}</h2>
-            <p className="split__titel">{k.titel}</p>
-            <p className="split__tekst">{k.tekst}</p>
-            <a href={k.href} className={`btn ${k.knop}`}>
+            <h2 className="display display-m" data-bewerk={`diensten_${k.id}.kop`}>{k.kop}</h2>
+            <p className="split__titel" data-bewerk={`diensten_${k.id}.titel`}>{k.titel}</p>
+            <p className="split__tekst" data-bewerk={`diensten_${k.id}.tekst`}>{k.tekst}</p>
+            <a href={k.href} className={`btn ${k.knop}`} data-bewerk={`diensten_${k.id}.cta`}>
               {k.cta}
             </a>
           </div>

@@ -10,6 +10,7 @@ import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import ScrollMomenten from "@/components/ScrollMomenten";
+import BewerkOverlay from "@/components/BewerkOverlay";
 import { samenvoegen, STANDAARD } from "@/lib/website";
 import { useVoorbeeld } from "@/lib/useVoorbeeld";
 
@@ -39,6 +40,7 @@ export default function HomeVoorbeeld() {
 
   return (
     <>
+      <BewerkOverlay />
       <Nav />
       <main>
         <HeroTekening key={hero.sleutel} inhoud={hero.deel} />

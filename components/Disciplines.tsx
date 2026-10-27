@@ -47,10 +47,10 @@ export default function Disciplines({ inhoud = STANDAARD.consultants }: { inhoud
   return (
     <section ref={ref} className="disc" aria-labelledby="disc-titel">
       <div className="wrap disc__kop">
-        <h2 id="disc-titel" className="display display-m">
+        <h2 id="disc-titel" className="display display-m" data-bewerk="consultants.titel,consultants.accent">
           {metAccent(`${CONSULTANTS.titel} ${CONSULTANTS.accent}`)}
         </h2>
-        <p className="lead disc__tekst">{CONSULTANTS.tekst}</p>
+        <p className="lead disc__tekst" data-bewerk="consultants.tekst">{CONSULTANTS.tekst}</p>
       </div>
       <ul className="sr-only">
         {lijst.map((d) => (

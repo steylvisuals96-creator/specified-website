@@ -525,20 +525,21 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
           ))}
         </p>
         <p className="tekening__intro">
-          <b>{T.tekening.intro}</b> <span>{T.tekening.scrollHint}</span>
+          <b data-bewerk="tekening.intro">{T.tekening.intro}</b> <span data-bewerk="tekening.scrollHint">{T.tekening.scrollHint}</span>
         </p>
         <div className="tekening__slot">
           <div className="wrap">
             <h1 id="hero-titel" className="display tekening__titel">
-              {HERO.prefix} <span className="tekening__accent">{HERO.woord}</span>
+              <span data-bewerk="hero.prefix">{HERO.prefix}</span>{" "}
+              <span className="tekening__accent" data-bewerk="hero.woord">{HERO.woord}</span>
               <br />
-              {HERO.suffix}
+              <span data-bewerk="hero.suffix">{HERO.suffix}</span>
             </h1>
             <div className="hero__actions">
-              <a href="#contact" className="btn btn-primary">
+              <a href="#contact" className="btn btn-primary" data-bewerk="hero.ctaBedrijven">
                 {HERO.ctaBedrijven}
               </a>
-              <a href="/vacatures" className="btn btn-secondary">
+              <a href="/vacatures" className="btn btn-secondary" data-bewerk="hero.ctaEngineers">
                 {HERO.ctaEngineers}
               </a>
             </div>

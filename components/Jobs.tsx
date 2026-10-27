@@ -21,7 +21,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
     <section id="jobs" className="jobs">
       <div className="wrap">
         <div className="jobs__kop">
-          <h2 className="display display-l">{metAccent(titel || "Vind jouw volgende stap.")}</h2>
+          <h2 className="display display-l" data-bewerk="jobs.titel">{metAccent(titel || "Vind jouw volgende stap.")}</h2>
         </div>
 
         {jobs.length === 0 ? (
@@ -62,7 +62,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
           </ul>
         )}
 
-        <a href="/vacatures" className="btn btn-secondary jobs__alle">
+        <a href="/vacatures" className="btn btn-secondary jobs__alle" data-bewerk="jobs.linkTekst">
           {linkTekst || "Bekijk alle vacatures"}
         </a>
       </div>
