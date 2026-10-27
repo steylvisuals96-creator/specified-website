@@ -230,14 +230,14 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number, kop: Rect | nul
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
   el("line", { class: "tek__blok", x1: bx, y1: by + 54, x2: bx + bw, y2: by + 54 }, tb);
   el("line", { class: "tek__blok", x1: bx + 262, y1: by + 54, x2: bx + 262, y2: by + bh }, tb);
-  const veld = (lx: number, ly: number, label: string, waarde: string) => {
+  const veld = (lx: number, ly: number, label: string, waarde: string, sleutel: string) => {
     el("text", { class: "tek__label", x: lx, y: ly }, tb).textContent = label;
-    el("text", { class: "tek__waarde", x: lx, y: ly + 22 }, tb).textContent = waarde;
+    el("text", { class: "tek__waarde", x: lx, y: ly + 22, "data-bewerk": `tekening.${sleutel}` }, tb).textContent = waarde;
   };
-  veld(bx + 14, by + 20, "Project", T.tekening.project);
-  veld(bx + 14, by + 76, "Locatie", T.tekening.locatie);
-  veld(bx + 14, by + 126, "Waarden", T.tekening.waarden);
-  el("text", { class: "tek__label", x: bx + 276, y: by + 76 }, tb).textContent = T.tekening.akkoord;
+  veld(bx + 14, by + 20, "Project", T.tekening.project, "project");
+  veld(bx + 14, by + 76, "Locatie", T.tekening.locatie, "locatie");
+  veld(bx + 14, by + 126, "Waarden", T.tekening.waarden, "waarden");
+  el("text", { class: "tek__label", x: bx + 276, y: by + 76, "data-bewerk": "tekening.akkoord" }, tb).textContent = T.tekening.akkoord;
   const hand = el("path", { class: "tek__hand", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + 276} ${by + 88}) scale(.31)` }, tb);
 
   // Het titelblok blijft half zichtbaar in het eindbeeld, tenzij het over de
@@ -327,13 +327,13 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
   el("line", { class: "tek__blok", x1: bx, y1: by + 112, x2: bx + bw, y2: by + 112 }, tb);
   el("line", { class: "tek__blok", x1: bx + kol, y1: by + 112, x2: bx + kol, y2: by + bh }, tb);
   const lab = (x: number, y: number, t: string) => (el("text", { class: "tek__label tek__label--groot", x, y }, tb).textContent = t);
-  const waa = (x: number, y: number, t: string) => (el("text", { class: "tek__waarde tek__waarde--groot", x, y }, tb).textContent = t);
+  const waa = (x: number, y: number, t: string, sleutel = "") => (el("text", { class: "tek__waarde tek__waarde--groot", x, y, ...(sleutel ? { "data-bewerk": `tekening.${sleutel}` } : {}) }, tb).textContent = t);
   lab(bx + 22, by + 42, "Project");
-  waa(bx + 22, by + 90, T.tekening.project);
+  waa(bx + 22, by + 90, T.tekening.project, "project");
   const [stad, regio] = T.tekening.locatie.split(", ");
   lab(bx + 22, by + 158, "Locatie");
-  waa(bx + 22, by + 206, `${stad},`);
-  waa(bx + 22, by + 252, regio ?? "");
+  waa(bx + 22, by + 206, `${stad},`, "locatie");
+  waa(bx + 22, by + 252, regio ?? "", "locatie");
   lab(bx + kol + 22, by + 158, "Goedgekeurd");
   const hand = el("path", { class: "tek__hand tek__hand--dik", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + kol + 12} ${by + 168}) scale(.44)` }, tb);
 
