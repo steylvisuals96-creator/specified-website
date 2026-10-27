@@ -41,8 +41,14 @@ command -v gh > /dev/null || { fout "gh ontbreekt"; exit 1; }
 vet "1/4  Databaseverbinding (rol backup_lezer)"
 # Session pooler van het project (Supabase > Connect > Session pooler).
 HOST="${POOLER_HOST:-aws-0-eu-central-1.pooler.supabase.com:5432}"
-printf '  Rol aanmaken/bijwerken en verbinding instellen? (J/n) '
-read -r JN
+if gh secret list --repo "$REPO" 2> /dev/null | cut -f1 | grep -qx BACKUP_DATABASE_URI; then
+  printf '  Staat al ingesteld. Opnieuw doen? (j/N) '
+  read -r JN
+  [ "$JN" = "j" ] && JN="ja" || JN="n"
+else
+  printf '  Rol aanmaken/bijwerken en verbinding instellen? (J/n) '
+  read -r JN
+fi
 if [ "$JN" != "n" ]; then
   {
     WW="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"
@@ -71,11 +77,17 @@ fi
 
 # 2. Wachtwoordzin -------------------------------------------------------------
 vet "2/4  Wachtwoordzin voor de versleuteling"
-echo "  [g] nieuwe maken (komt in je klembord, bewaar hem in je wachtwoordbeheerder)"
-echo "  [p] een bestaande plakken"
-printf '  Keuze (Enter = overslaan): '
-read -r KEUZE
+echo "  Typ de letter g: het script maakt er een en zet die in je klembord."
+echo "  Of plak een bestaande wachtwoordzin (onzichtbaar)."
+printf '  g of wachtwoordzin (Enter = overslaan): '
+IFS= read -rs KEUZE
+printf '\n'
+if [ ${#KEUZE} -ge 20 ]; then
+  zet BACKUP_PASSPHRASE "$KEUZE"
+  KEUZE="klaar"
+fi
 case "$KEUZE" in
+  klaar) ;;
   g)
     ZIN="$(openssl rand -base64 32)"
     printf '%s' "$ZIN" | pbcopy
