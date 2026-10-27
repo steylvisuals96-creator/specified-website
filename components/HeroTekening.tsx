@@ -208,12 +208,12 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number, kop: Rect | nul
     const leider = el("polyline", { class: "tek__leider", points: `${cx},${ay} ${kx},${ky} ${eind},${ky}` }, co);
     const tx = eind + (links ? -12 : 12);
     const anchor = links ? "end" : "start";
-    const rol = el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor }, co);
+    const rol = el("text", { class: "tek__rol", x: tx, y: ky - 4, "text-anchor": anchor, "data-bewerk": `callouts.${i}.label` }, co);
     rol.style.fontSize = `${19 * fTekst}px`;
     acro(rol, T.callouts[i][0]);
     // Op een laag scherm is er geen hoogte voor twee regels: alleen het label.
     if (!laag) {
-      const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor }, co);
+      const sub = el("text", { class: "tek__sub", x: tx, y: ky - 4 + 24 * fTekst, "text-anchor": anchor, "data-bewerk": `callouts.${i}.tekst` }, co);
       sub.style.fontSize = `${19 * fTekst}px`;
       sub.textContent = T.callouts[i][1];
     }
@@ -312,8 +312,8 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
     const co = el("g", { opacity: 0 }, coG);
     el("circle", { class: "tek__punt", cx: ax, cy: ay, r: 5 }, co);
     const leider = el("polyline", { class: "tek__leider tek__leider--dik", points: `${ax},${ay} 430,${ay} 452,${ay}` }, co);
-    acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2 }, co), T.callouts[i][0]);
-    el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32 }, co).textContent = T.callouts[i][1];
+    acro(el("text", { class: "tek__rol tek__rol--groot", x: 466, y: ay - 2, "data-bewerk": `callouts.${i}.label` }, co), T.callouts[i][0]);
+    el("text", { class: "tek__sub tek__sub--groot", x: 466, y: ay + 32, "data-bewerk": `callouts.${i}.tekst` }, co).textContent = T.callouts[i][1];
     const midden = ex + l.w / 2;
     ex += l.w + spatie;
     return { g: l.g, vul: l.vul, lijn: l.lijn, co, leider, dx, dy, ex: midden - 240, ey: eindBasis - l.basis };
