@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import FormShell, { Field, FormSection, FormRow, SaveBtn } from "@/components/FormShell";
+import { LimeBtn } from "@/components/DashboardShell";
 import LiveEditor from "@/components/LiveEditor";
 import ProfielenLijst from "@/components/ProfielenLijst";
 import { unflatten } from "@/lib/vormdata";
@@ -52,7 +53,7 @@ export default async function HomepageEditor({ searchParams }: { searchParams: P
       rol={(user as any).rol}
       title="Homepage"
       backHref="/dashboard"
-      actions={<SaveBtn form="main-form" />}
+      actions={<><LimeBtn href="/dashboard/homepage/pagina" outline>Op de pagina bewerken</LimeBtn><SaveBtn form="main-form" /></>}
     >
       <LiveEditor soort="homepage" voorbeeldPad="/voorbeeld/home">
         <form id="main-form" action={save}>
