@@ -27,6 +27,12 @@ const VELDEN: Record<string, Veld> = {
   "diensten_engineers.titel": { label: "Titel", max: 60 },
   "diensten_engineers.tekst": { label: "Tekst", max: 450, lang: true },
   "diensten_engineers.cta": { label: "Knop", max: 40 },
+  ...Object.fromEntries(
+    "SPECIFIED".split("").flatMap((l, i) => [
+      [`callouts.${i}.label`, { label: `Letter ${i + 1} (${l}): label`, max: 24 }],
+      [`callouts.${i}.tekst`, { label: `Letter ${i + 1} (${l}): toelichting`, max: 44 }],
+    ]),
+  ),
   "jobs.titel": { label: "Titel vacatures", max: 40 },
   "jobs.linkTekst": { label: "Link naar alle vacatures", max: 40 },
 };
@@ -40,7 +46,7 @@ function zet(obj: any, pad: string, waarde: string) {
   const kopie = structuredClone(obj ?? {});
   const delen = pad.split(".");
   let o = kopie;
-  delen.slice(0, -1).forEach((k) => (o = o[k] ??= {}));
+  delen.slice(0, -1).forEach((k, i) => (o = o[k] ??= /^\d+$/.test(delen[i + 1]) ? [] : {}));
   o[delen[delen.length - 1]] = waarde;
   return kopie;
 }
