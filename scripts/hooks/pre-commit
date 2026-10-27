@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Houdt de wijzigingslog in DRAAIBOEK.md actueel bij elke commit.
+# Activeren (eenmalig per kopie van de repo):  git config core.hooksPath scripts/hooks
+root="$(git rev-parse --show-toplevel)"
+if [ -x "$root/scripts/draaiboek-bijwerken.sh" ]; then
+  "$root/scripts/draaiboek-bijwerken.sh" && git add "$root/DRAAIBOEK.md"
+fi
+exit 0
