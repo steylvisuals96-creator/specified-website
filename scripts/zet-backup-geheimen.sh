@@ -39,13 +39,16 @@ command -v gh > /dev/null || { fout "gh ontbreekt"; exit 1; }
 vet "1/4  Databaseverbinding (rol backup_lezer)"
 echo "  Supabase > project specified-cms > Connect > Session pooler: kopieer het adres."
 echo "  Het mag [YOUR-PASSWORD] nog bevatten; dat is geen geheim."
-printf '  Adres (Enter = overslaan): '
-IFS= read -r ADRES
+# Onzichtbaar ingelezen: plakt iemand per ongeluk een wachtwoord, dan staat het niet in beeld.
+printf '  Adres, begint met postgresql:// (onzichtbaar, Enter = overslaan): '
+IFS= read -rs ADRES
+printf '\n'
 if [ -n "$ADRES" ]; then
   HOST="$(printf '%s' "$ADRES" | sed -nE 's#^postgres(ql)?://[^@]+@([^:/]+):([0-9]+)/.*$#\2:\3#p')"
   if [ -z "$HOST" ] || [[ "$HOST" != *pooler.supabase.com:5432 ]]; then
-    fout "Dat lijkt geen session-pooleradres (verwacht ...pooler.supabase.com:5432). Stap overgeslagen."
+    fout "Dat lijkt geen session-pooleradres (begint met postgresql://, eindigt op pooler.supabase.com:5432/postgres). Stap overgeslagen."
   else
+    ok "Adres herkend: $HOST"
     vraag_geheim "  Wachtwoord van backup_lezer (onzichtbaar): "
     if [ ${#GEHEIM} -lt 16 ]; then
       fout "Wachtwoord te kort of leeg. Stap overgeslagen."
