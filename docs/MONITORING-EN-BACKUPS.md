@@ -1,9 +1,10 @@
 # Monitoring en back-ups
 
-Twee dingen houden de site in het oog:
+Drie dingen houden de site in het oog:
 
 1. **Uptime-monitoring**: een externe dienst roept om de paar minuten twee health-endpoints op en verwittigt je als er een faalt.
 2. **Nachtelijke back-up**: een GitHub Action maakt elke nacht een versleutelde dump van de database en zet die in een aparte R2-bucket.
+3. **Foutmeldingen per mail**: serverfouten in de CMS en de website komen via Resend in je inbox, met een limiet (zie onderaan).
 
 Het gratis Supabase-plan heeft geen back-ups die je zelf kunt downloaden, en een project zonder verkeer wordt na 7 dagen gepauzeerd. De back-up vangt het eerste op, de uptime-checks het tweede: elke check raakt de database.
 
@@ -120,3 +121,43 @@ Media (foto's, cv's) staan niet in deze dump. Die staan in de R2-mediabucket. Wi
 ### Getest
 
 Lokaal op Postgres 17 (2026-10-27): de dump bevat alle rijen, ook van een RLS-tabel en van een tabel die na de rol is toegevoegd. Het bestand is versleuteld, terugzetten levert dezelfde aantallen op en `backup_lezer` kan niet schrijven. Het script breekt af bij te weinig tabellen en bij een RLS-tabel zonder leesregel. De Action zelf en de R2-upload zijn pas getest na stap g.
+
+---
+
+## 3. Foutmeldingen per mail (Resend)
+
+### Hoe het werkt
+
+- `instrumentation.ts` (in de CMS en in de website) vangt via Next's `onRequestError` elke serverfout op die niet zelf afgehandeld wordt: server actions, route handlers en server-rendering.
+- Fouten die de code zelf opvangt, worden met `meldFout()` gemeld. Dat gebeurt nu bij de media-upload, de inkomende e-mail en het opslaan van de homepage.
+- `lib/foutmelding.ts` stuurt een mail met project, route, pad (zonder querystring), foutmelding en de eerste 15 regels van de stack. Cookies en headers gaan niet mee.
+
+### De limiet
+
+- **Dezelfde fout hooguit één keer per uur.** Getallen en ID's worden eerst uit de foutmelding gehaald, zodat 'kandidaat 12 niet gevonden' en 'kandidaat 13 niet gevonden' als één fout tellen. De rem loopt via Resends `Idempotency-Key` en geldt dus over alle Vercel-servers heen.
+- **Maximaal 10 mails per uur per server**, ook bij veel verschillende fouten tegelijk.
+- In de volgende mail staat hoe vaak de fout intussen nog voorkwam.
+- Niet gemaild: fouten door invoer van de gebruiker (status onder 500), redirects en 'niet gevonden'.
+- Is Resend onbereikbaar, dan gaat er niets mis voor de bezoeker: de melder slikt zijn eigen fouten in.
+- Alleen in productie. Lokaal komt er geen mail.
+
+### Eenmalig instellen
+
+1. Maak een account op resend.com, het liefst met het adres waarop je de meldingen wilt krijgen. Zolang er geen eigen domein geverifieerd is, kan Resend vanaf `onboarding@resend.dev` alleen naar dat adres mailen.
+2. Resend → API Keys → *Create*, met recht *Sending access*.
+3. Zet in Vercel, voor **beide** projecten (specified-cms en specified-website) en alleen voor Production:
+   - `RESEND_API_KEY`: de sleutel
+   - `FOUTMELDING_AAN`: je e-mailadres (meerdere adressen scheid je met een komma)
+   - optioneel `FOUTMELDING_VAN`, bv. `Specified monitoring <monitoring@specified.be>`, zodra het domein bij Resend geverifieerd is (na de domeinverhuis)
+4. Deploy beide projecten opnieuw.
+5. Proefmail:
+   ```bash
+   cd ~/specified-cms
+   RESEND_API_KEY=re_... FOUTMELDING_AAN=jij@voorbeeld.be npx tsx scripts/test-foutmelding.ts
+   ```
+
+Het gratis plan van Resend staat 100 mails per dag toe. Met de limiet hierboven blijf je daar ruim onder.
+
+### Getest
+
+Lokaal met een nagebootste Resend (2026-10-27): vijf keer dezelfde fout met een andere ID gaf één mail, en na een uur volgde een nieuwe mail met de teller. Bij 15 verschillende fouten stopte het na 10 mails. Fouten met status 400 en redirects werden overgeslagen. Een onbereikbare Resend liet niets mislukken, en zonder sleutel gebeurde er niets. Een echte mail via Resend is pas getest na stap 5.

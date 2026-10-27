@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
+import { meldFout } from "@/lib/foutmelding";
 import { getPayload } from "payload";
 import { headers } from "next/headers";
 
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: result.id, url: (result as any).url });
   } catch (err) {
     console.error("[upload-media]", err);
+    after(() => meldFout(err, { bron: "route", route: "/api/upload-media", methode: "POST" }));
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

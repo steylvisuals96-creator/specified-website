@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { meldFout } from "@/lib/foutmelding";
 import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import { isBeheerder } from "@/lib/access";
 
@@ -15,6 +17,8 @@ export async function bewaarHomepage(data: Record<string, any>): Promise<{ ok: b
     await (payload as any).updateGlobal({ ...als, slug: "website", data: schoon });
   } catch (e: any) {
     const velden: string[] = (e?.data?.errors ?? []).map((x: any) => x?.message).filter(Boolean);
+    // Validatiefouten zijn invoer van de gebruiker; al de rest is onverwacht.
+    if (!velden.length) after(() => meldFout(e, { bron: "action", route: "/dashboard/homepage (bewaarHomepage)" }));
     return { ok: false, fout: (velden.length ? velden.join(" ") : "Opslaan is niet gelukt. Probeer het opnieuw.").slice(0, 300) };
   }
   revalidatePath("/dashboard/homepage");

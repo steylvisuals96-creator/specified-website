@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
+import { meldFout } from "@/lib/foutmelding";
 import { getPayload } from "payload";
 
 const configPromise = import("@payload-config").then((m) => m.default);
@@ -171,6 +172,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     // Details alleen in de serverlog; de aanroeper krijgt geen interne foutmeldingen.
     console.error("Email webhook error:", err);
+    after(() => meldFout(err, { bron: "route", route: "/api/inbound-email", methode: "POST" }));
     return NextResponse.json({ error: "Verwerking mislukt" }, { status: 500 });
   }
 }
