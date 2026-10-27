@@ -36,10 +36,11 @@ echo "Back-up-geheimen voor $REPO"
 command -v gh > /dev/null || { fout "gh ontbreekt"; exit 1; }
 
 # 1. Databaseverbinding -------------------------------------------------------
+# Het script maakt zelf het wachtwoord van backup_lezer: het komt in de SQL (in je
+# klembord) en in het GitHub-secret, en verschijnt nergens op het scherm.
 vet "1/4  Databaseverbinding (rol backup_lezer)"
 echo "  Supabase > project specified-cms > Connect > Session pooler: kopieer het adres."
 echo "  Het mag [YOUR-PASSWORD] nog bevatten; dat is geen geheim."
-# Onzichtbaar ingelezen: plakt iemand per ongeluk een wachtwoord, dan staat het niet in beeld.
 printf '  Adres, begint met postgresql:// (onzichtbaar, Enter = overslaan): '
 IFS= read -rs ADRES
 printf '\n'
@@ -49,24 +50,25 @@ if [ -n "$ADRES" ]; then
     fout "Dat lijkt geen session-pooleradres (begint met postgresql://, eindigt op pooler.supabase.com:5432/postgres). Stap overgeslagen."
   else
     ok "Adres herkend: $HOST"
-    vraag_geheim "  Wachtwoord van backup_lezer (onzichtbaar): "
-    if [ ${#GEHEIM} -lt 16 ]; then
-      fout "Wachtwoord te kort of leeg. Stap overgeslagen."
-    elif [[ "$GEHEIM" =~ [/+=@:%?#\ ] ]]; then
-      fout "Het wachtwoord bevat / + = @ : % ? # of een spatie; die breken het adres. Maak er een met: openssl rand -base64 32 | tr -d '/+='"
-    else
-      URI="postgresql://backup_lezer.${PROJECT_REF}:${GEHEIM}@${HOST}/postgres"
-      if command -v psql > /dev/null && [ "$PROEF" != "1" ]; then
-        if psql "$URI" -XAtq -c "select 1 from payload.vacatures limit 1" > /dev/null 2>&1; then
-          ok "Verbinding getest: backup_lezer kan lezen"
-        else
-          fout "Inloggen of lezen lukt (nog) niet. Is scripts/backup-rol.sql uitgevoerd met dit wachtwoord?"
-          printf '  Toch opslaan? (j/N) '; read -r JN
-          [ "$JN" = "j" ] || { URI=""; echo "  Overgeslagen."; }
-        fi
+    WW="$(openssl rand -base64 48 | tr -d '/+=\n' | cut -c1-40)"
+    SQL_BESTAND="$(dirname "$0")/backup-rol.sql"
+    sed "s/VUL_HIER_EEN_WACHTWOORD_IN/${WW}/" "$SQL_BESTAND" | pbcopy
+    ok "Nieuw wachtwoord gemaakt en in de SQL gezet. De volledige SQL staat in je klembord."
+    echo "  Plak hem in Supabase > SQL Editor (eerst alles wissen) en klik Run."
+    URI="postgresql://backup_lezer.${PROJECT_REF}:${WW}@${HOST}/postgres"
+    while true; do
+      printf '  Druk Enter zodra de SQL gelukt is (s = overslaan): '
+      read -r JN
+      [ "$JN" = "s" ] && { URI=""; echo "  Overgeslagen."; break; }
+      [ "$PROEF" = "1" ] && break
+      if psql "$URI" -XAtq -c "select 1 from payload.vacatures limit 1" > /dev/null 2>&1; then
+        ok "Verbinding getest: backup_lezer kan lezen"; break
+      else
+        fout "Inloggen lukt nog niet. Is de SQL uit je klembord uitgevoerd? (Kopieer hem niet opnieuw van elders.)"
       fi
-      [ -n "$URI" ] && zet BACKUP_DATABASE_URI "$URI"
-    fi
+    done
+    [ -n "$URI" ] && zet BACKUP_DATABASE_URI "$URI"
+    unset WW
   fi
 else
   echo "  Overgeslagen."
