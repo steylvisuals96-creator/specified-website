@@ -65,6 +65,7 @@ SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrost
 |---|---|
 | Hero-tekening, callouts, titelblok, diensten | `lib/inhoud.ts`, en per veld te overschrijven vanuit de CMS (live editor, deel 4) |
 | Vacatures, blog, team, instellingen | CMS via REST (`lib/settings.ts`, `lib/blog.ts`) |
+| Contact-e-mail, telefoon, LinkedIn, footertekst | Homepage-editor (global `website`, groep `contact`); leeg valt terug op `Instellingen` (`getSettings()`, sinds 2026-10-27). LinkedIn alleen als `https`-link |
 | Cijfers (statistieken) | CMS `statistieken`, nu leeg, daarom verborgen |
 
 ### Beveiliging van de site
@@ -88,7 +89,7 @@ Eén codebase met twee ingangen:
 
 ### Rollen
 
-`creator` (Sam, onzichtbaar voor de klant) boven `beheerder` boven `consultant`. Instellingen wijzigen mag alleen beheerder en creator. Rol zit in de JWT. Alle toegangscontrole loopt via `lib/access.ts`; niets is publiek tenzij de website het nodig heeft (vacatures actief en zichtbaar, blog gepubliceerd, team actief, media).
+`creator` (Sam, onzichtbaar voor de klant) boven `beheerder` boven `consultant`. Instellingen wijzigen mag alleen beheerder en creator; het menu-item Instellingen ziet alleen de creator nog (2026-10-27), de klant past alles aan via Homepage. Rol zit in de JWT. Alle toegangscontrole loopt via `lib/access.ts`; niets is publiek tenzij de website het nodig heeft (vacatures actief en zichtbaar, blog gepubliceerd, team actief, media).
 
 ### Collecties en globals
 
@@ -96,7 +97,7 @@ Eén codebase met twee ingangen:
 
 ### Dashboardonderdelen
 
-Overzicht, kandidaten (filters, voortgangslijn, status wijzigen, snelle notitie), bedrijven, vacatures, sollicitaties, pipeline (kanban), agenda, activiteiten, blog, team, media, gebruikers, instellingen en **homepage**.
+Overzicht, kandidaten (filters, voortgangslijn, status wijzigen, snelle notitie), bedrijven, vacatures, sollicitaties, pipeline (kanban), agenda, activiteiten, blog, team, media, gebruikers, instellingen (alleen creator) en **homepage**, met sinds 2026-10-27 een blok Contact en footer.
 
 ### Live editor (nieuw, 2026-10)
 
@@ -117,17 +118,15 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 
 - **Vercel**: twee projecten, deploy bij push naar `main`. Website-project staat in `.vercel/`; CMS-map was ooit aan `som-vastgoed-cms` gekoppeld en is opnieuw aan `specified-cms` gehangen.
 - **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload`, niet via de Data API bereikbaar, anon en authenticated hebben geen rechten. Migratie uit MongoDB op 2026-09-26.
-- **Cloudflare R2**: mediabucket (privé, ondertekende links) en aparte bucket `specified-backups`. De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
-- **GitHub Actions** (CMS): nachtelijke back-up, `.github/workflows/backup.yml`.
-- **Resend** (live in de CMS sinds 2026-10-27): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
+- **Cloudflare R2**: mediabucket (privé, ondertekende links). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
+- **Resend** (CMS en website sinds 2026-10-27; `FOUTMELDING_AAN` = steylvisuals96@gmail.com in beide Vercel-projecten, `RESEND_API_KEY` nog alleen in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
 
 ### Monitoring en back-ups
 
-Volledige handleiding: `specified-cms/docs/MONITORING-EN-BACKUPS.md`.
+Volledige handleiding: `specified-cms/docs/MONITORING.md`.
 
 - Uptime: Better Stack of UptimeRobot op `/api/health` van beide sites. Elke check raakt de database, zodat het gratis project niet na 7 dagen pauzeert.
-- Back-up: elke nacht 02:17 UTC, dump met read-only rol `backup_lezer`, versleuteld met `gpg` (AES-256), in R2 onder `dagelijks/` (30 dagen) en `maandelijks/` (365 dagen). Breekt af bij te weinig tabellen of een RLS-tabel zonder leesregel.
-- Status: scripts en workflow staan in `main`. De Action zelf en de R2-upload zijn pas getest nadat de secrets zijn gezet (zie open punten).
+- Back-up: **voorlopig geen**. De eigen nachtelijke back-up (GitHub Action, `pg_dump` naar R2) is op 2026-10-28 geschrapt, met workflow, scripts en secrets. Na de eerste betaling van Specified gaat Supabase naar het betaalde plan, dat zelf dagelijks een back-up maakt (7 dagen). Code terugvinden: CMS-commit `258f609`.
 
 ### Omgevingsvariabelen
 
@@ -142,7 +141,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - Server actions in de CMS schrijven als de ingelogde gebruiker (`lib/serverPayload.ts`); eerder konden 11 acties zonder login schrijven, dat is dicht.
 - Login-lockout 5 keer per 15 minuten, sessie 8 uur, geen interne foutmeldingen naar de client.
 - Rolscenario's getest, 14 van 14.
-- Bekend gat: `teksten`-tabel had een RLS-instelling die de back-uprol blokkeerde; opgelost met een leesregel.
+- `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel voor de back-uprol verdwijnt met die rol.
 - Bekend gat: het publieke e-mailendpoint heeft nog geen rate limiting.
 
 ---
@@ -160,6 +159,9 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 | Constante hero-beweging teruggedraaid | Rustiger, past bij DESIGN.md; variant bewaard op `preview/hero-ambient` |
 | Domeinverhuis pas in november, na akkoord klant | Klant heeft de nieuwe site nog niet gezien |
 | Rechtstreeks naar `main` | Werkafspraak met Sam |
+| Contactgegevens naar de Homepage-editor, Instellingen alleen voor de creator | Klant past alle zichtbare tekst op één plek aan (2026-10-27) |
+| Geen eigen back-up; Supabase betaald plan na eerste betaling | Ingebouwde dagelijkse back-ups, geen extra beheer (2026-10-28). Tot dan geen back-up |
+| Foutmeldingen via Resend in plaats van Sentry | Eén dienst, met eigen limiet (1x per uur per fout, 10 per uur per server) |
 
 ---
 
@@ -174,7 +176,10 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - [ ] Admin-handleiding en retainer-afspraken bij de klant bezorgen.
 
 **Techniek**
-- [ ] Monitoring en back-up in gebruik nemen: Better Stack-monitors, R2-bucket `specified-backups`, rol `backup_lezer`, GitHub-secrets, testrun (`gh workflow run backup.yml`). Zie het CMS-document.
+- [ ] Supabase naar het betaalde plan zodra Specified de eerste factuur betaald heeft (dagelijkse back-ups). Tot dan is er geen back-up.
+- [ ] Rol `backup_lezer` verwijderen in Supabase (SQL gegeven aan Sam op 2026-10-28).
+- [ ] Better Stack- of UptimeRobot-monitors aanmaken op beide `/api/health`.
+- [ ] `RESEND_API_KEY` ook in het Vercel-project van de website zetten, en een echte proefmail sturen (`scripts/test-foutmelding.ts` in de CMS).
 - [ ] Tweestapslogin voor de creator (Payload heeft het niet ingebouwd).
 - [ ] Rate limiting en spambeveiliging op het publieke e-mailendpoint.
 - [ ] MongoDB/Atlas en `MONGODB_URI` opruimen (30 dagen na de overstap, dus nu aan de beurt).
@@ -199,7 +204,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-27 22:44_
+_Bijgewerkt: 2026-10-28 19:45_
 
 ### Nog niet op main
 
@@ -211,6 +216,7 @@ _Bijgewerkt: 2026-10-27 22:44_
 
 **2026-10-27**
 
+- website: Contactgegevens uit de Homepage-editor (`c3c4b8b`)
 - website: Draaiboek: Resend-foutmeldingen live, log ververst (`a8000ca`)
 - website: Draaiboek van de website, met script voor de wijzigingslog (`e09a7e5`)
 - website: Foutmeldingen per mail via Resend, met limiet (`05790bd`)
@@ -365,4 +371,4 @@ _Bijgewerkt: 2026-10-27 22:44_
 | `plans/` | Animatieplannen en hun status |
 | `specified-cms/docs/ADMIN-HANDLEIDING.md` | Handleiding voor Specified |
 | `specified-cms/docs/MIGRATIE-SUPABASE.md` | De overstap van MongoDB naar Supabase |
-| `specified-cms/docs/MONITORING-EN-BACKUPS.md` | Uptime en nachtelijke back-ups instellen en terugzetten |
+| `specified-cms/docs/MONITORING.md` | Uptime-monitoring en foutmeldingen via Resend instellen |
