@@ -41,5 +41,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Lokale back-ups (scripts/backup.sh zonder R2)
-backups/
