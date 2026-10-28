@@ -17,7 +17,7 @@ export const Media: CollectionConfig = {
     plural: "Media",
   },
   admin: {
-    group: "Ruwe gegevens",
+    group: false,
   },
   // Alleen rasterafbeeldingen. Geen SVG of HTML: die worden publiek vanaf het
   // CMS-domein geserveerd en kunnen script bevatten (stored XSS op de admins).

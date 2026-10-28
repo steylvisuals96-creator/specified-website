@@ -15,7 +15,7 @@ export const Bedrijven: CollectionConfig = {
   labels: { singular: "Bedrijf", plural: "Bedrijven" },
   admin: {
     useAsTitle: "naam",
-    group: "Ruwe gegevens",
+    group: false,
     defaultColumns: ["naam", "sector", "contactpersoon", "updatedAt"],
   },
   fields: [

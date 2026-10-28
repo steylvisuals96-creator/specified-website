@@ -14,7 +14,7 @@ export const Website: GlobalConfig = {
     read: () => true,
     update: alleenBeheerder,
   },
-  admin: { group: "Ruwe gegevens" },
+  admin: { group: false },
   fields: [
     {
       name: "hero",

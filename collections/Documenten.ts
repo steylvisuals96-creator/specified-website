@@ -20,7 +20,7 @@ export const Documenten: CollectionConfig = {
   },
   labels: { singular: "Document", plural: "Documenten (privé)" },
   admin: {
-    group: "Ruwe gegevens",
+    group: false,
     description: "Cv's en andere vertrouwelijke bestanden. Nooit publiek zichtbaar.",
   },
   upload: {

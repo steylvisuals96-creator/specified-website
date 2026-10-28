@@ -62,7 +62,6 @@ export const MENU: MenuGroep[] = [
       // voor de creator, want de website leest hier nog contact-e-mail,
       // telefoon, LinkedIn, footertekst en bedrijfsnaam uit.
       { href: "/dashboard/instellingen", label: "Instellingen", icoon: "instellingen", alleenCreator: true },
-      { href: "/admin", label: "Geavanceerd beheer", icoon: "beheer", alleenCreator: true },
     ],
   },
 ];

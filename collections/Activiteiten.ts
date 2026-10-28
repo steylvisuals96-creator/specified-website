@@ -6,7 +6,7 @@ export const Activiteiten: CollectionConfig = {
   labels: { singular: "Activiteit", plural: "Activiteiten" },
   admin: {
     useAsTitle: "onderwerp",
-    group: "Ruwe gegevens",
+    group: false,
     defaultColumns: ["onderwerp", "type", "kandidaat", "bedrijf", "datum"],
   },
   // Dit is een communicatielogboek: onderwerp, inhoud, afzender en

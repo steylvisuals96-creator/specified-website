@@ -12,7 +12,7 @@ export const Sollicitaties: CollectionConfig = {
   labels: { singular: "Sollicitatie", plural: "Sollicitaties" },
   admin: {
     useAsTitle: "titel",
-    group: "Ruwe gegevens",
+    group: false,
     defaultColumns: ["titel", "kandidaat", "vacature", "status", "updatedAt"],
   },
   fields: [

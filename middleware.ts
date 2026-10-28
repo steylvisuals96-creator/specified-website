@@ -10,6 +10,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Het Payload-dashboard toont niets meer (alle collecties hebben group: false).
+  // Na het inloggen stuurt Payload naar /admin: iedereen landt zo op het Overzicht.
+  if (pathname === "/admin" || pathname === "/admin/") {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
   // Lees de Payload auth cookie (JWT)
   const token = req.cookies.get("payload-token")?.value;
 
