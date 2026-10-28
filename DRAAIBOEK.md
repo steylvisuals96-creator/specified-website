@@ -141,7 +141,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - Server actions in de CMS schrijven als de ingelogde gebruiker (`lib/serverPayload.ts`); eerder konden 11 acties zonder login schrijven, dat is dicht.
 - Login-lockout 5 keer per 15 minuten, sessie 8 uur, geen interne foutmeldingen naar de client.
 - Rolscenario's getest, 14 van 14.
-- `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel voor de back-uprol verdwijnt met die rol.
+- `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel en de rol van de back-up zijn verwijderd (2026-10-28).
 - Bekend gat: het publieke e-mailendpoint heeft nog geen rate limiting.
 
 ---
@@ -177,7 +177,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 
 **Techniek**
 - [ ] Supabase naar het betaalde plan zodra Specified de eerste factuur betaald heeft (dagelijkse back-ups). Tot dan is er geen back-up.
-- [ ] Rol `backup_lezer` verwijderen in Supabase (SQL gegeven aan Sam op 2026-10-28).
+- [x] Rol `backup_lezer` verwijderd in Supabase (2026-10-28).
 - [ ] Better Stack- of UptimeRobot-monitors aanmaken op beide `/api/health`.
 - [ ] `RESEND_API_KEY` ook in het Vercel-project van de website zetten, en een echte proefmail sturen (`scripts/test-foutmelding.ts` in de CMS).
 - [ ] Tweestapslogin voor de creator (Payload heeft het niet ingebouwd).
@@ -204,7 +204,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-28 19:45_
+_Bijgewerkt: 2026-10-28 19:50_
 
 ### Nog niet op main
 
@@ -213,6 +213,10 @@ _Bijgewerkt: 2026-10-28 19:45_
 - website, branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
+
+**2026-10-28**
+
+- website: Draaiboek: contact in Homepage-editor, Instellingen alleen creator, back-up geschrapt (`17c8029`)
 
 **2026-10-27**
 
