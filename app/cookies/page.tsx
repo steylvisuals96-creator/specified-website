@@ -1,7 +1,7 @@
 import LegalPage from "@/components/LegalPage";
 
 export const metadata = {
-  title: "Cookiebeleid — Specified",
+  title: "Cookiebeleid - Specified",
   description: "Welke cookies Specified gebruikt en hoe je je voorkeuren beheert.",
 };
 

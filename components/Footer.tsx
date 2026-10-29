@@ -4,7 +4,7 @@ import CookieVoorkeurenLink from "@/components/CookieVoorkeurenLink";
 
 export default function Footer({ linkedin, footerTekst }: { linkedin?: string; footerTekst?: string } = {}) {
   const linkedinUrl = linkedin || "https://www.linkedin.com/company/specified-be";
-  const bedrijfsregel = footerTekst || "© 2026 Specified BV — Kontich, België";
+  const bedrijfsregel = footerTekst || "© 2026 Specified BV, Kontich, België";
 
   return (
     <footer className="footer">
