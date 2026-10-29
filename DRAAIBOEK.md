@@ -31,7 +31,7 @@ Werkafspraak: rechtstreeks naar `main` pushen, geen feature-branches en PR's (zi
 Richting **Signatuurmerk**. Alles staat in `DESIGN.md`; hier de kern.
 
 - Palet: donker `#1E1E21` en `#323236`, limoen `#DFFD7B` als accent. Tokens in `app/globals.css`.
-- Lettertypen: Bebas Neue voor koppen, Instrument Serif Italic en Instrument Sans voor tekst (via `next/font`).
+- Lettertypen: Bebas Neue voor koppen, Instrument Serif Italic als accent en IBM Plex Sans voor tekst en UI (via `next/font`, sinds 2026-10-29; ook in de CMS).
 - Radius 0 op de site, 2px in de back-office. Geen pill-knoppen, geen pijltjes, geen kapitalen-labels, geen middenpunten of streepjes in teksten (komma of koppelteken).
 - Motion is stil en bewust. Geen constante beweging in de hero (dat is teruggedraaid, de variant leeft op de branch `preview/hero-ambient`).
 - `prefers-reduced-motion` en geen-JS tonen een stilstaande hero met het logo als eindbeeld.
@@ -155,6 +155,8 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 | CSS `sticky` in plaats van GSAP-pin | Geen layout shift, geen lege band |
 | Supabase in plaats van MongoDB | Keuze van Sam (2026-09-26), past bij het bouwplan |
 | `/admin` alleen voor de creator, klant werkt in `/dashboard` | Eén omgeving voor de klant; Payload-admin blijft achterdeur |
+| Na inloggen naar Overzicht, Ruwe gegevens verborgen | `/admin` stuurt door naar `/dashboard`; collecties hebben `group: false` en zijn voor de creator alleen nog per URL bereikbaar, menu-item Geavanceerd beheer weg (2026-10-28) |
+| IBM Plex Sans voor tekst en UI | Technischer dan Instrument Sans, past bij de tekening; keuze Sam uit vier opties (2026-10-29, `design/lettertype-vergelijking.png`) |
 | Live editor in plaats van losse formulieren | Klant ziet direct wat verandert |
 | Constante hero-beweging teruggedraaid | Rustiger, past bij DESIGN.md; variant bewaard op `preview/hero-ambient` |
 | Domeinverhuis pas in november, na akkoord klant | Klant heeft de nieuwe site nog niet gezien |
@@ -204,7 +206,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-28 19:50_
+_Bijgewerkt: 2026-10-29 22:21_
 
 ### Nog niet op main
 
@@ -216,6 +218,7 @@ _Bijgewerkt: 2026-10-28 19:50_
 
 **2026-10-28**
 
+- website: Draaiboek: rol backup_lezer verwijderd (`7f99123`)
 - website: Draaiboek: contact in Homepage-editor, Instellingen alleen creator, back-up geschrapt (`17c8029`)
 
 **2026-10-27**

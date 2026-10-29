@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Bebas_Neue, IBM_Plex_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import VloeiendScrollen from "@/components/VloeiendScrollen";
@@ -15,11 +15,12 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
 });
 
-// Tekst en UI. Vervangt Avenir, dat nooit als webfont geladen werd en op
-// Windows terugviel op Century Gothic.
-const instrumentSans = Instrument_Sans({
+// Tekst en UI: IBM Plex Sans (keuze Sam, 2026-10-29), technischer dan het
+// eerdere Instrument Sans. Niet variabel, dus de gebruikte gewichten expliciet.
+const plexSans = IBM_Plex_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 // Alleen voor woorden over mensen (zie DESIGN.md), dus enkel de cursief.
@@ -55,7 +56,7 @@ export default function RootLayout({
     // data-scroll-behavior is vereist sinds Next.js 16: het framework overschrijft
     // `scroll-behavior: smooth` niet langer zelf tijdens route-overgangen, waardoor
     // navigeren zonder dit attribuut traag naar boven glijdt in plaats van te springen.
-    <html lang="nl" className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="nl" className={`${bebasNeue.variable} ${plexSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT }} />
       </head>

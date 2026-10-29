@@ -32,9 +32,9 @@ Regels:
 | --- | --- | --- |
 | Display (merk) | **Bebas Neue** (behouden, `next/font/google`) | Koppen, hero, disciplines, contactkop. Altijd kapitalen. |
 | Mens-accent | **Instrument Serif Italic** (`next/font/google`) | Alleen woorden over mensen of beslissingen: *possibilities*, *stap*, *missie*, *kennismaken*, en disciplines in de marquee om en om. |
-| Tekst & UI | **Instrument Sans** (`next/font/google`, variabel) | Lopende tekst, navigatie, knoppen, metadata, cijfers (`font-variant-numeric: tabular-nums`). Vervangt Avenir, dat niet als webfont geladen werd. |
+| Tekst & UI | **IBM Plex Sans** (`next/font/google`, gewichten 400 tot 700) | Lopende tekst, navigatie, knoppen, metadata, cijfers (`font-variant-numeric: tabular-nums`). Sinds 2026-10-29, i.p.v. Instrument Sans: technischer, past bij de tekening. Ook in de CMS. |
 
-Geen monospace-font: technische infokaartjes gebruiken Instrument Sans met tabulaire cijfers.
+Geen monospace-font: technische infokaartjes gebruiken IBM Plex Sans met tabulaire cijfers.
 
 Schaal (basis 17px, verhouding 1.333 op tekst; display vrij geschaald op viewport):
 
@@ -44,10 +44,10 @@ Schaal (basis 17px, verhouding 1.333 op tekst; display vrij geschaald op viewpor
 | `display-l` | `clamp(3.25rem, 9vw, 8.5rem)` | Bebas 400 | 0.9 |
 | `display-m` | `clamp(2.5rem, 5vw, 4.5rem)` | Bebas 400 | 0.95 |
 | `serif-accent` | zelfde grootte als de kop waarin het staat, optisch +4% | Instrument Serif Italic 400 | inherit |
-| `title` | 1.75rem | Instrument Sans 600 | 1.15 |
-| `body-l` | 1.1875rem | Instrument Sans 400 | 1.55 |
-| `body` | 1.0625rem (17px) | Instrument Sans 400 | 1.6 |
-| `meta` | 0.875rem | Instrument Sans 500, tabular-nums | 1.4 |
+| `title` | 1.75rem | IBM Plex Sans 600 | 1.15 |
+| `body-l` | 1.1875rem | IBM Plex Sans 400 | 1.55 |
+| `body` | 1.0625rem (17px) | IBM Plex Sans 400 | 1.6 |
+| `meta` | 0.875rem | IBM Plex Sans 500, tabular-nums | 1.4 |
 
 Regels:
 - Geen fontWeight 300 of lager. Minimum 400.
@@ -83,7 +83,7 @@ CONTACT (gecentreerd, e-mail groot, 1 knop) + FOOTER
 
 ## Componenten
 
-**Knoppen** — radius 0. Hoogte 52px, padding `0 28px`, Instrument Sans 600 16px, zinshoofdletter.
+**Knoppen** — radius 0. Hoogte 52px, padding `0 28px`, IBM Plex Sans 600 16px, zinshoofdletter.
 - Primair: limoen vlak, `--ink-900` tekst. Hover: vlak wordt `--bone-100`.
 - Secundair: 1.5px rand `--bone-100`, transparant. Hover: rand en tekst limoen.
 - Nooit pijltjes (→ ↗) in knoppen of links. Linktekst zegt wat er gebeurt ("Bekijk alle vacatures").
