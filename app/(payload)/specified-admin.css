@@ -4,7 +4,7 @@
    (specified-website/DESIGN.md), zodat de twee omgevingen één geheel vormen.
 ═══════════════════════════════════════════════════ */
 
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap");
 
 :root {
   --ink-900: #14140e;
@@ -17,7 +17,7 @@
   --bone-600: #6f6d62;
   --lime-300: #dffd7b;
 
-  --sv-sans: "Instrument Sans", system-ui, sans-serif;
+  --sv-sans: "IBM Plex Sans", system-ui, sans-serif;
   --sv-display: "Bebas Neue", "Arial Narrow", sans-serif;
 
   /* Payload-variabelen */

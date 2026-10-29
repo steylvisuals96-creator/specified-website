@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Bebas_Neue, IBM_Plex_Sans, Instrument_Serif } from "next/font/google";
 import "../globals.css";
 
 // Dezelfde letters als de website (specified-website/DESIGN.md).
@@ -8,9 +8,11 @@ const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
   weight: "400",
 });
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument-sans",
+// Tekst en UI: IBM Plex Sans, zoals de website (2026-10-29).
+const plexSans = IBM_Plex_Sans({
+  variable: "--font-plex-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
@@ -34,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="nl"
-      className={`${bebasNeue.variable} ${instrumentSans.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${plexSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
