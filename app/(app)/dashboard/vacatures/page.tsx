@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import DashboardShell, { PageHeader, Table, TD, StatusBadge, Empty, fmtDate } from "@/components/DashboardShell";
 import VacatureEditDrawer from "@/components/VacatureEditDrawer";
+import { naarVorm } from "@/lib/vacatureVorm";
 import VacatureCreateDrawer from "@/components/VacatureCreateDrawer";
 import ZoekFilter from "@/components/ZoekFilter";
 import { SECTOR_LABEL, VACATURE_TYPE } from "@/lib/labels";
@@ -62,7 +63,7 @@ export default async function VacaturesPage({ searchParams }: { searchParams: Pr
                 <TD><StatusBadge label={statusLabel[doc.status] || doc.status} kleur={statusKleur[doc.status] || "#6f6d62"} /></TD>
                 <TD muted>{fmtDate(doc.createdAt)}</TD>
                 <TD>
-                  <VacatureEditDrawer id={doc.id} initial={{ titel: doc.titel, sector: doc.sector, type: doc.type, status: doc.status, locatie: doc.locatie, ervaringsniveau: doc.ervaringsniveau, salaris: doc.salaris }} />
+                  <VacatureEditDrawer id={doc.id} initial={naarVorm(doc)} />
                 </TD>
               </tr>
             ))}

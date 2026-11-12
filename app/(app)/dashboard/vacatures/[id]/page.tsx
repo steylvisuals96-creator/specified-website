@@ -4,6 +4,8 @@ import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import DashboardShell, { PageHeader, LimeBtn, StatusBadge, fmtDate } from "@/components/DashboardShell";
 import VacatureEditDrawer from "@/components/VacatureEditDrawer";
+import { naarVorm } from "@/lib/vacatureVorm";
+import { SECTOR_LABEL } from "@/lib/labels";
 
 const configPromise = import("@payload-config").then((m) => m.default);
 
@@ -72,18 +74,20 @@ export default async function VacatureDetailPage({ params }: { params: Promise<{
           </div>
 
           <div style={{ marginBottom: "1.5rem" }}>
-            <InfoRow label="Sector" value={v.sector} />
+            <InfoRow label="Vakgebied" value={SECTOR_LABEL[v.sector] ?? v.sector} />
+            <InfoRow label="Uren" value={v.uren} />
             <InfoRow label="Type" value={typeLabel[v.type] || v.type} />
             <InfoRow label="Niveau" value={niveauLabel[v.ervaringsniveau] || v.ervaringsniveau} />
             <InfoRow label="Locatie" value={v.locatie} />
-            <InfoRow label="Salaris" value={v.salaris} />
+            <InfoRow label="Salaris (intern)" value={v.salaris} />
+            <InfoRow label="Op de website" value={v.slug && v.zichtbaar_op_website !== false && (v.status === "actief" || v.status === "ingevuld") ? `/vacatures/${v.slug}` : "Niet zichtbaar"} />
             <InfoRow label="Opdrachtgever" value={v.opdrachtgever?.naam} />
             <InfoRow label="Gepubliceerd" value={v.gepubliceerd_op ? fmtDate(v.gepubliceerd_op) : null} />
           </div>
 
           <VacatureEditDrawer
             id={id}
-            initial={{ titel: v.titel, sector: v.sector, type: v.type, status: v.status, locatie: v.locatie, ervaringsniveau: v.ervaringsniveau, salaris: v.salaris }}
+            initial={naarVorm(v)}
           />
         </div>
 

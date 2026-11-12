@@ -36,13 +36,16 @@ export const MENU: MenuGroep[] = [
   {
     items: [
       { href: "/dashboard", label: "Overzicht", icoon: "overzicht" },
-      { href: "/dashboard/pipeline", label: "Pipeline", icoon: "pipeline" },
-      { href: "/dashboard/kandidaten", label: "Kandidaten", icoon: "kandidaten" },
-      { href: "/dashboard/sollicitaties", label: "Sollicitaties", icoon: "sollicitaties" },
       { href: "/dashboard/vacatures", label: "Vacatures", icoon: "vacatures" },
-      { href: "/dashboard/bedrijven", label: "Bedrijven", icoon: "bedrijven" },
-      { href: "/dashboard/agenda", label: "Agenda", icoon: "agenda" },
-      { href: "/dashboard/activiteiten", label: "Activiteiten", icoon: "activiteiten" },
+      // De recruitmentmodules blijven bestaan, maar Specified beheert alleen
+      // vacatures en blog en krijgt sollicitaties per mail (invullijst
+      // 2026-11-12). Daarom alleen nog zichtbaar voor de creator.
+      { href: "/dashboard/pipeline", label: "Pipeline", icoon: "pipeline", alleenCreator: true },
+      { href: "/dashboard/kandidaten", label: "Kandidaten", icoon: "kandidaten", alleenCreator: true },
+      { href: "/dashboard/sollicitaties", label: "Sollicitaties", icoon: "sollicitaties", alleenCreator: true },
+      { href: "/dashboard/bedrijven", label: "Bedrijven", icoon: "bedrijven", alleenCreator: true },
+      { href: "/dashboard/agenda", label: "Agenda", icoon: "agenda", alleenCreator: true },
+      { href: "/dashboard/activiteiten", label: "Activiteiten", icoon: "activiteiten", alleenCreator: true },
     ],
   },
   {

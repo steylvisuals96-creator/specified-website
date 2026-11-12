@@ -146,15 +146,31 @@ export interface GebruikerAuthOperations {
 export interface Vacature {
   id: string;
   titel: string;
-  sector: 'civiel' | 'elektro' | 'werktuig' | 'it' | 'bouw' | 'energie' | 'industrie' | 'projectmanagement';
+  /**
+   * Wordt automatisch gemaakt uit de titel.
+   */
+  slug?: string | null;
+  sector:
+    | 'civiel'
+    | 'elektro'
+    | 'automatisering'
+    | 'werktuig'
+    | 'it'
+    | 'bouw'
+    | 'energie'
+    | 'industrie'
+    | 'projectmanagement';
   type: 'vast' | 'freelance' | 'interim' | 'student';
   status?: ('actief' | 'on_hold' | 'ingevuld' | 'geannuleerd') | null;
   locatie?: string | null;
   ervaringsniveau?: ('junior' | 'medior' | 'senior' | 'lead') | null;
   /**
-   * bv. €3.500–€4.500/maand of €600/dag
+   * Alleen voor intern gebruik: de website toont geen salaris.
    */
   salaris?: string | null;
+  uren?: ('voltijds' | 'deeltijds' | 'beide') | null;
+  opleidingsniveau?: ('secundair' | 'graduaat' | 'bachelor' | 'master' | 'geen') | null;
+  talen?: ('nl' | 'en' | 'fr' | 'de')[] | null;
   opdrachtgever?: (string | null) | Bedrijven;
   beschrijving?: {
     root: {
@@ -550,12 +566,16 @@ export interface PayloadMigration {
  */
 export interface VacaturesSelect<T extends boolean = true> {
   titel?: T;
+  slug?: T;
   sector?: T;
   type?: T;
   status?: T;
   locatie?: T;
   ervaringsniveau?: T;
   salaris?: T;
+  uren?: T;
+  opleidingsniveau?: T;
+  talen?: T;
   opdrachtgever?: T;
   beschrijving?: T;
   vereisten?:
