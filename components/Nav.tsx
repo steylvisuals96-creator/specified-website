@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import ThemaKnop from "@/components/ThemaKnop";
 import { CONTACT } from "@/lib/inhoud";
 import { useEffect, useState } from "react";
 
-// Eén bron voor desktop- én mobiel menu. "Jobs" gaat rechtstreeks naar de
-// volledige vacaturepagina; de rest scrollt naar een sectie op de homepage.
+// Eén bron voor desktop- én mobiel menu.
 const NAV_ITEMS = [
-  { label: "Diensten", href: "/#diensten" },
-  { label: "Jobs", href: "/vacatures" },
+  { label: "Voor bedrijven", href: "/voor-bedrijven" },
+  { label: "Voor engineers", href: "/voor-engineers" },
+  { label: "Vacatures", href: "/vacatures" },
   { label: "Blog", href: "/blog" },
   { label: "Over ons", href: "/#over-ons" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Nav() {
@@ -47,9 +47,10 @@ export default function Nav() {
               {item.label}
             </Link>
           ))}
-          <a href="/#contact" className="btn btn-primary site-nav__cta">
+          <ThemaKnop />
+          <Link href="/contact" className="btn btn-primary site-nav__cta">
             Neem contact op
-          </a>
+          </Link>
         </nav>
 
         <button
@@ -77,9 +78,10 @@ export default function Nav() {
               {item.label}
             </Link>
           ))}
-          <a href="/#contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
+          <Link href="/contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
             Neem contact op
-          </a>
+          </Link>
+          <ThemaKnop metTekst />
           <div className="site-nav__mobile-contact">
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             <a href={`tel:${CONTACT.telefoonLink}`}>{CONTACT.telefoon}</a>

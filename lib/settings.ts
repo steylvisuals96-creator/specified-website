@@ -58,9 +58,9 @@ export type TeamMember = {
 
 const ROL_LABEL: Record<string, string> = {
   managing_partner: "Managing Partner",
-  senior_consultant: "Senior Recruitment Consultant",
-  consultant: "Recruitment Consultant",
-  talent: "Talent Acquisition Specialist",
+  senior_consultant: "Senior Consultant",
+  consultant: "Consultant",
+  talent: "Talent Partner",
   office: "Office Manager",
 };
 

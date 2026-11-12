@@ -10,9 +10,8 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import Disciplines from "@/components/Disciplines";
 import ScrollMomenten from "@/components/ScrollMomenten";
-import { getSettings, getTeam, CMS_URL } from "@/lib/settings";
-
-const DAG = 24 * 60 * 60 * 1000;
+import { getSettings, getTeam } from "@/lib/settings";
+import { getVacatures, dagenOnline } from "@/lib/vacatures";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -21,56 +20,22 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     // Positionering uit lib/inhoud.ts; de CMS-metavelden bevatten nog voorbeeldtekst.
     title: META.titel,
+    alternates: { canonical: "/" },
     description: META.beschrijving,
   };
 }
 
-const SECTOR_LABEL: Record<string, string> = {
-  civiel: "Civiele techniek",
-  elektro: "Elektrotechniek",
-  werktuig: "Werktuigbouwkunde",
-  bouw: "Bouw & Infra",
-  industrie: "Industrie & Productie",
-  energie: "Energie",
-  it: "IT & Software",
-  projectmanagement: "Projectmanagement",
-};
-
-const TYPE_LABEL: Record<string, string> = {
-  vast: "Vast",
-  interim: "Interim",
-  freelance: "Freelance",
-  student: "Student",
-};
-
-const ERVARING_LABEL: Record<string, string> = {
-  junior: "Junior (0–2 jaar)",
-  medior: "Medior (2–5 jaar)",
-  senior: "Senior (5+ jaar)",
-  lead: "Lead / Expert",
-};
-
 async function getRecentJobs() {
-  try {
-    const res = await fetch(
-      `${CMS_URL}/api/vacatures?where[status][equals]=actief&limit=5&sort=-createdAt`,
-      { next: { revalidate: 60 } }
-    );
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.docs ?? [])
-      .filter((v: any) => v.zichtbaar_op_website !== false)
-      .map((v: any) => ({
-        title: v.titel,
-        type: TYPE_LABEL[v.type] ?? v.type ?? "",
-        location: v.locatie ?? "België",
-        sector: SECTOR_LABEL[v.sector] ?? v.sector ?? "",
-        ervaring: v.ervaringsniveau ? ERVARING_LABEL[v.ervaringsniveau] ?? v.ervaringsniveau : "",
-        dagen: v.createdAt ? Math.floor((Date.now() - new Date(v.createdAt).getTime()) / DAG) : undefined,
-      }));
-  } catch {
-    return [];
-  }
+  const open = (await getVacatures(20)).filter((v) => !v.ingevuld).slice(0, 5);
+  return open.map((v) => ({
+    slug: v.slug,
+    title: v.titel,
+    type: v.uren,
+    location: v.locatie,
+    sector: v.vakgebied,
+    ervaring: v.ervaring,
+    dagen: dagenOnline(v),
+  }));
 }
 
 export default async function Home() {

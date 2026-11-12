@@ -536,10 +536,10 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
               <span data-bewerk="hero.suffix">{HERO.suffix}</span>
             </h1>
             <div className="hero__actions">
-              <a href="#contact" className="btn btn-primary" data-bewerk="hero.ctaBedrijven">
+              <a href="/voor-bedrijven" className="btn btn-primary" data-bewerk="hero.ctaBedrijven">
                 {HERO.ctaBedrijven}
               </a>
-              <a href="/vacatures" className="btn btn-secondary" data-bewerk="hero.ctaEngineers">
+              <a href="/voor-engineers" className="btn btn-secondary" data-bewerk="hero.ctaEngineers">
                 {HERO.ctaEngineers}
               </a>
             </div>

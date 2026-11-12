@@ -22,14 +22,27 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
           <Logo className="logo--footer" />
         </Link>
         <nav className="footer__links" aria-label="Footer">
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/cookies">Cookies</Link>
-          <CookieVoorkeurenLink />
+          <Link href="/voor-bedrijven">Voor bedrijven</Link>
+          <Link href="/voor-engineers">Voor engineers</Link>
+          <Link href="/vacatures">Vacatures</Link>
+          <Link href="/blog">Blog</Link>
+          <Link href="/faq">Veelgestelde vragen</Link>
+          <Link href="/contact">Contact</Link>
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
             LinkedIn
           </a>
         </nav>
+      </div>
+      <div className="wrap footer__rij footer__rij--onder">
         <p className="meta">{bedrijfsregel}</p>
+        <nav className="footer__links footer__links--klein" aria-label="Juridisch">
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/cookies">Cookies</Link>
+          <Link href="/algemene-voorwaarden">Algemene voorwaarden</Link>
+          <Link href="/disclaimer">Disclaimer</Link>
+          <Link href="/toegankelijkheid">Toegankelijkheid</Link>
+          <CookieVoorkeurenLink style={{ fontSize: "0.875rem" }} />
+        </nav>
       </div>
     </footer>
   );

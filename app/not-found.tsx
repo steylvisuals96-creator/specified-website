@@ -41,7 +41,7 @@ export default function NotFound() {
           De link die je volgde is verlopen of verkeerd. Geen zorgen — hieronder vind je de weg terug.
         </p>
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Link href="/" style={{ backgroundColor: "var(--lime)", color: "var(--dark)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>
+          <Link href="/" style={{ backgroundColor: "var(--lime-vlak)", color: "var(--on-lime)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>
             Naar de homepage
           </Link>
           <Link href="/vacatures" style={{ border: "1px solid var(--line-strong)", color: "var(--white)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 400, textDecoration: "none" }}>

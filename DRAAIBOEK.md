@@ -35,6 +35,7 @@ Richting **Signatuurmerk**. Alles staat in `DESIGN.md`; hier de kern.
 - Palet: donker `#1E1E21` en `#323236`, limoen `#DFFD7B` als accent. Tokens in `app/globals.css`.
 - Lettertypen: Bebas Neue voor koppen, Instrument Serif Italic als accent en IBM Plex Sans voor tekst en UI (via `next/font`, sinds 2026-10-29; ook in de CMS).
 - Radius 0 op de site, 2px in de back-office. Geen pill-knoppen, geen pijltjes, geen kapitalen-labels, geen middenpunten of streepjes in teksten (komma of koppelteken).
+- **Licht thema** (2026-11-12): de bezoeker kiest via de knop in de navigatie (`components/ThemaKnop.tsx`, `lib/thema.ts`), donker blijft de standaard. Dezelfde tokens, omgekeerd, onder `:root[data-thema="licht"]` in `globals.css`. Limoen als vlak is `--lime-vlak` met tekst `--on-lime`; `--lime-300` is het accent als tekst en lijn en wordt in licht een donker olijfgroen.
 - Motion is stil en bewust. Geen constante beweging in de hero (dat is teruggedraaid, de variant leeft op de branch `preview/hero-ambient`).
 - `prefers-reduced-motion` en geen-JS tonen een stilstaande hero met het logo als eindbeeld.
 
@@ -47,13 +48,25 @@ Richting **Signatuurmerk**. Alles staat in `DESIGN.md`; hier de kern.
 | Route | Inhoud |
 |---|---|
 | `/` | Hero als technische tekening, disciplines, diensten, vacatures, team, contact |
-| `/vacatures` | Filterbare lijst met detailpaneel (Framer Motion) |
+| `/vacatures` | Lijst met één filter op vakgebied; elke rij linkt naar de vacaturepagina. Ingevulde vacatures staan onderaan, gemarkeerd |
+| `/vacatures/[slug]` | Pagina per vacature: tekst, kenmerken (vakgebied, locatie, uren, ervaring, opleiding, talen, plaatsingsdatum, geen salaris), sollicitatieformulier en JobPosting voor Google. Ingevuld: geen formulier, `noindex` |
+| `/voor-bedrijven`, `/voor-engineers` | Diensten, profielen, sectoren, werkwijze, cijfers en attesten; aanvraagformulier voor een consultant |
+| `/open-sollicitatie`, `/contact`, `/faq` | Formulieren en veelgestelde vragen (met FAQPage-gegevens) |
 | `/blog`, `/blog/[slug]` | Artikelen uit de CMS |
-| `/privacy`, `/cookies` | Juridische pagina's (`components/LegalPage.tsx`); privacy noemt sinds 2026-11-12 Specified NV met adres en ondernemingsnummer |
+| `/privacy`, `/cookies`, `/disclaimer`, `/toegankelijkheid`, `/algemene-voorwaarden` | Juridische pagina's (`components/LegalPage.tsx`). Algemene voorwaarden is een plaatshouder met `noindex` tot Specified de tekst levert |
+| `/api/formulier` | Ontvangt de vier formulieren en mailt ze via Resend (zie Formulieren) |
 | `/api/health` | Gezondheidscheck: site draait en bereikt de CMS (503 bij fout) |
 | `sitemap`, `robots`, `opengraph-image` | SEO; JSON-LD op home met `legalName`, `vatID`, volledig adres en oprichtingsdatum |
 
-**Nog te bouwen volgens de invullijst** (zie `BRIEFING.md`, deel 5): Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden, Disclaimer, Toegankelijkheidsverklaring. Misschien: Over ons, Cases zonder klantnamen, Team, Evenementen.
+Misschien later (invullijst): Over ons, Cases zonder klantnamen, Team, Evenementen.
+
+### Formulieren (2026-11-12)
+
+Vier formulieren uit één beschrijving (`lib/formulieren.ts`): sollicitatie bij een vacature, open sollicitatie, contact en aanvraag consultant. `components/Formulier.tsx` tekent ze, `app/api/formulier/route.ts` controleert opnieuw en mailt via Resend: een melding naar Specified (cv als bijlage, antwoorden gaat naar de bezoeker) en een bevestiging naar de bezoeker. Er wordt niets opgeslagen. Beveiliging: alleen eigen origin, verborgen valkuilveld, minimale invultijd, 5 per 10 minuten per IP (per server), cv alleen pdf of Word tot 4 MB.
+
+Nodig in Vercel (website): `RESEND_API_KEY`, `FORMULIER_AAN` (ontvanger, later `Simon.claeys@specified.be`), `FORMULIER_VAN` (afzender op een in Resend geverifieerd domein). **Zonder geverifieerd domein bezorgt Resend alleen bij de eigenaar van het account**: de melding naar Simon en de bevestiging naar bezoekers werken dus pas na verificatie van `specified.be` in Resend (DNS-records). Zonder sleutels geeft het formulier in productie een nette foutmelding met het e-mailadres.
+
+Alle teksten op de nieuwe pagina's zijn voorlopig (bron: invullijst, `lib/inhoud.ts`). Zelf geschreven en door Specified na te kijken: de drie stappen op Voor bedrijven, de FAQ-antwoorden, de omschrijvingen bij diensten en waarden, disclaimer en toegankelijkheidsverklaring.
 
 ### De hero (technische tekening)
 
@@ -61,14 +74,16 @@ SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrost
 
 ### Bouwstenen
 
-`Nav`, `HeroTekening`, `Disciplines` (scroll-scrub), `ScrollMomenten`, `Split`, `Jobs`, `VacaturesClient`, `Team`, `CTA`, `Footer`, `Logo` (hover als keyframes, vastgelegd), `Vizier` (CAD-muiswijzer, alleen desktop), `VloeiendScrollen` (Lenis, alleen desktop), `HashScroll`, `CookieBanner` en `AnalyticsGate`.
+`Nav` (met `ThemaKnop`), `Pagina` (raamwerk met `Blok`, `Lijst`, `Stappen`, `Kenmerken`), `Formulier`, `HeroTekening`, `Disciplines` (scroll-scrub), `ScrollMomenten`, `Split`, `Jobs`, `VacaturesClient`, `Team`, `CTA`, `Footer`, `Logo` (hover als keyframes, vastgelegd), `Vizier` (CAD-muiswijzer, alleen desktop), `VloeiendScrollen` (Lenis, alleen desktop), `HashScroll`, `CookieBanner` en `AnalyticsGate`.
 
 ### Inhoud: waar komt tekst vandaan
 
 | Wat | Bron |
 |---|---|
 | Hero-tekening, callouts, titelblok, diensten | `lib/inhoud.ts`, en per veld te overschrijven vanuit de CMS (live editor, deel 4) |
-| Vacatures, blog, team, instellingen | CMS via REST (`lib/settings.ts`, `lib/blog.ts`) |
+| Vacatures | CMS via REST, één plek: `lib/vacatures.ts` (labels, lijst, één vacature op slug). Is de CMS onbereikbaar, dan blijft de laatst gebouwde pagina staan |
+| Teksten van de nieuwe pagina's (diensten, profielen, sectoren, waarden, cijfers, attesten, stappen) | `lib/inhoud.ts`, nog niet in de CMS |
+| Blog, team, instellingen | CMS via REST (`lib/settings.ts`, `lib/blog.ts`) |
 | Contact-e-mail, telefoon, LinkedIn, footertekst | Homepage-editor (global `website`, groep `contact`); leeg valt terug op `Instellingen` (`getSettings()`, sinds 2026-10-27). LinkedIn alleen als `https`-link |
 | Cijfers (statistieken) | CMS `statistieken`, nu leeg, daarom verborgen |
 
@@ -90,6 +105,12 @@ Eén codebase met twee ingangen:
 |---|---|---|
 | `/dashboard` | Eigen interface in de huisstijl | Elke ingelogde gebruiker |
 | `/admin` | Standaard Payload-admin ("Geavanceerd beheer"), ingeklapt onder "Ruwe gegevens" | Alleen de creator |
+
+### Vacatures beheren (2026-11-12)
+
+Eén formulier voor nieuw en bewerken (`components/VacatureVelden.tsx`, `lib/vacatureVorm.ts`): kenmerken, jobomschrijving, profiel, nice to have, aanbod, status, plaatsingsdatum en zichtbaarheid. Daarvoor kon de klant de jobtekst alleen in `/admin` invullen, waar hij niet bij kan. Nieuwe velden: `uren`, `opleidingsniveau`, `talen`, en `slug` (vast adres op de website, automatisch uit de titel). Vakgebied kreeg de optie Automatisering. Salaris blijft een intern veld. De API geeft anoniem nu ook ingevulde vacatures terug (de website toont ze als ingevuld). Migratie `20261112_120830_vacature_velden`, op Supabase toegepast op 2026-11-12 (`scripts/sql/20261112_vacature_velden.sql`).
+
+Menu voor de klant: Overzicht, Vacatures, Homepage, Blog, Team, Media, Gebruikers. Pipeline, Kandidaten, Sollicitaties, Bedrijven, Agenda en Activiteiten ziet alleen de creator nog (de pagina's zelf bestaan nog en zijn per URL bereikbaar voor wie ingelogd is).
 
 ### Rollen
 
@@ -134,7 +155,7 @@ Volledige handleiding: `specified-cms/docs/MONITORING.md`.
 
 ### Omgevingsvariabelen
 
-Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `DATABASE_URI`, `PAYLOAD_SECRET`, `R2_*`, `EMAIL_WEBHOOK_SECRET`, `MAKE_SECRET`, Resend-sleutel. Waarden staan nooit in git of in dit document.
+Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor de formulieren `RESEND_API_KEY`, `FORMULIER_AAN`, `FORMULIER_VAN` en optioneel `FORMULIER_ANTWOORD`. CMS: `DATABASE_URI`, `PAYLOAD_SECRET`, `R2_*`, `EMAIL_WEBHOOK_SECRET`, `MAKE_SECRET`, Resend-sleutel. Waarden staan nooit in git of in dit document.
 
 ---
 
@@ -172,7 +193,11 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 | Geen klantlogo's of projectnamen op de site | Klant mag ze niet tonen (invullijst); cases alleen anoniem |
 | Geen salaris bij vacatures, ingevulde vacatures blijven zichtbaar als ingevuld | Invullijst, 2026-11-12 |
 | Sollicitaties en aanvragen per mail naar Simon, niet in een overzicht in het beheer | Invullijst: "alleen in mijn mail" |
-| Licht en donker thema, bezoeker kiest | Invullijst; de site is nu alleen donker |
+| Licht en donker thema, bezoeker kiest; donker is de standaard | Invullijst. Donker blijft de huisstijl, de keuze wordt onthouden (gebouwd 2026-11-12) |
+| Pagina per vacature meteen gebouwd, detailpaneel geschrapt | Nodig voor Google for Jobs; elke vacature een eigen adres. Lost ook animatieplan 009 op |
+| Eén filter (vakgebied) op de vacaturelijst | Specified vroeg geen filters op regio en uren |
+| Formulieren mailen via Resend vanaf de website, niets opslaan | Specified wil aanvragen alleen in de mail |
+| Recruitmentmodules uit het klantmenu | Specified beheert alleen vacatures en blog |
 | Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12) |
 
 ---
@@ -180,8 +205,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 ## 8. Open punten
 
 **Afstemmen met Simon (tegenstrijdigheden uit de invullijst, zie `BRIEFING.md`)**
-- [ ] Vacatures in Google vraagt een pagina per vacature, die staat op "later". Voorstel: meteen bouwen.
-- [ ] Filters "nodig" en "niet nodig" tegelijk. Voorstel: alleen filter op vakgebied.
+- [x] Pagina per vacature en één filter op vakgebied: gebouwd (2026-11-12), nog te bevestigen door Simon.
 - [ ] NL en EN gevraagd, meerdere talen op "later". Voorstel: livegang in het Nederlands, Engels als fase 2.
 - [ ] Moeten sollicitaties ook in Bullhorn (hun ATS)? Zo ja: API-toegang via Bullhorn regelen.
 - [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy?
@@ -201,21 +225,21 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - [ ] Korte beheerhandleiding in pdf.
 
 **Bouwen volgens de invullijst**
-- [ ] Pagina's: Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden, Disclaimer, Toegankelijkheidsverklaring.
-- [ ] Formulieren: sollicitatie met cv-upload per vacature, open sollicitatie, contact, consultant aanvragen; met bevestigingsmail naar de bezoeker en melding naar `Simon.claeys@specified.be` (Resend). Cv's privé opslaan (R2) of alleen als bijlage mailen, spambeveiliging en rate limiting erbij.
-- [ ] Vacature-alert per e-mail (inschrijven, uitschrijflink, mail bij nieuwe vacature).
-- [ ] Vacaturevelden in de CMS: vakgebied, locatie of regio, voltijds of deeltijds, ervaringsniveau, opleidingsniveau, talen, plaatsingsdatum, status ingevuld. Geen salaris.
-- [ ] JobPosting-gegevens voor Google for Jobs.
-- [ ] Licht thema met keuzeschakelaar (standaard volgens het systeem).
-- [ ] Certificaten (VCA VOL, BA4, BA5) en verhalen van consultants tonen.
-- [ ] Dashboard voor de klant terugbrengen tot vacatures, blog en homepage; 2 gebruikers met dezelfde rechten.
-- [ ] Rollabels in het team zijn nog recruitment ("Senior Recruitment Consultant", `lib/settings.ts`).
-- [ ] Toegankelijkheid op WCAG 2.1 AA brengen en controleren (advies gevraagd).
-- [ ] SEO op "engineering consultancy" en "ingenieur jobs"; kwartaalrapport met het aantal sollicitaties.
-- [ ] Vacatures in de CMS zijn ongeveer 90 dagen oud; bio Tom is Engels en Simon Nederlands.
-- [ ] Handtekeningen van Tom en Simon (op papier).
-- [ ] Tom en Simon: wachtwoord wijzigen (stond in git-geschiedenis).
-- [ ] Admin-handleiding en retainer-afspraken bij de klant bezorgen.
+- [x] Pagina's: Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden (plaatshouder), Disclaimer, Toegankelijkheidsverklaring (2026-11-12).
+- [x] Formulieren: sollicitatie met cv per vacature, open sollicitatie, contact, consultant aanvragen, met bevestigingsmail en melding (2026-11-12). Echt mailen is niet getest: zie volgende punt.
+- [ ] **Formulieren activeren**: `specified.be` verifiëren in Resend (DNS), in het Vercel-project van de website `RESEND_API_KEY`, `FORMULIER_AAN` en `FORMULIER_VAN` zetten, en elk formulier één keer echt versturen. Tot dan tonen de formulieren een foutmelding.
+- [x] Vacaturevelden in de CMS, pagina per vacature en JobPosting voor Google for Jobs (2026-11-12). Daarna de vacaturepagina's testen in Googles Rich Results Test zodra de site live staat.
+- [ ] De 5 bestaande vacatures aanvullen met uren, opleiding en talen (velden zijn leeg), of vervangen door de lijst van Specified.
+- [x] Licht thema met keuzeschakelaar (2026-11-12). Nog door Sam te beoordelen, vooral de hero-tekening en de teamfoto's in licht.
+- [x] Dashboard voor de klant teruggebracht tot vacatures, blog, team, media en homepage; rollabels op de website zonder "Recruitment" (2026-11-12). De rol `consultant` bestaat nog; Specified wil 2 gebruikers met dezelfde rechten (beide beheerder maken).
+- [ ] Vacature-alert per e-mail (inschrijven met bevestiging, uitschrijflink, mail bij nieuwe vacature). Vraagt opslag van adressen en een geverifieerd maildomein.
+- [ ] Tweestapslogin voor het beheer (zie Techniek).
+- [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
+- [ ] Het overzicht van het dashboard toont nog recruitmentcijfers; aanpassen aan vacatures en blog.
+- [ ] Engelse versie (fase 2).
+- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was.
+- [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
+- [ ] `/api/formulier`: de limiet per IP geldt per server. Bij misbruik een gedeelde limiet toevoegen (Vercel Firewall of een teller in Supabase).
 
 **Techniek**
 - [ ] Supabase naar het betaalde plan zodra Specified de eerste factuur betaald heeft (dagelijkse back-ups). Tot dan is er geen back-up.
@@ -233,7 +257,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - [ ] CSP zonder `'unsafe-inline'` via nonces.
 - [ ] Het in-page-editor-werk door Sam laten testen op productie.
 
-**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 009: vacatures-easing, contactonderlijn, mobiel menu, vacaturepaneel in beeld op mobiel) staat open. Zie `plans/README.md`.
+**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 008: vacatures-easing, contactonderlijn, mobiel menu) staat open; 009 (vacaturepaneel op mobiel) vervalt, het paneel is vervangen door een pagina per vacature. 001 tot 003 gingen over de oude lijst met paneel en zijn daarmee ook achterhaald. Zie `plans/README.md`.
 
 **Documentatie die achterloopt**
 - `specified-cms/README.md` en `.env.example` noemen nog MongoDB en `MONGODB_URI`; de database is Supabase (`DATABASE_URI`). Ook de rollenlijst en de toegang tot `/admin` in de README zijn verouderd.
@@ -246,7 +270,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-12 11:45_
+_Bijgewerkt: 2026-11-12 12:15_
 
 ### Nog niet op main
 
@@ -254,9 +278,15 @@ Niets: alles staat op main.
 
 ### Op main
 
+**2026-11-12**
+
+- website: Invullijst verwerkt: briefing, draaiboek bijgewerkt, Specified NV met adres en ondernemingsnummer (`3a4dbe8`)
+- cms: Vacatures: uren, opleiding, talen en vast adres; volledig formulier in het dashboard (`ca4e2f6`)
+
 **2026-10-29**
 
 - website: Lettertype: IBM Plex Sans voor tekst en UI (`bd5b31e`)
+- cms: Lettertype: IBM Plex Sans in dashboard en admin, zoals de website (`5081ff3`)
 
 **2026-10-28**
 

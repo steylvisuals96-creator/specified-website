@@ -25,7 +25,7 @@ export const TEKENING_CALLOUTS: [string, string][] = [
 ];
 
 export const TEKENING = {
-  intro: "Engineering consultancy uit Antwerpen: onze eigen consultants versterken jouw projecten.",
+  intro: "Engineering consultancy uit Kontich: onze eigen consultants versterken jouw projecten.",
   scrollHint: "Scroll om de specificatie te openen.",
   titelblok: {
     project: "We are here to stay", // home
@@ -48,7 +48,7 @@ export const CONSULTANTS = {
   titel: "Onze",
   accent: "consultants.",
   tekst: "Eigen engineers, in dienst van Specified, tijdelijk ingezet bij jouw projecten, onderhoud en studies.",
-  profielen: ["Civil Engineer", "Electrical Engineer", "Automation Engineer", "Mechanical Engineer", "Engineering Consultant"],
+  profielen: ["Civil Engineer", "Electrical Engineer", "Automation Engineer", "Mechanical Engineer", "Engineering Consultant", "Projectleider"],
 };
 
 export const DIENSTEN = [
@@ -59,7 +59,7 @@ export const DIENSTEN = [
     tekst:
       "Tijdelijke versterking nodig voor een project, onderhoud of een studie? Wij zetten een eigen consultant in: de juiste persoon op de juiste plek, op het juiste moment. Van projectontwikkeling en systeemintegratie tot het optimaliseren van bestaande processen.",
     cta: "Zet onze consultants in",
-    href: "#contact",
+    href: "/voor-bedrijven",
     knop: "btn-primary",
     beeld: "/images/beeld/bedrijven-installatie.jpg",
   },
@@ -70,7 +70,7 @@ export const DIENSTEN = [
     tekst:
       "Als consultant bij Specified ontdek je verschillende projecten en sectoren zonder je hele carrière op één pad vast te leggen. We begeleiden je keuzes, blijven in gesprek over wat je wil en laten je groeien tot expert of veelzijdige generalist.",
     cta: "Word consultant",
-    href: "/vacatures",
+    href: "/voor-engineers",
     knop: "btn-secondary",
     beeld: "/images/beeld/kandidaten-engineer.jpg",
   },
@@ -93,4 +93,53 @@ export const CONTACT = {
   telefoon: "+32 472 69 94 62",
   telefoonLink: "+32472699462",
   plaats: "Kontich, Antwerpen",
+  straat: "Veldkant 31a",
+  postcode: "2550 Kontich",
+  linkedin: "https://www.linkedin.com/company/specified-be",
 };
+
+/**
+ * Uit de invullijst van Specified (2026-11-12, zie BRIEFING.md). Voorlopige
+ * teksten: de definitieve komen van Specified (klaar op 2026-12-21).
+ */
+export const BEDRIJF = {
+  naam: "Specified NV",
+  ondernemingsnummer: "BE 0727.537.711",
+};
+
+export const DIENSTENLIJST: { titel: string; tekst: string }[] = [
+  { titel: "Tijdelijke versterking", tekst: "Een extra engineer voor de duur van je project, op het moment dat je team hem nodig heeft." },
+  { titel: "Onderhoud", tekst: "Ondersteuning bij gepland en ongepland onderhoud van installaties." },
+  { titel: "Studies", tekst: "Voorstudies, ontwerp en berekeningen, uitgewerkt door een consultant met de juiste specialisatie." },
+  { titel: "Procesoptimalisatie", tekst: "Bestaande processen en systemen doorlichten en verbeteren." },
+  { titel: "Detachering", tekst: "Onze consultants werken bij jou op de vloer, wij blijven hun aanspreekpunt en volgen mee op." },
+];
+
+export const PROFIELEN = ["Civil engineer", "Electrical engineer", "Automation engineer", "Mechanical engineer", "Engineering consultant", "Projectleider"];
+
+export const SECTOREN = ["Farma", "Productie", "Bouwondernemingen klasse 8", "Infrastructuur"];
+
+export const WAARDEN: { titel: string; tekst: string }[] = [
+  { titel: "Drive en verantwoordelijkheid", tekst: "We nemen een opdracht op alsof ze van onszelf is." },
+  { titel: "Extra mile", tekst: "We doen wat afgesproken is, en wat nodig blijkt." },
+  { titel: "Betrouwbaar", tekst: "Transparant over wat kan en wat niet, met communicatie als basis." },
+  { titel: "Persoonlijk", tekst: "De mens staat centraal: je bent geen nummer in een bestand." },
+  { titel: "Technisch sterk", tekst: "Engineers die het vak kennen en blijven bijleren." },
+];
+
+export const CERTIFICATEN = ["VCA VOL", "BA4", "BA5"];
+
+/** Alleen cijfers die Specified zelf opgaf. */
+export const CIJFERS: { waarde: string; label: string }[] = [
+  { waarde: "32", label: "mensen in het team" },
+  { waarde: "4", label: "sectoren" },
+  { waarde: "6", label: "profielen" },
+];
+
+/** Stappen voor wie bij Specified wil werken (invullijst). */
+export const STAPPEN_ENGINEER: { titel: string; tekst: string }[] = [
+  { titel: "Cv", tekst: "Je solliciteert op een vacature of stuurt een open sollicitatie. We bekijken je cv." },
+  { titel: "Eerste gesprek", tekst: "Een kennismaking via Teams: wie ben je, wat zoek je, wat doen wij." },
+  { titel: "Tweede gesprek", tekst: "Je ontmoet Tom en Simon in Kontich en we bekijken welk project bij je past." },
+];
+

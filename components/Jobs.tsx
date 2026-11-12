@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { metAccent } from "@/lib/accent";
 
 type Job = {
+  slug: string;
   title: string;
   type: string;
   location: string;
@@ -30,17 +32,17 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
               Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook
               buiten de openstaande jobs.
             </p>
-            <a href="mailto:info@specified.be?subject=Open%20sollicitatie" className="btn btn-primary">
+            <Link href="/open-sollicitatie" className="btn btn-primary">
               Stuur een open sollicitatie
-            </a>
+            </Link>
           </div>
         ) : (
           <ul className="jobs__lijst">
-            {jobs.map((job, i) => {
+            {jobs.map((job) => {
               const v = versheid(job.dagen);
               return (
-                <li key={`${job.title}-${i}`}>
-                  <a href="/vacatures" className="jobs__rij">
+                <li key={job.slug}>
+                  <Link href={`/vacatures/${job.slug}`} className="jobs__rij">
                     <span className="jobs__veeg" aria-hidden="true" />
                     <span className="jobs__vers" data-leeg={!v}>
                       {v && (
@@ -55,7 +57,7 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
                     <span className="jobs__meta">{job.sector}</span>
                     <span className="jobs__meta">{job.ervaring}</span>
                     <span className="jobs__meta">{job.type}</span>
-                  </a>
+                  </Link>
                 </li>
               );
             })}

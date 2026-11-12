@@ -21,6 +21,8 @@ mensen achter zitten.
 | `--lime-300` | `#DFFD7B` | Merkaccent Specified (behouden). Knoppen, handtekening, merkwoord, focus |
 | `--line` | `rgba(233,231,221,0.14)` | Haarlijnen tussen rijen en rond kaarten |
 
+**Licht thema** (2026-11-12, wens Specified: de bezoeker kiest). Donker blijft de standaard en de referentie. In licht keren de tokens om: canvas `#F1EFE6` (papier), tekst `#14140E`, secundair `#55554A`. Limoen blijft als vlak (`--lime-vlak`, tekst erop `--on-lime`); als tekst of lijn wordt het accent `#47590A`. Nieuwe stijlen gebruiken dus altijd tokens, nooit een vaste kleur, en voor een limoen vlak `--lime-vlak` met `--on-lime`.
+
 Regels:
 - Limoen is schaars: per scherm maximaal één limoen vlak (knop óf hover-balk óf merkwoord) plus de handtekening.
 - Tekst op limoen is altijd `--ink-900`, nooit wit.

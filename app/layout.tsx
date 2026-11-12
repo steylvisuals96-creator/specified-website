@@ -5,6 +5,7 @@ import CookieBanner from "@/components/CookieBanner";
 import VloeiendScrollen from "@/components/VloeiendScrollen";
 import Vizier from "@/components/Vizier";
 import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
+import { THEMA_HEAD_SCRIPT } from "@/lib/thema";
 import { SITE_URL } from "@/lib/site";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import HashScroll from "@/components/HashScroll";
@@ -37,7 +38,7 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Specified — We Engineer Possibilities",
-  description: "Engineering recruitment en talent development voor de meest ambitieuze bedrijven en kandidaten in België.",
+  description: "Engineering consultancy uit Kontich: eigen consultants voor projecten, onderhoud en studies in Vlaanderen.",
   openGraph: {
     type: "website",
     locale: "nl_BE",
@@ -58,7 +59,7 @@ export default function RootLayout({
     // navigeren zonder dit attribuut traag naar boven glijdt in plaats van te springen.
     <html lang="nl" className={`${bebasNeue.variable} ${plexSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT + ";" + THEMA_HEAD_SCRIPT }} />
       </head>
       <body className="min-h-full flex flex-col">
         <a href="#inhoud" className="skip-link">Naar de inhoud</a>
