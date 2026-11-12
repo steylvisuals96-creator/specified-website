@@ -4,7 +4,9 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-10-27.
+Laatst handmatig nagekeken: 2026-11-12.
+
+De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
 ---
 
@@ -20,7 +22,7 @@ Laatst handmatig nagekeken: 2026-10-27.
 | Media | beelden in `public/` | Cloudflare R2 (privé, ondertekende links) |
 | Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` |
 
-Klant: **Specified**, engineering consultancy uit Antwerpen met eigen consultants (oprichters Tom Wijdooghe en Simon Claeys, `info@specified.be`). Gebouwd door SteylVisuals (Sam). De bestaande site op `specified.be` draait nog de oude versie; de nieuwe staat op de Vercel-adressen tot de domeinverhuis (november 2026, na akkoord van de klant).
+Klant: **Specified NV** (BE 0727.537.711), Veldkant 31a, 2550 Kontich. Engineering consultancy met eigen consultants, opgericht januari 2025, 13 mensen op de payroll en 32 in totaal. Oprichters Tom Wijdooghe en Simon Claeys; aanspreekpunt voor het project, facturen en storingen is Simon Claeys (Managing Partner). Algemeen adres op de site: `info@specified.be`. Gebouwd en gehost door SteylVisuals (Sam). De bestaande site op `specified.be` (gebouwd door Rocketship) draait nog; de nieuwe staat op de Vercel-adressen tot de livegang, gewenst op **2027-01-11**. Teksten van de klant zijn klaar op 2026-12-21.
 
 Werkafspraak: rechtstreeks naar `main` pushen, geen feature-branches en PR's (zie `CLAUDE.md`).
 
@@ -47,9 +49,11 @@ Richting **Signatuurmerk**. Alles staat in `DESIGN.md`; hier de kern.
 | `/` | Hero als technische tekening, disciplines, diensten, vacatures, team, contact |
 | `/vacatures` | Filterbare lijst met detailpaneel (Framer Motion) |
 | `/blog`, `/blog/[slug]` | Artikelen uit de CMS |
-| `/privacy`, `/cookies` | Juridische pagina's (`components/LegalPage.tsx`) |
+| `/privacy`, `/cookies` | Juridische pagina's (`components/LegalPage.tsx`); privacy noemt sinds 2026-11-12 Specified NV met adres en ondernemingsnummer |
 | `/api/health` | Gezondheidscheck: site draait en bereikt de CMS (503 bij fout) |
-| `sitemap`, `robots`, `opengraph-image` | SEO |
+| `sitemap`, `robots`, `opengraph-image` | SEO; JSON-LD op home met `legalName`, `vatID`, volledig adres en oprichtingsdatum |
+
+**Nog te bouwen volgens de invullijst** (zie `BRIEFING.md`, deel 5): Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden, Disclaimer, Toegankelijkheidsverklaring. Misschien: Over ons, Cases zonder klantnamen, Team, Evenementen.
 
 ### De hero (technische tekening)
 
@@ -164,14 +168,50 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 | Contactgegevens naar de Homepage-editor, Instellingen alleen voor de creator | Klant past alle zichtbare tekst op één plek aan (2026-10-27) |
 | Geen eigen back-up; Supabase betaald plan na eerste betaling | Ingebouwde dagelijkse back-ups, geen extra beheer (2026-10-28). Tot dan geen back-up |
 | Foutmeldingen via Resend in plaats van Sentry | Eén dienst, met eigen limiet (1x per uur per fout, 10 per uur per server) |
+| Livegang op 2027-01-11 in plaats van domeinverhuis in november | Wens van de klant in de invullijst (nieuw jaar), 2026-11-12 |
+| Geen klantlogo's of projectnamen op de site | Klant mag ze niet tonen (invullijst); cases alleen anoniem |
+| Geen salaris bij vacatures, ingevulde vacatures blijven zichtbaar als ingevuld | Invullijst, 2026-11-12 |
+| Sollicitaties en aanvragen per mail naar Simon, niet in een overzicht in het beheer | Invullijst: "alleen in mijn mail" |
+| Licht en donker thema, bezoeker kiest | Invullijst; de site is nu alleen donker |
+| Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12) |
 
 ---
 
 ## 8. Open punten
 
+**Afstemmen met Simon (tegenstrijdigheden uit de invullijst, zie `BRIEFING.md`)**
+- [ ] Vacatures in Google vraagt een pagina per vacature, die staat op "later". Voorstel: meteen bouwen.
+- [ ] Filters "nodig" en "niet nodig" tegelijk. Voorstel: alleen filter op vakgebied.
+- [ ] NL en EN gevraagd, meerdere talen op "later". Voorstel: livegang in het Nederlands, Engels als fase 2.
+- [ ] Moeten sollicitaties ook in Bullhorn (hun ATS)? Zo ja: API-toegang via Bullhorn regelen.
+- [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy?
+- [ ] Bewaartermijn sollicitatiegegevens (advies: 1 jaar, 2 met toestemming).
+- [ ] Betaalwijze: toelichting ontbrak in de invullijst.
+- [ ] Slogans "We engineer possibilities" en "We are here to stay": voorstel doen.
+- [ ] Concepten en publicatie inplannen voor vacatures en blog: voorstel doen.
+
 **Wachten op de klant of Sam**
-- [ ] Domeinverhuis naar `specified.be` (november): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein.
-- [ ] Echte cijfers voor de statistieken, en bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
+- [ ] Offerte opmaken, met één shootdag (foto en video, 3 à 4 mensen) en onderhoudsabonnement (reactie binnen 2 werkdagen, 1 à 2 kleine aanpassingen per maand).
+- [ ] Livegang op `specified.be` (2027-01-11): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein. Registrar, DNS-beheer, hosting en vervaldata zijn bij de klant onbekend: via de contactpersoon van Rocketship achterhalen. MX, SPF, DKIM, DMARC en autodiscover van Microsoft 365 (beheerd door Cronos) exact overnemen.
+- [ ] 301-doorverwijzingen van de oude URL's op `specified.be` naar de nieuwe.
+- [ ] Analytics en Search Console: nieuw aanmaken op een account van Specified (huidige eigenaar onbekend).
+- [ ] Aanlevering van de klant: logo in vector, huisstijlgids, teksten, vacaturelijst, quotes en cases, cijfers en certificaten (zegt klaar te hebben). Teamfoto's en bio's ontbreken, komen uit de shootdag.
+- [ ] Echte cijfers voor de statistieken: 32 consultants en 4 sectoren zijn bekend, klanten in cijfers en jaren ervaring nog niet. Bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
+- [ ] Concurrentie bekijken (Abylsen, TEC, TMC, ENGIE Talents, Pauwels Consulting) en het goede meenemen, op vraag van de klant.
+- [ ] Korte beheerhandleiding in pdf.
+
+**Bouwen volgens de invullijst**
+- [ ] Pagina's: Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden, Disclaimer, Toegankelijkheidsverklaring.
+- [ ] Formulieren: sollicitatie met cv-upload per vacature, open sollicitatie, contact, consultant aanvragen; met bevestigingsmail naar de bezoeker en melding naar `Simon.claeys@specified.be` (Resend). Cv's privé opslaan (R2) of alleen als bijlage mailen, spambeveiliging en rate limiting erbij.
+- [ ] Vacature-alert per e-mail (inschrijven, uitschrijflink, mail bij nieuwe vacature).
+- [ ] Vacaturevelden in de CMS: vakgebied, locatie of regio, voltijds of deeltijds, ervaringsniveau, opleidingsniveau, talen, plaatsingsdatum, status ingevuld. Geen salaris.
+- [ ] JobPosting-gegevens voor Google for Jobs.
+- [ ] Licht thema met keuzeschakelaar (standaard volgens het systeem).
+- [ ] Certificaten (VCA VOL, BA4, BA5) en verhalen van consultants tonen.
+- [ ] Dashboard voor de klant terugbrengen tot vacatures, blog en homepage; 2 gebruikers met dezelfde rechten.
+- [ ] Rollabels in het team zijn nog recruitment ("Senior Recruitment Consultant", `lib/settings.ts`).
+- [ ] Toegankelijkheid op WCAG 2.1 AA brengen en controleren (advies gevraagd).
+- [ ] SEO op "engineering consultancy" en "ingenieur jobs"; kwartaalrapport met het aantal sollicitaties.
 - [ ] Vacatures in de CMS zijn ongeveer 90 dagen oud; bio Tom is Engels en Simon Nederlands.
 - [ ] Handtekeningen van Tom en Simon (op papier).
 - [ ] Tom en Simon: wachtwoord wijzigen (stond in git-geschiedenis).
@@ -182,7 +222,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 - [x] Rol `backup_lezer` verwijderd in Supabase (2026-10-28).
 - [ ] Better Stack- of UptimeRobot-monitors aanmaken op beide `/api/health`.
 - [ ] `RESEND_API_KEY` ook in het Vercel-project van de website zetten, en een echte proefmail sturen (`scripts/test-foutmelding.ts` in de CMS).
-- [ ] Tweestapslogin voor de creator (Payload heeft het niet ingebouwd).
+- [ ] Tweestapslogin voor alle gebruikers van het beheer, ook de klant: gevraagd in de invullijst (Payload heeft het niet ingebouwd).
 - [ ] Rate limiting en spambeveiliging op het publieke e-mailendpoint.
 - [ ] MongoDB/Atlas en `MONGODB_URI` opruimen (30 dagen na de overstap, dus nu aan de beurt).
 - [ ] Audit-log (wie wijzigde wat).
@@ -206,15 +246,17 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`. CMS: `
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-10-29 22:21_
+_Bijgewerkt: 2026-11-12 11:45_
 
 ### Nog niet op main
 
-- website, branch `preview/audit-fixes-2`: 3 commit(s) voor op main
-- website, branch `preview/hero-beweging`: 1 commit(s) voor op main
-- website, branch `preview/streepjes-nav`: 1 commit(s) voor op main
+Niets: alles staat op main.
 
 ### Op main
+
+**2026-10-29**
+
+- website: Lettertype: IBM Plex Sans voor tekst en UI (`bd5b31e`)
 
 **2026-10-28**
 
@@ -278,23 +320,6 @@ _Bijgewerkt: 2026-10-29 22:21_
 - website: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`edc70f4`)
 - website: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`c8aa10b`)
 - website: Beveiligingsupdates: Next.js 16.3.6 (middleware-bypass, server-actions-DoS) + npm audit fix, 0 bekende kwetsbaarheden (`94f2589`)
-- website: Handtekening tekent met de scroll in plaats van per woord te herhalen (`7e52c60`)
-- website: Kandidatenbeeld lichter gegrade: middentonen omhoog, olijftoon behouden (`ca2a696`)
-- website: Scherpere turbine-frames: volle bronresolutie, lichtere compressie, minder zoom (`3c4d06b`)
-- website: Turbine speelt af met de scroll: gepinde hero met framereeks op canvas (`2253e9b`)
-- website: Turbine als naadloze videolus in de hero, scroll-rotatie vervangen door zoom (`d913f93`)
-
-**2026-09-25**
-
-- website: Hero-rotator met hertekenende handtekening en een scroll-moment per sectie (`f94a6d7`)
-- website: Trek subpagina's in de huisstijl: geen pijltjes, hoeken of kapitalen-labels, blogfoto's gegrade, reduced motion op vacatures (`c95d5c5`)
-- website: Voeg AI-sfeerbeelden toe, fix mobiele vacaturerijen en founder-grade (`0fe537b`)
-- website: Bouw Signatuurmerk-homepage: typografische hero, disciplines-scroll, vacatures, founders, contact (`347ca87`)
-- website: Zet project klaar voor redesign: GSAP, fonts, motion-skills lokaal (`379f790`)
-- website: Voeg DESIGN.md toe voor Signatuurmerk-redesign (`ba2772b`)
-- website: Voeg Signatuurmerk-ontwerpreferenties per sectie toe (`f4192b9`)
-- website: Voeg vrijstaande founder-portretten toe voor Signatuurmerk (`a8dd605`)
-- website: Start redesign Signatuurmerk: playbook-status fase 0 (`630e639`)
 
 **2026-07-26**
 
@@ -322,48 +347,6 @@ _Bijgewerkt: 2026-10-29 22:21_
 
 - website: Fix menulinks: verwijs naar homepage-secties vanaf elke pagina (`c511d8e`)
 - website: Vacaturepagina + legal footers uit CMS, 404-pagina, Speed Insights (`821d01b`)
-
-**2026-07-15**
-
-- website: Website: alle homepage-content uit het CMS (`2dc8a29`)
-
-**2026-07-11**
-
-- website: Voeg Vercel Analytics toe (`a85cc01`)
-
-**2026-07-05**
-
-- website: 3D mouse-parallax op homepage vormen (`82a1191`)
-- website: Custom cursor op alle pagina's + groeit boven klikbare elementen (`e284df0`)
-- website: Fix: verberg systeemcursor enkel op homepage, niet site-breed (`f489959`)
-- website: Voeg /api/health endpoint toe voor uptime-monitoring (`6a017a2`)
-- website: Koppel homepage aan CMS Instellingen-global (`75c43ce`)
-- website: Voeg privacybeleid, cookiebeleid en cookie-consent banner toe (`f5f6371`)
-- website: Homepage wow-effect: woord-wissel, marquee, count-up, cursor, grain (`1640231`)
-
-**2026-06-28**
-
-- website: Swap Jobs and Over ons in nav order (`ac28506`)
-
-**2026-06-27**
-
-- website: Fix #diensten anchor: add id to Split section so nav link scrolls correctly (`b0732e1`)
-- website: Update hero subtitle text from old site (`b940fca`)
-- website: Fix duplicate borderBottom property in VacaturesClient style object (`71240f7`)
-- website: Connect website vacatures to CMS — live data from specified-cms.vercel.app (`01413d6`)
-- website: Fix Simon Claeys LinkedIn URL (`027ebc0`)
-- website: Verwijder Claude-patronen: labels, pijltjes, pill-knoppen (`a5696a0`)
-- website: Fix TypeScript error: remove as const from shapes array (`e0b3605`)
-- website: Simplify page shapes: 5 clean outlines, slow parallax, engineering aesthetic (`e385112`)
-- website: Global 3D page shapes: 15 logo marks floating fixed across entire page on scroll (`1d4aedc`)
-- website: Team section: fix Simon duplicate, add 7-shape 3D scroll animation with logo marks (`6be1317`)
-- website: Redesign team section: full-width cards with real photos, lime panels, 3D scroll shapes (`89b3873`)
-- website: Add real logo, team photos and footer from specified.be (`61d20d9`)
-
-**2026-06-26**
-
-- website: Initial build: Specified website with homepage, vacatures page, fonts, team photos (`8f705b8`)
-- website: Initial commit from Create Next App (`6f15521`)
 
 <!-- LOG-END -->
 

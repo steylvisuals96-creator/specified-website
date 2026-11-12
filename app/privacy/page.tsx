@@ -2,14 +2,14 @@ import LegalPage from "@/components/LegalPage";
 
 export const metadata = {
   title: "Privacybeleid — Specified",
-  description: "Hoe Specified BV omgaat met je persoonsgegevens conform de GDPR.",
+  description: "Hoe Specified NV omgaat met je persoonsgegevens conform de GDPR.",
 };
 
 export default function PrivacyPage() {
   return (
     <LegalPage title="Privacybeleid" updated="5 juli 2026">
       <p>
-        Specified BV hecht veel belang aan de bescherming van je persoonsgegevens en respecteert
+        Specified NV hecht veel belang aan de bescherming van je persoonsgegevens en respecteert
         je privacy. In dit privacybeleid leggen we uit welke gegevens we verzamelen, waarom, en
         welke rechten je hebt. Dit beleid is opgesteld conform de Algemene Verordening
         Gegevensbescherming (GDPR / AVG).
@@ -17,8 +17,8 @@ export default function PrivacyPage() {
 
       <h2>1. Verwerkingsverantwoordelijke</h2>
       <p>
-        <strong>Specified BV</strong>, met maatschappelijke zetel te Kontich, België.
-        Ondernemingsnummer: BE 0XXX.XXX.XXX. Voor alle vragen over dit beleid kan je ons
+        <strong>Specified NV</strong>, met maatschappelijke zetel te Veldkant 31a, 2550 Kontich, België.
+        Ondernemingsnummer: BE 0727.537.711. Voor alle vragen over dit beleid kan je ons
         bereiken via <a href="mailto:info@specified.be">info@specified.be</a>.
       </p>
 

@@ -86,7 +86,16 @@ export default async function Home() {
     logo: `${SITE_URL}/images/team/logo_specified.svg`,
     email: settings.contact_email || "info@specified.be",
     ...(settings.telefoon ? { telephone: settings.telefoon } : {}),
-    address: { "@type": "PostalAddress", addressLocality: "Kontich", addressCountry: "BE" },
+    legalName: "Specified NV",
+    vatID: "BE0727537711",
+    foundingDate: "2025-01",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Veldkant 31a",
+      postalCode: "2550",
+      addressLocality: "Kontich",
+      addressCountry: "BE",
+    },
     areaServed: "BE",
   };
 
