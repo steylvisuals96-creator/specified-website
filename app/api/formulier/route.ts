@@ -54,7 +54,15 @@ async function stuur(sleutel: string, mail: Record<string, unknown>): Promise<bo
 export async function POST(req: Request) {
   // Alleen formulieren van de eigen site.
   const origin = req.headers.get("origin");
-  if (origin && new URL(origin).host !== req.headers.get("host")) return fout("Ongeldige aanvraag.", 403);
+  if (origin) {
+    let host = "";
+    try {
+      host = new URL(origin).host;
+    } catch {
+      /* "null" of onzin: geen eigen pagina */
+    }
+    if (host !== req.headers.get("host")) return fout("Ongeldige aanvraag.", 403);
+  }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "onbekend";
   if (teVaak(ip)) return fout("Te veel aanvragen na elkaar. Probeer het over tien minuten opnieuw.", 429);

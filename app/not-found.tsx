@@ -38,7 +38,7 @@ export default function NotFound() {
           Deze pagina<br />bestaat niet.
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "clamp(1rem, 1.5vw, 1.15rem)", lineHeight: 1.55, maxWidth: "460px", marginBottom: "2.5rem" }}>
-          De link die je volgde is verlopen of verkeerd. Geen zorgen — hieronder vind je de weg terug.
+          De link die je volgde is verlopen of verkeerd. Hieronder vind je de weg terug.
         </p>
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
           <Link href="/" style={{ backgroundColor: "var(--lime-vlak)", color: "var(--on-lime)", padding: "0.85rem 1.75rem", borderRadius: 0, fontSize: "0.9rem", fontWeight: 600, textDecoration: "none" }}>

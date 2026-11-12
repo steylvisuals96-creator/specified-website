@@ -432,7 +432,7 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 /* SVG-onderdelen van de tekening */
 .tek__rand { fill: none; stroke: var(--olive-600); stroke-width: 1; }
 .tek__ref { fill: var(--bone-600); font: 500 13px var(--font-sans), sans-serif; text-anchor: middle; }
-.tek__vul { fill: var(--bone-100); }
+.tek__vul { fill: color-mix(in srgb, var(--lime-300) calc(var(--tek-mix, 0) * 100%), var(--bone-100)); }
 .tek__lijn { fill: none; stroke: var(--lime-300); stroke-width: 1.4; }
 .tek__lijn--dik { stroke-width: 1.8; }
 .tek__as { stroke: var(--lime-300); stroke-width: 1; stroke-dasharray: 26 6 4 6; }

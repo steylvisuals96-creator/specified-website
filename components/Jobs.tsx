@@ -64,9 +64,9 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
           </ul>
         )}
 
-        <a href="/vacatures" className="btn btn-secondary jobs__alle" data-bewerk="jobs.linkTekst">
+        <Link href="/vacatures" className="btn btn-secondary jobs__alle" data-bewerk="jobs.linkTekst">
           {linkTekst || "Bekijk alle vacatures"}
-        </a>
+        </Link>
       </div>
     </section>
   );

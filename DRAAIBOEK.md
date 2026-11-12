@@ -110,7 +110,7 @@ Eén codebase met twee ingangen:
 
 Eén formulier voor nieuw en bewerken (`components/VacatureVelden.tsx`, `lib/vacatureVorm.ts`): kenmerken, jobomschrijving, profiel, nice to have, aanbod, status, plaatsingsdatum en zichtbaarheid. Daarvoor kon de klant de jobtekst alleen in `/admin` invullen, waar hij niet bij kan. Nieuwe velden: `uren`, `opleidingsniveau`, `talen`, en `slug` (vast adres op de website, automatisch uit de titel). Vakgebied kreeg de optie Automatisering. Salaris blijft een intern veld. De API geeft anoniem nu ook ingevulde vacatures terug (de website toont ze als ingevuld). Migratie `20261112_120830_vacature_velden`, op Supabase toegepast op 2026-11-12 (`scripts/sql/20261112_vacature_velden.sql`).
 
-Menu voor de klant: Overzicht, Vacatures, Homepage, Blog, Team, Media, Gebruikers. Pipeline, Kandidaten, Sollicitaties, Bedrijven, Agenda en Activiteiten ziet alleen de creator nog (de pagina's zelf bestaan nog en zijn per URL bereikbaar voor wie ingelogd is).
+Het overzicht (`/dashboard`) toont de klant zijn vacatures en blogartikels; alleen de creator ziet nog pipeline en kandidaten. Menu voor de klant: Overzicht, Vacatures, Homepage, Blog, Team, Media, Gebruikers. Pipeline, Kandidaten, Sollicitaties, Bedrijven, Agenda en Activiteiten ziet alleen de creator nog (de pagina's zelf bestaan nog en zijn per URL bereikbaar voor wie ingelogd is).
 
 ### Rollen
 
@@ -198,7 +198,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Eén filter (vakgebied) op de vacaturelijst | Specified vroeg geen filters op regio en uren |
 | Formulieren mailen via Resend vanaf de website, niets opslaan | Specified wil aanvragen alleen in de mail |
 | Recruitmentmodules uit het klantmenu | Specified beheert alleen vacatures en blog |
-| Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12) |
+| Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12). De voettekst stond ook in de CMS (Homepage en Instellingen) en is daar rechtstreeks in Supabase gecorrigeerd |
 
 ---
 
@@ -230,12 +230,12 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] **Formulieren activeren**: `specified.be` verifiëren in Resend (DNS), in het Vercel-project van de website `RESEND_API_KEY`, `FORMULIER_AAN` en `FORMULIER_VAN` zetten, en elk formulier één keer echt versturen. Tot dan tonen de formulieren een foutmelding.
 - [x] Vacaturevelden in de CMS, pagina per vacature en JobPosting voor Google for Jobs (2026-11-12). Daarna de vacaturepagina's testen in Googles Rich Results Test zodra de site live staat.
 - [ ] De 5 bestaande vacatures aanvullen met uren, opleiding en talen (velden zijn leeg), of vervangen door de lijst van Specified.
-- [x] Licht thema met keuzeschakelaar (2026-11-12). Nog door Sam te beoordelen, vooral de hero-tekening en de teamfoto's in licht.
+- [x] Licht thema met keuzeschakelaar (2026-11-12). De hero-tekening volgt het thema, ook het eindlogo (`--tek-mix`). Nog door Sam te beoordelen, vooral de hero-tekening en de teamfoto's in licht.
 - [x] Dashboard voor de klant teruggebracht tot vacatures, blog, team, media en homepage; rollabels op de website zonder "Recruitment" (2026-11-12). De rol `consultant` bestaat nog; Specified wil 2 gebruikers met dezelfde rechten (beide beheerder maken).
 - [ ] Vacature-alert per e-mail (inschrijven met bevestiging, uitschrijflink, mail bij nieuwe vacature). Vraagt opslag van adressen en een geverifieerd maildomein.
 - [ ] Tweestapslogin voor het beheer (zie Techniek).
 - [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
-- [ ] Het overzicht van het dashboard toont nog recruitmentcijfers; aanpassen aan vacatures en blog.
+- [x] Overzicht van het dashboard voor de klant: vacatures (met link naar de website en wat nog ontbreekt) en blog (`components/KlantOverzicht.tsx`, 2026-11-12). De creator houdt het recruitmentoverzicht.
 - [ ] Engelse versie (fase 2).
 - [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was.
 - [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
@@ -261,6 +261,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 
 **Documentatie die achterloopt**
 - `specified-cms/README.md` en `.env.example` noemen nog MongoDB en `MONGODB_URI`; de database is Supabase (`DATABASE_URI`). Ook de rollenlijst en de toegang tot `/admin` in de README zijn verouderd.
+- De standaardwaarden in `specified-cms/globals/Instellingen.ts` noemen nog "Specified BV" en "Engineering recruitment" (metatitel in de database ook). Niet aangepast: een andere standaardwaarde vraagt een migratie, en de website gebruikt de metatitel uit `lib/inhoud.ts`.
 - `CLAUDE.md` bevat de regel "CMS direct op Supabase, zonder Payload". De huidige CMS draait nog wel op Payload (met Supabase als database). Die regel geldt dus voor nieuw werk; een stap weg van Payload is nog niet gezet en nog niet besproken.
 
 ---
@@ -270,7 +271,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-12 12:15_
+_Bijgewerkt: 2026-11-12 15:04_
 
 ### Nog niet op main
 
@@ -280,7 +281,9 @@ Niets: alles staat op main.
 
 **2026-11-12**
 
+- website: Invullijst toegepast: nieuwe pagina's, formulieren, vacaturepagina's en licht thema (`74fb806`)
 - website: Invullijst verwerkt: briefing, draaiboek bijgewerkt, Specified NV met adres en ondernemingsnummer (`3a4dbe8`)
+- cms: Dashboard: overzicht voor de klant met vacatures en blog; recruitment-termen weg (`8bb82f7`)
 - cms: Vacatures: uren, opleiding, talen en vast adres; volledig formulier in het dashboard (`ca4e2f6`)
 
 **2026-10-29**

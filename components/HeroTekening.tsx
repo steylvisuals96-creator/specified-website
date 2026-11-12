@@ -408,10 +408,11 @@ function tijdlijn(root: HTMLElement, d: Delen) {
     .to(d.titelblok, { opacity: 1, duration: 0.4 }, 4.0)
     .to(d.hand, { strokeDashoffset: 0, duration: 1, autoRound: false }, 4.2)
     // 4. Het woord klikt samen in limoen en het beeldmerk valt erbij: het logo.
+    // De kleur loopt via --tek-mix (globals.css), zodat ze het thema volgt.
     .to(d.as, { opacity: 0, duration: 0.5 }, 5.2)
     .to(d.titelblok, { opacity: d.titelblokEinde, duration: 0.5 }, 5.2)
     .to(L.map((l) => l.g), { x: (i) => L[i].ex, y: (i) => L[i].ey, duration: 1.2, ease: "power2.inOut" }, 5.3)
-    .to(L.map((l) => l.vul), { fillOpacity: 1, fill: "#dffd7b", duration: 0.8 }, 5.9)
+    .to(L.map((l) => l.vul), { fillOpacity: 1, "--tek-mix": 1, duration: 0.8 }, 5.9)
     .to(L.map((l) => l.lijn), { strokeOpacity: 0, duration: 0.6 }, 5.9)
     .to(d.woordG, { scale: d.eindSchaal, svgOrigin: `${d.eindMidden[0]} ${d.eindMidden[1]}`, duration: 0.8, ease: "power2.inOut" }, 5.8)
     .to(d.kom, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.7)" }, 6.2)

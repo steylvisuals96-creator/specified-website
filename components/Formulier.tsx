@@ -76,7 +76,7 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
   }
 
   return (
-    <form className="form" onSubmit={verstuur} noValidate={false}>
+    <form className="form" onSubmit={verstuur}>
       <div className="form__velden">
         {velden.map((v) => (
           <VeldInvoer key={v.naam} v={v} id={`${id}-${v.naam}`} fout={fout?.veld === v.naam ? fout.tekst : undefined} />
