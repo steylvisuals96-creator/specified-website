@@ -45,11 +45,11 @@ export default async function VacaturesPage({ searchParams }: { searchParams: Pr
         actions={<VacatureCreateDrawer />}
       />
       <div className="px-5 sm:px-8 lg:px-10">
-        <ZoekFilter placeholder="Zoek op titel, sector of locatie…" defaultValue={q ?? ""} />
+        <ZoekFilter placeholder="Zoek op titel, vakgebied of locatie…" defaultValue={q ?? ""} />
       </div>
       <div className="px-5 pt-6 pb-12 sm:px-8 lg:px-10">
         {docs.docs.length === 0 ? <Empty>{q ? `Geen resultaten voor "${q}"` : "Nog geen vacatures aangemaakt."}</Empty> : (
-          <Table headers={["Titel", "Sector", "Locatie", "Type", "Status", "Aangemaakt", ""]}>
+          <Table headers={["Titel", "Vakgebied", "Locatie", "Type", "Status", "Aangemaakt", ""]}>
             {docs.docs.map((doc: any) => (
               <tr key={doc.id}>
                 <TD bold>

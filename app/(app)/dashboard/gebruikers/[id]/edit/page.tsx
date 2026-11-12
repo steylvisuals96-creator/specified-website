@@ -42,7 +42,7 @@ export default async function GebruikerEditPage({ params }: { params: Promise<{ 
           <SelectField label="Rol" name="rol" defaultValue={d.rol} options={[
             ...(isCreator(user) ? [{ label: "Creator (SteylVisuals)", value: "creator" }] : []),
             { label: "Beheerder", value: "beheerder" },
-            { label: "Recruitment Consultant", value: "consultant" },
+            { label: "Consultant", value: "consultant" },
           ]} />
         </FormSection>
         <div style={{ display: "flex", gap: "0.75rem", justifyContent: "space-between" }}>

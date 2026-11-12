@@ -12,7 +12,7 @@ const configPromise = import("@payload-config").then((m) => m.default);
 const rolLabel: Record<string, string> = {
   creator: "Creator (SteylVisuals)",
   beheerder: "Beheerder",
-  consultant: "Recruitment Consultant",
+  consultant: "Consultant",
 };
 
 export default async function GebruikersPage() {
