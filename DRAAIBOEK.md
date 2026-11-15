@@ -19,7 +19,7 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 | Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
 | Stack | Next.js 16.3.6, React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
 | Data | uit de oude CMS, of uit Supabase met `NEXT_PUBLIC_DATABRON=supabase` (revalidate 60 s, meteen bij opslaan via `/api/ververs`) | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
-| Media | beelden in `public/` | Cloudflare R2 (privé, ondertekende links) | zelfde R2-bucket, beelden naar buiten via `/m/<id>` (ondertekende link, 1 uur) |
+| Media | bestaande beelden in `public/` | eigen mediaopslag op de CMS-server (zie deel 5) | Cloudflare R2, bucket `specified-media` (privé, beelden via `/m/<id>` met een ondertekende link) |
 | Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main`, root directory `beheer`, functies in Frankfurt (`fra1`) |
 
 Klant: **Specified NV** (BE 0727.537.711), Veldkant 31a, 2550 Kontich. Engineering consultancy met eigen consultants, opgericht januari 2025, 13 mensen op de payroll en 32 in totaal. Oprichters Tom Wijdooghe en Simon Claeys; aanspreekpunt voor het project, facturen en storingen is Simon Claeys (Managing Partner). Algemeen adres op de site: `info@specified.be`. Gebouwd en gehost door SteylVisuals (Sam). De bestaande site op `specified.be` (gebouwd door Rocketship) draait nog; de nieuwe staat op de Vercel-adressen tot de livegang, gewenst op **2027-01-11**. Teksten van de klant zijn klaar op 2026-12-21.
@@ -112,6 +112,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
 - **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
 - **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
+- **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud. De publieke website gebruikt haar oorspronkelijke bestanden in `public/`.
 - Nog niet getest: tweestapslogin aanzetten en iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
@@ -329,7 +330,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 22:53_
+_Bijgewerkt: 2026-11-15 23:13_
 
 ### Nog niet op main
 
@@ -341,6 +342,7 @@ _Bijgewerkt: 2026-11-15 22:53_
 
 **2026-11-15**
 
+- website: Draaiboek: bestaande websitebeelden in het beheer (`8361a43`)
 - website: Beheer: bevestig homepage-opslag na controle in Supabase (`74bf0ba`)
 - website: Beheer: tijden in Belgische tijd (server draait in UTC) (`c72ae73`)
 - website: Beheer op Vercel: project specified-beheer, draaiboek bijgewerkt (`e0b8a2c`)
