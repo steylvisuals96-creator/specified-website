@@ -1,0 +1,125 @@
+export const dynamic = "force-dynamic";
+import { getPayload } from "payload";
+import { headers } from "next/headers";
+import { redirect, notFound } from "next/navigation";
+import Link from "next/link";
+import DashboardShell, { PageHeader, LimeBtn, StatusBadge, fmtDate } from "@/components/DashboardShell";
+import { ActiviteitFeed, type ActiviteitItem } from "@/components/ActiviteitFeed";
+import BedrijfEditDrawer from "@/components/BedrijfEditDrawer";
+import ActiviteitAddDrawer from "@/components/ActiviteitAddDrawer";
+
+const configPromise = import("@payload-config").then((m) => m.default);
+
+const LIME = "#dffd7b";
+const MUTED = "var(--bone-400)";
+const BORDER = "var(--line)";
+const TEXT = "var(--bone-100)";
+
+const statusKleur: Record<string, string> = {
+  prospect: "#8fb3d9", actief: "#dffd7b", slapend: "#d9a86c", voormalig: "#6f6d62",
+};
+const statusLabel: Record<string, string> = {
+  prospect: "Prospect", actief: "Actief", slapend: "Slapend", voormalig: "Voormalig",
+};
+
+function InfoRow({ label, value }: { label: string; value?: string | null }) {
+  if (!value) return null;
+  return (
+    <div style={{ display: "flex", gap: "0.75rem", padding: "0.5rem 0", borderBottom: `1px solid ${BORDER}` }}>
+      <span style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)", width: "8rem", flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: "0.875rem", color: MUTED }}>{value}</span>
+    </div>
+  );
+}
+
+export default async function BedrijfDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const config = await configPromise;
+  const payload = await getPayload({ config: config as any });
+  const { user } = await payload.auth({ headers: await headers() });
+  if (!user) redirect("/admin/login");
+
+  const bedrijf = await payload.findByID({ collection: "bedrijven" as any, id }).catch(() => null);
+  if (!bedrijf) notFound();
+  const b = bedrijf as any;
+
+  const [activiteiten, instellingen] = await Promise.all([
+    payload.find({
+      collection: "activiteiten" as any,
+      where: { bedrijf: { equals: id } },
+      sort: "-datum",
+      limit: 50,
+      depth: 1,
+    }),
+    payload.findGlobal({ slug: "instellingen" as any }),
+  ]);
+  const bccEmail = (instellingen as any)?.bcc_logging_email ?? undefined;
+
+  const items: ActiviteitItem[] = activiteiten.docs.map((d: any) => ({
+    id: d.id,
+    type: d.type,
+    richting: d.richting,
+    datum: d.datum,
+    onderwerp: d.onderwerp,
+    inhoud: d.inhoud,
+    van: d.van,
+    naar: d.naar,
+    kandidaat: d.kandidaat,
+    bedrijf: d.bedrijf,
+  }));
+
+  return (
+    <DashboardShell activePath="/dashboard/bedrijven" userName={(user as any).naam || user.email} rol={(user as any).rol}>
+      <PageHeader
+        title={b.naam}
+        subtitle="Bedrijf profiel"
+        actions={<LimeBtn href="/dashboard/bedrijven" outline>Terug</LimeBtn>}
+      />
+
+      <div style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 0, height: "calc(100vh - 90px)" }}>
+        {/* Sidebar */}
+        <div style={{ borderRight: `1px solid ${BORDER}`, padding: "1.5rem", overflowY: "auto" }}>
+          <div style={{ marginBottom: "1.5rem" }}>
+            <div className="kop mb-3 grid size-14 place-items-center bg-ink-700 text-[1.6rem] text-bone-400" aria-hidden>{String(b.naam ?? "").split(" ").map((w: string) => w[0]).slice(0, 2).join("")}</div>
+            <div style={{ fontSize: "1.2rem", fontWeight: 700, color: TEXT, marginBottom: "0.25rem" }}>{b.naam}</div>
+            {b.relatiestatus && (
+              <StatusBadge
+                label={statusLabel[b.relatiestatus] || b.relatiestatus}
+                kleur={statusKleur[b.relatiestatus] || "#6f6d62"}
+              />
+            )}
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            <InfoRow label="Sector" value={b.sector} />
+            <InfoRow label="Contactpersoon" value={b.contactpersoon} />
+            <InfoRow label="E-mail" value={b.email} />
+            <InfoRow label="Telefoon" value={b.telefoon} />
+            <InfoRow label="Website" value={b.website} />
+            <InfoRow label="Adres" value={b.adres} />
+            <InfoRow label="Toegevoegd" value={fmtDate(b.createdAt)} />
+          </div>
+
+          <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <BedrijfEditDrawer
+              id={id}
+              initial={{ naam: b.naam, sector: b.sector, grootte: b.grootte, contactpersoon: b.contactpersoon, email: b.email, telefoon: b.telefoon, website: b.website, locatie: b.locatie, relatiestatus: b.relatiestatus, notities: b.notities }}
+            />
+            <ActiviteitAddDrawer
+              bedrijfId={id}
+              defaultNaar={b.email}
+            />
+          </div>
+        </div>
+
+        {/* Activity feed */}
+        <div style={{ padding: "1.5rem 2rem", overflowY: "auto" }}>
+          <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--bone-400)", marginBottom: "1rem" }}>
+            {activiteiten.totalDocs} activiteiten
+          </div>
+          <ActiviteitFeed items={items} showRelaties bccEmail={bccEmail} />
+        </div>
+      </div>
+    </DashboardShell>
+  );
+}

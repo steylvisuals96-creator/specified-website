@@ -1,0 +1,199 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════
+   Specified back-office — dezelfde tokens als de website
+   (specified-website/DESIGN.md). De back-office is altijd donker.
+   /admin (Payload) gebruikt dezelfde waarden in specified-admin.css.
+═══════════════════════════════════════════════════ */
+:root {
+  /* Merkpalet */
+  --ink-900: #14140e;   /* canvas, nooit puur zwart */
+  --ink-800: #1d1e16;   /* verhoogde vlakken */
+  --ink-700: #25261d;   /* hover op rijen en menu */
+  --olive-600: #3a3f2a; /* lijnen met nadruk */
+  --line: rgb(233 231 221 / 0.09); /* haarlijnen */
+  --bone-100: #e9e7dd;  /* tekst en koppen */
+  --bone-400: #a6a496;  /* secundaire tekst, vanaf 14px */
+  --bone-600: #6f6d62;  /* uitgeschakeld, placeholders */
+  --lime-300: #dffd7b;  /* merkaccent: primaire knop, actief menu, focus */
+
+  /* Statuskleuren: gedempt, alleen als dunne lijn naast de tekst */
+  --st-nieuw: var(--lime-300);
+  --st-bezig: #8fb3d9;
+  --st-klant: #d9a86c;
+  --st-gesprek: #b5a1d8;
+  --st-geplaatst: #9bd17f;
+  --st-wacht: #d98f8f;
+  --st-uit: #6f6d62;
+
+  /* Fonts via next/font in app/(app)/layout.tsx */
+  --font-display: var(--font-bebas), "Arial Narrow", sans-serif;
+  --font-ui: var(--font-plex-sans), system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+
+  /* shadcn-variabelen gekoppeld aan het merkpalet */
+  --background: var(--ink-900);
+  --foreground: var(--bone-100);
+  --card: var(--ink-800);
+  --card-foreground: var(--bone-100);
+  --popover: var(--ink-800);
+  --popover-foreground: var(--bone-100);
+  --primary: var(--lime-300);
+  --primary-foreground: var(--ink-900);
+  --secondary: var(--ink-800);
+  --secondary-foreground: var(--bone-100);
+  --muted: var(--ink-700);
+  --muted-foreground: var(--bone-400);
+  --accent: var(--ink-700);
+  --accent-foreground: var(--bone-100);
+  --destructive: #e07a6a;
+  --border: var(--line);
+  --input: var(--olive-600);
+  --ring: var(--lime-300);
+  --chart-1: var(--lime-300);
+  --chart-2: var(--st-bezig);
+  --chart-3: var(--st-klant);
+  --chart-4: var(--st-gesprek);
+  --chart-5: var(--st-geplaatst);
+  --radius: 2px;
+  --sidebar: var(--ink-900);
+  --sidebar-foreground: var(--bone-400);
+  --sidebar-primary: var(--lime-300);
+  --sidebar-primary-foreground: var(--ink-900);
+  --sidebar-accent: var(--ink-700);
+  --sidebar-accent-foreground: var(--bone-100);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--lime-300);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-ui);
+  --font-heading: var(--font-display);
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-olive-600: var(--olive-600);
+  --color-line: var(--line);
+  --color-bone-100: var(--bone-100);
+  --color-bone-400: var(--bone-400);
+  --color-bone-600: var(--bone-600);
+  --color-lime-300: var(--lime-300);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid var(--lime-300);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--lime-300);
+    color: var(--ink-900);
+  }
+  input,
+  textarea {
+    caret-color: var(--lime-300);
+  }
+  html {
+    scrollbar-color: var(--olive-600) var(--ink-900);
+  }
+  td,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Koppen in Bebas: altijd kapitalen, nooit strakker dan -0.02em */
+.kop {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.mens {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+}
+
+/* Status: tekst met een dunne gekleurde lijn ervoor, geen pil */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+}
+.status::before {
+  content: "";
+  width: 2px;
+  height: 1.1em;
+  background: var(--status-kleur, var(--st-uit));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
