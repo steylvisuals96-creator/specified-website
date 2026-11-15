@@ -28,12 +28,11 @@ Regels:
 - Tekst op limoen is altijd `--ink-900`, nooit wit.
 - Geen gradients, geen gekleurde schaduwen, geen glow behalve de handtekening-streek.
 
-Seizoensthema’s gebruiken de gewone kleuren in licht en donker. Kerst brengt een korte
-sneeuwbui over het tekenblad op de homepage en een sneeuwvlokje bij het logo in de navigatie.
-In de hoek van het tekenblad fonkelt een ster voor Kerst, vallen er vlokjes voor Winter,
-ontvouwt een scheut zich voor Lente, straalt een zon voor Zomer en dwarrelt een blad voor Herfst.
-De beweging speelt één keer bij het openen van de homepage. Bij verminderde beweging blijven
-de tekens stil en valt er geen sneeuw.
+Seizoensthema’s gebruiken de gewone kleuren in licht en donker. Elk seizoen heeft eigen
+ornamenten langs de randen van het tekenblad op de homepage. Kerst heeft een lichtsnoer,
+doorlopende sneeuw en een sneeuwvlok boven het beeldmerk. Winter krijgt rijp in de hoeken,
+Lente ontluikende scheuten, Zomer een lage zon en Herfst dwarrelende bladeren. Bezoekers kunnen
+de kerstsneeuw verbergen. Bij verminderde beweging staan de ornamenten stil en valt er geen sneeuw.
 
 ## Typografie
 

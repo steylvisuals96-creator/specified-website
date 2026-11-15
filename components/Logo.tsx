@@ -18,8 +18,8 @@ export default function Logo({ className }: { className?: string }) {
       <path className="logo__woord" d={WOORD} />
       <path
         className="logo__sneeuwvlok"
-        transform="translate(26 1)"
-        d="M0-5V5M-4.33-2.5l8.66 5m-8.66 0 8.66-5M-1.3-3.8 0-2.5l1.3-1.3m-2.6 7.6L0 2.5l1.3 1.3"
+        transform="translate(23 -6)"
+        d="M0-8V8M-6.93-4 6.93 4M-6.93 4 6.93-4M-2-6 0-4l2-2m-4 12 2-2 2 2M-6.2-1.3l2.7-.7-.7-2.7m10.4 6-2.7.7.7 2.7M-6.2 1.3l2.7.7-.7 2.7m10.4-6-2.7-.7.7-2.7"
       />
     </svg>
   );

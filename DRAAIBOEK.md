@@ -147,7 +147,7 @@ Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén syste
 
 ### Seizoensthema voor de website
 
-Via **Website > Seizoensthema** in het beheer kiezen beheerders Standaard, Kerst, Winter, Lente, Zomer of Herfst. Elk seizoen geeft de technische tekening op de homepage een korte animatie in de gewone huisstijlkleuren. Kerst voegt een korte sneeuwbui op de homepage en een sneeuwvlokje bij het logo in de navigatie toe. Bij verminderde beweging staat het teken stil en valt er geen sneeuw. In het beheer kunnen ze het voorbeeld in licht of donker bekijken en de animatie opnieuw afspelen vóór het opslaan. Ze kunnen meteen wisselen of een begin- en/of einddatum opgeven in Belgische tijd. De einddatum is inbegrepen. Buiten de gekozen periode toont de website de standaardstijl. Dit is één instelling: een nieuw opgeslagen thema vervangt de vorige keuze.
+Via **Website > Seizoensthema** in het beheer kiezen beheerders Standaard, Kerst, Winter, Lente, Zomer of Herfst. De technische tekening op de homepage krijgt per seizoen eigen ornamenten in de gewone huisstijlkleuren. Kerst heeft een lichtsnoer, doorlopende sneeuw en een sneeuwvlok boven het beeldmerk. Winter krijgt rijp in de hoeken, Lente ontluikende scheuten, Zomer een lage zon en Herfst dwarrelende bladeren. Bezoekers kunnen de kerstsneeuw verbergen. Bij verminderde beweging staan de ornamenten stil en valt er geen sneeuw. In het beheer kunnen ze het voorbeeld in licht of donker bekijken en de animatie opnieuw afspelen vóór het opslaan. Ze kunnen meteen wisselen of een begin- en/of einddatum opgeven in Belgische tijd. De einddatum is inbegrepen. Buiten de gekozen periode toont de website de standaardstijl. Dit is één instelling: een nieuw opgeslagen thema vervangt de vorige keuze.
 
 De website leest de instelling publiek uit `public.seizoensthema`; alleen beheerders en creators kunnen wijzigen. Opslaan ververst de site met het bestaande cachemechanisme en schrijft een regel in het logboek. Migratie `20261115_05_seizoensthema.sql` is toegepast op Supabase met **Standaard** als startwaarde. De licht/donkerkeuze blijft bij de bezoeker.
 
@@ -375,7 +375,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:11_
+_Bijgewerkt: 2026-11-16 00:13_
 
 ### Nog niet op main
 
@@ -387,6 +387,7 @@ _Bijgewerkt: 2026-11-16 00:11_
 
 **2026-11-16**
 
+- website: Documenteer SEO-productiemigratie en latere Gateway-koppeling (`1debe43`)
 - website: Draaiboek: vacaturevoorbeeld live getest (`c38367b`)
 - website: Vacatures met live voorbeeld, leesregels samengevoegd, logboek per pagina (`da8f25c`)
 - website: Voeg wekelijkse SEO-bot toe aan het Specified-beheer (`09dd4c1`)

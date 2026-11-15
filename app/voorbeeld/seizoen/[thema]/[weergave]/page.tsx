@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Kerstsneeuw from "@/components/Kerstsneeuw";
 import Logo from "@/components/Logo";
+import Seizoenssfeer from "@/components/Seizoenssfeer";
 import Seizoensteken from "@/components/Seizoensteken";
 import { isSeizoen, SEIZOENEN } from "@/lib/seizoen";
 
@@ -20,6 +21,7 @@ export default async function SeizoenVoorbeeld({ params }: { params: Promise<{ t
     <main id="inhoud" className="seizoenstaal" data-seizoen={thema} data-thema={weergave}>
       <header className="seizoenstaal__kop" aria-label="Specified"><Logo className="logo--nav" /></header>
       <div className="seizoenstaal__blad">
+        <Seizoenssfeer seizoen={thema} />
         {thema === "kerst" && <Kerstsneeuw />}
         <Seizoensteken seizoen={thema} />
         <h1 className="display">We <span>engineer</span><br />possibilities.</h1>

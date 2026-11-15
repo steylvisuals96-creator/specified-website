@@ -1,37 +1,49 @@
 import type { CSSProperties } from "react";
 
 const VLOKKEN = [
-  { links: 7, boven: 5, maat: 4, wachttijd: 650 },
-  { links: 13, boven: 32, maat: 3, wachttijd: 1000 },
-  { links: 21, boven: 14, maat: 2, wachttijd: 450 },
-  { links: 28, boven: 38, maat: 4, wachttijd: 750 },
-  { links: 35, boven: 7, maat: 3, wachttijd: 850 },
-  { links: 43, boven: 25, maat: 2, wachttijd: 1150 },
-  { links: 49, boven: 13, maat: 4, wachttijd: 550 },
-  { links: 57, boven: 32, maat: 3, wachttijd: 700 },
-  { links: 63, boven: 4, maat: 2, wachttijd: 1100 },
-  { links: 70, boven: 22, maat: 4, wachttijd: 500 },
-  { links: 78, boven: 11, maat: 3, wachttijd: 900 },
-  { links: 85, boven: 38, maat: 3, wachttijd: 1200 },
-  { links: 92, boven: 20, maat: 4, wachttijd: 625 },
-  { links: 96, boven: 34, maat: 2, wachttijd: 950 },
+  { links: 3, maat: 3, duur: 14, fase: -3 },
+  { links: 8, maat: 4, duur: 17, fase: -10 },
+  { links: 14, maat: 2, duur: 13, fase: -12 },
+  { links: 19, maat: 3, duur: 15, fase: -1 },
+  { links: 24, maat: 4, duur: 13, fase: -6 },
+  { links: 29, maat: 3, duur: 16, fase: -12 },
+  { links: 34, maat: 2, duur: 12, fase: -4 },
+  { links: 40, maat: 4, duur: 15, fase: -9 },
+  { links: 44, maat: 3, duur: 14, fase: -6 },
+  { links: 49, maat: 2, duur: 17, fase: -14 },
+  { links: 54, maat: 4, duur: 13, fase: -2 },
+  { links: 60, maat: 2, duur: 16, fase: -9 },
+  { links: 65, maat: 3, duur: 14, fase: -11 },
+  { links: 70, maat: 4, duur: 15, fase: -5 },
+  { links: 75, maat: 2, duur: 12, fase: -8 },
+  { links: 80, maat: 3, duur: 16, fase: -4 },
+  { links: 85, maat: 4, duur: 14, fase: -8 },
+  { links: 90, maat: 2, duur: 13, fase: -12 },
+  { links: 94, maat: 3, duur: 16, fase: -10 },
+  { links: 97, maat: 2, duur: 12, fase: -5 },
 ];
 
 export default function Kerstsneeuw() {
   return (
-    <div className="kerstsneeuw" aria-hidden="true">
-      {VLOKKEN.map(({ links, boven, maat, wachttijd }) => (
-        <span
-          key={links}
-          className="kerstsneeuw__vlok"
-          style={{
-            insetInlineStart: `${links}%`,
-            insetBlockStart: `${boven}%`,
-            "--vlok-maat": `${maat}px`,
-            animationDelay: `${wachttijd}ms`,
-          } as CSSProperties}
-        />
-      ))}
+    <div className="kerstsneeuw">
+      <label className="kerstsneeuw__knop">
+        <input type="checkbox" defaultChecked />
+        Sneeuw
+      </label>
+      <div className="kerstsneeuw__veld" aria-hidden="true">
+        {VLOKKEN.map(({ links, maat, duur, fase }) => (
+          <span
+            key={links}
+            className="kerstsneeuw__vlok"
+            style={{
+              insetInlineStart: `${links}%`,
+              "--vlok-maat": `${maat}px`,
+              animationDuration: `${duur}s`,
+              animationDelay: `${fase}s`,
+            } as CSSProperties}
+          />
+        ))}
+      </div>
     </div>
   );
 }

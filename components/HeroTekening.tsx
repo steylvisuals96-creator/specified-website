@@ -1,6 +1,7 @@
 "use client";
 
 import Kerstsneeuw from "@/components/Kerstsneeuw";
+import Seizoenssfeer from "@/components/Seizoenssfeer";
 import Seizoensteken from "@/components/Seizoensteken";
 import { useRef } from "react";
 import gsap from "gsap";
@@ -543,6 +544,7 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
   return (
     <section ref={ref} className="tekening" aria-labelledby="hero-titel">
       <div className="tekening__blad">
+        <Seizoenssfeer />
         <Kerstsneeuw />
         <Seizoensteken />
         <svg ref={svgRef} className="tekening__svg" aria-hidden="true" focusable="false" />

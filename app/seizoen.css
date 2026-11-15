@@ -3,41 +3,73 @@
   display: none;
   fill: none;
   stroke: var(--lime-300);
-  stroke-width: 1.35;
+  stroke-width: 1.65;
   stroke-linecap: round;
 }
 :root[data-seizoen="kerst"] .site-nav .logo--nav .logo__sneeuwvlok,
 .seizoenstaal[data-seizoen="kerst"] .logo__sneeuwvlok { display: inline; }
 
-.kerstsneeuw {
-  display: none;
+.kerstsneeuw { display: none; }
+
+.kerstsneeuw__veld {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  container-type: size;
 }
-.tekening__blad > .kerstsneeuw { inset-block-start: 76px; z-index: 1; }
+.tekening__blad .kerstsneeuw__veld { inset-block-start: 76px; z-index: 1; }
+
 .kerstsneeuw__vlok {
   position: absolute;
+  inset-block-start: -4px;
   inline-size: var(--vlok-maat);
   block-size: var(--vlok-maat);
   border-radius: 50%;
   background: var(--bone-400);
-  opacity: 0;
 }
+
+.kerstsneeuw__knop {
+  position: absolute;
+  z-index: 4;
+  inset-inline-end: max(var(--gutter), 6%);
+  inset-block-start: calc(max(96px, 18%) + clamp(42px, 5vw, 72px));
+  display: flex;
+  align-items: center;
+  gap: .45em;
+  min-height: 44px;
+  padding-inline: .35em;
+  color: var(--bone-400);
+  font-size: .8125rem;
+  cursor: pointer;
+}
+.seizoenstaal .kerstsneeuw__knop {
+  inset-inline-end: 4vw;
+  inset-block-start: calc(4vw + clamp(36px, 10vw, 66px));
+  font-size: clamp(.6875rem, 2.4vw, .8125rem);
+}
+.kerstsneeuw__knop input {
+  width: .9rem;
+  height: .9rem;
+  accent-color: var(--lime-vlak);
+}
+.kerstsneeuw__knop:has(input:not(:checked)) + .kerstsneeuw__veld { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
   :root[data-seizoen="kerst"] .tekening__blad > .kerstsneeuw,
   .seizoenstaal[data-seizoen="kerst"] .kerstsneeuw { display: block; }
 
-  .kerstsneeuw__vlok { animation: kerst-vlok 3400ms linear both; }
+  .kerstsneeuw__vlok {
+    animation-name: kerst-vlok;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
 
   @keyframes kerst-vlok {
-    0% { opacity: 0; transform: translate(-8px, 0); }
-    22% { opacity: .8; }
-    55% { transform: translate(7px, 55px); }
-    72% { opacity: .7; }
-    100% { opacity: 0; transform: translate(3px, 110px); }
+    0% { opacity: 0; transform: translate(-5px, 0); }
+    12%, 85% { opacity: .72; }
+    50% { transform: translate(7px, 50cqh); }
+    100% { opacity: 0; transform: translate(-4px, calc(100cqh + 4px)); }
   }
 }
 
@@ -171,6 +203,7 @@
   right: 4vw;
   width: clamp(36px, 10vw, 66px);
 }
+.seizoenstaal__blad h1, .seizoenstaal__knop { position: relative; z-index: 2; }
 .seizoenstaal__blad h1 { font-size: clamp(1.25rem, min(12vw, 19vh), 6rem); line-height: .88; }
 .seizoenstaal__blad h1 span { color: var(--lime-300); }
 .seizoenstaal__knop {
@@ -179,4 +212,194 @@
   font-weight: 600;
   background: var(--lime-vlak);
   color: var(--on-lime);
+}
+
+/* Ornamenten langs de randen, achter de inhoud van het tekenblad. */
+.seizoenssfeer {
+  --seizoensmarge: clamp(16px, 5vw, 66px);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--lime-300);
+}
+.tekening__blad > .seizoenssfeer { inset-block-start: 76px; z-index: 1; }
+.tekening__blad .seizoenssfeer [data-sfeer] { display: none; }
+:root[data-seizoen="kerst"] .tekening__blad [data-sfeer="kerst"],
+:root[data-seizoen="winter"] .tekening__blad [data-sfeer="winter"],
+:root[data-seizoen="lente"] .tekening__blad [data-sfeer="lente"],
+:root[data-seizoen="zomer"] .tekening__blad [data-sfeer="zomer"],
+:root[data-seizoen="herfst"] .tekening__blad [data-sfeer="herfst"] { display: block; }
+
+.seizoenssfeer__lichten {
+  position: absolute;
+  inset: clamp(13px, 3.5vh, 42px) var(--seizoensmarge) auto;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+}
+.seizoenssfeer__lichten span {
+  position: relative;
+  width: 1px;
+  height: 8px;
+  background: currentColor;
+  opacity: .7;
+}
+.seizoenssfeer__lichten span:nth-child(2n) { height: 14px; color: var(--bone-100); opacity: .62; }
+.seizoenssfeer__lichten span::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -2px;
+  width: 5px;
+  height: 7px;
+  border-radius: 45% 45% 55% 55%;
+  background: currentColor;
+}
+
+.seizoenssfeer__rijp {
+  position: absolute;
+  inset: var(--seizoensmarge) auto auto var(--seizoensmarge);
+  width: clamp(54px, 16vw, 190px);
+  aspect-ratio: 1;
+  color: var(--bone-400);
+  opacity: .62;
+}
+.seizoenssfeer__rijp--rechts {
+  inset: auto var(--seizoensmarge) var(--seizoensmarge) auto;
+  rotate: 180deg;
+}
+.seizoenssfeer__rijp span {
+  position: absolute;
+  inset: 0 auto 0 10%;
+  width: 1px;
+  transform-origin: top;
+  rotate: -24deg;
+  background: currentColor;
+}
+.seizoenssfeer__rijp span:nth-child(2) { left: 32%; height: 80%; rotate: -48deg; }
+.seizoenssfeer__rijp span:nth-child(3) { left: 54%; height: 66%; rotate: -66deg; }
+.seizoenssfeer__rijp span::before,
+.seizoenssfeer__rijp span::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  width: 24px;
+  height: 13px;
+  border-inline: 1px solid currentColor;
+  border-block-end: 1px solid currentColor;
+  border-bottom-left-radius: 65% 75%;
+  border-bottom-right-radius: 65% 75%;
+}
+.seizoenssfeer__rijp span::before { top: 28%; }
+.seizoenssfeer__rijp span::after { top: 60%; width: 16px; left: -8px; }
+
+.seizoenssfeer__kiem {
+  position: absolute;
+  inset: auto auto 0 var(--seizoensmarge);
+  width: clamp(52px, 10vw, 130px);
+  height: clamp(60px, 23%, 220px);
+  border-inline-start: 1px solid currentColor;
+  transform-origin: bottom left;
+  rotate: -14deg;
+  opacity: .55;
+}
+.seizoenssfeer__kiem--rechts {
+  inset-inline-start: auto;
+  inset-inline-end: 10%;
+  height: clamp(46px, 17%, 148px);
+  rotate: 15deg;
+}
+.seizoenssfeer__kiem span,
+.seizoenssfeer__bladeren span {
+  position: absolute;
+  width: clamp(12px, 2.3vw, 32px);
+  aspect-ratio: 1.65;
+  border: 1px solid currentColor;
+  border-radius: 0 85% 0 85%;
+}
+.seizoenssfeer__kiem span {
+  top: 12%;
+  left: -1px;
+  rotate: -35deg;
+  transform-origin: left;
+}
+.seizoenssfeer__kiem span:nth-child(2) { top: 36%; rotate: 215deg; }
+.seizoenssfeer__kiem span:nth-child(3) { top: 61%; rotate: -28deg; }
+
+.seizoenssfeer__zon {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  translate: 0 58%;
+  width: clamp(148px, 31vw, 460px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: .42;
+}
+.seizoenssfeer__zon::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border: 1px solid currentColor;
+  border-radius: inherit;
+  background: color-mix(in srgb, currentColor 9%, transparent);
+}
+.seizoenssfeer__zon span {
+  position: absolute;
+  inset: -12%;
+  border-radius: inherit;
+}
+.seizoenssfeer__zon span::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 8%;
+  background: currentColor;
+}
+
+.seizoenssfeer__bladeren span {
+  top: 20%;
+  left: 8%;
+  rotate: 18deg;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  opacity: .42;
+}
+.seizoenssfeer__bladeren span:nth-child(2) { left: 17%; top: 62%; rotate: 76deg; }
+.seizoenssfeer__bladeren span:nth-child(3) { left: 83%; top: 33%; rotate: -34deg; }
+.seizoenssfeer__bladeren span:nth-child(4) { left: 89%; top: 71%; rotate: 38deg; }
+.seizoenssfeer__bladeren span:nth-child(5) { left: 70%; top: 83%; rotate: -18deg; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .seizoenssfeer__lichten span { animation: seizoen-licht 1600ms var(--ease-out) 350ms both; }
+  .seizoenssfeer__lichten span:nth-child(2n) { animation-delay: 650ms; }
+  .seizoenssfeer__rijp { transform-origin: top left; animation: seizoen-rijp 1900ms var(--ease-out) both; }
+  .seizoenssfeer__kiem span { animation: seizoen-bladgroei 1600ms var(--ease-out) both; }
+  .seizoenssfeer__kiem span:nth-child(2) { animation-delay: 200ms; }
+  .seizoenssfeer__kiem span:nth-child(3) { animation-delay: 350ms; }
+  .seizoenssfeer__zon { animation: seizoen-zon 2200ms var(--ease-out) both; }
+  .seizoenssfeer__bladeren span { animation: seizoen-bladval 3000ms linear both; }
+  .seizoenssfeer__bladeren span:nth-child(2n) { animation-delay: 350ms; }
+
+  @keyframes seizoen-licht {
+    0% { opacity: .35; }
+    45% { opacity: .95; }
+  }
+  @keyframes seizoen-rijp {
+    from { transform: scale(.9); opacity: .12; }
+  }
+  @keyframes seizoen-bladgroei {
+    from { transform: scale(.6); opacity: .2; }
+  }
+  @keyframes seizoen-zon {
+    from { transform: translateY(15%); opacity: .15; }
+  }
+  @keyframes seizoen-bladval {
+    0% { transform: translate(-8px, -30px) rotate(-22deg); opacity: .12; }
+    50% { transform: translate(7px, -14px) rotate(14deg); }
+    100% { transform: translate(0, 0) rotate(0); }
+  }
 }
