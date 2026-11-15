@@ -344,6 +344,7 @@ _Bijgewerkt: 2026-11-15 23:21_
 
 **2026-11-15**
 
+- website: Website: gezondheidscheck controleert Supabase na de overstap (`3d73bd6`)
 - website: Overstap: website leest uit het nieuwe beheer; voorbeeld nooit meer uit de browsercache (`f5134c2`)
 - website: Draaiboek: bestaande websitebeelden in het beheer (`04033fc`)
 - website: Beheer: snellere sessiecontrole, voorbeeld bij blog op laptops, overstapscript (`b99ed09`)
