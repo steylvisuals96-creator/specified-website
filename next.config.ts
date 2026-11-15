@@ -45,7 +45,8 @@ function maakCsp(frameAncestors: string) {
     // betere foutmeldingen, in productie nooit.
     `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: https:",
+    // Lokaal draait het beheer op http (poort 3004); in productie is alles https.
+    `img-src 'self' data: blob: https:${dev ? " http://localhost:3004" : ""}`,
     "font-src 'self' data:",
     `connect-src 'self' ${CMS_URL} ${origin(SUPABASE_URL)} https://va.vercel-scripts.com https://vitals.vercel-insights.com`.replace(/\s+/g, " "),
     "upgrade-insecure-requests",

@@ -110,7 +110,8 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Logboek**: database-trigger schrijft elke wijziging weg (wie, wat, wanneer); te zien bij Logboek en op het overzicht.
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
 - **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
-- Nog niet getest: uploaden (R2-waarden ontbreken lokaal), tweestapslogin aanzetten, iemand uitnodigen, en een homepage-wijziging echt opslaan.
+- **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
+- Nog niet getest: tweestapslogin aanzetten, iemand uitnodigen, en een homepage-wijziging echt opslaan.
 - Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
 
 ### Oude CMS op Payload (nog live)
@@ -159,7 +160,7 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 
 - **Vercel**: twee projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap, `specified-cms` bouwt met root directory `cms`. Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step).
 - **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload` (oude CMS), niet via de Data API bereikbaar, anon en authenticated hebben geen rechten (nagekeken 2026-11-15: de Supabase-melding "RLS uit" op die tabellen is daardoor geen lek). Migratie uit MongoDB op 2026-09-26. Sinds 2026-11-15 ook schema `public` voor het nieuwe beheer (tabellen `profielen`, `vacatures`, `vacatures_intern`, `blog`, `team`, `media`, `pagina_inhoud`, `wijzigingen`, alle met RLS) en schema `privaat` voor de rolfuncties. Migraties in `beheer/supabase/migrations/`.
-- **Cloudflare R2**: mediabucket (privé, ondertekende links). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
+- **Cloudflare R2**: bucket `specified-media` (aangemaakt 2026-11-15, West-Europa, privé, geen r2.dev-adres), in het Cloudflare-account van SteylVisuals. API-token `specified-media` met alleen Object Read & Write op die bucket. Gebruikt door het nieuwe beheer; beelden naar buiten via `/m/<id>` met een ondertekende link. **De oude CMS heeft R2 nooit gebruikt**: in geen enkele Vercel-omgeving van `specified-cms` staan R2-variabelen, dus uploads daar zouden op de tijdelijke schijf van Vercel belanden (de mediatabel was leeg, er is niets verloren). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
 - **Resend** (CMS en website sinds 2026-10-27; `FOUTMELDING_AAN` = steylvisuals96@gmail.com in beide Vercel-projecten, `RESEND_API_KEY` nog alleen in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
 
 ### Monitoring en back-ups
@@ -229,7 +230,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
 - [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
-- [ ] De `R2_*`-waarden (uit het Vercel-project `specified-cms`) in `beheer/.env.local` zetten en één upload testen, ook als teamfoto op de website.
+- [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload getest tot op de website (2026-11-15). Bij het Vercel-project van het beheer dezelfde vier `R2_*`-waarden zetten.
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [ ] Vercel-project `specified-beheer` aanmaken (root directory `beheer`) met de variabelen uit `beheer/.env.example`; later `beheer.specified.be`.
 - [ ] Website in Vercel: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM` (zelfde als `WEBSITE_VERVERS_GEHEIM` in het beheer). Terug: `NEXT_PUBLIC_DATABRON` weghalen.
@@ -324,7 +325,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 20:32_
+_Bijgewerkt: 2026-11-15 21:14_
 
 ### Nog niet op main
 
@@ -336,6 +337,7 @@ _Bijgewerkt: 2026-11-15 20:32_
 
 **2026-11-15**
 
+- website: Beheer na test met echte login: voorbeeld ook op tablet en telefoon, wachtwoord onzichtbaar (`b2b5de3`)
 - website: Nieuw beheer op Supabase en R2 zonder Payload, in de look van de studio (`9172301`)
 - website: Website en CMS in één repo: tooling, draaiboekscript en documentatie aangepast, CMS doorgelicht (`b33f44e`)
 - website: Projectregels in AGENTS.md voor andere agents, animatieplannen ronde 2 op main, draaiboek bijgewerkt (`9a99bfc`)
