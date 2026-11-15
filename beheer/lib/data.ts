@@ -134,8 +134,9 @@ export function wanneer(iso: string | null | undefined): string {
   if (!iso) return "";
   const d = new Date(iso);
   const dagen = Math.floor((Date.now() - d.getTime()) / 86400000);
-  if (dagen <= 0) return `vandaag om ${d.toLocaleTimeString("nl-BE", { hour: "2-digit", minute: "2-digit" })}`;
+  // De server (Vercel) draait in UTC: altijd Belgische tijd tonen.
+  if (dagen <= 0) return `vandaag om ${d.toLocaleTimeString("nl-BE", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Brussels" })}`;
   if (dagen === 1) return "gisteren";
   if (dagen < 14) return `${dagen} dagen geleden`;
-  return d.toLocaleDateString("nl-BE", { day: "numeric", month: "short", year: "numeric" });
+  return d.toLocaleDateString("nl-BE", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Brussels" });
 }

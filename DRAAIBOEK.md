@@ -325,7 +325,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 21:18_
+_Bijgewerkt: 2026-11-15 21:26_
 
 ### Nog niet op main
 
@@ -337,6 +337,7 @@ _Bijgewerkt: 2026-11-15 21:18_
 
 **2026-11-15**
 
+- website: Beheer op Vercel: project specified-beheer, draaiboek bijgewerkt (`e0b8a2c`)
 - website: R2 voor het beheer: eigen bucket, upload getest tot op de website (`9c125ab`)
 - website: Beheer na test met echte login: voorbeeld ook op tablet en telefoon, wachtwoord onzichtbaar (`b2b5de3`)
 - website: Nieuw beheer op Supabase en R2 zonder Payload, in de look van de studio (`9172301`)
