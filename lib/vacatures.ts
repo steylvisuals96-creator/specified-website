@@ -113,7 +113,7 @@ function vorm(v: any): Vacature {
 }
 
 /** Een rij uit het nieuwe beheer (Supabase, tabel vacatures). Salaris staat daar in een aparte, afgeschermde tabel. */
-type SupabaseVacature = {
+export type SupabaseVacature = {
   id: string;
   slug: string;
   titel: string;
@@ -138,7 +138,7 @@ const KOLOMMEN =
 
 const schoneLijst = (l: unknown): string[] => (Array.isArray(l) ? l.filter((x): x is string => typeof x === "string" && Boolean(x.trim())).map((x) => x.trim()) : []);
 
-function vormSupabase(v: SupabaseVacature): Vacature {
+export function vormSupabase(v: SupabaseVacature): Vacature {
   return {
     id: v.id,
     slug: v.slug,

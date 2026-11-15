@@ -42,7 +42,8 @@ export default function RichTekst({
       Placeholder.configure({ placeholder }),
     ],
     content: (waarde as object) ?? "",
-    editorProps: { attributes: { class: "richtekst", "aria-label": label, role: "textbox", "aria-multiline": "true" } },
+    // data-veld: het live voorbeeld weet zo dat je in deze tekst bezig bent.
+    editorProps: { attributes: { class: "richtekst", "aria-label": label, role: "textbox", "aria-multiline": "true", "data-veld": naam } },
     onUpdate: ({ editor: e }) => {
       const doc = e.getJSON();
       setJson(JSON.stringify(doc));

@@ -12,7 +12,7 @@ import {
   VoorEngineersWeergave,
   type VacatureRij,
 } from "@/components/paginas/Weergaven";
-import { getPagina, paginaDef, samenvoegenPagina } from "@/lib/paginas";
+import { getPagina, paginaDef, samenvoegenPagina, type PaginaTeksten } from "@/lib/paginas";
 import { getSettings, type SiteSettings } from "@/lib/settings";
 import { getVacatures, dagenOnline } from "@/lib/vacatures";
 import { getBlogPosts, type BlogPost } from "@/lib/blog";
@@ -29,7 +29,7 @@ export default function PaginaVoorbeeld({ toon }: { toon: string }) {
   const { data, focus } = useVoorbeeld();
   const bewerk = typeof window === "undefined" ? toon : new URLSearchParams(location.search).get("bewerk") || toon;
 
-  const [opgeslagen, setOpgeslagen] = useState<{ t: Record<string, any>; a: Record<string, any> } | null>(null);
+  const [opgeslagen, setOpgeslagen] = useState<{ t: PaginaTeksten; a: PaginaTeksten } | null>(null);
   const [settings, setSettings] = useState<SiteSettings>({});
   const [vacatures, setVacatures] = useState<VacatureRij[]>([]);
   const [posts, setPosts] = useState<BlogPost[]>([]);

@@ -140,6 +140,7 @@ Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén syste
 - Profielen, sectoren, attesten en cijfers staan op meerdere pagina's en zijn één keer aan te passen onder "Gedeelde lijsten". Kleine tekstwijziging daardoor: Voor engineers zegt nu ook "Onze consultants werken met deze attesten: ...".
 - **Klik in het voorbeeld**: een link naar een pagina van de site opent de editor van die pagina (via `/naar?pad=`), met een waarschuwing bij niet opgeslagen wijzigingen; een vacature of artikel opent dat item. Links naar buiten en formulieren doen in het voorbeeld niets (anders kwam er een lege pagina of een echte mail).
 - Nog niet bewerkbaar: privacy, cookies, disclaimer, toegankelijkheid en algemene voorwaarden (lange teksten, vragen een tekstverwerker). Een klik erop in het voorbeeld zegt dat.
+- **Vacatures met live voorbeeld** (2026-11-16): de vacaturepagina is een weergave (`components/paginas/VacatureWeergave.tsx`) die ook in `/voorbeeld/vacature` draait. Vanaf 1280 px staat de pagina naast het vacatureformulier en scrollt ze mee naar het veld (ook de tekstverwerker, titel, lijsten en kenmerken). Het salaris komt nooit in het voorbeeld.
 - **Live getest** (2026-11-15, ingelogd als Sam): overzicht Pagina's, editor Voor bedrijven (typen in "Sectoren": voorbeeld scrolt mee en toont de tekst, niet opgeslagen), en een klik op "Neem contact op" in het voorbeeld opent de editor van Contact. Het voorbeeld schaalt niet meer als het op ware grootte past (scherper).
 
 ### Seizoensthema voor de website
@@ -272,7 +273,9 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
 - [x] **Overstap gedaan (2026-11-15)**: vooraf vergeleken, de oude CMS was sinds 2026-10-27 niet meer gewijzigd en de inhoud in het beheer was identiek (vacatures, blog, homepage), dus het overstapscript had niets te doen. Daarna `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL` en `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in het websiteproject gezet (beheer-adres en ververs-geheim stonden er al) en de website opnieuw gebouwd. Terug: `NEXT_PUBLIC_DATABRON` weghalen en opnieuw bouwen.
-- [ ] Juridische pagina's bewerkbaar maken (privacy, cookies, disclaimer, toegankelijkheid, algemene voorwaarden), met de tekstverwerker van de blog.
+- [ ] Juridische pagina's bewerkbaar maken (privacy, cookies, disclaimer, toegankelijkheid, algemene voorwaarden), met de tekstverwerker van de blog. Sam: later.
+- [ ] Sam: in Supabase "Leaked password protection" aanzetten (Authentication > Policies of Providers > Email), Supabase-adviseur meldt het als waarschuwing. Kan het betaalde plan vragen.
+- [x] Leesregels op blog, team en vacatures samengevoegd tot één per rol (Supabase-advies 0006, migratie 05, 2026-11-16); wie wat ziet bleef gelijk (getest per rol).
 - [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
 - [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt nog, maar wat hij daar wijzigt komt niet online.
 - [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
@@ -368,7 +371,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:05_
+_Bijgewerkt: 2026-11-16 00:07_
 
 ### Nog niet op main
 
@@ -380,6 +383,7 @@ _Bijgewerkt: 2026-11-16 00:05_
 
 **2026-11-16**
 
+- website: Voeg wekelijkse SEO-bot toe aan het Specified-beheer (`09dd4c1`)
 - website: Gebruik herwerkte dienstenbeelden op de homepage (`2e5bd24`)
 - website: Gebruik seizoensanimaties in de vaste huisstijl (`38959eb`)
 

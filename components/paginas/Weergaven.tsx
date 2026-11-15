@@ -6,7 +6,7 @@ import Cover from "@/components/Cover";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { formatDatum, type BlogPost } from "@/lib/blog";
-import { veiligeLinkAdres } from "@/lib/paginas";
+import { veiligeLinkAdres, type PaginaTeksten } from "@/lib/paginas";
 
 /**
  * De doorklikpagina's als weergave: alle teksten komen binnen als `t` (en de
@@ -15,7 +15,7 @@ import { veiligeLinkAdres } from "@/lib/paginas";
  * beide dezelfde weergave gebruiken. data-bewerk koppelt elk element aan zijn
  * veld in het beheer.
  */
-type T = Record<string, any>;
+type T = PaginaTeksten;
 type Basis = { t: T; footer?: FooterGegevens };
 type MetAlgemeen = Basis & { a: T };
 

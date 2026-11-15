@@ -356,12 +356,19 @@ export const PAGINAS: PaginaDef[] = [
 
 export const paginaDef = (sleutel: string) => PAGINAS.find((p) => p.sleutel === sleutel);
 
+/**
+ * De samengevoegde teksten van een pagina. Welke sleutel een tekst, een lijst of
+ * rijen bevat, staat in de beschrijving hierboven; de weergaven lezen ze zo.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- de vorm per sleutel staat in PAGINAS
+export type PaginaTeksten = Record<string, any>;
+
 const gevuld = (v: unknown) => typeof v === "string" && v.trim() !== "";
 
 /** Legt opgeslagen waarden over de standaard. Leeg of ongeldig valt terug op de standaardtekst. */
-export function samenvoegenPagina(def: PaginaDef, opgeslagen: unknown): Record<string, any> {
+export function samenvoegenPagina(def: PaginaDef, opgeslagen: unknown): PaginaTeksten {
   const o = opgeslagen && typeof opgeslagen === "object" ? (opgeslagen as Record<string, unknown>) : {};
-  const uit: Record<string, any> = {};
+  const uit: PaginaTeksten = {};
   for (const v of def.groepen.flatMap((g) => g.velden)) {
     const w = o[v.sleutel];
     if (v.soort === "tekst" || v.soort === "tekstvak") {
@@ -386,7 +393,7 @@ export function samenvoegenPagina(def: PaginaDef, opgeslagen: unknown): Record<s
 export const veiligeLinkAdres = (v?: string) => (v && /^(\/(?!\/)|https:\/\/)/.test(v) ? v : undefined);
 
 /** De teksten van een pagina: uit het beheer (Supabase) met de standaard als terugval. */
-export async function getPagina(sleutel: string): Promise<Record<string, any>> {
+export async function getPagina(sleutel: string): Promise<PaginaTeksten> {
   const def = paginaDef(sleutel);
   if (!def) throw new Error(`Onbekende pagina ${sleutel}`);
   if (!LEEST_UIT_SUPABASE) return samenvoegenPagina(def, {});

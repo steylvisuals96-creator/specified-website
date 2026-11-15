@@ -5,7 +5,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Logboek" };
 
-const TABEL: Record<string, string> = { vacatures: "Vacature", blog: "Artikel", team: "Teamlid", media: "Beeld", pagina_inhoud: "Homepage", seizoensthema: "Seizoensthema", profielen: "Gebruiker" };
+const TABEL: Record<string, string> = { vacatures: "Vacature", blog: "Artikel", team: "Teamlid", media: "Beeld", pagina_inhoud: "Pagina", seizoensthema: "Seizoensthema", profielen: "Gebruiker" };
 const ACTIE: Record<string, string> = { nieuw: "toegevoegd", gewijzigd: "gewijzigd", verwijderd: "verwijderd" };
 
 export default async function Logboek() {
