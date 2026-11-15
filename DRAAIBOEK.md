@@ -126,6 +126,7 @@ Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén syste
 - Profielen, sectoren, attesten en cijfers staan op meerdere pagina's en zijn één keer aan te passen onder "Gedeelde lijsten". Kleine tekstwijziging daardoor: Voor engineers zegt nu ook "Onze consultants werken met deze attesten: ...".
 - **Klik in het voorbeeld**: een link naar een pagina van de site opent de editor van die pagina (via `/naar?pad=`), met een waarschuwing bij niet opgeslagen wijzigingen; een vacature of artikel opent dat item. Links naar buiten en formulieren doen in het voorbeeld niets (anders kwam er een lege pagina of een echte mail).
 - Nog niet bewerkbaar: privacy, cookies, disclaimer, toegankelijkheid en algemene voorwaarden (lange teksten, vragen een tekstverwerker). Een klik erop in het voorbeeld zegt dat.
+- **Live getest** (2026-11-15, ingelogd als Sam): overzicht Pagina's, editor Voor bedrijven (typen in "Sectoren": voorbeeld scrolt mee en toont de tekst, niet opgeslagen), en een klik op "Neem contact op" in het voorbeeld opent de editor van Contact. Het voorbeeld schaalt niet meer als het op ware grootte past (scherper).
 
 ### Oude CMS op Payload (nog live)
 
@@ -343,7 +344,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:50_
+_Bijgewerkt: 2026-11-15 23:52_
 
 ### Nog niet op main
 
@@ -355,6 +356,7 @@ _Bijgewerkt: 2026-11-15 23:50_
 
 **2026-11-15**
 
+- website: Beheer: voorbeeld zonder schaling als het op ware grootte past (`304adca`)
 - website: Alle doorklikpagina's bewerkbaar in het beheer, klik in het voorbeeld opent de editor (`d3c6e59`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (de code, vorige commit had alleen het draaiboek) (`2e40813`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (`3d73bd6`)
