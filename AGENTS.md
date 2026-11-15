@@ -12,10 +12,19 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Deze regels gelden voor elke agent (Claude Code, Codex, ...). Ze staan ook in `CLAUDE.md`.
 
-- **CMS:** nieuw werk aan het beheer bouw je rechtstreeks op Supabase, zonder Payload. Foto's en video's staan in Cloudflare R2. (De huidige CMS in `../specified-cms` draait nog op Payload met Supabase als database; zie `DRAAIBOEK.md`.)
-- **Git:** commit en push rechtstreeks naar `main`, in deze repo en in `../specified-cms`. Geen featurebranches of pull requests.
-- **Draaiboek:** `DRAAIBOEK.md` is het draaiboek van website en CMS. Werk bij elke wijziging de handmatige delen 1 tot en met 8 bij (stand van zaken, beslissingen, open punten), draai daarna `scripts/draaiboek-bijwerken.sh` (bouwt deel 9, de wijzigingslog, uit git) en neem het bijgewerkte `DRAAIBOEK.md` mee in dezelfde commit. Dit geldt ook voor wijzigingen in `../specified-cms`.
+- **CMS:** nieuw werk aan het beheer bouw je rechtstreeks op Supabase, zonder Payload. Foto's en video's staan in Cloudflare R2. (De huidige CMS in `cms/` draait nog op Payload met Supabase als database; zie `DRAAIBOEK.md`.)
+- **Git:** commit en push rechtstreeks naar `main`. Geen featurebranches of pull requests.
+- **Draaiboek:** `DRAAIBOEK.md` is het draaiboek van website en CMS. Werk bij elke wijziging de handmatige delen 1 tot en met 8 bij (stand van zaken, beslissingen, open punten), draai daarna `scripts/draaiboek-bijwerken.sh` (bouwt deel 9, de wijzigingslog, uit git) en neem het bijgewerkte `DRAAIBOEK.md` mee in dezelfde commit. Dit geldt ook voor wijzigingen in `cms/`.
 - **Taal:** teksten op de site, commitberichten en documentatie in het Nederlands. Geen gedachtestreepjes (—) in teksten; gebruik een komma of koppelteken.
+
+## Structuur van de repo
+
+Eén repo, twee Next.js-apps die apart draaien en apart naar Vercel gaan:
+
+- **Hoofdmap**: de publieke website (Vercel-project `specified-website`).
+- **`cms/`**: het beheer en de API (Payload 3 + Supabase Postgres + R2), Vercel-project `specified-cms` met root directory `cms`. Eigen `package.json`, `node_modules`, `.env.local`, ESLint- en TypeScript-config: `npm install`, `npm run dev` en `npm run build` voor de CMS draai je in `cms/`. Lees ook `cms/AGENTS.md`.
+- De website leest de inhoud via de REST API van de CMS (`NEXT_PUBLIC_CMS_URL`), niet rechtstreeks uit de database. Wie een veld in de CMS wijzigt, past ook de website aan (`lib/`).
+- Schemawijzigingen in de CMS alleen via migraties (`cms/migrations/`, `push: false`).
 
 ## Waar te beginnen
 

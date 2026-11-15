@@ -3,9 +3,10 @@
 Publieke site van Specified, een recruitmentkantoor voor engineeringprofielen.
 Next.js 16 met Tailwind v4 en framer-motion.
 
-Alle inhoud — vacatures, blog, team, instellingen — komt uit
-[specified-cms](https://github.com/steylvisuals96-creator/specified-cms) via de
-REST API. Deze repo bevat geen content.
+Alle inhoud (vacatures, blog, team, instellingen) komt uit de CMS in `cms/`
+via de REST API. De CMS is een aparte Next.js-app met Payload; zie `cms/README.md`.
+Website en CMS staan sinds 2026-11-15 in deze ene repo en hebben elk een eigen
+Vercel-project.
 
 ## Lokaal draaien
 

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // De CMS in cms/ heeft een eigen ESLint-config en wordt apart gelint.
+    "cms/**",
   ]),
 ]);
 
