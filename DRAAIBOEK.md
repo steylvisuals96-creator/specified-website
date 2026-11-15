@@ -343,7 +343,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:46_
+_Bijgewerkt: 2026-11-15 23:50_
 
 ### Nog niet op main
 
@@ -355,6 +355,7 @@ _Bijgewerkt: 2026-11-15 23:46_
 
 **2026-11-15**
 
+- website: Alle doorklikpagina's bewerkbaar in het beheer, klik in het voorbeeld opent de editor (`d3c6e59`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (de code, vorige commit had alleen het draaiboek) (`2e40813`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (`3d73bd6`)
 - website: Overstap: website leest uit het nieuwe beheer; voorbeeld nooit meer uit de browsercache (`f5134c2`)

@@ -158,7 +158,8 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
           style={{
             width: breedte,
             height: maat.h / schaal,
-            transform: `scale(${schaal})`,
+            // Past het op ware grootte, dan geen schaling: scherper, en klikken gaat zoals op de site.
+            transform: schaal < 1 ? `scale(${schaal})` : "none",
             transformOrigin: "top left",
             left: Math.max(0, (maat.w - breedte * schaal) / 2),
             opacity: klaar ? 1 : 0,
