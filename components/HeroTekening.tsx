@@ -490,6 +490,10 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
             const blad = svg.getBoundingClientRect();
             const vw = blad.width || innerWidth;
             const vh = blad.height || innerHeight;
+            // Nog geen maat (een voorbeeldframe in het beheer dat net verschijnt): niet bouwen,
+            // anders rekent de tekening met nul en worden de maten NaN. Zodra het venster een
+            // maat krijgt, bouwt opResize hieronder alsnog (verhouding is dan nog 0).
+            if (vw < 50 || vh < 50) return;
             verhouding = vw / vh;
             opruimen();
             const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh, kopVak(root, blad));

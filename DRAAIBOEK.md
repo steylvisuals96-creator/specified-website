@@ -1,6 +1,6 @@
 # Draaiboek Specified-website
 
-Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar zit en wat er nog open staat. Het gaat over de website (hoofdmap) en haar back-end, sinds 2026-11-15 in één repository. Er zijn tijdelijk twee back-ends: de oude CMS op Payload (map `cms/`, nog live) en het nieuwe beheer op Supabase en R2 zonder Payload (map `beheer/`, gebouwd op 2026-11-15, nog niet in gebruik). De website schakelt met één omgevingsvariabele om.
+Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar zit en wat er nog open staat. Het gaat over de website (hoofdmap) en haar back-end, sinds 2026-11-15 in één repository. **Sinds 2026-11-15 (overstap) leest de website uit het nieuwe beheer** op Supabase en R2 zonder Payload (map `beheer/`, `specified-beheer.vercel.app`). De oude CMS op Payload (map `cms/`) draait nog, maar de website leest er niet meer uit: wijzigingen daar komen niet meer online. Terug naar de oude CMS: `NEXT_PUBLIC_DATABRON` weghalen in het Vercel-project van de website en opnieuw bouwen.
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
@@ -12,13 +12,13 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 
 ## 1. Overzicht
 
-| | Website | Oude CMS (nog live) | Nieuw beheer (klaar, nog niet live) |
+| | Website | Oude CMS (niet meer gelezen) | Beheer (in gebruik sinds 2026-11-15) |
 |---|---|---|---|
 | Repo | `steylvisuals96-creator/specified-website` | zelfde repo, map `cms/` (oude repo `specified-cms` wordt gearchiveerd) | zelfde repo, map `beheer/` |
 | Map lokaal | `~/specified-website` | `~/specified-website/cms` | `~/specified-website/beheer` |
 | Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
 | Stack | Next.js 16.3.6, React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
-| Data | uit de oude CMS, of uit Supabase met `NEXT_PUBLIC_DATABRON=supabase` (revalidate 60 s, meteen bij opslaan via `/api/ververs`) | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
+| Data | uit Supabase (`NEXT_PUBLIC_DATABRON=supabase`, sinds 2026-11-15); meteen bij opslaan via `/api/ververs`, anders na 60 s | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
 | Media | bestaande beelden in `public/` | eigen mediaopslag op de CMS-server (zie deel 5) | Cloudflare R2, bucket `specified-media` (privé, beelden via `/m/<id>` met een ondertekende link) |
 | Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main`, root directory `beheer`, functies in Frankfurt (`fra1`) |
 
@@ -238,7 +238,9 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload lokaal getest tot op de website (2026-11-15). Dezelfde vier `R2_*`-waarden staan in Vercel. De live upload en het laden van het testbeeld zijn ook getest.
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
-- [ ] Website in Vercel: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM` (zelfde als `WEBSITE_VERVERS_GEHEIM` in het beheer). Terug: `NEXT_PUBLIC_DATABRON` weghalen.
+- [x] **Overstap gedaan (2026-11-15)**: vooraf vergeleken, de oude CMS was sinds 2026-10-27 niet meer gewijzigd en de inhoud in het beheer was identiek (vacatures, blog, homepage), dus het overstapscript had niets te doen. Daarna `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL` en `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in het websiteproject gezet (beheer-adres en ververs-geheim stonden er al) en de website opnieuw gebouwd. Terug: `NEXT_PUBLIC_DATABRON` weghalen en opnieuw bouwen.
+- [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt nog, maar wat hij daar wijzigt komt niet online.
+- [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
 - [ ] Accounts voor Simon en zijn collega via Gebruikers (beide beheerder, zoals gevraagd); daarna `MFA_VERPLICHT=1` als iedereen tweestapslogin heeft.
 - [ ] Wijzigingen in de oude CMS tussen 2026-11-15 en de overstap staan niet in Supabase: vlak voor de overstap `beheer/supabase/overstap-opnieuw-kopieren.sql` draaien in de SQL Editor. Nieuwe rijen komen erbij, bestaande alleen als de oude CMS nieuwer is, niets wordt verwijderd (het laatste resultaat toont wat alleen in het beheer staat). Proef gedraaid en teruggedraaid op 2026-11-15: 0 nieuw, 0 bijgewerkt, zoals verwacht.
 - [ ] Een paar weken na de overstap: `cms/`, het Vercel-project `specified-cms` en het schema `payload` opruimen. Pas dan vervallen de punten over Payload hieronder.
@@ -330,7 +332,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:13_
+_Bijgewerkt: 2026-11-15 23:17_
 
 ### Nog niet op main
 
@@ -342,7 +344,8 @@ _Bijgewerkt: 2026-11-15 23:13_
 
 **2026-11-15**
 
-- website: Draaiboek: bestaande websitebeelden in het beheer (`8361a43`)
+- website: Draaiboek: bestaande websitebeelden in het beheer (`04033fc`)
+- website: Beheer: snellere sessiecontrole, voorbeeld bij blog op laptops, overstapscript (`b99ed09`)
 - website: Beheer: bevestig homepage-opslag na controle in Supabase (`74bf0ba`)
 - website: Beheer: tijden in Belgische tijd (server draait in UTC) (`c72ae73`)
 - website: Beheer op Vercel: project specified-beheer, draaiboek bijgewerkt (`e0b8a2c`)

@@ -95,9 +95,14 @@ const nextConfig: NextConfig = {
   async headers() {
     // De voorbeeldpagina krijgt dezelfde headers, behalve frame-ancestors en
     // X-Frame-Options: die zouden het tonen in het CMS blokkeren.
-    const voorbeeldHeaders = securityHeaders
-      .filter((h) => h.key !== "X-Frame-Options")
-      .map((h) => (h.key === "Content-Security-Policy" ? { ...h, value: voorbeeldCsp } : h));
+    const voorbeeldHeaders = [
+      ...securityHeaders
+        .filter((h) => h.key !== "X-Frame-Options")
+        .map((h) => (h.key === "Content-Security-Policy" ? { ...h, value: voorbeeldCsp } : h)),
+      // Nooit in de browser bewaren: een bewaarde kopie hield een oude frame-ancestors
+      // vast, waardoor het voorbeeld in het beheer geweigerd werd (2026-11-15).
+      { key: "Cache-Control", value: "no-store, max-age=0" },
+    ];
     return [
       { source: "/((?!blog/voorbeeld$|voorbeeld/).*)", headers: securityHeaders },
       ...VOORBEELD_PADEN.map((source) => ({ source, headers: voorbeeldHeaders })),
