@@ -1,10 +1,10 @@
 export const THEMAS = [
-  { id: "standaard", naam: "Standaard", uitleg: "De vaste huisstijl met olijf en limoen." },
-  { id: "kerst", naam: "Kerst", uitleg: "Dennengroen met een champagnekleurige ster." },
-  { id: "winter", naam: "Winter", uitleg: "IJsblauw met een getekend ijskristal." },
-  { id: "lente", naam: "Lente", uitleg: "Fris bladgroen met een jonge scheut." },
-  { id: "zomer", naam: "Zomer", uitleg: "Zonnig goud met een zon op de tekening." },
-  { id: "herfst", naam: "Herfst", uitleg: "Warm koper met een herfstblad." },
+  { id: "standaard", naam: "Standaard", uitleg: "De gewone website." },
+  { id: "kerst", naam: "Kerst", uitleg: "Zachte sneeuwval en een vlokje bij het logo." },
+  { id: "winter", naam: "Winter", uitleg: "Een paar vlokjes dwarrelen rond het ijskristal." },
+  { id: "lente", naam: "Lente", uitleg: "Een jonge scheut ontvouwt twee blaadjes." },
+  { id: "zomer", naam: "Zomer", uitleg: "Zonnestralen waaieren kort uit." },
+  { id: "herfst", naam: "Herfst", uitleg: "Een blad dwarrelt op zijn plek." },
 ] as const;
 
 export type Seizoen = (typeof THEMAS)[number]["id"];

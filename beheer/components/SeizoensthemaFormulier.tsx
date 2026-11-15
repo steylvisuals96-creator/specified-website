@@ -9,6 +9,7 @@ export default function SeizoensthemaFormulier({ instelling, websiteUrl }: { ins
   const [vanaf, zetVanaf] = useState(instelling.vanaf ?? "");
   const [tot, zetTot] = useState(instelling.tot_en_met ?? "");
   const [licht, zetLicht] = useState(false);
+  const [herhaling, zetHerhaling] = useState(0);
   const [staat, actie, bezig] = useActionState(slaSeizoensthemaOp, { ok: false });
   const datumfout = staat.velden?.tot_en_met;
   const gewijzigd = thema !== instelling.thema || (
@@ -21,11 +22,23 @@ export default function SeizoensthemaFormulier({ instelling, websiteUrl }: { ins
       <section className="paneel min-w-0 lg:order-2" aria-labelledby="seizoenvoorbeeld">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h2 id="seizoenvoorbeeld" className="text-[30px]">Voorbeeld</h2>
-          <button className="knop knop-stil knop-klein" type="button" onClick={() => zetLicht(!licht)}>
-            {licht ? "Bekijk donker" : "Bekijk licht"}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button className="knop knop-stil knop-klein" type="button" onClick={() => zetLicht(!licht)}>
+              {licht ? "Bekijk donker" : "Bekijk licht"}
+            </button>
+            {thema !== "standaard" && (
+              <button
+                className="knop knop-stil knop-klein motion-reduce:hidden"
+                type="button"
+                onClick={() => zetHerhaling((vorige) => vorige + 1)}
+              >
+                Opnieuw afspelen
+              </button>
+            )}
+          </div>
         </div>
         <iframe
+          key={herhaling}
           className="block w-full aspect-[4/3] sm:aspect-[16/10] border border-[var(--streep)]"
           title={voorbeeldTitel}
           src={`${websiteUrl.replace(/\/$/, "")}/voorbeeld/seizoen/${thema}/${licht ? "licht" : "donker"}`}

@@ -16,6 +16,11 @@ export default function Logo({ className }: { className?: string }) {
         <path className="logo__boog" d={BOOG} />
       </g>
       <path className="logo__woord" d={WOORD} />
+      <path
+        className="logo__sneeuwvlok"
+        transform="translate(26 1)"
+        d="M0-5V5M-4.33-2.5l8.66 5m-8.66 0 8.66-5M-1.3-3.8 0-2.5l1.3-1.3m-2.6 7.6L0 2.5l1.3 1.3"
+      />
     </svg>
   );
 }
