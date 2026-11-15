@@ -82,7 +82,7 @@ SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrost
 |---|---|
 | Hero-tekening, callouts, titelblok, diensten | `lib/inhoud.ts`, en per veld te overschrijven vanuit de CMS (live editor, deel 4) |
 | Vacatures | CMS via REST, één plek: `lib/vacatures.ts` (labels, lijst, één vacature op slug). Is de CMS onbereikbaar, dan blijft de laatst gebouwde pagina staan. Met `NEXT_PUBLIC_DATABRON=supabase` uit het nieuwe beheer (zelfde vorm, zie `lib/beheer.ts`) |
-| Teksten van de nieuwe pagina's (diensten, profielen, sectoren, waarden, cijfers, attesten, stappen) | `lib/inhoud.ts`, nog niet in de CMS |
+| Teksten van de doorklikpagina's (Voor bedrijven, Voor engineers, Vacatures, Contact, FAQ, Open sollicitatie, bloglijst) en de gedeelde lijsten (profielen, sectoren, attesten, cijfers) | Beheer > Pagina's (sinds 2026-11-15). Beschrijving en standaardteksten in `lib/paginas.ts`, opgeslagen in `pagina_inhoud` (één rij per pagina). Juridische pagina's nog in de code |
 | Blog, team, instellingen | CMS via REST (`lib/settings.ts`, `lib/blog.ts`) |
 | Contact-e-mail, telefoon, LinkedIn, footertekst | Homepage-editor (global `website`, groep `contact`); leeg valt terug op `Instellingen` (`getSettings()`, sinds 2026-10-27). LinkedIn alleen als `https`-link |
 | Cijfers (statistieken) | CMS `statistieken`, nu leeg, daarom verborgen |
@@ -117,6 +117,15 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
 - Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
+
+### Doorklikpagina's bewerkbaar (2026-11-15)
+
+Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén systeem voor allemaal:
+- `lib/paginas.ts` op de website beschrijft per pagina de velden (tekst, tekstvak, lijst, rijen met meerdere velden) met de huidige tekst als standaard. `/api/pagina-schema` geeft die beschrijving; het beheer bouwt er zijn formulier uit (`beheer/components/PaginaEditor.tsx`, `ItemsVeld.tsx`), zodat website en beheer nooit uit elkaar lopen. Een nieuwe pagina bewerkbaar maken = een beschrijving toevoegen, een weergave in `components/paginas/Weergaven.tsx` en een rij in `pagina_inhoud` (migratie 04 als voorbeeld).
+- De pagina's zijn weergaven die hun teksten als invoer krijgen; de echte pagina vult ze uit Supabase, het voorbeeld (`/voorbeeld/pagina/<pagina>?bewerk=<sleutel>`) uit het formulier. Elk element draagt `data-bewerk`, dus het voorbeeld scrollt mee zoals bij de homepage.
+- Profielen, sectoren, attesten en cijfers staan op meerdere pagina's en zijn één keer aan te passen onder "Gedeelde lijsten". Kleine tekstwijziging daardoor: Voor engineers zegt nu ook "Onze consultants werken met deze attesten: ...".
+- **Klik in het voorbeeld**: een link naar een pagina van de site opent de editor van die pagina (via `/naar?pad=`), met een waarschuwing bij niet opgeslagen wijzigingen; een vacature of artikel opent dat item. Links naar buiten en formulieren doen in het voorbeeld niets (anders kwam er een lege pagina of een echte mail).
+- Nog niet bewerkbaar: privacy, cookies, disclaimer, toegankelijkheid en algemene voorwaarden (lange teksten, vragen een tekstverwerker). Een klik erop in het voorbeeld zegt dat.
 
 ### Oude CMS op Payload (nog live)
 
@@ -239,6 +248,8 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
 - [x] **Overstap gedaan (2026-11-15)**: vooraf vergeleken, de oude CMS was sinds 2026-10-27 niet meer gewijzigd en de inhoud in het beheer was identiek (vacatures, blog, homepage), dus het overstapscript had niets te doen. Daarna `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL` en `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in het websiteproject gezet (beheer-adres en ververs-geheim stonden er al) en de website opnieuw gebouwd. Terug: `NEXT_PUBLIC_DATABRON` weghalen en opnieuw bouwen.
+- [ ] Juridische pagina's bewerkbaar maken (privacy, cookies, disclaimer, toegankelijkheid, algemene voorwaarden), met de tekstverwerker van de blog.
+- [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
 - [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt nog, maar wat hij daar wijzigt komt niet online.
 - [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
 - [ ] Accounts voor Simon en zijn collega via Gebruikers (beide beheerder, zoals gevraagd); daarna `MFA_VERPLICHT=1` als iedereen tweestapslogin heeft.
@@ -332,7 +343,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:21_
+_Bijgewerkt: 2026-11-15 23:46_
 
 ### Nog niet op main
 
@@ -344,6 +355,7 @@ _Bijgewerkt: 2026-11-15 23:21_
 
 **2026-11-15**
 
+- website: Website: gezondheidscheck controleert Supabase na de overstap (de code, vorige commit had alleen het draaiboek) (`2e40813`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (`3d73bd6`)
 - website: Overstap: website leest uit het nieuwe beheer; voorbeeld nooit meer uit de browsercache (`f5134c2`)
 - website: Draaiboek: bestaande websitebeelden in het beheer (`04033fc`)

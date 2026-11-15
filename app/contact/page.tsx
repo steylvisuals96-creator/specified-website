@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Pagina from "@/components/Pagina";
-import Formulier from "@/components/Formulier";
-import { BEDRIJF, CONTACT } from "@/lib/inhoud";
+import { ContactWeergave } from "@/components/paginas/Weergaven";
+import { getPagina } from "@/lib/paginas";
 import { getSettings } from "@/lib/settings";
+import { CONTACT } from "@/lib/inhoud";
 
 export const revalidate = 60;
 
@@ -12,52 +12,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
+// Teksten uit het beheer (Pagina's > Contact); e-mail, telefoon en LinkedIn uit Homepage > Contact en footer.
 export default async function ContactPagina() {
-  const s = await getSettings();
-  const mail = s.contact_email || CONTACT.email;
-  const telefoon = s.telefoon || CONTACT.telefoon;
-  const linkedin = s.linkedin || CONTACT.linkedin;
-
+  const [t, s] = await Promise.all([getPagina("contact"), getSettings()]);
   return (
-    <Pagina titel="Laten we kennismaken" inleiding="Een vraag over een project, een samenwerking of een job? Stuur een bericht, mail of bel ons.">
-      <section className="blok">
-        <div className="wrap contact__grid">
-          <address className="contact__gegevens">
-            <div>
-              <h2 className="contact__label">E-mail</h2>
-              <a href={`mailto:${mail}`} className="text-link">
-                {mail}
-              </a>
-            </div>
-            <div>
-              <h2 className="contact__label">Telefoon</h2>
-              <a href={`tel:${telefoon.replace(/\s/g, "")}`} className="text-link">
-                {telefoon}
-              </a>
-            </div>
-            <div>
-              <h2 className="contact__label">Adres</h2>
-              <p>
-                {BEDRIJF.naam}
-                <br />
-                {CONTACT.straat}
-                <br />
-                {CONTACT.postcode}
-              </p>
-            </div>
-            <div>
-              <h2 className="contact__label">Volg ons</h2>
-              <a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-link">
-                LinkedIn
-              </a>
-            </div>
-            <p className="meta">Ondernemingsnummer {BEDRIJF.ondernemingsnummer}</p>
-          </address>
-          <div>
-            <Formulier soort="contact" />
-          </div>
-        </div>
-      </section>
-    </Pagina>
+    <ContactWeergave
+      t={t}
+      footer={{ linkedin: s.linkedin, footerTekst: s.footer_tekst }}
+      mail={s.contact_email || CONTACT.email}
+      telefoon={s.telefoon || CONTACT.telefoon}
+      linkedin={s.linkedin || CONTACT.linkedin}
+    />
   );
 }

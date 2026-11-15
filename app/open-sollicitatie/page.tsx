@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import Pagina from "@/components/Pagina";
-import Formulier from "@/components/Formulier";
+import { OpenSollicitatieWeergave } from "@/components/paginas/Weergaven";
+import { getPagina } from "@/lib/paginas";
+import { getSettings } from "@/lib/settings";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Open sollicitatie — Specified",
@@ -10,17 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/open-sollicitatie" },
 };
 
-export default function OpenSollicitatie() {
-  return (
-    <Pagina
-      titel="Open sollicitatie"
-      inleiding="Staat jouw job er niet tussen? We zoeken ook buiten de openstaande vacatures. Stuur ons je cv en vertel wat je zoekt, dan bekijken we samen wat past."
-    >
-      <section className="blok">
-        <div className="wrap pagina__smal">
-          <Formulier soort="open-sollicitatie" />
-        </div>
-      </section>
-    </Pagina>
-  );
+export default async function OpenSollicitatie() {
+  const [t, s] = await Promise.all([getPagina("open-sollicitatie"), getSettings()]);
+  return <OpenSollicitatieWeergave t={t} footer={{ linkedin: s.linkedin, footerTekst: s.footer_tekst }} />;
 }

@@ -67,7 +67,9 @@ export async function huidigeSessie(): Promise<Sessie | null> {
 /** Voor pagina's en acties: zonder geldige sessie naar de juiste stap. */
 export async function vereisSessie(opties: { ookZonderTweestap?: boolean } = {}): Promise<Sessie> {
   const stand = await sessieStand();
-  if (stand.soort === "uit") redirect("/login");
+  // De proxy liet dit verzoek door (token klopt), maar de server kent de gebruiker niet
+  // (sessie beëindigd, account weg): netjes uitloggen, anders stuurt /login weer naar /.
+  if (stand.soort === "uit") redirect("/auth/uitloggen");
   if (stand.soort === "code") redirect("/login/code");
   if (stand.soort === "geenProfiel") redirect("/auth/uitloggen?reden=geen-toegang");
   const s = stand.sessie;

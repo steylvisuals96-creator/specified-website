@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const BREEDTES = [
   { naam: "Desktop", px: 1440 },
@@ -21,6 +22,7 @@ export type VoorbeeldBericht = { data: unknown; veld: string | null; label?: str
  */
 export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: string; pad: string; bericht: VoorbeeldBericht }) {
   const origin = useMemo(() => new URL(websiteUrl).origin, [websiteUrl]);
+  const router = useRouter();
   const frame = useRef<HTMLIFrameElement>(null);
   const doos = useRef<HTMLDivElement>(null);
   const [klaar, setKlaar] = useState(false);
@@ -40,11 +42,19 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
   useEffect(() => {
     const ontvang = (e: MessageEvent) => {
       if (e.origin !== origin || e.source !== frame.current?.contentWindow) return;
-      if (e.data?.type === "specified-voorbeeld" && e.data.klaar) setKlaar(true);
+      if (e.data?.type !== "specified-voorbeeld") return;
+      if (e.data.klaar) setKlaar(true);
+      // Een klik op een link in het voorbeeld: naar de editor van die pagina.
+      if (typeof e.data.navigeer === "string" && e.data.navigeer.startsWith("/")) {
+        const nietOpgeslagen = document.documentElement.dataset.nietOpgeslagen === "1";
+        if (nietOpgeslagen && !window.confirm("Je hebt niet opgeslagen wijzigingen op deze pagina. Toch naar de andere pagina?")) return;
+        delete document.documentElement.dataset.nietOpgeslagen;
+        router.push(`/naar?pad=${encodeURIComponent(e.data.navigeer.slice(0, 200))}`);
+      }
     };
     addEventListener("message", ontvang);
     return () => removeEventListener("message", ontvang);
-  }, [origin]);
+  }, [origin, router]);
 
   // Het frame komt pas na het laden van deze pagina, met een unieke parameter: zo haalt de
   // browser het voorbeeld altijd vers op en nooit een oude kopie met een verouderde

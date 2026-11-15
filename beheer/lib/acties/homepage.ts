@@ -25,5 +25,6 @@ export async function slaHomepageOp(_: Resultaat, fd: FormData): Promise<Resulta
   // Contact en footer staan op elke pagina.
   await verversWebsite(["/", "layout"]);
   revalidatePath("/homepage");
-  return { ok: true, opgeslagen: new Date().toISOString() };
+  // Sinds de overstap (2026-11-15) leest de website uit Supabase: opslaan is meteen online.
+  return { ok: true, melding: "Staat online", opgeslagen: new Date().toISOString() };
 }

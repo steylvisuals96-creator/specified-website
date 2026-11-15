@@ -335,7 +335,8 @@ select.invoer option {
 /* Homepage onder 1024 px: het voorbeeld plakt bovenaan (42dvh). Een veld waar je met Tab of
    een klik naartoe gaat, schuift dan onder het voorbeeld in beeld, niet erachter. */
 @media (max-width: 1023px) {
-  #homepage .invoer {
+  #homepage .invoer,
+  #pagina .invoer {
     scroll-margin-top: calc(42dvh + 72px);
     scroll-margin-bottom: 96px;
   }

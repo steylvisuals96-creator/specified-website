@@ -49,10 +49,16 @@ export default function OpslaanBalk({
   }, [staat]);
 
   useEffect(() => {
+    // Ook het voorbeeld weet zo of er nog iets niet opgeslagen is (klik op een link daarin).
+    if (gewijzigd) document.documentElement.dataset.nietOpgeslagen = "1";
+    else delete document.documentElement.dataset.nietOpgeslagen;
     if (!gewijzigd) return;
     const waarschuw = (e: BeforeUnloadEvent) => e.preventDefault();
     addEventListener("beforeunload", waarschuw);
-    return () => removeEventListener("beforeunload", waarschuw);
+    return () => {
+      removeEventListener("beforeunload", waarschuw);
+      delete document.documentElement.dataset.nietOpgeslagen;
+    };
   }, [gewijzigd]);
 
   const tekstStatus = !staat.ok && staat.melding

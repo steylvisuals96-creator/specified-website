@@ -1,99 +1,21 @@
-import Link from "next/link";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import Cover from "@/components/Cover";
-import { getBlogPosts, formatDatum } from "@/lib/blog";
-import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
+import { BlogOverzichtWeergave } from "@/components/paginas/Weergaven";
+import { getBlogPosts } from "@/lib/blog";
+import { getPagina } from "@/lib/paginas";
+import { getSettings } from "@/lib/settings";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSettings();
-  const naam = s.naam || "Specified";
+  const t = await getPagina("blog");
   return {
-    title: `Blog — ${naam}`,
-    description: "Inzichten, tips en verhalen over engineering, consultancy en carrière.",
+    title: `${t.titel} — Specified`,
+    description: t.inleiding,
     alternates: { canonical: "/blog" },
   };
 }
 
 export default async function BlogIndex() {
-  const [posts, settings] = await Promise.all([getBlogPosts(), getSettings()]);
-
-  return (
-    <>
-      <Nav />
-      <main id="inhoud">
-        <section style={{ paddingTop: "calc(72px + 4rem)", paddingBottom: "6rem", minHeight: "100svh" }}>
-          <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 clamp(1.5rem, 5vw, 4rem)" }}>
-            <h1
-              className="vac-title"
-              style={{
-                fontFamily: "var(--font-bebas)",
-                fontSize: "clamp(4rem, 9vw, 8rem)",
-                fontWeight: 400,
-                letterSpacing: "0.01em",
-                lineHeight: 0.95,
-                color: "var(--white)",
-                marginBottom: "1.5rem",
-              }}
-            >
-              Blog
-            </h1>
-            <p style={{ color: "var(--muted)", fontSize: "1rem", maxWidth: "520px", lineHeight: 1.6, marginBottom: "3.5rem" }}>
-              Inzichten, tips en verhalen over engineering, consultancy en carrière.
-            </p>
-
-            {posts.length === 0 ? (
-              <p style={{ color: "var(--muted)", padding: "2rem 0" }}>
-                Binnenkort verschijnen hier de eerste artikels.
-              </p>
-            ) : (
-              <div className="blog-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
-                {posts.map((post, i) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      textDecoration: "none",
-                      border: "1px solid var(--border)",
-                      borderRadius: 0,
-                      overflow: "hidden",
-                      backgroundColor: "var(--wash-faint)",
-                    }}
-                  >
-                    {post.coverUrl && (
-                      <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden" }}>
-                        <Cover src={post.coverUrl} alt={post.titel} sizes="(min-width: 900px) 33vw, 100vw" priority={i === 0} />
-                      </div>
-                    )}
-                    <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                      {post.publicatiedatum && (
-                        <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>
-                          {formatDatum(post.publicatiedatum)}
-                        </span>
-                      )}
-                      <h2 style={{ fontFamily: "var(--font-bebas)", fontSize: "1.9rem", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.05, color: "var(--white)" }}>
-                        {post.titel}
-                      </h2>
-                      {post.samenvatting && (
-                        <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.65 }}>{post.samenvatting}</p>
-                      )}
-                      <span style={{ color: "var(--lime)", fontSize: "0.85rem", fontWeight: 600, marginTop: "0.25rem" }}>
-                        Lees artikel
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-      <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />
-    </>
-  );
+  const [posts, t, s] = await Promise.all([getBlogPosts(), getPagina("blog"), getSettings()]);
+  return <BlogOverzichtWeergave t={t} posts={posts} footer={{ linkedin: s.linkedin, footerTekst: s.footer_tekst }} />;
 }

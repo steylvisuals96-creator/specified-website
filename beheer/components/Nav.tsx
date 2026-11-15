@@ -18,6 +18,7 @@ const GROEPEN: { naam: string; links: NavLink[] }[] = [
       { href: "/vacatures", label: "Vacatures" },
       { href: "/blog", label: "Blog" },
       { href: "/homepage", label: "Homepage", alleenBeheerder: true },
+      { href: "/paginas", label: "Pagina's", alleenBeheerder: true },
       { href: "/team", label: "Team" },
       { href: "/media", label: "Media" },
     ],

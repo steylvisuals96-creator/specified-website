@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Pagina from "@/components/Pagina";
-import VacaturesClient from "@/components/VacaturesClient";
-import { JOBS } from "@/lib/inhoud";
+import { VacaturesWeergave } from "@/components/paginas/Weergaven";
+import { getPagina } from "@/lib/paginas";
+import { getSettings } from "@/lib/settings";
 import { getVacatures, dagenOnline } from "@/lib/vacatures";
 
 export const revalidate = 60;
@@ -15,41 +14,21 @@ export const metadata: Metadata = {
 };
 
 export default async function VacaturesPage() {
-  const vacatures = await getVacatures();
-  const open = vacatures.filter((v) => !v.ingevuld).length;
-
+  const [vacatures, t, s] = await Promise.all([getVacatures(), getPagina("vacatures"), getSettings()]);
   return (
-    <Pagina
-      titel={JOBS.titel}
-      inleiding={
-        open > 0
-          ? `${open} open vacature${open === 1 ? "" : "s"} als engineering consultant bij Specified.`
-          : "Er staan op dit moment geen open vacatures online."
-      }
-    >
-      <section className="blok blok--lijst">
-        <div className="wrap">
-          <VacaturesClient
-            vacatures={vacatures.map((v) => ({
-              slug: v.slug,
-              titel: v.titel,
-              vakgebied: v.vakgebied,
-              locatie: v.locatie,
-              uren: v.uren,
-              ervaring: v.ervaring,
-              ingevuld: v.ingevuld,
-              dagen: dagenOnline(v),
-            }))}
-          />
-          <div className="pagina__slot pagina__slot--links">
-            <h2 className="display display-m">Staat jouw job er niet tussen?</h2>
-            <p className="lead">We zoeken ook buiten de openstaande vacatures.</p>
-            <Link href="/open-sollicitatie" className="btn btn-secondary">
-              Stuur een open sollicitatie
-            </Link>
-          </div>
-        </div>
-      </section>
-    </Pagina>
+    <VacaturesWeergave
+      t={t}
+      footer={{ linkedin: s.linkedin, footerTekst: s.footer_tekst }}
+      vacatures={vacatures.map((v) => ({
+        slug: v.slug,
+        titel: v.titel,
+        vakgebied: v.vakgebied,
+        locatie: v.locatie,
+        uren: v.uren,
+        ervaring: v.ervaring,
+        ingevuld: v.ingevuld,
+        dagen: dagenOnline(v),
+      }))}
+    />
   );
 }
