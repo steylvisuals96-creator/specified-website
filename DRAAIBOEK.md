@@ -16,11 +16,11 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 |---|---|---|---|
 | Repo | `steylvisuals96-creator/specified-website` | zelfde repo, map `cms/` (oude repo `specified-cms` wordt gearchiveerd) | zelfde repo, map `beheer/` |
 | Map lokaal | `~/specified-website` | `~/specified-website/cms` | `~/specified-website/beheer` |
-| Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | nog geen Vercel-project (lokaal poort 3004) |
+| Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
 | Stack | Next.js 16.3.6, React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
 | Data | uit de oude CMS, of uit Supabase met `NEXT_PUBLIC_DATABRON=supabase` (revalidate 60 s, meteen bij opslaan via `/api/ververs`) | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
 | Media | beelden in `public/` | Cloudflare R2 (privé, ondertekende links) | zelfde R2-bucket, beelden naar buiten via `/m/<id>` (ondertekende link, 1 uur) |
-| Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, nog aan te maken (root directory `beheer`) |
+| Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main`, root directory `beheer`, functies in Frankfurt (`fra1`) |
 
 Klant: **Specified NV** (BE 0727.537.711), Veldkant 31a, 2550 Kontich. Engineering consultancy met eigen consultants, opgericht januari 2025, 13 mensen op de payroll en 32 in totaal. Oprichters Tom Wijdooghe en Simon Claeys; aanspreekpunt voor het project, facturen en storingen is Simon Claeys (Managing Partner). Algemeen adres op de site: `info@specified.be`. Gebouwd en gehost door SteylVisuals (Sam). De bestaande site op `specified.be` (gebouwd door Rocketship) draait nog; de nieuwe staat op de Vercel-adressen tot de livegang, gewenst op **2027-01-11**. Teksten van de klant zijn klaar op 2026-12-21.
 
@@ -158,7 +158,7 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 
 ## 5. Infrastructuur
 
-- **Vercel**: twee projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap, `specified-cms` bouwt met root directory `cms`. Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step).
+- **Vercel**: drie projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap (zonder `cms/` en `beheer/`), `specified-cms` bouwt met root directory `cms`, `specified-beheer` met root directory `beheer` (aangemaakt 2026-11-15, functies in Frankfurt naast Supabase). Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step). Geheime variabelen van het beheer staan als "Sensitive" (achteraf niet leesbaar). `VERVERS_GEHEIM` (website) en `WEBSITE_VERVERS_GEHEIM` (beheer) zijn dezelfde willekeurige waarde, alleen in productie.
 - **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload` (oude CMS), niet via de Data API bereikbaar, anon en authenticated hebben geen rechten (nagekeken 2026-11-15: de Supabase-melding "RLS uit" op die tabellen is daardoor geen lek). Migratie uit MongoDB op 2026-09-26. Sinds 2026-11-15 ook schema `public` voor het nieuwe beheer (tabellen `profielen`, `vacatures`, `vacatures_intern`, `blog`, `team`, `media`, `pagina_inhoud`, `wijzigingen`, alle met RLS) en schema `privaat` voor de rolfuncties. Migraties in `beheer/supabase/migrations/`.
 - **Cloudflare R2**: bucket `specified-media` (aangemaakt 2026-11-15, West-Europa, privé, geen r2.dev-adres), in het Cloudflare-account van SteylVisuals. API-token `specified-media` met alleen Object Read & Write op die bucket. Gebruikt door het nieuwe beheer; beelden naar buiten via `/m/<id>` met een ondertekende link. **De oude CMS heeft R2 nooit gebruikt**: in geen enkele Vercel-omgeving van `specified-cms` staan R2-variabelen, dus uploads daar zouden op de tijdelijke schijf van Vercel belanden (de mediatabel was leeg, er is niets verloren). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
 - **Resend** (CMS en website sinds 2026-10-27; `FOUTMELDING_AAN` = steylvisuals96@gmail.com in beide Vercel-projecten, `RESEND_API_KEY` nog alleen in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
@@ -232,7 +232,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
 - [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload getest tot op de website (2026-11-15). Bij het Vercel-project van het beheer dezelfde vier `R2_*`-waarden zetten.
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
-- [ ] Vercel-project `specified-beheer` aanmaken (root directory `beheer`) met de variabelen uit `beheer/.env.example`; later `beheer.specified.be`.
+- [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
 - [ ] Website in Vercel: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM` (zelfde als `WEBSITE_VERVERS_GEHEIM` in het beheer). Terug: `NEXT_PUBLIC_DATABRON` weghalen.
 - [ ] Accounts voor Simon en zijn collega via Gebruikers (beide beheerder, zoals gevraagd); daarna `MFA_VERPLICHT=1` als iedereen tweestapslogin heeft.
 - [ ] Wijzigingen in de oude CMS tussen 2026-11-15 en de overstap staan niet in Supabase: vlak voor de overstap de kopie opnieuw draaien (migratie 02 slaat bestaande rijen over; eerst de nieuwe tabellen leegmaken of per rij bijwerken).
@@ -325,7 +325,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 21:14_
+_Bijgewerkt: 2026-11-15 21:18_
 
 ### Nog niet op main
 
@@ -337,6 +337,7 @@ _Bijgewerkt: 2026-11-15 21:14_
 
 **2026-11-15**
 
+- website: R2 voor het beheer: eigen bucket, upload getest tot op de website (`9c125ab`)
 - website: Beheer na test met echte login: voorbeeld ook op tablet en telefoon, wachtwoord onzichtbaar (`b2b5de3`)
 - website: Nieuw beheer op Supabase en R2 zonder Payload, in de look van de studio (`9172301`)
 - website: Website en CMS in één repo: tooling, draaiboekscript en documentatie aangepast, CMS doorgelicht (`b33f44e`)

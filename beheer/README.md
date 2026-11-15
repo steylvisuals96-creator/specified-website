@@ -55,7 +55,7 @@ Voor het live voorbeeld draait de website ernaast (`NEXT_PUBLIC_WEBSITE_URL`), m
 
 ## Overstap (nog te doen)
 
-1. Vercel-project `specified-beheer` aanmaken op deze repo, root directory `beheer`, omgevingsvariabelen uit `.env.example`.
+1. ~~Vercel-project `specified-beheer`~~: aangemaakt op 2026-11-15 (root directory `beheer`, functies in `fra1`, variabelen gezet). Live op `https://specified-beheer.vercel.app`.
 2. In Supabase: Authentication > Sign In / Providers > nieuwe registraties uitzetten (accounts komen alleen via het beheer of het script).
 3. Accounts aanmaken (Sam als creator via het script; Simon en collega via Gebruikers).
 4. Website (Vercel): `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM`. Terug naar de oude CMS: `NEXT_PUBLIC_DATABRON` weghalen.
