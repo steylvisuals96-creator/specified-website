@@ -55,7 +55,7 @@ Richting **Signatuurmerk**. Alles staat in `DESIGN.md`; hier de kern.
 | `/blog`, `/blog/[slug]` | Artikelen uit de CMS |
 | `/privacy`, `/cookies`, `/disclaimer`, `/toegankelijkheid`, `/algemene-voorwaarden` | Juridische pagina's (`components/LegalPage.tsx`). Algemene voorwaarden is een plaatshouder met `noindex` tot Specified de tekst levert |
 | `/api/formulier` | Ontvangt de vier formulieren en mailt ze via Resend (zie Formulieren) |
-| `/api/health` | Gezondheidscheck: site draait en bereikt de CMS (503 bij fout) |
+| `/api/health` | Gezondheidscheck: site draait en bereikt de bron van haar inhoud, sinds de overstap Supabase (503 bij fout) |
 | `sitemap`, `robots`, `opengraph-image` | SEO; JSON-LD op home met `legalName`, `vatID`, volledig adres en oprichtingsdatum |
 
 Misschien later (invullijst): Over ons, Cases zonder klantnamen, Team, Evenementen.
@@ -332,7 +332,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:17_
+_Bijgewerkt: 2026-11-15 23:21_
 
 ### Nog niet op main
 
@@ -344,6 +344,7 @@ _Bijgewerkt: 2026-11-15 23:17_
 
 **2026-11-15**
 
+- website: Overstap: website leest uit het nieuwe beheer; voorbeeld nooit meer uit de browsercache (`f5134c2`)
 - website: Draaiboek: bestaande websitebeelden in het beheer (`04033fc`)
 - website: Beheer: snellere sessiecontrole, voorbeeld bij blog op laptops, overstapscript (`b99ed09`)
 - website: Beheer: bevestig homepage-opslag na controle in Supabase (`74bf0ba`)
