@@ -105,10 +105,7 @@ niveau, contract (`meta`, `--bone-400`). Links in de rij het aantal dagen online
 ("3d", "12d") in plaats van 01/02/03: vacatures zijn geen volgorde, versheid is wel informatie.
 Hover/focus: limoen balk over de volle breedte, tekst `--ink-900`. De hele rij is één link.
 
-**Sfeerbeelden** — AI-gegenereerd (Higgsfield), nooit mensen die als kandidaat of team kunnen
-doorgaan: engineering-materie (turbine, installatie, werf van op de rug). Donker, olijf-gegrade, één
-limoen lichtaccent. Diensten: `kandidaten-engineer.jpg`, `bedrijven-installatie.jpg`. De hero gebruikt
-geen beeld meer (zie Hero: technische tekening); de turbine is op 2026-09-27 geschrapt.
+**Sfeerbeelden** — De diensten op de homepage tonen een pompinstallatie en een consultant van op de rug tijdens de inbedrijfstelling. De AI-beelden volgen dezelfde fotografische stijl, met olijfgrijs staal, natuurlijk licht en een klein groen statuslicht. Ze staan in de mediabibliotheek van het beheer. De hero blijft een technische tekening.
 
 **Positionering** — Specified is een engineering consultancy firm met eigen consultants die bij klanten
 worden ingezet (elektromechanisch, voor de industrie), geen klassiek recruitmentbureau. Alle teksten

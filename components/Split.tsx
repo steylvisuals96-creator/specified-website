@@ -1,17 +1,17 @@
 import Image from "next/image";
-
-type Kolom = { id: string; kop: string; titel: string; tekst: string; cta: string; href: string; knop: string; beeld: string };
+import { mediaUrl } from "@/lib/beheer";
+import type { DIENSTEN } from "@/lib/inhoud";
 
 // Twee doelgroepen naast elkaar, gescheiden door één haarlijn. De doelgroep
 // is zelf de kop, zodat er geen label boven de kop nodig is. Inhoud: lib/inhoud.ts.
-export default function Split({ kolommen }: { kolommen: Kolom[] }) {
+export default function Split({ kolommen }: { kolommen: typeof DIENSTEN }) {
   return (
     <section id="diensten" className="split">
       <div className="wrap split__grid">
         {kolommen.map((k) => (
           <div key={k.id} id={k.id} className="split__col">
             <div className="split__beeld">
-              <Image src={k.beeld} alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
+              <Image src={mediaUrl(k.beeldId) ?? k.beeld} alt="" fill sizes="(max-width: 900px) 100vw, 45vw" />
             </div>
             <h2 className="display display-m" data-bewerk={`diensten_${k.id}.kop`}>{k.kop}</h2>
             <p className="split__titel" data-bewerk={`diensten_${k.id}.titel`}>{k.titel}</p>

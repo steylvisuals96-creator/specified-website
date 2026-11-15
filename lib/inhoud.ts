@@ -62,6 +62,7 @@ export const DIENSTEN = [
     href: "/voor-bedrijven",
     knop: "btn-primary",
     beeld: "/images/beeld/bedrijven-installatie.jpg",
+    beeldId: "a376eba1-0a38-49d5-a2c9-9a108d062da0",
   },
   {
     id: "engineers",
@@ -73,6 +74,7 @@ export const DIENSTEN = [
     href: "/voor-engineers",
     knop: "btn-secondary",
     beeld: "/images/beeld/kandidaten-engineer.jpg",
+    beeldId: "b32749fc-056c-4b2a-a3de-75604b8159b1",
   },
 ];
 

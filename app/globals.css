@@ -476,6 +476,7 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 .split__col + .split__col { border-top: 1px solid var(--line); }
 .split__beeld { position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 560px; overflow: hidden; background: var(--ink-800); margin-bottom: 1rem; }
 .split__beeld img { object-fit: cover; }
+#engineers .split__beeld img { object-position: center 20%; }
 .split__titel { font-size: 1.75rem; font-weight: 600; line-height: 1.15; max-width: 22ch; }
 .split__tekst { color: var(--bone-400); max-width: 46ch; margin-bottom: 0.75rem; }
 @media (min-width: 900px) {
