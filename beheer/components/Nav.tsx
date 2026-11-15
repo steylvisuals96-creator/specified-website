@@ -20,6 +20,7 @@ const GROEPEN: { naam: string; links: NavLink[] }[] = [
       { href: "/homepage", label: "Homepage", alleenBeheerder: true },
       { href: "/paginas", label: "Pagina's", alleenBeheerder: true },
       { href: "/seizoensthema", label: "Seizoensthema", alleenBeheerder: true },
+      { href: "/seo", label: "SEO-bot", alleenBeheerder: true },
       { href: "/team", label: "Team" },
       { href: "/media", label: "Media" },
     ],

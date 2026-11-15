@@ -28,13 +28,18 @@ export async function supabaseServer() {
 }
 
 /**
- * Supabase met de geheime sleutel: omzeilt RLS. Alleen voor gebruikersbeheer
- * (accounts aanmaken, rollen geven), en altijd pas na een rolcontrole.
+ * Supabase met de geheime sleutel: omzeilt RLS. Alleen voor serveracties die
+ * eerst hun eigen autorisatie controleren, zoals gebruikersbeheer en de SEO-bot.
  */
-export function supabaseAdmin() {
+export function supabaseAdmin(opties?: { timeout: number }) {
   const geheim = process.env.SUPABASE_SECRET_KEY;
   if (!geheim) throw new Error("SUPABASE_SECRET_KEY ontbreekt: gebruikersbeheer werkt niet zonder.");
-  return createClient(SUPABASE_URL, geheim, { auth: { persistSession: false, autoRefreshToken: false } });
+  return createClient(SUPABASE_URL, geheim, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    ...(opties && {
+      global: { fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(opties.timeout) }) },
+    }),
+  });
 }
 
 export const adminIngesteld = () => Boolean(process.env.SUPABASE_SECRET_KEY);

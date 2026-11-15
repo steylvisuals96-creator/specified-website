@@ -128,6 +128,10 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
 - Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
 
+### SEO-bot
+
+In het beheer staat SEO-bot voor beheerders. Hij gebruikt Belgische zoekdata uit Google Search Console en vakonderzoek via Apify om SEO-titels en beschrijvingen voor zeven vaste pagina's te verbeteren. OpenAI schrijft na onderzoek maximaal één Vlaams blogconcept per week over industriële engineering. Het concept krijgt aanklikbare bronnen en optioneel een AI-cover in de R2-mediabibliotheek. Publicatie loopt via de blogeditor. Het beheerscherm bewaart de rapporten en toont de vorige en nieuwe metadata. Een beheerder kan voorstellen toepassen of verwerpen. Automatisch toepassen staat standaard uit.
+
 ### Doorklikpagina's bewerkbaar (2026-11-15)
 
 Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén systeem voor allemaal:
@@ -204,6 +208,8 @@ Volledige handleiding: `cms/docs/MONITORING.md`.
 
 Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor de formulieren `RESEND_API_KEY`, `FORMULIER_AAN`, `FORMULIER_VAN` en optioneel `FORMULIER_ANTWOORD`. Voor het nieuwe beheer: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL` (zonder deze vertrouwt de site geen beheer als frame of beeldhost) en `VERVERS_GEHEIM`. CMS: `DATABASE_URI`, `PAYLOAD_SECRET`, `R2_*`, `EMAIL_WEBHOOK_SECRET`, `MAKE_SECRET`, Resend-sleutel. Beheer: zie `beheer/.env.example` (`SUPABASE_SECRET_KEY`, dezelfde `R2_*`, `WEBSITE_VERVERS_GEHEIM`, `MFA_VERPLICHT`). Waarden staan nooit in git of in dit document.
 
+- **SEO-bot**: Vercel Cron op `specified-beheer` (maandag om 07.00 UTC), een geheime Bearer-token en een unieke week in Supabase. Verbruik inschakelen en controleren zoals beschreven in `beheer/README.md`. Nieuwe tabellen en toegangsregels staan in migratie `20261115_06_seo_bot.sql`.
+
 ---
 
 ## 6. Beveiliging, stand van zaken
@@ -215,7 +221,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - Rolscenario's getest, 14 van 14.
 - `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel en de rol van de back-up zijn verwijderd (2026-10-28).
 - Bekend gat: het publieke e-mailendpoint heeft nog geen rate limiting.
-- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Alles loopt als de ingelogde gebruiker; de geheime Supabase-sleutel alleen voor gebruikersbeheer na een rolcontrole. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`. Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
+- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Redactie-acties lopen als de ingelogde gebruiker. Gebruikersbeheer en de SEO-bot gebruiken de geheime Supabase-sleutel na controle van de rol of het cron-geheim. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`. Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
 
 ---
 
@@ -252,6 +258,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Live voorbeeld scrollt mee naar het veld, geen klik-op-de-pagina | Wens Sam (2026-11-15): de klant ziet waar de tekst staat zonder te zoeken. Klikken in het voorbeeld kan later nog |
 | Uitnodigen met een link die de beheerder zelf bezorgt | Supabase verstuurt zonder eigen mailserver alleen mails naar het eigen team; zo werkt het meteen |
 | Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12). De voettekst stond ook in de CMS (Homepage en Instellingen) en is daar rechtstreeks in Supabase gecorrigeerd |
+| Wekelijks SEO-onderzoek; AI-artikels eerst als concept | Teksten en bronnen blijven controleerbaar in het beheer; automatische metadata en betaalde covers zijn aparte opties |
 
 ---
 
@@ -287,7 +294,8 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] Offerte opmaken, met één shootdag (foto en video, 3 à 4 mensen) en onderhoudsabonnement (reactie binnen 2 werkdagen, 1 à 2 kleine aanpassingen per maand).
 - [ ] Livegang op `specified.be` (2027-01-11): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein. Registrar, DNS-beheer, hosting en vervaldata zijn bij de klant onbekend: via de contactpersoon van Rocketship achterhalen. MX, SPF, DKIM, DMARC en autodiscover van Microsoft 365 (beheerd door Cronos) exact overnemen.
 - [ ] 301-doorverwijzingen van de oude URL's op `specified.be` naar de nieuwe.
-- [ ] Analytics en Search Console: nieuw aanmaken op een account van Specified (huidige eigenaar onbekend).
+- [ ] Analytics en Search Console op een account van Specified zetten (huidige eigenaar onbekend).
+- [ ] SEO-bot: productiemigratie uitvoeren na akkoord. De migratie en toegangsregels zijn lokaal getest. Daarna productievariabelen en Search Console-toegang toevoegen, verbruik bevestigen en na livegang de eerste ronde op `specified.be` uitvoeren.
 - [ ] Aanlevering van de klant: logo in vector, huisstijlgids, teksten, vacaturelijst, quotes en cases, cijfers en certificaten (zegt klaar te hebben). Teamfoto's en bio's ontbreken, komen uit de shootdag.
 - [ ] Echte cijfers voor de statistieken: 32 consultants en 4 sectoren zijn bekend, klanten in cijfers en jaren ervaring nog niet. Bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
 - [ ] Concurrentie bekijken (Abylsen, TEC, TMC, ENGIE Talents, Pauwels Consulting) en het goede meenemen, op vraag van de klant.
@@ -360,7 +368,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:04_
+_Bijgewerkt: 2026-11-16 00:05_
 
 ### Nog niet op main
 
@@ -372,6 +380,7 @@ _Bijgewerkt: 2026-11-16 00:04_
 
 **2026-11-16**
 
+- website: Gebruik herwerkte dienstenbeelden op de homepage (`2e5bd24`)
 - website: Gebruik seizoensanimaties in de vaste huisstijl (`38959eb`)
 
 **2026-11-15**

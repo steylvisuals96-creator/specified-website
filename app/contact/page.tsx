@@ -1,3 +1,4 @@
+import { paginaMetadata } from "@/lib/seo-metadata";
 import type { Metadata } from "next";
 import { ContactWeergave } from "@/components/paginas/Weergaven";
 import { getPagina } from "@/lib/paginas";
@@ -6,11 +7,13 @@ import { CONTACT } from "@/lib/inhoud";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Contact — Specified",
-  description: "Neem contact op met Specified, engineering consultancy in Kontich. Mail, bel of stuur een bericht.",
-  alternates: { canonical: "/contact" },
-};
+export function generateMetadata(): Promise<Metadata> {
+  return paginaMetadata("/contact", {
+    title: "Contact — Specified",
+    description: "Neem contact op met Specified, engineering consultancy in Kontich. Mail, bel of stuur een bericht.",
+    alternates: { canonical: "/contact" },
+  });
+}
 
 // Teksten uit het beheer (Pagina's > Contact); e-mail, telefoon en LinkedIn uit Homepage > Contact en footer.
 export default async function ContactPagina() {

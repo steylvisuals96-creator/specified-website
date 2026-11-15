@@ -1,3 +1,4 @@
+import { paginaMetadata } from "@/lib/seo-metadata";
 import type { Metadata } from "next";
 import { BlogOverzichtWeergave } from "@/components/paginas/Weergaven";
 import { getBlogPosts } from "@/lib/blog";
@@ -8,11 +9,11 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getPagina("blog");
-  return {
+  return paginaMetadata("/blog", {
     title: `${t.titel} — Specified`,
     description: t.inleiding,
     alternates: { canonical: "/blog" },
-  };
+  });
 }
 
 export default async function BlogIndex() {

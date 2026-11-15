@@ -1,3 +1,4 @@
+import { paginaMetadata } from "@/lib/seo-metadata";
 import { SITE_URL } from "@/lib/site";
 import Nav from "@/components/Nav";
 import HeroTekening from "@/components/HeroTekening";
@@ -17,12 +18,11 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    // Positionering uit lib/inhoud.ts; de CMS-metavelden bevatten nog voorbeeldtekst.
+  return paginaMetadata("/", {
     title: META.titel,
     alternates: { canonical: "/" },
     description: META.beschrijving,
-  };
+  });
 }
 
 async function getRecentJobs() {

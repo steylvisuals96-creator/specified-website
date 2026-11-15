@@ -26,17 +26,18 @@ function r2() {
 const adres = (sleutel: string) =>
   `https://${ACCOUNT}.r2.cloudflarestorage.com/${BUCKET}/${sleutel.split("/").map(encodeURIComponent).join("/")}`;
 
-export async function zetBestand(sleutel: string, inhoud: ArrayBuffer, type: string) {
+export async function zetBestand(sleutel: string, inhoud: ArrayBuffer, type: string, signal?: AbortSignal) {
   const res = await r2().fetch(adres(sleutel), {
     method: "PUT",
     body: inhoud,
+    signal,
     headers: { "content-type": type, "cache-control": "public, max-age=31536000, immutable" },
   });
   if (!res.ok) throw new Error(`R2 weigerde de upload (${res.status}).`);
 }
 
-export async function verwijderBestand(sleutel: string) {
-  const res = await r2().fetch(adres(sleutel), { method: "DELETE" });
+export async function verwijderBestand(sleutel: string, signal?: AbortSignal) {
+  const res = await r2().fetch(adres(sleutel), { method: "DELETE", signal });
   if (!res.ok && res.status !== 404) throw new Error(`R2 weigerde het verwijderen (${res.status}).`);
 }
 

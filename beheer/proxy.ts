@@ -10,6 +10,8 @@ import { createServerClient } from "@supabase/ssr";
 const ZONDER_LOGIN = ["/login", "/auth/"];
 
 export async function proxy(req: NextRequest) {
+  // Vercel Cron heeft geen sessiecookie. Deze route controleert zelf CRON_SECRET.
+  if (req.nextUrl.pathname === "/api/cron/seo") return NextResponse.next();
   let res = NextResponse.next({ request: req });
   const sb = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!, {
     cookies: {

@@ -10,6 +10,7 @@ Look: de opbouw van de SteylVisuals-studio (matglas, trage gloed, glans onder de
 |---|---|---|
 | Overzicht | iedereen | open vacatures, wat nog ontbreekt, artikels, laatste wijzigingen (beheerder) |
 | Vacatures | iedereen | alle velden van de vacaturepagina; salaris in een aparte, afgeschermde tabel |
+| SEO-bot | beheerder | Search Console, vakbronnen, metadata en AI-blogconcepten |
 | Blog | iedereen | tekstverwerker (Tiptap), cover uit media of extern, live voorbeeld (op brede schermen) |
 | Team | iedereen | met live voorbeeld van de teamsectie |
 | Media | iedereen | upload naar R2 (privé), browser verkleint vooraf, echte bestandscontrole op de server |
@@ -24,7 +25,7 @@ Niet meegenomen (bewust): het recruitment-CRM uit de oude CMS (kandidaten, bedri
 
 1. `proxy.ts`: zonder (volledige) login naar `/login`; met tweestapslogin eerst de code.
 2. Elke pagina en actie controleert zelf de sessie en rol (`lib/sessie.ts`).
-3. RLS in de database (`supabase/migrations/`): alles loopt als de ingelogde gebruiker; een account zonder profiel kan niets. De geheime sleutel wordt alleen gebruikt voor gebruikersbeheer, na een rolcontrole.
+3. RLS in de database (`supabase/migrations/`): alles loopt als de ingelogde gebruiker; een account zonder profiel kan niets. De geheime sleutel wordt gebruikt voor gebruikersbeheer en de SEO-bot, na controle van de beheerrol of het cron-geheim.
 4. Opgemaakte tekst wordt op de server opnieuw opgebouwd uit een vaste lijst (`lib/richtekst.ts`); de website rendert met dezelfde lijst.
 5. Uploads: alleen vanaf het eigen domein, ingelogd, max 4 MB, type uit de eerste bytes (geen SVG).
 6. Headers: CSP, HSTS, geen frames (behalve het websitevoorbeeld), `noindex`.
@@ -62,3 +63,16 @@ Voor het live voorbeeld draait de website ernaast (`NEXT_PUBLIC_WEBSITE_URL`), m
 3. Accounts aanmaken (Sam als creator via het script; Simon en collega via Gebruikers).
 4. Website (Vercel): `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM`. Terug naar de oude CMS: `NEXT_PUBLIC_DATABRON` weghalen.
 5. Na een paar weken zonder problemen: `cms/` en het schema `payload` opruimen.
+
+
+## SEO-bot in gebruik nemen
+
+De bot verwerkt één ronde per week op maandag om 07.00 UTC (08.00 in de winter en 09.00 in de zomer in België). Resultaten staan in **Beheer > SEO-bot**. De bot leest 28 dagen afgewerkte Belgische zoekdata, zoekt per ronde maximaal vier keer via Apify bij vakorganisaties, en laat OpenAI maximaal drie metadatawijzigingen en één blogconcept uitwerken. Een blogconcept heeft bronnen van minstens twee organisaties. Beheerders kunnen voorstellen vergelijken, toepassen en verwerpen. Automatische metadata volgt dezelfde checks en wacht vier weken na de vorige aanpassing aan een pagina. Blogconcepten worden gepubliceerd vanuit de gewone blogeditor.
+
+1. Voer `supabase/migrations/20261115_06_seo_bot.sql` uit in de SQL Editor van het bestaande Supabase-project.
+2. Activeer de Search Console API in een Google Cloud-project. Maak een serviceaccount en geef het leestoegang tot de juiste property in Search Console. Zet in het Vercel-project **specified-beheer** de waarden `SEO_GSC_CLIENT_EMAIL`, `SEO_GSC_PRIVATE_KEY` en `SEO_GSC_PROPERTY` (bijvoorbeeld `sc-domain:specified.be`). Zet `SEO_SITE_URL` op de canonieke origin van de nieuwe publieke site na livegang (bijvoorbeeld `https://specified.be`). Alleen URL's op die origin worden meegenomen voor metadata.
+3. Zet in dezelfde Vercel-omgeving `SEO_APIFY_TOKEN`, `SEO_OPENAI_API_KEY` en `CRON_SECRET` (genereer met `openssl rand -hex 32`). Stel de sleutels in als Sensitive. Gebruik aparte providerprojecten of tokens voor Specified. De website leest de toegepaste metadata via haar bestaande Supabase-configuratie.
+4. Na akkoord op verbruik, zet `SEO_BOT_ENABLED=1` in **Production** en doe een herdeploy. Zet `SEO_BOT_IMAGES=1` voor maximaal één AI-cover per concept via R2. Zet `SEO_BOT_AUTO_METADATA=1` om geldige metadatavoorstellen meteen toe te passen. Beide opties starten uit. Zet `SEO_BOT_ENABLED=0` en herdeploy om nieuwe rondes te pauzeren.
+5. Controleer de eerste ronde in het beheerscherm. De geplande Vercel-route gebruikt `CRON_SECRET` en kan desgewenst één keer zelf opgeroepen worden met een GET en een Authorization Bearer-header. Een tweede oproep in dezelfde UTC-week start geen nieuwe ronde. Kijk bij een mislukte ronde eerst naar het rapport en de functielogs.
+
+Verbruik per ronde: Apify is technisch begrensd op $0,05 en vier resultatenpagina's. OpenAI krijgt maximaal één tekstaanvraag met 4.600 uitvoertokens (ongeveer $0,03 voor tekst bij de gebruikte hoeveelheden) en optioneel één medium cover van 1536 × 1024 (ongeveer $0,041 plus prompttokens). Zie [Apify-tarieven](https://apify.com/apify/google-search-scraper), [OpenAI-teksttarieven](https://developers.openai.com/api/docs/models/gpt-6.1-terra) en [OpenAI-beeldtarieven](https://developers.openai.com/api/docs/guides/image-generation#earlier-gpt-image-models).
