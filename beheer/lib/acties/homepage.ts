@@ -14,11 +14,16 @@ export async function slaHomepageOp(_: Resultaat, fd: FormData): Promise<Resulta
   if (Object.keys(velden).length) return { ok: false, velden, melding: "Een paar velden kloppen nog niet." };
 
   const sb = await supabaseServer();
-  const { error } = await sb.from("pagina_inhoud").update({ waarde }).eq("sleutel", "homepage");
-  if (error) return { ok: false, melding: dbFout(error) };
+  const { data, error } = await sb
+    .from("pagina_inhoud")
+    .update({ waarde })
+    .eq("sleutel", "homepage")
+    .select("sleutel")
+    .single();
+  if (error || !data) return { ok: false, melding: dbFout(error) };
 
   // Contact en footer staan op elke pagina.
   await verversWebsite(["/", "layout"]);
   revalidatePath("/homepage");
-  return { ok: true, melding: "Staat online", opgeslagen: new Date().toISOString() };
+  return { ok: true, opgeslagen: new Date().toISOString() };
 }

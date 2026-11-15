@@ -10,7 +10,7 @@ import Voorbeeld, { type VoorbeeldBericht } from "./Voorbeeld";
 /**
  * Homepage bewerken met de website ernaast. Typ je in een veld, dan scrollt
  * het voorbeeld naar dat stuk van de pagina en zie je de tekst meteen
- * veranderen. Opslaan zet het online.
+ * veranderen. Opslaan bewaart de inhoud in het beheer.
  */
 export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<string, unknown>; websiteUrl: string }) {
   const [staat, actie] = useActionState(slaHomepageOp, { ok: false });
@@ -114,7 +114,7 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
             </section>
           ))}
         </div>
-        <OpslaanBalk staat={staat} formId="homepage" label="Opslaan en online zetten" />
+        <OpslaanBalk staat={staat} formId="homepage" />
       </form>
 
       <div className="order-1 lg:order-none sticky z-10 top-[calc(env(safe-area-inset-top)+52px)] md:top-2 lg:top-6 h-[42dvh] lg:h-[calc(100dvh-3rem)] -mx-1 px-1 pb-2 lg:pb-0 bg-[var(--grond)] lg:bg-transparent">

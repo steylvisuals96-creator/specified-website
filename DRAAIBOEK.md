@@ -111,7 +111,8 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
 - **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
 - **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
-- Nog niet getest: tweestapslogin aanzetten, iemand uitnodigen, en een homepage-wijziging echt opslaan.
+- **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
+- Nog niet getest: tweestapslogin aanzetten en iemand uitnodigen.
 - Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
 
 ### Oude CMS op Payload (nog live)
@@ -230,7 +231,8 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
 - [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
-- [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload getest tot op de website (2026-11-15). Bij het Vercel-project van het beheer dezelfde vier `R2_*`-waarden zetten.
+- [ ] Tweestapslogin ook afdwingen in de Supabase RLS-regels. De app vraagt de code, maar de Data API controleert nu alleen de rol en kan daardoor toegang geven vóór de tweede stap.
+- [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload lokaal getest tot op de website (2026-11-15). Dezelfde vier `R2_*`-waarden staan in Vercel. De live upload en het laden van het testbeeld zijn ook getest.
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
 - [ ] Website in Vercel: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM` (zelfde als `WEBSITE_VERVERS_GEHEIM` in het beheer). Terug: `NEXT_PUBLIC_DATABRON` weghalen.
@@ -325,7 +327,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 21:26_
+_Bijgewerkt: 2026-11-15 21:46_
 
 ### Nog niet op main
 
@@ -337,6 +339,7 @@ _Bijgewerkt: 2026-11-15 21:26_
 
 **2026-11-15**
 
+- website: Beheer: tijden in Belgische tijd (server draait in UTC) (`c72ae73`)
 - website: Beheer op Vercel: project specified-beheer, draaiboek bijgewerkt (`e0b8a2c`)
 - website: R2 voor het beheer: eigen bucket, upload getest tot op de website (`9c125ab`)
 - website: Beheer na test met echte login: voorbeeld ook op tablet en telefoon, wachtwoord onzichtbaar (`b2b5de3`)
