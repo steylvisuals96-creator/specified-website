@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import CodeFormulier from "./CodeFormulier";
 import { Woordmerk } from "@/components/Merk";
+import { sessieStand } from "@/lib/sessie";
 
 export const metadata: Metadata = { title: "Code invullen" };
 
-export default function Code() {
+export default async function Code() {
+  // Alleen wie het wachtwoord al gaf en nog een code moet invullen.
+  const stand = await sessieStand();
+  if (stand.soort === "uit") redirect("/login");
+  if (stand.soort !== "code") redirect("/");
   return (
     <main className="min-h-dvh grid place-items-center px-4 py-12">
       <div className="w-full max-w-[400px]">

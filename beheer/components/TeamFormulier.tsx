@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { slaTeamlidOp } from "@/lib/acties/team";
 import type { Resultaat } from "@/lib/formulier";
 import type { Media, Teamlid } from "@/lib/data";
@@ -44,6 +44,10 @@ export default function TeamFormulier({
       },
     });
   };
+
+  // Meteen de huidige gegevens in het voorbeeld, niet pas na de eerste toetsaanslag.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => ververs(), []);
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(340px,480px)_minmax(0,1fr)] items-start">

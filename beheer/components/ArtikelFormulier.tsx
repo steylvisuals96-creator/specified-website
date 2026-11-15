@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useCallback, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { slaArtikelOp } from "@/lib/acties/blog";
 import type { Resultaat } from "@/lib/formulier";
 import type { Artikel, Media, Teamlid } from "@/lib/data";
@@ -56,11 +56,16 @@ export default function ArtikelFormulier({
     wacht.current = setTimeout(() => setBericht({ data: maakData(), veld: null }), 150);
   };
 
+  // Meteen de huidige inhoud in het voorbeeld, niet pas na de eerste toetsaanslag.
+  useEffect(() => {
+    setBericht({ data: maakData(), veld: null });
+  }, [maakData]);
+
   return (
-    <div className="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-start">
+    <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
       <form id="artikel" ref={form} action={actie} onInput={ververs} onChange={ververs} onFocus={() => bericht.data === null && ververs()} noValidate className="min-w-0">
         {a && <input type="hidden" name="id" value={a.id} />}
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] 2xl:grid-cols-1 items-start">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-1 items-start">
           <section className="paneel blad flex flex-col gap-7 min-w-0">
             <Tekstveld naam="titel" label="Titel" waarde={a?.titel} max={160} verplicht fout={f.titel} />
             <Tekstvak naam="samenvatting" label="Korte samenvatting" waarde={a?.samenvatting} max={400} rijen={3} hint="Eén of twee zinnen. Staat in het overzicht en in Google." />
@@ -78,7 +83,7 @@ export default function ArtikelFormulier({
             </div>
           </section>
 
-          <aside className="flex flex-col gap-6 lg:sticky lg:top-6 2xl:static">
+          <aside className="flex flex-col gap-6 lg:sticky lg:top-6 xl:static">
             <section className="paneel flex flex-col gap-6">
               <Keuze
                 naam="status"
@@ -106,7 +111,7 @@ export default function ArtikelFormulier({
         <OpslaanBalk staat={staat} formId="artikel" label={a ? "Opslaan" : "Artikel aanmaken"} />
       </form>
 
-      <div className="hidden 2xl:block sticky top-6 h-[calc(100dvh-3rem)]">
+      <div className="hidden xl:block sticky top-6 h-[calc(100dvh-3rem)]">
         <Voorbeeld websiteUrl={websiteUrl} pad="/blog/voorbeeld" bericht={bericht} />
       </div>
     </div>

@@ -32,16 +32,14 @@ export async function proxy(req: NextRequest) {
     return r;
   };
 
+  // Alleen of er een geldig token is (lokaal gecontroleerd, snel). De tweede stap en de
+  // rol controleert lib/sessie.ts met de geverifieerde gebruiker; die stuurt zelf door
+  // naar /login/code als de code uit de app nog ontbreekt.
   const { data } = await sb.auth.getClaims();
   const ingelogd = Boolean(data?.claims?.sub);
 
-  if (!ingelogd) return open ? res : naar("/login");
-
-  // Wachtwoord klopt, maar de code uit de app ontbreekt nog.
-  const { data: niveau } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
-  const codeNodig = niveau?.nextLevel === "aal2" && niveau.currentLevel !== "aal2";
-  if (codeNodig && pad !== "/login/code" && !pad.startsWith("/auth/")) return naar("/login/code");
-  if (!codeNodig && (pad === "/login" || pad === "/login/code")) return naar("/");
+  if (!ingelogd) return open && pad !== "/login/code" ? res : naar("/login");
+  if (pad === "/login") return naar("/");
 
   return res;
 }

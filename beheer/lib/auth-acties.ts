@@ -42,8 +42,7 @@ export async function inloggen(_: Resultaat, fd: FormData): Promise<Resultaat> {
   }
   pogingen.delete(ip);
 
-  const { data: niveau } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
-  if (niveau?.nextLevel === "aal2" && niveau.currentLevel !== "aal2") redirect("/login/code");
+  // Met tweestapslogin stuurt lib/sessie.ts van hier door naar /login/code.
   redirect("/");
 }
 
