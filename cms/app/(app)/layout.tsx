@@ -23,7 +23,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: "Specified CMS",
-  description: "Interne recruitmentomgeving van Specified.",
+  description: "Beheer van de website van Specified.",
   // Interne omgeving: hoort niet in zoekresultaten.
   robots: { index: false, follow: false },
 };

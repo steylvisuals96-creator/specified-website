@@ -9,8 +9,8 @@ const configPromise = import("@payload-config").then((m) => m.default);
 
 const rolLabel: Record<string, string> = {
   managing_partner: "Managing Partner",
-  senior_consultant: "Senior Recruitment Consultant",
-  consultant: "Recruitment Consultant",
+  senior_consultant: "Senior Consultant",
+  consultant: "Consultant",
   talent: "Talent Acquisition Specialist",
   office: "Office Manager",
 };

@@ -1,14 +1,25 @@
 import type { CollectionConfig } from "payload";
 import { alleenIngelogd, publiekMits } from "@/lib/access";
 
+/** "Automation Engineer" wordt "automation-engineer". */
+function slugify(tekst: string): string {
+  return tekst
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 70);
+}
+
 export const Vacatures: CollectionConfig = {
   slug: "vacatures",
-  // Publiek, maar alleen wat ook echt op de site hoort te staan. Voorheen
-  // gaf de API ook ingevulde, on-hold en verborgen vacatures terug: de
-  // website filterde die weg, de API niet.
+  // Publiek, maar alleen wat ook echt op de site hoort te staan: actieve
+  // vacatures, en ingevulde (die toont de website als "ingevuld", wens van
+  // Specified, 2026-11-12). On hold, geannuleerd en verborgen blijven intern.
   access: {
     read: publiekMits({
-      and: [{ status: { equals: "actief" } }, { zichtbaar_op_website: { not_equals: false } }],
+      and: [{ status: { in: ["actief", "ingevuld"] } }, { zichtbaar_op_website: { not_equals: false } }],
     }),
     create: alleenIngelogd,
     update: alleenIngelogd,
@@ -28,16 +39,37 @@ export const Vacatures: CollectionConfig = {
       required: true,
     },
     {
+      // Het adres van de vacature op de website (/vacatures/<slug>). Wordt
+      // één keer uit de titel gemaakt en blijft daarna staan, zodat links
+      // in Google en in mails niet breken als de titel wijzigt.
+      name: "slug",
+      type: "text",
+      label: "Adres op de website",
+      unique: true,
+      index: true,
+      admin: { readOnly: true, description: "Wordt automatisch gemaakt uit de titel." },
+      hooks: {
+        beforeValidate: [
+          ({ value, data }) => {
+            if (typeof value === "string" && value.trim()) return value;
+            const basis = slugify(String(data?.titel ?? "")) || "vacature";
+            return `${basis}-${Math.random().toString(36).slice(2, 6)}`;
+          },
+        ],
+      },
+    },
+    {
       type: "row",
       fields: [
         {
           name: "sector",
           type: "select",
-          label: "Sector",
+          label: "Vakgebied",
           required: true,
           options: [
             { label: "Civiele techniek", value: "civiel" },
             { label: "Elektrotechniek", value: "elektro" },
+            { label: "Automatisering", value: "automatisering" },
             { label: "Werktuigbouwkunde", value: "werktuig" },
             { label: "IT & Software", value: "it" },
             { label: "Bouw & Infrastructuur", value: "bouw" },
@@ -95,8 +127,47 @@ export const Vacatures: CollectionConfig = {
         {
           name: "salaris",
           type: "text",
-          label: "Salaris (indicatie)",
-          admin: { description: "bv. €3.500–€4.500/maand of €600/dag" },
+          label: "Salaris (intern)",
+          admin: { description: "Alleen voor intern gebruik: de website toont geen salaris." },
+        },
+      ],
+    },
+    {
+      type: "row",
+      fields: [
+        {
+          name: "uren",
+          type: "select",
+          label: "Uren",
+          options: [
+            { label: "Voltijds", value: "voltijds" },
+            { label: "Deeltijds", value: "deeltijds" },
+            { label: "Voltijds of deeltijds", value: "beide" },
+          ],
+        },
+        {
+          name: "opleidingsniveau",
+          type: "select",
+          label: "Opleidingsniveau",
+          options: [
+            { label: "Secundair onderwijs", value: "secundair" },
+            { label: "Graduaat", value: "graduaat" },
+            { label: "Bachelor", value: "bachelor" },
+            { label: "Master", value: "master" },
+            { label: "Geen diplomavereiste", value: "geen" },
+          ],
+        },
+        {
+          name: "talen",
+          type: "select",
+          label: "Talen",
+          hasMany: true,
+          options: [
+            { label: "Nederlands", value: "nl" },
+            { label: "Engels", value: "en" },
+            { label: "Frans", value: "fr" },
+            { label: "Duits", value: "de" },
+          ],
         },
       ],
     },
@@ -138,7 +209,7 @@ export const Vacatures: CollectionConfig = {
     {
       name: "gepubliceerd_op",
       type: "date",
-      label: "Gepubliceerd op",
+      label: "Plaatsingsdatum",
       admin: { date: { pickerAppearance: "dayOnly" } },
     },
     {

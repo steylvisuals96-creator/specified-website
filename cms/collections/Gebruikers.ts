@@ -99,7 +99,7 @@ export const Gebruikers: CollectionConfig = {
       options: [
         { label: "Creator (SteylVisuals)", value: "creator" },
         { label: "Beheerder", value: "beheerder" },
-        { label: "Recruitment Consultant", value: "consultant" },
+        { label: "Consultant", value: "consultant" },
       ],
     },
   ],

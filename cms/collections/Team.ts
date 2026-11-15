@@ -42,8 +42,8 @@ export const Team: CollectionConfig = {
       label: "Rol",
       options: [
         { label: "Managing Partner", value: "managing_partner" },
-        { label: "Senior Recruitment Consultant", value: "senior_consultant" },
-        { label: "Recruitment Consultant", value: "consultant" },
+        { label: "Senior Consultant", value: "senior_consultant" },
+        { label: "Consultant", value: "consultant" },
         { label: "Talent Acquisition Specialist", value: "talent" },
         { label: "Office Manager", value: "office" },
       ],

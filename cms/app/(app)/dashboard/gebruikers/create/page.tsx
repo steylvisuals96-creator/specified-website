@@ -38,7 +38,7 @@ export default async function GebruikerCreatePage() {
           <SelectField label="Rol" name="rol" defaultValue="consultant" options={[
             ...(isCreator(user) ? [{ label: "Creator (SteylVisuals)", value: "creator" }] : []),
             { label: "Beheerder", value: "beheerder" },
-            { label: "Recruitment Consultant", value: "consultant" },
+            { label: "Consultant", value: "consultant" },
           ]} />
         </FormSection>
         <SaveBtn />

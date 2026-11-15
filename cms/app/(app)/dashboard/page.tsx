@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { payloadAlsGebruiker } from "@/lib/serverPayload";
 import DashboardShell, { StatusBadge, knopSecundair } from "@/components/DashboardShell";
 import SysteemStatus from "@/components/SysteemStatus";
+import KlantOverzicht from "@/components/KlantOverzicht";
 import { SOLLICITATIE_FASEN, KANDIDAAT_STATUS, naamVan, SECTOR_LABEL } from "@/lib/labels";
 
 const TZ = "Europe/Brussels";
@@ -41,6 +42,36 @@ export default async function DashboardPage() {
   const { payload, user, als } = sessie;
 
   const nu = new Date();
+  const naam = ((user as { naam?: string }).naam || user.email || "").trim();
+  const voornaam = naam.includes("@") ? "" : naam.split(" ")[0];
+
+  // Specified zelf beheert vacatures en blog; het recruitmentoverzicht
+  // hieronder is alleen voor de creator.
+  if ((user as { rol?: string }).rol !== "creator") {
+    const [vacs, open, ingevuld, artikels, online, concepten] = await Promise.all([
+      payload.find({ collection: "vacatures", sort: "-updatedAt", limit: 8, depth: 0, ...als }),
+      payload.count({ collection: "vacatures", where: { status: { equals: "actief" } }, ...als }),
+      payload.count({ collection: "vacatures", where: { status: { equals: "ingevuld" } }, ...als }),
+      payload.find({ collection: "blog", sort: "-updatedAt", limit: 5, depth: 0, ...als }),
+      payload.count({ collection: "blog", where: { status: { equals: "gepubliceerd" } }, ...als }),
+      payload.count({ collection: "blog", where: { status: { equals: "concept" } }, ...als }),
+    ]);
+    return (
+      <DashboardShell userName={naam} rol={(user as { rol?: string }).rol}>
+        <KlantOverzicht
+          groet={groet(nu)}
+          voornaam={voornaam}
+          vacatures={vacs.docs as any[]}
+          artikels={artikels.docs as any[]}
+          cijfers={{ open: open.totalDocs, ingevuld: ingevuld.totalDocs, gepubliceerd: online.totalDocs, concepten: concepten.totalDocs }}
+        />
+        <footer className="border-t border-line px-5 py-5 sm:px-8 lg:px-10">
+          <SysteemStatus />
+        </footer>
+      </DashboardShell>
+    );
+  }
+
   const g = grenzen(nu);
 
   const [vacatures, nieuweSoll, interviews, geplaatst, alleSoll, agenda, kandidaten, recenteSoll] = await Promise.all([
@@ -76,9 +107,6 @@ export default async function DashboardPage() {
   }
   const fasen = SOLLICITATIE_FASEN.map((f) => ({ ...f, aantal: perFase.get(f.value) ?? 0 }));
   const max = Math.max(1, ...fasen.map((f) => f.aantal));
-
-  const naam = ((user as { naam?: string }).naam || user.email || "").trim();
-  const voornaam = naam.includes("@") ? "" : naam.split(" ")[0];
 
   const cijfers = [
     { label: "Open vacatures", waarde: vacatures.totalDocs, href: "/dashboard/vacatures" },

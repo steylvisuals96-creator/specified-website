@@ -31,6 +31,7 @@ export const KANDIDAAT_STAPPEN = ["nieuw", "gescreend", "in_gesprek", "voorgeste
 export const SECTOR_LABEL: Record<string, string> = {
   civiel: "Civiele techniek",
   elektro: "Elektrotechniek",
+  automatisering: "Automatisering",
   werktuig: "Werktuigbouwkunde",
   it: "IT & Software",
   bouw: "Bouw & Infra",
