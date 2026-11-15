@@ -4,7 +4,7 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-11-12.
+Laatst handmatig nagekeken: 2026-11-15.
 
 De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
@@ -257,11 +257,15 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] CSP zonder `'unsafe-inline'` via nonces.
 - [ ] Het in-page-editor-werk door Sam laten testen op productie.
 
-**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 008: vacatures-easing, contactonderlijn, mobiel menu) staat open; 009 (vacaturepaneel op mobiel) vervalt, het paneel is vervangen door een pagina per vacature. 001 tot 003 gingen over de oude lijst met paneel en zijn daarmee ook achterhaald. Zie `plans/README.md`.
+**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 008: vacatures-easing, contactonderlijn, mobiel menu) staat open; 009 (vacaturepaneel op mobiel) vervalt, het paneel is vervangen door een pagina per vacature. 001 tot 003 gingen over de oude lijst met paneel en zijn daarmee ook achterhaald. Zie `plans/README.md`. De planbestanden 006 tot 009 staan sinds 2026-11-15 op main.
+
+**Niet samengevoegd werk**
+- [ ] Branch `preview/audit-fixes-2` (gepusht 2026-11-15) bevat werk dat nog niet op main staat: audit-fixes ronde 2 (toetsenbordfocus in de hero, cookiebanner vroeg in de tabvolgorde, klikdoelen 44px, vizier uit bij forced-colors, inline styles naar klassen in vacatures en blog) en streepjes vervangen plus nav-achtergrond via IntersectionObserver. De branch loopt 23 commits achter op main en botst vooral in `app/globals.css`, `components/HeroTekening.tsx` en `components/VacaturesClient.tsx`. Beslissen: per onderdeel opnieuw toepassen op main, of laten vallen.
 
 **Documentatie die achterloopt**
 - `specified-cms/README.md` en `.env.example` noemen nog MongoDB en `MONGODB_URI`; de database is Supabase (`DATABASE_URI`). Ook de rollenlijst en de toegang tot `/admin` in de README zijn verouderd.
 - De standaardwaarden in `specified-cms/globals/Instellingen.ts` noemen nog "Specified BV" en "Engineering recruitment" (metatitel in de database ook). Niet aangepast: een andere standaardwaarde vraagt een migratie, en de website gebruikt de metatitel uit `lib/inhoud.ts`.
+- Projectregels staan sinds 2026-11-15 ook uitgeschreven in `AGENTS.md`, zodat andere agents (Codex) ze lezen.
 - `CLAUDE.md` bevat de regel "CMS direct op Supabase, zonder Payload". De huidige CMS draait nog wel op Payload (met Supabase als database). Die regel geldt dus voor nieuw werk; een stap weg van Payload is nog niet gezet en nog niet besproken.
 
 ---
@@ -271,30 +275,44 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-12 15:04_
+_Bijgewerkt: 2026-11-15 18:59_
 
 ### Nog niet op main
 
-Niets: alles staat op main.
+- website, branch `preview/audit-fixes-2`: 4 commit(s) voor op main
+- website, branch `preview/hero-beweging`: 1 commit(s) voor op main
+- website, branch `preview/streepjes-nav`: 1 commit(s) voor op main
+- cms, branch `preview/audit-fixes-2`: 4 commit(s) voor op main
+- cms, branch `preview/hero-beweging`: 1 commit(s) voor op main
+- cms, branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
 
+**2026-11-15**
+
+- website: Projectregels in AGENTS.md voor andere agents, animatieplannen ronde 2 op main, draaiboek bijgewerkt (`2967dca`)
+- cms: Projectregels in AGENTS.md voor andere agents, animatieplannen ronde 2 op main, draaiboek bijgewerkt (`2967dca`)
+
 **2026-11-12**
 
+- website: Hero volgt het thema tot in het eindlogo; kleine verbeteringen na nazicht (`7b488fd`)
 - website: Invullijst toegepast: nieuwe pagina's, formulieren, vacaturepagina's en licht thema (`74fb806`)
 - website: Invullijst verwerkt: briefing, draaiboek bijgewerkt, Specified NV met adres en ondernemingsnummer (`3a4dbe8`)
-- cms: Dashboard: overzicht voor de klant met vacatures en blog; recruitment-termen weg (`8bb82f7`)
-- cms: Vacatures: uren, opleiding, talen en vast adres; volledig formulier in het dashboard (`ca4e2f6`)
+- cms: Hero volgt het thema tot in het eindlogo; kleine verbeteringen na nazicht (`7b488fd`)
+- cms: Invullijst toegepast: nieuwe pagina's, formulieren, vacaturepagina's en licht thema (`74fb806`)
+- cms: Invullijst verwerkt: briefing, draaiboek bijgewerkt, Specified NV met adres en ondernemingsnummer (`3a4dbe8`)
 
 **2026-10-29**
 
 - website: Lettertype: IBM Plex Sans voor tekst en UI (`bd5b31e`)
-- cms: Lettertype: IBM Plex Sans in dashboard en admin, zoals de website (`5081ff3`)
+- cms: Lettertype: IBM Plex Sans voor tekst en UI (`bd5b31e`)
 
 **2026-10-28**
 
 - website: Draaiboek: rol backup_lezer verwijderd (`7f99123`)
 - website: Draaiboek: contact in Homepage-editor, Instellingen alleen creator, back-up geschrapt (`17c8029`)
+- cms: Draaiboek: rol backup_lezer verwijderd (`7f99123`)
+- cms: Draaiboek: contact in Homepage-editor, Instellingen alleen creator, back-up geschrapt (`17c8029`)
 
 **2026-10-27**
 
@@ -307,6 +325,15 @@ Niets: alles staat op main.
 - website: Bewerkmodus: tekst onder de muis zoeken, ook onder de scrollhero-lagen (`059abe3`)
 - website: Favicon: alleen het groene beeldmerk, zonder donkere achtergrond (`e471df9`)
 - website: Bewerkmodus: klikbare teksten op de homepage-voorbeeldpagina (?bewerken) (`3155b60`)
+- cms: Contactgegevens uit de Homepage-editor (`c3c4b8b`)
+- cms: Draaiboek: Resend-foutmeldingen live, log ververst (`a8000ca`)
+- cms: Draaiboek van de website, met script voor de wijzigingslog (`e09a7e5`)
+- cms: Foutmeldingen per mail via Resend, met limiet (`05790bd`)
+- cms: Bewerkmodus: titelblok van de tekening aanklikbaar (`ceb3bbc`)
+- cms: Bewerkmodus: callouts van de tekening aanklikbaar (`3656ab7`)
+- cms: Bewerkmodus: tekst onder de muis zoeken, ook onder de scrollhero-lagen (`059abe3`)
+- cms: Favicon: alleen het groene beeldmerk, zonder donkere achtergrond (`e471df9`)
+- cms: Bewerkmodus: klikbare teksten op de homepage-voorbeeldpagina (?bewerken) (`3155b60`)
 
 **2026-10-26**
 
@@ -314,10 +341,15 @@ Niets: alles staat op main.
 - website: Live voorbeeld: gedeelde artikelweergave en stabiele hero-herbouw (`896c1d0`)
 - website: Homepage-teksten uit de CMS en live voorbeelden voor homepage en team (`032a46a`)
 - website: Live voorbeeld voor blogartikelen vanuit het CMS (`d7f0b5a`)
+- cms: Hero-tekening past op elk scherm: blad vult ook brede schermen, eindlogo boven de kop, telefoon dwars (`e8353d3`)
+- cms: Live voorbeeld: gedeelde artikelweergave en stabiele hero-herbouw (`896c1d0`)
+- cms: Homepage-teksten uit de CMS en live voorbeelden voor homepage en team (`032a46a`)
+- cms: Live voorbeeld voor blogartikelen vanuit het CMS (`d7f0b5a`)
 
 **2026-10-22**
 
 - website: Hero: constante beweging terugdraaien op main (blijft in preview/hero-ambient) (`3fceab9`)
+- cms: Hero: constante beweging terugdraaien op main (blijft in preview/hero-ambient) (`3fceab9`)
 
 **2026-10-20**
 
@@ -325,12 +357,19 @@ Niets: alles staat op main.
 - website: Hero: constante beweging met scanlijn en maatlijnen (`a5210fa`)
 - website: Animatieplannen 001-005 uitgevoerd: expliciete transities, begrensde stagger, snelser paneel, hover-gating, veeg ease-out (`5fbc59c`)
 - website: Animatieplannen 001-005 uit de motion-audit (`f746c1d`)
+- cms: Audit-fixes: skip-link, --bone-600, filterknoppen 44px, kleurtokens, glow en will-change (`4eb3859`)
+- cms: Hero: constante beweging met scanlijn en maatlijnen (`a5210fa`)
+- cms: Animatieplannen 001-005 uitgevoerd: expliciete transities, begrensde stagger, snelser paneel, hover-gating, veeg ease-out (`5fbc59c`)
+- cms: Animatieplannen 001-005 uit de motion-audit (`f746c1d`)
 
 **2026-09-28**
 
 - website: Stilstaande hero (Verminder beweging / geen JS): het logo als eindbeeld (`1fe3479`)
 - website: Mobiel menu: effen achtergrond; het raster blijft voorbehouden aan het tekenblad (`ccafe2d`)
 - website: Mobiel geoptimaliseerd: hero-opening, cookiebanner, menu, consultancy-teksten (`39e5bac`)
+- cms: Stilstaande hero (Verminder beweging / geen JS): het logo als eindbeeld (`1fe3479`)
+- cms: Mobiel menu: effen achtergrond; het raster blijft voorbehouden aan het tekenblad (`ccafe2d`)
+- cms: Mobiel geoptimaliseerd: hero-opening, cookiebanner, menu, consultancy-teksten (`39e5bac`)
 
 **2026-09-27**
 
@@ -345,6 +384,17 @@ Niets: alles staat op main.
 - website: Vacatures en blog: geen middenpunt of vinkje meer, kleinste tekst naar 13px (`a6416a3`)
 - website: Fase 6: laadtijd en SEO (`839f834`)
 - website: Hero: scrollruimte als echt element, zodat sticky werkt (geen lege band meer) (`38a0f05`)
+- cms: Logo-hover: exponentiële easing i.p.v. overshoot-curve (`be20ff8`)
+- cms: Hero-polish: laadmoment, natekenen, callout-pop, logo-gloed; logo-hover, vizier-muiswijzer en vloeiend scrollen (`d2d8532`)
+- cms: Hero: blad vult elke schermverhouding, beeldmerk komt erbij in het eindbeeld, maatlijn weg (`8c3cd98`)
+- cms: Mobiel: SPECIFIED draait op het einde naar horizontaal en vult de breedte; titelblok groter en leesbaar (`2f589af`)
+- cms: Titelblok leesbaar: veldnamen lichter en groter, meer ruimte, minder gedimd op het einde (`b752e19`)
+- cms: Hero wordt SPECIFIED als technische tekening; site positioneert Specified als engineering consultancy (`40d4067`)
+- cms: Laadtijd: covers via next/image, hero preload, lichter icoon en lettertype (`5455ced`)
+- cms: Menusprongen landen net onder de navigatie; diensten-beelden liggend op desktop (`ccd0088`)
+- cms: Vacatures en blog: geen middenpunt of vinkje meer, kleinste tekst naar 13px (`a6416a3`)
+- cms: Fase 6: laadtijd en SEO (`839f834`)
+- cms: Hero: scrollruimte als echt element, zodat sticky werkt (geen lege band meer) (`38a0f05`)
 
 **2026-09-26**
 
@@ -353,16 +403,56 @@ Niets: alles staat op main.
 - website: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`edc70f4`)
 - website: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`c8aa10b`)
 - website: Beveiligingsupdates: Next.js 16.3.6 (middleware-bypass, server-actions-DoS) + npm audit fix, 0 bekende kwetsbaarheden (`94f2589`)
+- website: Handtekening tekent met de scroll in plaats van per woord te herhalen (`7e52c60`)
+- website: Kandidatenbeeld lichter gegrade: middentonen omhoog, olijftoon behouden (`ca2a696`)
+- website: Scherpere turbine-frames: volle bronresolutie, lichtere compressie, minder zoom (`3c4d06b`)
+- website: Turbine speelt af met de scroll: gepinde hero met framereeks op canvas (`2253e9b`)
+- website: Turbine als naadloze videolus in de hero, scroll-rotatie vervangen door zoom (`d913f93`)
+- cms: Hero: sticky i.p.v. GSAP-pin (geen layout shift), frames pas na laden (`bb4b03b`)
+- cms: Beveiligingsupdates: Next.js 16.3.6 (middleware-bypass, server-actions-DoS) + npm audit fix, 0 bekende kwetsbaarheden (`d9e6dc9`)
+- cms: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`edc70f4`)
+- cms: Blog: sluit XSS via javascript:-links, koptags en JSON-LD (`c8aa10b`)
+- cms: Beveiligingsupdates: Next.js 16.3.6 (middleware-bypass, server-actions-DoS) + npm audit fix, 0 bekende kwetsbaarheden (`94f2589`)
+- cms: Handtekening tekent met de scroll in plaats van per woord te herhalen (`7e52c60`)
+- cms: Kandidatenbeeld lichter gegrade: middentonen omhoog, olijftoon behouden (`ca2a696`)
+- cms: Scherpere turbine-frames: volle bronresolutie, lichtere compressie, minder zoom (`3c4d06b`)
+- cms: Turbine speelt af met de scroll: gepinde hero met framereeks op canvas (`2253e9b`)
+- cms: Turbine als naadloze videolus in de hero, scroll-rotatie vervangen door zoom (`d913f93`)
+
+**2026-09-25**
+
+- website: Hero-rotator met hertekenende handtekening en een scroll-moment per sectie (`f94a6d7`)
+- website: Trek subpagina's in de huisstijl: geen pijltjes, hoeken of kapitalen-labels, blogfoto's gegrade, reduced motion op vacatures (`c95d5c5`)
+- website: Voeg AI-sfeerbeelden toe, fix mobiele vacaturerijen en founder-grade (`0fe537b`)
+- website: Bouw Signatuurmerk-homepage: typografische hero, disciplines-scroll, vacatures, founders, contact (`347ca87`)
+- website: Zet project klaar voor redesign: GSAP, fonts, motion-skills lokaal (`379f790`)
+- website: Voeg DESIGN.md toe voor Signatuurmerk-redesign (`ba2772b`)
+- website: Voeg Signatuurmerk-ontwerpreferenties per sectie toe (`f4192b9`)
+- website: Voeg vrijstaande founder-portretten toe voor Signatuurmerk (`a8dd605`)
+- website: Start redesign Signatuurmerk: playbook-status fase 0 (`630e639`)
+- cms: Hero-rotator met hertekenende handtekening en een scroll-moment per sectie (`f94a6d7`)
+- cms: Trek subpagina's in de huisstijl: geen pijltjes, hoeken of kapitalen-labels, blogfoto's gegrade, reduced motion op vacatures (`c95d5c5`)
+- cms: Voeg AI-sfeerbeelden toe, fix mobiele vacaturerijen en founder-grade (`0fe537b`)
+- cms: Bouw Signatuurmerk-homepage: typografische hero, disciplines-scroll, vacatures, founders, contact (`347ca87`)
+- cms: Zet project klaar voor redesign: GSAP, fonts, motion-skills lokaal (`379f790`)
+- cms: Voeg DESIGN.md toe voor Signatuurmerk-redesign (`ba2772b`)
+- cms: Voeg Signatuurmerk-ontwerpreferenties per sectie toe (`f4192b9`)
+- cms: Voeg vrijstaande founder-portretten toe voor Signatuurmerk (`a8dd605`)
+- cms: Start redesign Signatuurmerk: playbook-status fase 0 (`630e639`)
 
 **2026-07-26**
 
 - website: Zet security headers en maak de repo overdraagbaar (`a9e806f`)
 - website: Vacatures tonen waar een ingenieur echt op beslist (`6627a8f`)
 - website: Fix twee P0's: werkende cookieconsent en dode navigatie-anchors (`bbfba44`)
+- cms: Zet security headers en maak de repo overdraagbaar (`a9e806f`)
+- cms: Vacatures tonen waar een ingenieur echt op beslist (`6627a8f`)
+- cms: Fix twee P0's: werkende cookieconsent en dode navigatie-anchors (`bbfba44`)
 
 **2026-07-21**
 
 - website: Gebruik cover_url als fallback voor blogafbeeldingen zonder upload (`b74e833`)
+- cms: Gebruik cover_url als fallback voor blogafbeeldingen zonder upload (`b74e833`)
 
 **2026-07-20**
 
@@ -370,16 +460,90 @@ Niets: alles staat op main.
 - website: Voeg blog toe aan website + SEO-fundament (`90d9534`)
 - website: Menu "Jobs" verwijst naar de volledige vacaturepagina (`d15923b`)
 - website: Fix teamfoto's: juiste uitsnede en portretformaat (`9ebc821`)
+- cms: Fix build: voeg 'naam' toe aan SiteSettings-type (`ea55787`)
+- cms: Voeg blog toe aan website + SEO-fundament (`90d9534`)
+- cms: Menu "Jobs" verwijst naar de volledige vacaturepagina (`d15923b`)
+- cms: Fix teamfoto's: juiste uitsnede en portretformaat (`9ebc821`)
 
 **2026-07-19**
 
 - website: Herstel desktop-layout (md:-classes werkten niet door inline stijlen) (`79f21f8`)
 - website: Optimaliseer mobiele weergave (`797e12f`)
+- cms: Herstel desktop-layout (md:-classes werkten niet door inline stijlen) (`79f21f8`)
+- cms: Optimaliseer mobiele weergave (`797e12f`)
 
 **2026-07-18**
 
 - website: Fix menulinks: verwijs naar homepage-secties vanaf elke pagina (`c511d8e`)
 - website: Vacaturepagina + legal footers uit CMS, 404-pagina, Speed Insights (`821d01b`)
+- cms: Fix menulinks: verwijs naar homepage-secties vanaf elke pagina (`c511d8e`)
+- cms: Vacaturepagina + legal footers uit CMS, 404-pagina, Speed Insights (`821d01b`)
+
+**2026-07-15**
+
+- website: Website: alle homepage-content uit het CMS (`2dc8a29`)
+- cms: Website: alle homepage-content uit het CMS (`2dc8a29`)
+
+**2026-07-11**
+
+- website: Voeg Vercel Analytics toe (`a85cc01`)
+- cms: Voeg Vercel Analytics toe (`a85cc01`)
+
+**2026-07-05**
+
+- website: 3D mouse-parallax op homepage vormen (`82a1191`)
+- website: Custom cursor op alle pagina's + groeit boven klikbare elementen (`e284df0`)
+- website: Fix: verberg systeemcursor enkel op homepage, niet site-breed (`f489959`)
+- website: Voeg /api/health endpoint toe voor uptime-monitoring (`6a017a2`)
+- website: Koppel homepage aan CMS Instellingen-global (`75c43ce`)
+- website: Voeg privacybeleid, cookiebeleid en cookie-consent banner toe (`f5f6371`)
+- website: Homepage wow-effect: woord-wissel, marquee, count-up, cursor, grain (`1640231`)
+- cms: 3D mouse-parallax op homepage vormen (`82a1191`)
+- cms: Custom cursor op alle pagina's + groeit boven klikbare elementen (`e284df0`)
+- cms: Fix: verberg systeemcursor enkel op homepage, niet site-breed (`f489959`)
+- cms: Voeg /api/health endpoint toe voor uptime-monitoring (`6a017a2`)
+- cms: Koppel homepage aan CMS Instellingen-global (`75c43ce`)
+- cms: Voeg privacybeleid, cookiebeleid en cookie-consent banner toe (`f5f6371`)
+- cms: Homepage wow-effect: woord-wissel, marquee, count-up, cursor, grain (`1640231`)
+
+**2026-06-28**
+
+- website: Swap Jobs and Over ons in nav order (`ac28506`)
+- cms: Swap Jobs and Over ons in nav order (`ac28506`)
+
+**2026-06-27**
+
+- website: Fix #diensten anchor: add id to Split section so nav link scrolls correctly (`b0732e1`)
+- website: Update hero subtitle text from old site (`b940fca`)
+- website: Fix duplicate borderBottom property in VacaturesClient style object (`71240f7`)
+- website: Connect website vacatures to CMS — live data from specified-cms.vercel.app (`01413d6`)
+- website: Fix Simon Claeys LinkedIn URL (`027ebc0`)
+- website: Verwijder Claude-patronen: labels, pijltjes, pill-knoppen (`a5696a0`)
+- website: Fix TypeScript error: remove as const from shapes array (`e0b3605`)
+- website: Simplify page shapes: 5 clean outlines, slow parallax, engineering aesthetic (`e385112`)
+- website: Global 3D page shapes: 15 logo marks floating fixed across entire page on scroll (`1d4aedc`)
+- website: Team section: fix Simon duplicate, add 7-shape 3D scroll animation with logo marks (`6be1317`)
+- website: Redesign team section: full-width cards with real photos, lime panels, 3D scroll shapes (`89b3873`)
+- website: Add real logo, team photos and footer from specified.be (`61d20d9`)
+- cms: Fix #diensten anchor: add id to Split section so nav link scrolls correctly (`b0732e1`)
+- cms: Update hero subtitle text from old site (`b940fca`)
+- cms: Fix duplicate borderBottom property in VacaturesClient style object (`71240f7`)
+- cms: Connect website vacatures to CMS — live data from specified-cms.vercel.app (`01413d6`)
+- cms: Fix Simon Claeys LinkedIn URL (`027ebc0`)
+- cms: Verwijder Claude-patronen: labels, pijltjes, pill-knoppen (`a5696a0`)
+- cms: Fix TypeScript error: remove as const from shapes array (`e0b3605`)
+- cms: Simplify page shapes: 5 clean outlines, slow parallax, engineering aesthetic (`e385112`)
+- cms: Global 3D page shapes: 15 logo marks floating fixed across entire page on scroll (`1d4aedc`)
+- cms: Team section: fix Simon duplicate, add 7-shape 3D scroll animation with logo marks (`6be1317`)
+- cms: Redesign team section: full-width cards with real photos, lime panels, 3D scroll shapes (`89b3873`)
+- cms: Add real logo, team photos and footer from specified.be (`61d20d9`)
+
+**2026-06-26**
+
+- website: Initial build: Specified website with homepage, vacatures page, fonts, team photos (`8f705b8`)
+- website: Initial commit from Create Next App (`6f15521`)
+- cms: Initial build: Specified website with homepage, vacatures page, fonts, team photos (`8f705b8`)
+- cms: Initial commit from Create Next App (`6f15521`)
 
 <!-- LOG-END -->
 
