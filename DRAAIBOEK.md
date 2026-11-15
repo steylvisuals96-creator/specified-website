@@ -132,6 +132,8 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 
 In het beheer staat SEO-bot voor beheerders. Hij gebruikt Belgische zoekdata uit Google Search Console en vakonderzoek via Apify om SEO-titels en beschrijvingen voor zeven vaste pagina's te verbeteren. OpenAI schrijft na onderzoek maximaal één Vlaams blogconcept per week over industriële engineering. Het concept krijgt aanklikbare bronnen en optioneel een AI-cover in de R2-mediabibliotheek. Publicatie loopt via de blogeditor. Het beheerscherm bewaart de rapporten en toont de vorige en nieuwe metadata. Een beheerder kan voorstellen toepassen of verwerpen. Automatisch toepassen staat standaard uit.
 
+Op 2026-11-16 is de goedgekeurde SEO-migratie uitgevoerd op het Supabase-productieproject. RLS staat op alle drie SEO-tabellen. De publieke Data API kan toegepaste metadata lezen en weigert toegang tot rapporten en voorstellen. Bij de controle waren er nul uitgevoerde rondes.
+
 ### Doorklikpagina's bewerkbaar (2026-11-15)
 
 Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén systeem voor allemaal:
@@ -298,7 +300,9 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - [ ] Livegang op `specified.be` (2027-01-11): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein. Registrar, DNS-beheer, hosting en vervaldata zijn bij de klant onbekend: via de contactpersoon van Rocketship achterhalen. MX, SPF, DKIM, DMARC en autodiscover van Microsoft 365 (beheerd door Cronos) exact overnemen.
 - [ ] 301-doorverwijzingen van de oude URL's op `specified.be` naar de nieuwe.
 - [ ] Analytics en Search Console op een account van Specified zetten (huidige eigenaar onbekend).
-- [ ] SEO-bot: productiemigratie uitvoeren na akkoord. De migratie en toegangsregels zijn lokaal getest. Daarna productievariabelen en Search Console-toegang toevoegen, verbruik bevestigen en na livegang de eerste ronde op `specified.be` uitvoeren.
+- [x] SEO-bot: productiemigratie `20261115_06_seo_bot.sql` uitgevoerd en publieke toegangsrechten gecontroleerd (2026-11-16).
+- [ ] SEO-bot: productievariabelen en Search Console-toegang toevoegen, verbruik bevestigen en na livegang de eerste ronde op `specified.be` uitvoeren.
+- [ ] Later wil Sam Vercel AI Gateway koppelen voor tekst en optioneel beeld. [Parallel Search via AI Gateway](https://vercel.com/changelog/parallel-web-search-is-now-on-ai-gateway) is een mogelijke vervanger voor het Apify-vakonderzoek. Eerst de bruikbaarheid van Vlaamse vakbronnen en bronlinks vergelijken; Search Console blijft de bron voor Google-prestaties van Specified.
 - [ ] Aanlevering van de klant: logo in vector, huisstijlgids, teksten, vacaturelijst, quotes en cases, cijfers en certificaten (zegt klaar te hebben). Teamfoto's en bio's ontbreken, komen uit de shootdag.
 - [ ] Echte cijfers voor de statistieken: 32 consultants en 4 sectoren zijn bekend, klanten in cijfers en jaren ervaring nog niet. Bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
 - [ ] Concurrentie bekijken (Abylsen, TEC, TMC, ENGIE Talents, Pauwels Consulting) en het goede meenemen, op vraag van de klant.
@@ -371,7 +375,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:09_
+_Bijgewerkt: 2026-11-16 00:11_
 
 ### Nog niet op main
 
@@ -383,6 +387,7 @@ _Bijgewerkt: 2026-11-16 00:09_
 
 **2026-11-16**
 
+- website: Draaiboek: vacaturevoorbeeld live getest (`c38367b`)
 - website: Vacatures met live voorbeeld, leesregels samengevoegd, logboek per pagina (`da8f25c`)
 - website: Voeg wekelijkse SEO-bot toe aan het Specified-beheer (`09dd4c1`)
 - website: Gebruik herwerkte dienstenbeelden op de homepage (`2e5bd24`)
