@@ -104,12 +104,14 @@ Lighthouse mobiel: home 95 tot 97, vacatures 99, blog 93. Toegankelijkheid, best
 Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/README.md`). Alleen wat Specified gebruikt: vacatures, blog, team, media, homepage-teksten, gebruikers, plus een logboek en account met tweestapslogin. Het recruitment-CRM gaat niet mee (zie beslissingen).
 
 - **Look**: opbouw van de SteylVisuals-studio (matglas, trage gloed, glans onder de muis, glijdend blokje in de zijbalk, scherpstellen bij paginawissel, tabbalk op de telefoon) in de Specified-huisstijl: grafiet, limoen, Bebas Neue, Instrument Serif Italic als accent, IBM Plex Sans, radius 2px, tekenraster en maatlijnen onder de titels. Geen kapitalen-labels.
-- **Live voorbeeld dat meescrollt** (wens Sam): bij Homepage staan de velden links en de echte website rechts (verkleind, met Desktop, Tablet en Mobiel). Klik je in een veld, dan scrollt het voorbeeld naar dat stuk en komt er een limoen kader met hoekmarkeringen en de veldnaam omheen; wat je typt verschijnt meteen. Voor de hero rekent de website de plek uit op de tijdlijn van de tekening (`heroScrollY` in `components/HeroTekening.tsx`), zodat callouts en titelblok echt in beeld staan. Werkt via `data-bewerk` op de elementen (aangevuld voor contact, footer en profielen) en `components/VoorbeeldFocus.tsx`. Blog en team hebben een live voorbeeld zonder meescrollen. Getest in de browser met een testframe (hero-callout, titelblok, blok voor engineers, contact).
+- **Live voorbeeld dat meescrollt** (wens Sam): bij Homepage staan de velden links en de echte website rechts (verkleind, met Desktop, Tablet en Mobiel); onder 1024 px plakt het voorbeeld bovenaan en schuiven de velden eronder door, op een telefoon start het in Mobiel. Klik je in een veld, dan scrollt het voorbeeld naar dat stuk en komt er een limoen kader met hoekmarkeringen en de veldnaam omheen; wat je typt verschijnt meteen. Voor de hero rekent de website de plek uit op de tijdlijn van de tekening (`heroScrollY` in `components/HeroTekening.tsx`), zodat callouts en titelblok echt in beeld staan. Werkt via `data-bewerk` op de elementen (aangevuld voor contact, footer en profielen) en `components/VoorbeeldFocus.tsx`. Blog en team hebben een live voorbeeld zonder meescrollen. Getest in de browser, eerst met een testframe (hero-callout, titelblok, blok voor engineers, contact) en daarna ingelogd in het echte scherm. Het beheer vraagt de website zelf of ze klaar is, omdat het frame anders zijn eerste melding kan missen.
 - **Rich text**: Tiptap-document als JSON, op de server opnieuw opgebouwd uit een vaste lijst knopen; de website rendert met dezelfde lijst (`lib/richtekst.ts`). De inhoud uit Payload (Lexical) is in SQL omgezet.
 - **Gebruikers**: accounts aanmaken met een uitnodigingslink die de beheerder zelf bezorgt (geen mailserver nodig); nieuwe inloglink bij een vergeten wachtwoord. Eerste account via `npm run gebruiker:maken` in `beheer/`.
 - **Logboek**: database-trigger schrijft elke wijziging weg (wie, wat, wanneer); te zien bij Logboek en op het overzicht.
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
-- Niet getest met een echte login in de browser: daarvoor ontbreekt nog `SUPABASE_SECRET_KEY` in `beheer/.env.local` en een account. Wel getest: build en typecheck van beide apps, de deuren zonder login (alles naar `/login`, upload geweigerd, ongeldige link geweigerd), RLS per rol in SQL, de website die uit Supabase leest, het voorbeeld en `/api/ververs`.
+- **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
+- Nog niet getest: uploaden (R2-waarden ontbreken lokaal), tweestapslogin aanzetten, iemand uitnodigen, en een homepage-wijziging echt opslaan.
+- Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
 
 ### Oude CMS op Payload (nog live)
 
@@ -225,7 +227,9 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 ## 8. Open punten
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
-- [ ] `SUPABASE_SECRET_KEY` (Supabase > Project Settings > API Keys) en de `R2_*`-waarden in `beheer/.env.local` zetten, `npm run gebruiker:maken` voor Sam (creator), inloggen en elk scherm nalopen (ook uploaden en tweestapslogin). Pas dan is het beheer met een echte login getest.
+- [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
+- [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
+- [ ] De `R2_*`-waarden (uit het Vercel-project `specified-cms`) in `beheer/.env.local` zetten en één upload testen, ook als teamfoto op de website.
 - [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [ ] Vercel-project `specified-beheer` aanmaken (root directory `beheer`) met de variabelen uit `beheer/.env.example`; later `beheer.specified.be`.
 - [ ] Website in Vercel: `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BEHEER_URL`, `VERVERS_GEHEIM` (zelfde als `WEBSITE_VERVERS_GEHEIM` in het beheer). Terug: `NEXT_PUBLIC_DATABRON` weghalen.
@@ -320,7 +324,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 20:08_
+_Bijgewerkt: 2026-11-15 20:32_
 
 ### Nog niet op main
 
@@ -332,7 +336,7 @@ _Bijgewerkt: 2026-11-15 20:08_
 
 **2026-11-15**
 
-- website: Nieuw beheer op Supabase en R2 zonder Payload, in de look van de studio (`eb9af16`)
+- website: Nieuw beheer op Supabase en R2 zonder Payload, in de look van de studio (`9172301`)
 - website: Website en CMS in één repo: tooling, draaiboekscript en documentatie aangepast, CMS doorgelicht (`b33f44e`)
 - website: Projectregels in AGENTS.md voor andere agents, animatieplannen ronde 2 op main, draaiboek bijgewerkt (`9a99bfc`)
 

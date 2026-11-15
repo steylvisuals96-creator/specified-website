@@ -57,8 +57,10 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
   const profielen = (lees(waarde, "consultants.profielen") as { naam?: string }[] | undefined)?.map((p) => p.naam ?? "").filter(Boolean);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(360px,460px)_minmax(0,1fr)] items-start">
-      <form id="homepage" ref={form} action={actie} onInput={bijInvoer} onChange={bijInvoer} onFocus={bijFocus} onBlur={bijBlur} noValidate className="min-w-0">
+    // Vanaf 1024 px naast elkaar. Smaller blijft het voorbeeld bovenaan het scherm plakken en schuiven
+    // de velden eronder door: zo zie je ook op een tablet het voorbeeld meescrollen.
+    <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(320px,420px)_minmax(0,1fr)] items-start">
+      <form id="homepage" ref={form} action={actie} onInput={bijInvoer} onChange={bijInvoer} onFocus={bijFocus} onBlur={bijBlur} noValidate className="min-w-0 order-2 lg:order-none">
         <div className="flex flex-col gap-5">
           {GROEPEN.map((g, gi) => (
             <section key={g.sleutel} className={`paneel flex flex-col gap-6 ${gi === 0 ? "blad" : ""}`}>
@@ -115,7 +117,7 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
         <OpslaanBalk staat={staat} formId="homepage" label="Opslaan en online zetten" />
       </form>
 
-      <div className="hidden xl:block sticky top-6 h-[calc(100dvh-3rem)]">
+      <div className="order-1 lg:order-none sticky z-10 top-[calc(env(safe-area-inset-top)+52px)] md:top-2 lg:top-6 h-[42dvh] lg:h-[calc(100dvh-3rem)] -mx-1 px-1 pb-2 lg:pb-0 bg-[var(--grond)] lg:bg-transparent">
         <Voorbeeld websiteUrl={websiteUrl} pad="/voorbeeld/home" bericht={bericht} />
       </div>
     </div>

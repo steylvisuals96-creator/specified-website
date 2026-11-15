@@ -332,6 +332,15 @@ select.invoer option {
   color: var(--tekst);
 }
 
+/* Homepage onder 1024 px: het voorbeeld plakt bovenaan (42dvh). Een veld waar je met Tab of
+   een klik naartoe gaat, schuift dan onder het voorbeeld in beeld, niet erachter. */
+@media (max-width: 1023px) {
+  #homepage .invoer {
+    scroll-margin-top: calc(42dvh + 72px);
+    scroll-margin-bottom: 96px;
+  }
+}
+
 /* Schakelaar (aan/uit) */
 .schakel {
   position: relative;
@@ -448,6 +457,11 @@ input:focus-visible + .chip {
 }
 
 /* ── Tabellen ── */
+/* Brede tabellen schuiven zijwaarts binnen hun paneel, ook op een smal laptopvenster. */
+.tabel-schuif {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .tabel {
   width: 100%;
   border-collapse: collapse;
@@ -648,10 +662,6 @@ label,
 @media (max-width: 767px) {
   .invoer {
     font-size: 16px;
-  }
-  .tabel-schuif {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
   body {
     overflow-x: clip;

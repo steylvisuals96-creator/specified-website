@@ -46,11 +46,31 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
     return () => removeEventListener("message", ontvang);
   }, [origin]);
 
+  // Het frame staat al in de HTML van de server en kan "klaar" melden voor deze pagina luistert.
+  // Daarom vragen we het zelf, tot er antwoord komt (hoogstens een halve minuut).
+  useEffect(() => {
+    if (klaar) return;
+    let n = 0;
+    const vraag = () => frame.current?.contentWindow?.postMessage({ type: "specified-voorbeeld", vraag: "klaar" }, origin);
+    vraag();
+    const t = setInterval(() => (++n > 100 ? clearInterval(t) : vraag()), 300);
+    return () => clearInterval(t);
+  }, [klaar, origin]);
+
   // Pas na "klaar" luistert de pagina; daarna gaat elke wijziging meteen door.
   useEffect(() => {
     if (!klaar) return;
     frame.current?.contentWindow?.postMessage({ type: "specified-voorbeeld", ...bericht }, origin);
   }, [bericht, klaar, origin]);
+
+  // Op een smal scherm (telefoon) meteen de mobiele weergave: desktop wordt daar onleesbaar klein.
+  const gekozen = useRef(false);
+  useEffect(() => {
+    if (!gekozen.current && maat.w > 0) {
+      gekozen.current = true;
+      if (maat.w < 560) setBreedte(BREEDTES[2].px);
+    }
+  }, [maat.w]);
 
   const schaal = maat.w ? Math.min(1, maat.w / breedte) : 1;
 

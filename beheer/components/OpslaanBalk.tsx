@@ -65,16 +65,16 @@ export default function OpslaanBalk({
 
   return (
     <div className="sticky bottom-[calc(5rem+env(safe-area-inset-bottom))] md:bottom-4 z-20 mt-8">
-      <div className="glas flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+      <div className="glas !bg-[rgba(30,30,33,.92)] flex items-center justify-between gap-3 px-3 sm:px-4 py-2.5 sm:py-3">
         <p
           role="status"
           aria-live="polite"
-          className={`label ${!staat.ok && staat.melding ? "!text-[var(--alarm)]" : ""}`}
+          className={`label min-w-0 !whitespace-normal leading-snug ${!staat.ok && staat.melding ? "!text-[var(--alarm)]" : ""}`}
           data-toon={!staat.ok && staat.melding ? "let-op" : gewijzigd ? "let-op" : "goed"}
         >
           {tekstStatus}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           {extra}
           <Knop label={label} />
         </div>

@@ -18,7 +18,7 @@ export default async function Homepage() {
         vul={60}
         uitleg={
           <>
-            Klik in een veld: het voorbeeld rechts scrollt naar dat stuk van de website en toont je tekst meteen. Een leeg veld gebruikt de standaardtekst.
+            Klik in een veld: het voorbeeld scrollt naar dat stuk van de website en toont je tekst meteen. Een leeg veld gebruikt de standaardtekst.
             {gewijzigd && <span className="zwak"> Laatst gewijzigd {wanneer(gewijzigd)}.</span>}
           </>
         }

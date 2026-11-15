@@ -51,6 +51,11 @@ export function useVoorbeeld(relaties: Record<string, string> = {}) {
       if (e.source !== window.parent) return;
 
       if (BEHEER_ORIGINS.includes(e.origin) && e.data?.type === "specified-voorbeeld") {
+        // Het beheer vraagt of we luisteren (het kon onze eerste melding gemist hebben).
+        if (e.data.vraag === "klaar") {
+          window.parent.postMessage({ type: "specified-voorbeeld", klaar: true }, e.origin);
+          return;
+        }
         if (e.data.data) {
           const json = JSON.stringify(e.data.data);
           if (json !== vorige.current) {
@@ -82,10 +87,18 @@ export function useVoorbeeld(relaties: Record<string, string> = {}) {
 
     window.addEventListener("message", onMessage);
     // Zonder dit bericht weet het beheer niet dat de pagina klaar is om te ontvangen.
-    // Een bericht naar een andere origin dan de ouder komt gewoon niet aan.
+    // Alleen naar de pagina waarin we echt staan (document.referrer), anders geeft de
+    // browser een waarschuwing voor elke andere origin.
     if (window.parent !== window) {
-      for (const o of BEHEER_ORIGINS) window.parent.postMessage({ type: "specified-voorbeeld", klaar: true }, o);
-      if (CMS_ORIGIN) window.parent.postMessage({ type: "payload-live-preview", ready: true }, CMS_ORIGIN);
+      const ouder = (() => {
+        try {
+          return new URL(document.referrer).origin;
+        } catch {
+          return "";
+        }
+      })();
+      if (BEHEER_ORIGINS.includes(ouder)) window.parent.postMessage({ type: "specified-voorbeeld", klaar: true }, ouder);
+      if (ouder === CMS_ORIGIN) window.parent.postMessage({ type: "payload-live-preview", ready: true }, CMS_ORIGIN);
     }
     return () => window.removeEventListener("message", onMessage);
   }, []);
