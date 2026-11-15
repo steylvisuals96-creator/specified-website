@@ -12,16 +12,18 @@ import Footer from "@/components/Footer";
 import { veiligeLink } from "@/lib/settings";
 import ScrollMomenten from "@/components/ScrollMomenten";
 import BewerkOverlay from "@/components/BewerkOverlay";
+import VoorbeeldFocus from "@/components/VoorbeeldFocus";
 import { samenvoegen, STANDAARD } from "@/lib/website";
 import { useVoorbeeld } from "@/lib/useVoorbeeld";
 
 /**
- * Live voorbeeld van de homepage naast het formulier "Website" in het CMS.
+ * Live voorbeeld van de homepage naast het formulier in het beheer. Klik je
+ * daar in een veld, dan scrollt deze pagina naar dat stuk (VoorbeeldFocus).
  * Tekst verschijnt direct; de tekening in de hero wordt pas opnieuw opgebouwd
  * zodra je even stopt met typen (ze bouwt zich bij elke wijziging helemaal op).
  */
 export default function HomeVoorbeeld() {
-  const { data } = useVoorbeeld();
+  const { data, focus } = useVoorbeeld();
   const inhoud = useMemo(() => (data ? samenvoegen(data) : STANDAARD), [data]);
 
   const heroDeel = useMemo(
@@ -42,6 +44,7 @@ export default function HomeVoorbeeld() {
   return (
     <>
       <BewerkOverlay />
+      <VoorbeeldFocus focus={focus} />
       <Nav />
       <main>
         <HeroTekening key={hero.sleutel} inhoud={hero.deel} />

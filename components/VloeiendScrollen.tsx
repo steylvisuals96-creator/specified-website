@@ -26,7 +26,18 @@ export default function VloeiendScrollen() {
     gsap.ticker.add(tik);
     gsap.ticker.lagSmoothing(0);
 
+    // Het live voorbeeld in het beheer vraagt soms om naar een plek te scrollen
+    // (components/VoorbeeldFocus.tsx). Via Lenis, anders vecht die ertegen.
+    const scrollNaar = (e: Event) => {
+      const y = (e as CustomEvent<{ y: number }>).detail?.y;
+      if (typeof y !== "number") return;
+      e.preventDefault();
+      lenis.scrollTo(y, { duration: 1.1 });
+    };
+    addEventListener("specified:scroll-naar", scrollNaar);
+
     return () => {
+      removeEventListener("specified:scroll-naar", scrollNaar);
       gsap.ticker.remove(tik);
       lenis.destroy();
     };

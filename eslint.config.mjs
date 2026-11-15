@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // De CMS in cms/ heeft een eigen ESLint-config en wordt apart gelint.
     "cms/**",
+    // Het nieuwe beheer in beheer/ is een eigen app en wordt apart gecontroleerd.
+    "beheer/**",
   ]),
 ]);
 

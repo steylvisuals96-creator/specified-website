@@ -1,4 +1,6 @@
 import { CMS_URL } from "./settings";
+import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
+import { isTiptap, tiptapNaarHtml } from "./richtekst";
 
 export type BlogPost = {
   id: string;
@@ -84,13 +86,55 @@ export function mapPost(d: any): BlogPost {
     publicatiedatum: d.publicatiedatum,
     coverUrl,
     auteurNaam: auteur,
-    inhoudHtml: d.inhoud ? lexicalToHtml(d.inhoud) : "",
+    // Nieuw beheer: Tiptap-document. Oude CMS: Lexical.
+    inhoudHtml: d.inhoud ? (isTiptap(d.inhoud) ? tiptapNaarHtml(d.inhoud) : lexicalToHtml(d.inhoud)) : "",
     metaTitel: d.meta_titel,
     metaBeschrijving: d.meta_beschrijving,
   };
 }
 
+/* ── Nieuw beheer (Supabase) ─────────────────────────────── */
+
+type SupabaseArtikel = {
+  id: string;
+  slug: string;
+  titel: string;
+  samenvatting: string;
+  publicatiedatum: string;
+  cover_id: string | null;
+  cover_url: string | null;
+  inhoud: unknown;
+  meta_titel: string;
+  meta_beschrijving: string;
+  auteur: { voornaam: string; achternaam: string } | null;
+};
+
+const BLOG_KOLOMMEN = "id,slug,titel,samenvatting,publicatiedatum,cover_id,cover_url,inhoud,meta_titel,meta_beschrijving,auteur:auteur_id(voornaam,achternaam)";
+
+function mapSupabase(a: SupabaseArtikel): BlogPost {
+  return {
+    id: a.id,
+    titel: a.titel,
+    slug: a.slug,
+    samenvatting: a.samenvatting || undefined,
+    publicatiedatum: a.publicatiedatum,
+    coverUrl: mediaUrl(a.cover_id) ?? (a.cover_url && /^https:\/\//i.test(a.cover_url) ? a.cover_url : undefined),
+    auteurNaam: a.auteur ? `${a.auteur.voornaam} ${a.auteur.achternaam}`.trim() : undefined,
+    inhoudHtml: tiptapNaarHtml(a.inhoud),
+    metaTitel: a.meta_titel || undefined,
+    metaBeschrijving: a.meta_beschrijving || undefined,
+  };
+}
+
 export async function getBlogPosts(): Promise<BlogPost[]> {
+  if (LEEST_UIT_SUPABASE) {
+    try {
+      // RLS geeft anoniem alleen gepubliceerde artikels met een datum tot vandaag.
+      return (await supabaseLees<SupabaseArtikel>(`blog?select=${BLOG_KOLOMMEN}&order=publicatiedatum.desc&limit=50`)).map(mapSupabase);
+    } catch {
+      return [];
+    }
+  }
   try {
     const res = await fetch(
       `${CMS_URL}/api/blog?where[status][equals]=gepubliceerd&sort=-publicatiedatum&limit=50&depth=1`,
@@ -105,6 +149,15 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  if (LEEST_UIT_SUPABASE) {
+    if (!/^[a-z0-9-]{1,140}$/.test(slug)) return null;
+    try {
+      const [a] = await supabaseLees<SupabaseArtikel>(`blog?select=${BLOG_KOLOMMEN}&slug=eq.${slug}&limit=1`);
+      return a ? mapSupabase(a) : null;
+    } catch {
+      return null;
+    }
+  }
   try {
     const res = await fetch(
       `${CMS_URL}/api/blog?where[slug][equals]=${encodeURIComponent(slug)}&where[status][equals]=gepubliceerd&limit=1&depth=1`,

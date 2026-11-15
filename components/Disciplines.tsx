@@ -58,7 +58,7 @@ export default function Disciplines({ inhoud = STANDAARD.consultants }: { inhoud
         ))}
       </ul>
 
-      <div className="disc__rows" aria-hidden="true">
+      <div className="disc__rows" aria-hidden="true" data-bewerk="consultants.profielen">
         {lijst.map((d, i) => (
           <div
             key={d}

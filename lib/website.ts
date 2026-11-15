@@ -1,4 +1,5 @@
 import { CMS_URL } from "./settings";
+import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
 import { CONSULTANTS, DIENSTEN, HERO, JOBS, TEKENING, TEKENING_CALLOUTS } from "./inhoud";
 
 /**
@@ -89,6 +90,15 @@ export function samenvoegen(cms: any): WebsiteInhoud {
 }
 
 export async function getWebsite(): Promise<WebsiteInhoud> {
+  if (LEEST_UIT_SUPABASE) {
+    // Zelfde vorm als de oude global "website", dus dezelfde samenvoeging.
+    try {
+      const [rij] = await supabaseLees<{ waarde: unknown }>("pagina_inhoud?select=waarde&sleutel=eq.homepage");
+      return samenvoegen(rij?.waarde ?? {});
+    } catch {
+      return STANDAARD;
+    }
+  }
   try {
     const res = await fetch(`${CMS_URL}/api/globals/website`, { next: { revalidate: 60 } });
     if (!res.ok) return STANDAARD;

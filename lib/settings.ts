@@ -1,3 +1,5 @@
+import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
+
 /**
  * Waar de CMS draait. Overschrijfbaar via NEXT_PUBLIC_CMS_URL zodat een
  * preview- of lokale omgeving niet tegen productie hoeft te praten.
@@ -90,6 +92,21 @@ export const veiligeLink = (v?: string): string | undefined => (v && /^https:\/\
  * waar ze vroeger stonden.
  */
 export async function getSettings(): Promise<SiteSettings> {
+  if (LEEST_UIT_SUPABASE) {
+    // Het nieuwe beheer kent geen aparte instellingen: contact en footer staan bij de homepage-teksten.
+    try {
+      const [rij] = await supabaseLees<{ waarde: { contact?: Contact } }>("pagina_inhoud?select=waarde&sleutel=eq.homepage");
+      const c: Contact = rij?.waarde?.contact ?? {};
+      return {
+        contact_email: gevuld(c.email),
+        telefoon: gevuld(c.telefoon),
+        linkedin: veiligeLink(gevuld(c.linkedin)),
+        footer_tekst: gevuld(c.footerTekst),
+      };
+    } catch {
+      return {};
+    }
+  }
   const [s, website] = await Promise.all([
     haalGlobal<SiteSettings>("instellingen"),
     haalGlobal<{ contact?: Contact }>("website"),
@@ -104,7 +121,26 @@ export async function getSettings(): Promise<SiteSettings> {
   };
 }
 
+type SupabaseTeamlid = { id: string; voornaam: string; achternaam: string; rol: string; bio: string; linkedin: string | null; foto_id: string | null };
+
 export async function getTeam(): Promise<TeamMember[]> {
+  if (LEEST_UIT_SUPABASE) {
+    try {
+      // RLS geeft anoniem alleen actieve teamleden.
+      const rijen = await supabaseLees<SupabaseTeamlid>("team?select=id,voornaam,achternaam,rol,bio,linkedin,foto_id&order=volgorde.asc,voornaam.asc&limit=50");
+      return rijen.map((m) => ({
+        id: m.id,
+        voornaam: m.voornaam,
+        achternaam: m.achternaam,
+        rol: m.rol,
+        bio: m.bio,
+        linkedin: veiligeLink(m.linkedin ?? undefined),
+        fotoUrl: mediaUrl(m.foto_id),
+      }));
+    } catch {
+      return [];
+    }
+  }
   try {
     const res = await fetch(
       `${CMS_URL}/api/team?where[actief][equals]=true&sort=volgorde&limit=50&depth=1`,

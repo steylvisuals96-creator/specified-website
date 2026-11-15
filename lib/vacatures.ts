@@ -1,4 +1,6 @@
 import { CMS_URL } from "./settings";
+import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
+import { tiptapAlineas } from "./richtekst";
 
 /**
  * Vacatures uit de CMS, op één plek: de homepage, de lijst en de pagina per
@@ -110,11 +112,68 @@ function vorm(v: any): Vacature {
   };
 }
 
+/** Een rij uit het nieuwe beheer (Supabase, tabel vacatures). Salaris staat daar in een aparte, afgeschermde tabel. */
+type SupabaseVacature = {
+  id: string;
+  slug: string;
+  titel: string;
+  vakgebied: string;
+  contract: string;
+  status: string;
+  locatie: string;
+  ervaring: string | null;
+  uren: string | null;
+  opleiding: string | null;
+  talen: string[];
+  beschrijving: unknown;
+  vereisten: string[];
+  nice_to_have: string[];
+  aanbod: string[];
+  geplaatst_op: string | null;
+  aangemaakt: string;
+};
+
+const KOLOMMEN =
+  "id,slug,titel,vakgebied,contract,status,locatie,ervaring,uren,opleiding,talen,beschrijving,vereisten,nice_to_have,aanbod,geplaatst_op,aangemaakt";
+
+const schoneLijst = (l: unknown): string[] => (Array.isArray(l) ? l.filter((x): x is string => typeof x === "string" && Boolean(x.trim())).map((x) => x.trim()) : []);
+
+function vormSupabase(v: SupabaseVacature): Vacature {
+  return {
+    id: v.id,
+    slug: v.slug,
+    titel: v.titel.trim() || "Vacature",
+    vakgebied: label(VAKGEBIED, v.vakgebied),
+    locatie: v.locatie?.trim() || "Vlaanderen",
+    uren: label(UREN, v.uren),
+    contract: label(CONTRACT, v.contract),
+    ervaring: label(ERVARING, v.ervaring),
+    opleiding: label(OPLEIDING, v.opleiding),
+    talen: schoneLijst(v.talen).map((t) => label(TAAL, t)).filter(Boolean),
+    geplaatst: v.geplaatst_op || v.aangemaakt || undefined,
+    ingevuld: v.status === "ingevuld",
+    beschrijving: tiptapAlineas(v.beschrijving),
+    profiel: schoneLijst(v.vereisten),
+    niceToHave: schoneLijst(v.nice_to_have),
+    aanbod: schoneLijst(v.aanbod),
+  };
+}
+
 /**
  * Open vacatures eerst, ingevulde erna (die blijven zichtbaar als ingevuld).
  * De CMS geeft anoniem alleen terug wat op de website mag staan.
  */
 export async function getVacatures(limiet = 100): Promise<Vacature[]> {
+  if (LEEST_UIT_SUPABASE) {
+    try {
+      // RLS geeft anoniem alleen zichtbare vacatures met status actief of ingevuld.
+      const rijen = await supabaseLees<SupabaseVacature>(`vacatures?select=${KOLOMMEN}&order=aangemaakt.desc&limit=${limiet}`);
+      const lijst = rijen.map(vormSupabase);
+      return [...lijst.filter((v) => !v.ingevuld), ...lijst.filter((v) => v.ingevuld)];
+    } catch {
+      return [];
+    }
+  }
   try {
     const res = await fetch(
       `${CMS_URL}/api/vacatures?where[status][in]=actief,ingevuld&limit=${limiet}&sort=-createdAt&depth=0`,
@@ -138,6 +197,12 @@ export async function getVacatures(limiet = 100): Promise<Vacature[]> {
 export async function getVacature(slug: string): Promise<Vacature | null> {
   if (!/^[a-z0-9-]{1,140}$/i.test(slug)) return null;
   const id = slug.match(UUID_ACHTERAAN)?.[0];
+  if (LEEST_UIT_SUPABASE) {
+    // Gooit bij een onbereikbare database: dan blijft de laatst gebouwde pagina staan.
+    const filter = id ? `or=(slug.eq.${encodeURIComponent(slug)},id.eq.${id})` : `slug=eq.${encodeURIComponent(slug)}`;
+    const [rij] = await supabaseLees<SupabaseVacature>(`vacatures?select=${KOLOMMEN}&${filter}&limit=1`);
+    return rij ? vormSupabase(rij) : null;
+  }
   const url = id
     ? `${CMS_URL}/api/vacatures/${id}?depth=0`
     : `${CMS_URL}/api/vacatures?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=0`;

@@ -28,13 +28,13 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
           <Link href="/blog">Blog</Link>
           <Link href="/faq">Veelgestelde vragen</Link>
           <Link href="/contact">Contact</Link>
-          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
+          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" data-bewerk="contact.linkedin">
             LinkedIn
           </a>
         </nav>
       </div>
       <div className="wrap footer__rij footer__rij--onder">
-        <p className="meta">{bedrijfsregel}</p>
+        <p className="meta" data-bewerk="contact.footerTekst">{bedrijfsregel}</p>
         <nav className="footer__links footer__links--klein" aria-label="Juridisch">
           <Link href="/privacy">Privacy</Link>
           <Link href="/cookies">Cookies</Link>

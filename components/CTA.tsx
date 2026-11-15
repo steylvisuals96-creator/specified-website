@@ -8,11 +8,11 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
     <section id="contact" className="cta">
       <div className="wrap cta__inner">
         <h2 className="display display-l">{metAccent(titel || "Laten we kennismaken.")}</h2>
-        <a href={`mailto:${mail}`} className="cta__mail">
+        <a href={`mailto:${mail}`} className="cta__mail" data-bewerk="contact.email">
           {mail}
         </a>
         {telefoon && (
-          <a href={`tel:${telefoon.replace(/\s/g, "")}`} className="text-link cta__tel">
+          <a href={`tel:${telefoon.replace(/\s/g, "")}`} className="text-link cta__tel" data-bewerk="contact.telefoon">
             {telefoon}
           </a>
         )}

@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { CMS_URL } from "@/lib/settings";
+import { BEHEER_URL } from "@/lib/beheer";
 
 // Hosts die via next/image mogen: dan komt het beeld van ons eigen domein, in
 // de juiste maat en als AVIF/WebP, zonder extra verbinding naar buiten.
 // Moet overeenkomen met images.remotePatterns in next.config.ts.
-const TOEGESTAAN = new Set(["images.unsplash.com", safeHost(CMS_URL)]);
+const TOEGESTAAN = new Set(["images.unsplash.com", safeHost(CMS_URL), safeHost(BEHEER_URL)].filter(Boolean));
 
 function safeHost(url: string) {
   try {

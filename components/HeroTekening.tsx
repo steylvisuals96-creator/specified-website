@@ -425,6 +425,29 @@ function tijdlijn(root: HTMLElement, d: Delen) {
   return tl;
 }
 
+// De tijdlijn die nu op de pagina draait, voor heroScrollY().
+let actieveTijdlijn: gsap.core.Timeline | null = null;
+
+/**
+ * Momenten in de tekening (tijd op de tijdlijn hieronder): waar de callouts
+ * volledig staan, waar het titelblok staat en het eindbeeld met de titel.
+ */
+const HERO_MOMENT = { begin: 0, callouts: 3.2, titelblok: 4.8, slot: Number.POSITIVE_INFINITY };
+export type HeroMoment = keyof typeof HERO_MOMENT;
+
+/**
+ * Voor het live voorbeeld in het beheer: de scrollpositie waarop een moment
+ * van de tekening in beeld staat. Null zonder tijdlijn (beweging beperkt of
+ * nog niet gebouwd); dan scrolt het voorbeeld gewoon naar het element.
+ */
+export function heroScrollY(moment: HeroMoment): number | null {
+  const tl = actieveTijdlijn;
+  const st = tl?.scrollTrigger;
+  if (!tl || !st || !tl.duration()) return null;
+  const t = Math.min(tl.duration(), HERO_MOMENT[moment]);
+  return st.start + (st.end - st.start) * (t / tl.duration());
+}
+
 export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<WebsiteInhoud, "hero" | "tekening" | "callouts"> }) {
   T = { tekening: inhoud.tekening, callouts: inhoud.callouts };
   const HERO = inhoud.hero;
@@ -451,6 +474,7 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
           let geladen = false;
 
           const opruimen = () => {
+            if (actieveTijdlijn === tl) actieveTijdlijn = null;
             tl?.scrollTrigger?.kill();
             tl?.kill();
             tl = null;
@@ -470,6 +494,7 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
             opruimen();
             const delen = staand ? bouwStaand(svg, vw, vh) : bouwLiggend(svg, vw, vh, kopVak(root, blad));
             tl = tijdlijn(root, delen);
+            actieveTijdlijn = tl;
             ScrollTrigger.refresh();
             // Laadmoment (alleen de eerste keer, bovenaan de pagina): de rand van
             // het blad tekent zich, daarna neemt de tekening het woord over zodra

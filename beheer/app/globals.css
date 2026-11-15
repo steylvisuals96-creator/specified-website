@@ -1,0 +1,659 @@
+@import "tailwindcss";
+
+/*
+ * Beheer van Specified. De opbouw komt uit de SteylVisuals-studio (donkere
+ * grond met een trage, vervaagde gloed, matglazen panelen, glans onder de muis,
+ * een glijdend blokje in de zijbalk), in de huisstijl van Specified: grafiet,
+ * limoen als enige accent, Bebas Neue voor koppen, Instrument Serif Italic als
+ * accentwoord, IBM Plex Sans voor de rest. Radius 2px, geen pill-knoppen, geen
+ * pijltjes, geen kapitalen-labels. Een fijn tekenraster verwijst naar de
+ * technische tekening op de website.
+ */
+
+@theme {
+  --color-limoen: #dffd7b;
+  --color-grafiet: #1e1e21;
+  --color-grafiet-licht: #323236;
+  --font-kop: var(--font-bebas), "Arial Narrow", sans-serif;
+  --font-accent: var(--font-serif), Georgia, serif;
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+}
+
+:root {
+  --grond: #141416;
+  --paneel: rgba(233, 231, 221, 0.04);
+  --paneel-sterk: rgba(233, 231, 221, 0.075);
+  --glasrand: rgba(233, 231, 221, 0.085);
+  --tekst: #e9e7dd;
+  --stil: rgba(233, 231, 221, 0.62);
+  --zwak: rgba(233, 231, 221, 0.42);
+  --lijn: rgba(233, 231, 221, 0.1);
+  --streep: rgba(233, 231, 221, 0.28);
+  --limoen: #dffd7b;
+  --limoen-zacht: rgba(223, 253, 123, 0.14);
+  --op-limoen: #1e1e21;
+  --alarm: #ff9b85;
+  --goed: #b9e86a;
+  --r: 2px;
+  color-scheme: dark;
+}
+
+html {
+  background: var(--grond);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+html,
+body {
+  min-height: 100%;
+  color: var(--tekst);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.kop {
+  font-family: var(--font-kop);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+.accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--limoen);
+}
+
+.stil {
+  color: var(--stil);
+}
+.zwak {
+  color: var(--zwak);
+}
+
+/* ── Achtergrond: trage gloed achter matglas, met een fijn tekenraster ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10vmax;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(36vmax 28vmax at 16% 10%, rgba(223, 253, 123, 0.085), transparent 70%),
+    radial-gradient(46vmax 36vmax at 88% 26%, rgba(70, 70, 76, 0.55), transparent 72%),
+    radial-gradient(44vmax 34vmax at 62% 98%, rgba(160, 190, 70, 0.07), transparent 70%),
+    radial-gradient(30vmax 26vmax at 6% 80%, rgba(50, 50, 54, 0.85), transparent 70%),
+    linear-gradient(160deg, #1e1e21 0%, #141416 55%, #0f0f11 100%);
+  filter: blur(40px) saturate(110%);
+  animation: gloed 40s ease-in-out infinite alternate;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(233, 231, 221, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233, 231, 221, 0.028) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 85%);
+}
+@keyframes gloed {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3vmax, -2vmax, 0) scale(1.05) rotate(1.5deg);
+  }
+  100% {
+    transform: translate3d(-2vmax, 2.5vmax, 0) scale(1.03) rotate(-1deg);
+  }
+}
+
+/* ── Matglas ── */
+.glas,
+.paneel {
+  position: relative;
+  background: var(--paneel);
+  border: 1px solid var(--glasrand);
+  border-radius: var(--r);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 250, 0.05),
+    0 18px 50px -24px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.3s;
+}
+.paneel {
+  padding: 24px;
+}
+@media (min-width: 768px) {
+  .paneel {
+    padding: 28px;
+  }
+}
+
+/* Glans onder de muis: een zachte limoenvlek en een oplichtende rand (components/Glans.tsx). */
+.glas::before,
+.glas::after,
+.paneel::before,
+.paneel::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s;
+}
+.glas::before,
+.paneel::before {
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(223, 253, 123, 0.06), transparent 70%);
+}
+.glas::after,
+.paneel::after {
+  padding: 1px;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(223, 253, 123, 0.7), transparent 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+[data-glans]::before,
+[data-glans]::after {
+  opacity: 1;
+}
+
+/* Hoekmarkeringen zoals op een tekenblad, voor het belangrijkste paneel van een pagina. */
+.blad {
+  --hoek: 10px;
+  background:
+    linear-gradient(var(--limoen), var(--limoen)) top left / var(--hoek) 1px no-repeat,
+    linear-gradient(var(--limoen), var(--limoen)) top left / 1px var(--hoek) no-repeat,
+    linear-gradient(var(--limoen), var(--limoen)) bottom right / var(--hoek) 1px no-repeat,
+    linear-gradient(var(--limoen), var(--limoen)) bottom right / 1px var(--hoek) no-repeat,
+    var(--paneel);
+}
+
+/* ── Knoppen ── */
+.knop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 20px;
+  background: var(--limoen);
+  color: var(--op-limoen);
+  border: 1px solid var(--limoen);
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.12s;
+}
+.knop:hover {
+  background: #e9ffa0;
+  border-color: #e9ffa0;
+}
+.knop:active {
+  transform: scale(0.98);
+}
+.knop:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+.knop-stil {
+  background: var(--paneel-sterk);
+  color: var(--tekst);
+  border-color: var(--glasrand);
+}
+.knop-stil:hover {
+  background: rgba(233, 231, 221, 0.12);
+  border-color: var(--streep);
+}
+.knop-gevaar {
+  background: transparent;
+  color: var(--alarm);
+  border-color: rgba(255, 155, 133, 0.35);
+}
+.knop-gevaar:hover {
+  background: rgba(255, 155, 133, 0.1);
+  border-color: var(--alarm);
+}
+.knop-klein {
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+.tekstknop {
+  color: var(--stil);
+  font-size: 13.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--streep);
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+.tekstknop:hover {
+  color: var(--tekst);
+  text-decoration-color: var(--limoen);
+}
+
+:focus-visible {
+  outline: 2px solid var(--limoen);
+  outline-offset: 2px;
+}
+
+/* ── Velden: één lijn onder de tekst, limoen bij focus ── */
+.veld-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stil);
+  margin-bottom: 2px;
+}
+.veld-hint {
+  font-size: 12.5px;
+  color: var(--zwak);
+  margin-top: 6px;
+}
+.veld-fout {
+  font-size: 12.5px;
+  color: var(--alarm);
+  margin-top: 6px;
+}
+.invoer {
+  width: 100%;
+  background: transparent;
+  color: var(--tekst);
+  border: 0;
+  border-bottom: 1px solid var(--streep);
+  border-radius: 0;
+  padding: 9px 0;
+  font: inherit;
+  transition: border-color 0.2s;
+}
+.invoer::placeholder {
+  color: var(--zwak);
+}
+.invoer:hover {
+  border-bottom-color: rgba(233, 231, 221, 0.45);
+}
+.invoer:focus {
+  outline: none;
+  border-bottom-color: var(--limoen);
+  box-shadow: 0 1px 0 0 var(--limoen);
+}
+.invoer[aria-invalid="true"] {
+  border-bottom-color: var(--alarm);
+}
+textarea.invoer {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.55;
+}
+select.invoer {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 22px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--stil) 50%), linear-gradient(135deg, var(--stil) 50%, transparent 50%);
+  background-position:
+    calc(100% - 9px) 52%,
+    calc(100% - 4px) 52%;
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+}
+select.invoer option {
+  background: #1e1e21;
+  color: var(--tekst);
+}
+
+/* Schakelaar (aan/uit) */
+.schakel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.schakel input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.schakel-baan {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  flex: none;
+  border: 1px solid var(--streep);
+  border-radius: var(--r);
+  background: transparent;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.schakel-baan::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 1px;
+  background: var(--stil);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.2s;
+}
+.schakel input:checked + .schakel-baan {
+  background: var(--limoen-zacht);
+  border-color: var(--limoen);
+}
+.schakel input:checked + .schakel-baan::after {
+  transform: translateX(16px);
+  background: var(--limoen);
+}
+.schakel input:focus-visible + .schakel-baan {
+  outline: 2px solid var(--limoen);
+  outline-offset: 2px;
+}
+
+/* Keuzechips (meerdere waarden, bv. talen) */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--glasrand);
+  border-radius: var(--r);
+  font-size: 13.5px;
+  color: var(--stil);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+.chip:hover {
+  border-color: var(--streep);
+  color: var(--tekst);
+}
+input:checked + .chip {
+  border-color: var(--limoen);
+  color: var(--tekst);
+  background: var(--limoen-zacht);
+}
+input:focus-visible + .chip {
+  outline: 2px solid var(--limoen);
+  outline-offset: 2px;
+}
+
+/* ── Statuslabels ── */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--stil);
+  white-space: nowrap;
+}
+.label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--zwak);
+}
+.label[data-toon="goed"]::before {
+  background: var(--limoen);
+  box-shadow: 0 0 10px rgba(223, 253, 123, 0.6);
+}
+.label[data-toon="goed"] {
+  color: var(--tekst);
+}
+.label[data-toon="let-op"]::before {
+  background: #f2c66d;
+}
+.label[data-toon="uit"]::before {
+  background: transparent;
+  border: 1px solid var(--zwak);
+}
+
+/* ── Tabellen ── */
+.tabel {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabel th {
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--zwak);
+  padding: 0 16px 12px 0;
+}
+.tabel td {
+  padding: 14px 16px 14px 0;
+  border-top: 1px solid var(--lijn);
+  vertical-align: middle;
+}
+.tabel tbody tr {
+  transition: background 0.15s;
+}
+.tabel tbody tr:hover {
+  background: rgba(233, 231, 221, 0.025);
+}
+.rij-link {
+  color: var(--tekst);
+  font-weight: 500;
+}
+.rij-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--limoen);
+  text-underline-offset: 4px;
+}
+
+/* ── Rich text editor ── */
+.richtekst {
+  min-height: 220px;
+  padding: 14px 0 6px;
+  line-height: 1.65;
+}
+.richtekst:focus {
+  outline: none;
+}
+.richtekst > * + * {
+  margin-top: 0.75em;
+}
+.richtekst h2 {
+  font-size: 1.85rem;
+  margin-top: 1.1em;
+}
+.richtekst h3 {
+  font-size: 1.4rem;
+  margin-top: 1em;
+}
+.richtekst ul {
+  list-style: square;
+  padding-left: 1.3em;
+}
+.richtekst ol {
+  list-style: decimal;
+  padding-left: 1.3em;
+}
+.richtekst li::marker {
+  color: var(--limoen);
+}
+.richtekst blockquote {
+  border-left: 2px solid var(--limoen);
+  padding-left: 14px;
+  color: var(--stil);
+}
+.richtekst a {
+  color: var(--limoen);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.richtekst hr {
+  border: 0;
+  border-top: 1px solid var(--lijn);
+}
+.richtekst p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--zwak);
+  pointer-events: none;
+}
+
+/* ── Beweging ── */
+@keyframes scherpstellen {
+  from {
+    opacity: 0.35;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+.paginawissel {
+  animation: scherpstellen 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.laden {
+  -webkit-mask-image: linear-gradient(100deg, #000 30%, rgba(0, 0, 0, 0.55) 50%, #000 70%);
+  mask-image: linear-gradient(100deg, #000 30%, rgba(0, 0, 0, 0.55) 50%, #000 70%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  animation:
+    ladenTonen 0.2s 0.15s both,
+    ladenGlans 1.6s 0.15s ease-in-out infinite;
+}
+@keyframes ladenTonen {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ladenGlans {
+  to {
+    -webkit-mask-position: -100% 0;
+    mask-position: -100% 0;
+  }
+}
+
+/* Een melding schuift kort in en verdwijnt weer. */
+@keyframes meldingIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+}
+.melding-in {
+  animation: meldingIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Maatlijn onder een paginatitel: zoals een maataanduiding op een tekening. */
+.maatlijn {
+  position: relative;
+  height: 9px;
+  margin-top: 18px;
+  border-left: 1px solid var(--streep);
+  border-right: 1px solid var(--streep);
+}
+.maatlijn::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 4px;
+  border-top: 1px solid var(--streep);
+}
+.maatlijn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 1px;
+  width: var(--vul, 18%);
+  background: var(--limoen);
+  transform-origin: left;
+  animation: maatVullen 1s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes maatVullen {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paginawissel,
+  .laden,
+  .melding-in,
+  .maatlijn::after,
+  body::before {
+    animation: none;
+  }
+}
+
+/* ── Telefoon: rekenwerk sparen en tikken direct laten reageren ── */
+a,
+button,
+summary,
+label,
+[role="button"] {
+  touch-action: manipulation;
+}
+@media (hover: none), (max-width: 767px) {
+  .glas,
+  .paneel {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(233, 231, 221, 0.05);
+  }
+  body::before {
+    animation: none;
+    filter: none;
+  }
+}
+@media (max-width: 767px) {
+  .invoer {
+    font-size: 16px;
+  }
+  .tabel-schuif {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body {
+    overflow-x: clip;
+  }
+}

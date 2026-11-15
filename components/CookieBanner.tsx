@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@/lib/consent";
 
 /**
@@ -11,6 +12,8 @@ import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@
  */
 export default function CookieBanner() {
   const [visible, setVisible] = useState(true);
+  // De voorbeeldpagina's staan in een frame in het beheer; daar hoort geen banner over de inhoud.
+  const voorbeeld = /^\/(voorbeeld\/|blog\/voorbeeld)/.test(usePathname() ?? "");
 
   useEffect(() => {
     const sync = () => setVisible(readConsent() === null);
@@ -23,7 +26,7 @@ export default function CookieBanner() {
     setVisible(false);
   }
 
-  if (!visible) return null;
+  if (!visible || voorbeeld) return null;
 
   return (
     <div role="dialog" aria-label="Cookievoorkeuren" className="cookie-banner">
