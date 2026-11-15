@@ -1,7 +1,8 @@
 @import "tailwindcss";
+@import "./seizoen.css";
 
 /* Tokens uit DESIGN.md (richting Signatuurmerk). */
-:root {
+:where(:root, .seizoenstaal) {
   --ink-900: #14140e;
   --ink-800: #1d1e16;
   --olive-600: #3a3f2a;
@@ -848,8 +849,8 @@ html.vizier-aan textarea, html.vizier-aan [contenteditable="true"] { cursor: tex
    De bezoeker kiest (lib/thema.ts). Dezelfde tokens, omgekeerd: het canvas
    wordt warm papier, de tekst inkt. Limoen blijft als vlak; als tekst en lijn
    wordt het een donker olijfgroen dat op papier leesbaar is (contrast 7:1). */
-:root { --fout: #ff9d8a; color-scheme: dark; }
-:root[data-thema="licht"] {
+:where(:root, .seizoenstaal) { --fout: #ff9d8a; color-scheme: dark; }
+:where(:root, .seizoenstaal)[data-thema="licht"] {
   color-scheme: light;
   --ink-900: #f1efe6;
   --ink-800: #e6e3d6;

@@ -5,6 +5,7 @@ import CookieBanner from "@/components/CookieBanner";
 import VloeiendScrollen from "@/components/VloeiendScrollen";
 import Vizier from "@/components/Vizier";
 import { CONSENT_HEAD_SCRIPT } from "@/lib/consent";
+import { actiefSeizoen } from "@/lib/seizoen-server";
 import { THEMA_HEAD_SCRIPT } from "@/lib/thema";
 import { SITE_URL } from "@/lib/site";
 import AnalyticsGate from "@/components/AnalyticsGate";
@@ -48,16 +49,17 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const seizoen = await actiefSeizoen();
   return (
     // data-scroll-behavior is vereist sinds Next.js 16: het framework overschrijft
     // `scroll-behavior: smooth` niet langer zelf tijdens route-overgangen, waardoor
     // navigeren zonder dit attribuut traag naar boven glijdt in plaats van te springen.
-    <html lang="nl" className={`${bebasNeue.variable} ${plexSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="nl" className={`${bebasNeue.variable} ${plexSans.variable} ${instrumentSerif.variable} h-full`} data-scroll-behavior="smooth" data-seizoen={seizoen === "standaard" ? undefined : seizoen} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: CONSENT_HEAD_SCRIPT + ";" + THEMA_HEAD_SCRIPT }} />
       </head>

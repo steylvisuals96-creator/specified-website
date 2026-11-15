@@ -10,7 +10,7 @@ function groet() {
   return uur < 12 ? "Goedemorgen" : uur < 18 ? "Goedemiddag" : "Goedenavond";
 }
 
-const TABEL: Record<string, string> = { vacatures: "Vacature", blog: "Artikel", team: "Teamlid", media: "Beeld", pagina_inhoud: "Homepage", profielen: "Gebruiker" };
+const TABEL: Record<string, string> = { vacatures: "Vacature", blog: "Artikel", team: "Teamlid", media: "Beeld", pagina_inhoud: "Homepage", seizoensthema: "Seizoensthema", profielen: "Gebruiker" };
 const ACTIE: Record<string, string> = { nieuw: "toegevoegd", gewijzigd: "gewijzigd", verwijderd: "verwijderd" };
 
 export default async function Overzicht() {
@@ -57,6 +57,13 @@ export default async function Overzicht() {
           <p className="text-[13px] zwak mt-3 break-all">{WEBSITE_URL.replace(/^https?:\/\//, "")}</p>
         </a>
       </div>
+
+      {isBeheerder(s) && (
+        <Link href="/seizoensthema" className="paneel block mt-5 hover:border-[var(--streep)]">
+          <p className="kop text-[30px]">Seizoensthema</p>
+          <p className="stil mt-1">Kies of plan een andere look voor de website.</p>
+        </Link>
+      )}
 
       <div className="grid gap-5 mt-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         <section className="paneel">

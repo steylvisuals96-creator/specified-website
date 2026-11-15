@@ -128,6 +128,12 @@ Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén syste
 - Nog niet bewerkbaar: privacy, cookies, disclaimer, toegankelijkheid en algemene voorwaarden (lange teksten, vragen een tekstverwerker). Een klik erop in het voorbeeld zegt dat.
 - **Live getest** (2026-11-15, ingelogd als Sam): overzicht Pagina's, editor Voor bedrijven (typen in "Sectoren": voorbeeld scrolt mee en toont de tekst, niet opgeslagen), en een klik op "Neem contact op" in het voorbeeld opent de editor van Contact. Het voorbeeld schaalt niet meer als het op ware grootte past (scherper).
 
+### Seizoensthema voor de website
+
+Via **Website > Seizoensthema** in het beheer kiezen beheerders Standaard, Kerst, Winter, Lente, Zomer of Herfst. Het voorbeeld toont de gekozen kleuren vóór het opslaan, zowel licht als donker. Ze kunnen meteen wisselen of een begin- en/of einddatum opgeven in Belgische tijd. De einddatum is inbegrepen. Buiten de gekozen periode toont de website de standaardstijl. Dit is één instelling: een nieuw opgeslagen thema vervangt de vorige keuze.
+
+De website leest de instelling publiek uit `public.seizoensthema`; alleen beheerders en creators kunnen wijzigen. Opslaan ververst de site met het bestaande cachemechanisme en schrijft een regel in het logboek. Migratie `20261115_05_seizoensthema.sql` is toegepast op Supabase met **Standaard** als startwaarde. De licht/donkerkeuze blijft bij de bezoeker.
+
 ### Oude CMS op Payload (nog live)
 
 Eén codebase met twee ingangen:
@@ -173,7 +179,7 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 ## 5. Infrastructuur
 
 - **Vercel**: drie projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap (zonder `cms/` en `beheer/`), `specified-cms` bouwt met root directory `cms`, `specified-beheer` met root directory `beheer` (aangemaakt 2026-11-15, functies in Frankfurt naast Supabase). Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step). Geheime variabelen van het beheer staan als "Sensitive" (achteraf niet leesbaar). `VERVERS_GEHEIM` (website) en `WEBSITE_VERVERS_GEHEIM` (beheer) zijn dezelfde willekeurige waarde, alleen in productie.
-- **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload` (oude CMS), niet via de Data API bereikbaar, anon en authenticated hebben geen rechten (nagekeken 2026-11-15: de Supabase-melding "RLS uit" op die tabellen is daardoor geen lek). Migratie uit MongoDB op 2026-09-26. Sinds 2026-11-15 ook schema `public` voor het nieuwe beheer (tabellen `profielen`, `vacatures`, `vacatures_intern`, `blog`, `team`, `media`, `pagina_inhoud`, `wijzigingen`, alle met RLS) en schema `privaat` voor de rolfuncties. Migraties in `beheer/supabase/migrations/`.
+- **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload` (oude CMS), niet via de Data API bereikbaar, anon en authenticated hebben geen rechten (nagekeken 2026-11-15: de Supabase-melding "RLS uit" op die tabellen is daardoor geen lek). Migratie uit MongoDB op 2026-09-26. Sinds 2026-11-15 ook schema `public` voor het nieuwe beheer (tabellen `profielen`, `vacatures`, `vacatures_intern`, `blog`, `team`, `media`, `pagina_inhoud`, `seizoensthema`, `wijzigingen`, alle met RLS) en schema `privaat` voor de rolfuncties. Migraties in `beheer/supabase/migrations/`.
 - **Cloudflare R2**: bucket `specified-media` (aangemaakt 2026-11-15, West-Europa, privé, geen r2.dev-adres), in het Cloudflare-account van SteylVisuals. API-token `specified-media` met alleen Object Read & Write op die bucket. Gebruikt door het nieuwe beheer; beelden naar buiten via `/m/<id>` met een ondertekende link. **De oude CMS heeft R2 nooit gebruikt**: in geen enkele Vercel-omgeving van `specified-cms` staan R2-variabelen, dus uploads daar zouden op de tijdelijke schijf van Vercel belanden (de mediatabel was leeg, er is niets verloren). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
 - **Resend** (CMS en website sinds 2026-10-27; `FOUTMELDING_AAN` = steylvisuals96@gmail.com in beide Vercel-projecten, `RESEND_API_KEY` nog alleen in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
 
@@ -344,7 +350,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-15 23:52_
+_Bijgewerkt: 2026-11-15 23:54_
 
 ### Nog niet op main
 
@@ -356,6 +362,7 @@ _Bijgewerkt: 2026-11-15 23:52_
 
 **2026-11-15**
 
+- website: Draaiboek: doorklikpagina's live getest (`a9c5f96`)
 - website: Beheer: voorbeeld zonder schaling als het op ware grootte past (`304adca`)
 - website: Alle doorklikpagina's bewerkbaar in het beheer, klik in het voorbeeld opent de editor (`d3c6e59`)
 - website: Website: gezondheidscheck controleert Supabase na de overstap (de code, vorige commit had alleen het draaiboek) (`2e40813`)

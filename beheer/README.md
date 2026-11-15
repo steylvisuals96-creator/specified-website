@@ -29,7 +29,7 @@ Niet meegenomen (bewust): het recruitment-CRM uit de oude CMS (kandidaten, bedri
 5. Uploads: alleen vanaf het eigen domein, ingelogd, max 4 MB, type uit de eerste bytes (geen SVG).
 6. Headers: CSP, HSTS, geen frames (behalve het websitevoorbeeld), `noindex`.
 
-Rollen: `creator` (SteylVisuals, onzichtbaar voor de klant), `beheerder`, `redacteur`. Gebruikers en homepage alleen voor beheerder en creator.
+Rollen: `creator` (SteylVisuals, onzichtbaar voor de klant), `beheerder`, `redacteur`. Gebruikers, homepage en seizoensthema alleen voor beheerder en creator.
 
 ## Database
 
@@ -38,6 +38,8 @@ Schema `public` in het Supabase-project `specified-cms` (ref `htkcrkafetzbnpznek
 - `20261115_01_beheer_schema.sql`: tabellen, RLS, logboek-trigger.
 - `20261115_02_inhoud_uit_payload.sql`: inhoud gekopieerd uit `payload` (5 vacatures, 3 artikels, homepage-teksten). Lexical omgezet naar Tiptap.
 - `20261115_03_rolfuncties_naar_privaat.sql`: hulpfuncties uit de publieke API.
+- `20261115_04_paginateksten.sql`: teksten voor de doorklikpagina’s.
+- `20261115_05_seizoensthema.sql`: één publieke thema-instelling; wijzigingen alleen voor beheerders, met logboek.
 
 Getest met rolscenario's in SQL: anoniem, account zonder profiel, redacteur, beheerder, creator (13 van 13 zoals bedoeld).
 

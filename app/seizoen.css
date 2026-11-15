@@ -1,0 +1,138 @@
+/* De seizoenen zitten boven op de licht/donkerkeuze. Dezelfde tokens kleuren
+   de hele website en de staal in het beheer. */
+:where(:root, .seizoenstaal)[data-seizoen="kerst"] {
+  --ink-900: #10201a;
+  --ink-800: #192b22;
+  --olive-600: #395b49;
+  --lime-300: #f2d9a0;
+  --lime-vlak: #f2d9a0;
+}
+:where(:root, .seizoenstaal)[data-seizoen="winter"] {
+  --ink-900: #111e2a;
+  --ink-800: #192938;
+  --olive-600: #395669;
+  --lime-300: #bae6fc;
+  --lime-vlak: #bae6fc;
+}
+:where(:root, .seizoenstaal)[data-seizoen="lente"] {
+  --ink-900: #192518;
+  --ink-800: #233221;
+  --olive-600: #435d40;
+  --lime-300: #c5ebaa;
+  --lime-vlak: #c5ebaa;
+}
+:where(:root, .seizoenstaal)[data-seizoen="zomer"] {
+  --ink-900: #242116;
+  --ink-800: #312b1d;
+  --olive-600: #61543a;
+  --lime-300: #ffd377;
+  --lime-vlak: #ffd377;
+}
+:where(:root, .seizoenstaal)[data-seizoen="herfst"] {
+  --ink-900: #261b17;
+  --ink-800: #33241e;
+  --olive-600: #634734;
+  --lime-300: #ffba93;
+  --lime-vlak: #ffba93;
+}
+
+:where(:root, .seizoenstaal)[data-seizoen="kerst"][data-thema="licht"] {
+  --ink-900: #f3efe3;
+  --ink-800: #eae3d1;
+  --olive-600: #b3ad95;
+  --lime-300: #315844;
+}
+:where(:root, .seizoenstaal)[data-seizoen="winter"][data-thema="licht"] {
+  --ink-900: #edf4f7;
+  --ink-800: #e0ebf1;
+  --olive-600: #a4bac8;
+  --lime-300: #275770;
+}
+:where(:root, .seizoenstaal)[data-seizoen="lente"][data-thema="licht"] {
+  --ink-900: #eff3e8;
+  --ink-800: #e4eadb;
+  --olive-600: #a6b798;
+  --lime-300: #385b23;
+}
+:where(:root, .seizoenstaal)[data-seizoen="zomer"][data-thema="licht"] {
+  --ink-900: #f9f1dc;
+  --ink-800: #eee4c9;
+  --olive-600: #c0ab7c;
+  --lime-300: #715109;
+}
+:where(:root, .seizoenstaal)[data-seizoen="herfst"][data-thema="licht"] {
+  --ink-900: #f6ede5;
+  --ink-800: #eddcd0;
+  --olive-600: #bfa38f;
+  --lime-300: #853c25;
+}
+
+.seizoensteken {
+  width: clamp(34px, 5vw, 68px);
+  color: var(--lime-300);
+  pointer-events: none;
+}
+
+.tekening__blad > .seizoensteken {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: max(96px, 18%);
+  right: max(var(--gutter), 6%);
+}
+
+:root[data-seizoen] .tekening__blad > .seizoensteken { display: block; }
+.tekening__blad .seizoensteken [data-teken] { display: none; }
+:root[data-seizoen="kerst"] .tekening__blad [data-teken="kerst"],
+:root[data-seizoen="winter"] .tekening__blad [data-teken="winter"],
+:root[data-seizoen="lente"] .tekening__blad [data-teken="lente"],
+:root[data-seizoen="zomer"] .tekening__blad [data-teken="zomer"],
+:root[data-seizoen="herfst"] .tekening__blad [data-teken="herfst"] { display: inline; }
+
+.seizoenstaal {
+  block-size: 100svh;
+  min-block-size: 150px;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-900);
+  color: var(--bone-100);
+}
+.seizoenstaal__kop {
+  display: flex;
+  align-items: center;
+  flex: 0 0 clamp(36px, 16vh, 82px);
+  padding-inline: 6vw;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1rem, 5vw, 2.5rem);
+}
+.seizoenstaal__blad {
+  position: relative;
+  flex: 1;
+  margin: min(3.5vw, 36px) 6vw;
+  padding: 4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: min(4vw, 22px);
+  border: 1px solid var(--line-strong);
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--ink-900);
+}
+.seizoenstaal__blad .seizoensteken {
+  position: absolute;
+  top: 4vw;
+  right: 4vw;
+  width: clamp(24px, 9vw, 54px);
+}
+.seizoenstaal__blad h1 { font-size: clamp(1.25rem, min(12vw, 19vh), 6rem); line-height: .88; }
+.seizoenstaal__blad h1 span { color: var(--lime-300); }
+.seizoenstaal__knop {
+  padding: .45em .9em;
+  font-size: clamp(.68rem, 2.4vw, 1rem);
+  font-weight: 600;
+  background: var(--lime-vlak);
+  color: var(--on-lime);
+}

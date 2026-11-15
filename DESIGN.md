@@ -28,6 +28,11 @@ Regels:
 - Tekst op limoen is altijd `--ink-900`, nooit wit.
 - Geen gradients, geen gekleurde schaduwen, geen glow behalve de handtekening-streek.
 
+De optionele seizoensthema’s leggen een kleurpalet boven op de vaste keuze voor licht of donker.
+Kerst gebruikt den en champagne, winter ijsblauw, lente bladgroen, zomer goud en herfst koper.
+Een klein lijnteken in het kader van de technische tekening geeft het seizoen aan. Het blijft stil
+en decoratief. De voorvertoning in het beheer gebruikt dezelfde kleurvariabelen als de website.
+
 ## Typografie
 
 | Rol | Font | Gebruik |
