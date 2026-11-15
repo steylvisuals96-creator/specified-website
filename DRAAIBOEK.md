@@ -140,7 +140,7 @@ Wens Sam: alle pagina's waar je naartoe klikt moeten bewerkbaar zijn. Eén syste
 - Profielen, sectoren, attesten en cijfers staan op meerdere pagina's en zijn één keer aan te passen onder "Gedeelde lijsten". Kleine tekstwijziging daardoor: Voor engineers zegt nu ook "Onze consultants werken met deze attesten: ...".
 - **Klik in het voorbeeld**: een link naar een pagina van de site opent de editor van die pagina (via `/naar?pad=`), met een waarschuwing bij niet opgeslagen wijzigingen; een vacature of artikel opent dat item. Links naar buiten en formulieren doen in het voorbeeld niets (anders kwam er een lege pagina of een echte mail).
 - Nog niet bewerkbaar: privacy, cookies, disclaimer, toegankelijkheid en algemene voorwaarden (lange teksten, vragen een tekstverwerker). Een klik erop in het voorbeeld zegt dat.
-- **Vacatures met live voorbeeld** (2026-11-16): de vacaturepagina is een weergave (`components/paginas/VacatureWeergave.tsx`) die ook in `/voorbeeld/vacature` draait. Vanaf 1280 px staat de pagina naast het vacatureformulier en scrollt ze mee naar het veld (ook de tekstverwerker, titel, lijsten en kenmerken). Het salaris komt nooit in het voorbeeld.
+- **Vacatures met live voorbeeld** (2026-11-16): de vacaturepagina is een weergave (`components/paginas/VacatureWeergave.tsx`) die ook in `/voorbeeld/vacature` draait. Vanaf 1280 px staat de pagina naast het vacatureformulier en scrollt ze mee naar het veld (ook de tekstverwerker, titel, lijsten en kenmerken). Het salaris komt nooit in het voorbeeld. Live getest op 1440 px: klik in "Wat we bieden" scrolt het voorbeeld naar dat blok.
 - **Live getest** (2026-11-15, ingelogd als Sam): overzicht Pagina's, editor Voor bedrijven (typen in "Sectoren": voorbeeld scrolt mee en toont de tekst, niet opgeslagen), en een klik op "Neem contact op" in het voorbeeld opent de editor van Contact. Het voorbeeld schaalt niet meer als het op ware grootte past (scherper).
 
 ### Seizoensthema voor de website
@@ -371,7 +371,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:07_
+_Bijgewerkt: 2026-11-16 00:09_
 
 ### Nog niet op main
 
@@ -383,6 +383,7 @@ _Bijgewerkt: 2026-11-16 00:07_
 
 **2026-11-16**
 
+- website: Vacatures met live voorbeeld, leesregels samengevoegd, logboek per pagina (`da8f25c`)
 - website: Voeg wekelijkse SEO-bot toe aan het Specified-beheer (`09dd4c1`)
 - website: Gebruik herwerkte dienstenbeelden op de homepage (`2e5bd24`)
 - website: Gebruik seizoensanimaties in de vaste huisstijl (`38959eb`)
