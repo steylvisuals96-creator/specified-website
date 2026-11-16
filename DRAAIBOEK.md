@@ -123,6 +123,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
 - **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee oorspronkelijke sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud.
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
+- **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v3.webp` en `simon-claeys-portret-v3.webp` staan in R2 en zijn gekoppeld via **Inhoud > Team**. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De originele portretten blijven beschikbaar in de mediabibliotheek en als lokale terugval.
 - Nog niet getest: tweestapslogin aanzetten en iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
@@ -375,7 +376,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 00:13_
+_Bijgewerkt: 2026-11-16 21:10_
 
 ### Nog niet op main
 
@@ -387,6 +388,7 @@ _Bijgewerkt: 2026-11-16 00:13_
 
 **2026-11-16**
 
+- website: Maak de vijf seizoensthema’s duidelijker zichtbaar (`6146bb2`)
 - website: Documenteer SEO-productiemigratie en latere Gateway-koppeling (`1debe43`)
 - website: Draaiboek: vacaturevoorbeeld live getest (`c38367b`)
 - website: Vacatures met live voorbeeld, leesregels samengevoegd, logboek per pagina (`da8f25c`)
