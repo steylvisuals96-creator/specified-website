@@ -106,7 +106,7 @@ Security-headers in `next.config.ts`: CSP, HSTS, nosniff, frame-deny, referrer-p
 
 Lighthouse mobiel: home 95 tot 97, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100. LCP net boven 2,5 s op home en blog (full-screen poster deelt 4G-simulatie met de bundels).
 
-Meting 2026-11-23 op productie (`specified-website.vercel.app`, PageSpeed Insights, mobiel): home 100, LCP 0,9 s. Blog 94, LCP 2,8 s: het LCP-element is de foto van het eerste artikel (23 KB AVIF, van de server in 0,1 s), maar in de 4G-simulatie deelde die de lijn met GSAP en ScrollTrigger (45 KB). Die kwamen op elke pagina en elk toestel mee via `VloeiendScrollen` in de layout, ook waar Lenis niet draait. Aanpassing: Lenis en GSAP worden pas geladen bij muis of trackpad zonder "beweging beperken". Na de build staat GSAP niet meer in de HTML van de blog; Next haalt het alleen nog na het laden op als prefetch van de homepage. Ook de `sizes` van de blogfoto's klopten niet (100vw op mobiel, 33vw bij twee kolommen) en zijn nu afgestemd op het raster. Lokaal getest: Lenis en de hero-tekening werken op desktop, op mobiel draait Lenis niet.
+Meting 2026-11-23 op productie (`specified-website.vercel.app`, PageSpeed Insights, mobiel): home 100, LCP 0,9 s. Blog 94, LCP 2,8 s: het LCP-element is de foto van het eerste artikel (23 KB AVIF, van de server in 0,1 s), maar in de 4G-simulatie deelde die de lijn met GSAP en ScrollTrigger (45 KB). Die kwamen op elke pagina en elk toestel mee via `VloeiendScrollen` in de layout, ook waar Lenis niet draait. Aanpassing: Lenis en GSAP worden pas geladen bij muis of trackpad zonder "beweging beperken". Na de build staat GSAP niet meer in de HTML van de blog; Next haalt het alleen nog na het laden op als prefetch van de homepage. Ook de `sizes` van de blogfoto's klopten niet (100vw op mobiel, 33vw bij twee kolommen) en zijn nu afgestemd op het raster. Lokaal getest: Lenis en de hero-tekening werken op desktop, op mobiel draait Lenis niet. Na de deploy: blog mobiel 100, LCP 1,2 s.
 
 ---
 
@@ -354,7 +354,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] MongoDB/Atlas en `MONGODB_URI` opruimen (30 dagen na de overstap, dus nu aan de beurt).
 - [x] Audit-log (wie wijzigde wat): in het nieuwe beheer, via een trigger in de database (2026-11-15).
 - [ ] Overblijfselen uit vastgoed in `dashboard/team/create` en `team/[id]/edit`.
-- [ ] LCP op home en blog onder 2,5 s krijgen. Home zit op 0,9 s (2026-11-23). Blog stond op 2,8 s; GSAP uit het kritieke pad gehaald en de beeldmaten verbeterd (zie Prestaties), nameten na de deploy.
+- [x] LCP op home en blog onder 2,5 s (2026-11-23, PageSpeed Insights mobiel op productie): home 100 met LCP 0,9 s, blog van 94 met 2,8 s naar 100 met 1,2 s na het weghalen van GSAP uit het kritieke pad (zie Prestaties). Desktop beide 100.
 - [ ] `prefers-reduced-motion` in een echte browser emuleren en controleren.
 - [ ] Scroll-frames naar R2 (met de domeinverhuis).
 - [ ] CSP zonder `'unsafe-inline'` via nonces.
@@ -406,7 +406,7 @@ _Bijgewerkt: 2026-11-23 00:26_
 
 **2026-11-23**
 
-- website: Engelse versie van de website onder /en, met NL/EN-schakelaar in het beheer (`694343b`)
+- website: Engelse versie van de website onder /en, met NL/EN-schakelaar in het beheer (`2616b2c`)
 - website: Blog sneller op mobiel: GSAP alleen laden waar vloeiend scrollen draait (`af430d5`)
 - website: Tweestapslogin ook in RLS afdwingen (`2c6ef0a`)
 
