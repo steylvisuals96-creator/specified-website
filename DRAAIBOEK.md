@@ -314,7 +314,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 **Wachten op de klant of Sam**
 - [ ] Offerte opmaken, met één shootdag (foto en video, 3 à 4 mensen) en onderhoudsabonnement (reactie binnen 2 werkdagen, 1 à 2 kleine aanpassingen per maand).
 - [ ] Livegang op `specified.be` (2027-01-11): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein. Registrar, DNS-beheer, hosting en vervaldata zijn bij de klant onbekend: via de contactpersoon van Rocketship achterhalen. MX, SPF, DKIM, DMARC en autodiscover van Microsoft 365 (beheerd door Cronos) exact overnemen.
-- [ ] 301-doorverwijzingen van de oude URL's op `specified.be` naar de nieuwe.
+- [x] Permanente doorverwijzingen (308, door Google behandeld als 301) van de 18 oude URL's op `specified.be` naar de nieuwe, in `next.config.ts` (2026-11-22): about-us naar `/#over-ons`, services en engineering-partner naar Voor bedrijven, career-partner naar Voor engineers, jobs naar Vacatures, spontaneous-application naar Open sollicitatie, alle `/job/...` naar het vacatureoverzicht (oude vacatures hebben andere adressen), privacy- en cookiepolicy naar de nieuwe pagina's, bedankpagina's naar Contact en Vacatures, test-slider-home naar de homepage. Lokaal alle 18 getest: elk eindigt op een 200. Met slash achteraan zijn het twee sprongen (Next haalt eerst de slash weg). Werkt pas echt na de domeinverhuis; daarna in Search Console de oude adressen nakijken.
 - [ ] Analytics en Search Console op een account van Specified zetten (huidige eigenaar onbekend).
 - [x] SEO-bot: productiemigratie `20261115_06_seo_bot.sql` uitgevoerd en publieke toegangsrechten gecontroleerd (2026-11-16).
 - [ ] SEO-bot: productievariabelen en Search Console-toegang toevoegen, verbruik bevestigen en na livegang de eerste ronde op `specified.be` uitvoeren.
@@ -391,7 +391,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 21:18_
+_Bijgewerkt: 2026-11-22 21:35_
 
 ### Nog niet op main
 
@@ -403,6 +403,7 @@ _Bijgewerkt: 2026-11-22 21:18_
 
 **2026-11-22**
 
+- website: axe-core als ontwikkelpakket; axe-toets 14 pagina's zonder fouten (`1a04854`)
 - website: Toegankelijkheid: hero-focus, cookiebanner in tabvolgorde, klikdoelen 44px, vizier uit bij hoog contrast (`51c3f82`)
 - website: Draaiboek: specified.be toegevoegd in Resend, DNS-records voor Cronos (`5106c05`)
 - website: Beheer: account Simon en korte beheerhandleiding (pdf) (`24a94c1`)

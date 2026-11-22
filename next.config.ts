@@ -92,6 +92,30 @@ const nextConfig: NextConfig = {
   // Er staat een package.json in de home-map van de ontwikkelaar; zonder dit kiest
   // Turbopack die map als root en mist het wijzigingen in dit project.
   turbopack: { root: process.cwd() },
+  // De vorige site op specified.be was Engelstalig. Zijn 18 adressen (sitemap
+  // van 2026-11-22) sturen permanent door naar de nieuwe pagina's, zodat
+  // Google de posities overdraagt en oude links (vacatures, LinkedIn) werken.
+  // De oude adressen eindigden op een slash: Next haalt die eerst weg (308),
+  // daarna volgt deze doorverwijzing (308). Twee sprongen, voor Google geen probleem.
+  async redirects() {
+    const oud: [string, string][] = [
+      ["/about-us", "/#over-ons"],
+      ["/services", "/voor-bedrijven"],
+      ["/services/engineering-partner", "/voor-bedrijven"],
+      ["/services/career-partner", "/voor-engineers"],
+      ["/jobs", "/vacatures"],
+      ["/jobs/spontaneous-application", "/open-sollicitatie"],
+      ["/jobs/thanks-for-your-sollicitation", "/vacatures"],
+      ["/job", "/vacatures"],
+      // Oude vacatures hebben andere adressen; ze landen op het overzicht.
+      ["/job/:slug", "/vacatures"],
+      ["/contact/thank-you", "/contact"],
+      ["/privacy-policy", "/privacy"],
+      ["/cookie-policy", "/cookies"],
+      ["/test-slider-home", "/"],
+    ];
+    return oud.map(([source, destination]) => ({ source, destination, permanent: true }));
+  },
   async headers() {
     // De voorbeeldpagina krijgt dezelfde headers, behalve frame-ancestors en
     // X-Frame-Options: die zouden het tonen in het CMS blokkeren.
