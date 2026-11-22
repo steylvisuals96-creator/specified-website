@@ -328,7 +328,7 @@ export function BlogOverzichtWeergave({ t, footer, posts }: Basis & { posts: Blo
                   >
                     {post.coverUrl && (
                       <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden" }}>
-                        <Cover src={post.coverUrl} alt={post.titel} sizes="(min-width: 900px) 33vw, 100vw" priority={i === 0} />
+                        <Cover src={post.coverUrl} alt={post.titel} sizes="(min-width: 1280px) 370px, (min-width: 1100px) 30vw, (min-width: 700px) 45vw, calc(100vw - 48px)" priority={i === 0} />
                       </div>
                     )}
                     <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>

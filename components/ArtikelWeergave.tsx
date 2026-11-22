@@ -47,7 +47,7 @@ export default function ArtikelWeergave({ post }: { post: BlogPost }) {
 
         {post.coverUrl && (
           <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", overflow: "hidden", borderRadius: 0, marginBottom: "3rem" }}>
-            <Cover src={post.coverUrl} alt={post.titel} sizes="(min-width: 900px) 800px, 100vw" priority />
+            <Cover src={post.coverUrl} alt={post.titel} sizes="(min-width: 900px) 680px, calc(100vw - 48px)" priority />
           </div>
         )}
 

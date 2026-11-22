@@ -104,7 +104,9 @@ Security-headers in `next.config.ts`: CSP, HSTS, nosniff, frame-deny, referrer-p
 
 ### Prestaties (meting 2026-09-27, lokale productiebuild)
 
-Lighthouse mobiel: home 95 tot 97, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100. LCP net boven 2,5 s op home en blog (full-screen poster deelt 4G-simulatie met de bundels). Sindsdien niet opnieuw gemeten.
+Lighthouse mobiel: home 95 tot 97, vacatures 99, blog 93. Toegankelijkheid, best practices en SEO 100. LCP net boven 2,5 s op home en blog (full-screen poster deelt 4G-simulatie met de bundels).
+
+Meting 2026-11-23 op productie (`specified-website.vercel.app`, PageSpeed Insights, mobiel): home 100, LCP 0,9 s. Blog 94, LCP 2,8 s: het LCP-element is de foto van het eerste artikel (23 KB AVIF, van de server in 0,1 s), maar in de 4G-simulatie deelde die de lijn met GSAP en ScrollTrigger (45 KB). Die kwamen op elke pagina en elk toestel mee via `VloeiendScrollen` in de layout, ook waar Lenis niet draait. Aanpassing: Lenis en GSAP worden pas geladen bij muis of trackpad zonder "beweging beperken". Na de build staat GSAP niet meer in de HTML van de blog; Next haalt het alleen nog na het laden op als prefetch van de homepage. Ook de `sizes` van de blogfoto's klopten niet (100vw op mobiel, 33vw bij twee kolommen) en zijn nu afgestemd op het raster. Lokaal getest: Lenis en de hero-tekening werken op desktop, op mobiel draait Lenis niet.
 
 ---
 
@@ -351,7 +353,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] MongoDB/Atlas en `MONGODB_URI` opruimen (30 dagen na de overstap, dus nu aan de beurt).
 - [x] Audit-log (wie wijzigde wat): in het nieuwe beheer, via een trigger in de database (2026-11-15).
 - [ ] Overblijfselen uit vastgoed in `dashboard/team/create` en `team/[id]/edit`.
-- [ ] LCP op home en blog onder 2,5 s krijgen, daarna Lighthouse opnieuw meten.
+- [ ] LCP op home en blog onder 2,5 s krijgen. Home zit op 0,9 s (2026-11-23). Blog stond op 2,8 s; GSAP uit het kritieke pad gehaald en de beeldmaten verbeterd (zie Prestaties), nameten na de deploy.
 - [ ] `prefers-reduced-motion` in een echte browser emuleren en controleren.
 - [ ] Scroll-frames naar R2 (met de domeinverhuis).
 - [ ] CSP zonder `'unsafe-inline'` via nonces.
@@ -391,7 +393,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-23 00:05_
+_Bijgewerkt: 2026-11-23 00:24_
 
 ### Nog niet op main
 
@@ -400,6 +402,10 @@ _Bijgewerkt: 2026-11-23 00:05_
 - branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
+
+**2026-11-23**
+
+- website: Tweestapslogin ook in RLS afdwingen (`2c6ef0a`)
 
 **2026-11-22**
 
