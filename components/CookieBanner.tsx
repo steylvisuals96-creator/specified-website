@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@/lib/consent";
@@ -12,6 +12,7 @@ import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@
  */
 export default function CookieBanner() {
   const [visible, setVisible] = useState(true);
+  const ref = useRef<HTMLDivElement>(null);
   // De voorbeeldpagina's staan in een frame in het beheer; daar hoort geen banner over de inhoud.
   const voorbeeld = /^\/(voorbeeld\/|blog\/voorbeeld)/.test(usePathname() ?? "");
 
@@ -21,6 +22,44 @@ export default function CookieBanner() {
     return onConsentChange(sync);
   }, []);
 
+  // Zolang de banner onderaan staat, houdt de pagina die strook vrij
+  // (--cookie-ruimte, zie globals.css): een element dat focus krijgt (Tab),
+  // scrolt dan boven de banner in beeld in plaats van erachter te
+  // verdwijnen, ook helemaal onderaan de pagina (WCAG 2.4.11).
+  useEffect(() => {
+    const el = ref.current;
+    if (!visible || !el) return;
+    const html = document.documentElement;
+    const zet = () => {
+      const top = el.getBoundingClientRect().top;
+      html.style.setProperty("--cookie-ruimte", el.offsetHeight ? `${Math.ceil(innerHeight - top) + 16}px` : "0px");
+    };
+    // Vangnet: ligt een gefocust element toch (deels) onder de banner, dan
+    // schuiven we het erboven.
+    const opFocus = (e: FocusEvent) => {
+      const doel = e.target as HTMLElement;
+      if (el.contains(doel)) return;
+      const bannerTop = el.getBoundingClientRect().top;
+      const r = doel.getBoundingClientRect();
+      if (r.bottom <= bannerTop) return;
+      const y = scrollY + r.bottom - bannerTop + 16;
+      // Via Lenis als die draait (VloeiendScrollen), anders gewoon.
+      const vraag = new CustomEvent("specified:scroll-naar", { detail: { y, direct: true }, cancelable: true });
+      if (dispatchEvent(vraag)) scrollTo({ top: y, behavior: "instant" });
+    };
+    zet();
+    const waarnemer = new ResizeObserver(zet);
+    waarnemer.observe(el);
+    addEventListener("resize", zet);
+    document.addEventListener("focusin", opFocus);
+    return () => {
+      waarnemer.disconnect();
+      removeEventListener("resize", zet);
+      document.removeEventListener("focusin", opFocus);
+      html.style.removeProperty("--cookie-ruimte");
+    };
+  }, [visible, voorbeeld]);
+
   function choose(value: ConsentValue) {
     writeConsent(value);
     setVisible(false);
@@ -29,7 +68,7 @@ export default function CookieBanner() {
   if (!visible || voorbeeld) return null;
 
   return (
-    <div role="dialog" aria-label="Cookievoorkeuren" className="cookie-banner">
+    <div ref={ref} role="dialog" aria-label="Cookievoorkeuren" className="cookie-banner">
       <p>
         We gebruiken noodzakelijke cookies om de site te laten werken en, met jouw toestemming, analytische
         cookies om hem te verbeteren. Meer info in ons <Link href="/cookies">cookiebeleid</Link>.

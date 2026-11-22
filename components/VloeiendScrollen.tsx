@@ -26,13 +26,14 @@ export default function VloeiendScrollen() {
     gsap.ticker.add(tik);
     gsap.ticker.lagSmoothing(0);
 
-    // Het live voorbeeld in het beheer vraagt soms om naar een plek te scrollen
-    // (components/VoorbeeldFocus.tsx). Via Lenis, anders vecht die ertegen.
+    // Het live voorbeeld in het beheer (components/VoorbeeldFocus.tsx) en de
+    // toetsenbordfocus in de hero vragen soms om naar een plek te scrollen.
+    // Via Lenis, anders vecht die ertegen. "direct" springt zonder animatie.
     const scrollNaar = (e: Event) => {
-      const y = (e as CustomEvent<{ y: number }>).detail?.y;
+      const { y, direct } = (e as CustomEvent<{ y: number; direct?: boolean }>).detail ?? {};
       if (typeof y !== "number") return;
       e.preventDefault();
-      lenis.scrollTo(y, { duration: 1.1 });
+      lenis.scrollTo(y, direct ? { immediate: true, force: true } : { duration: 1.1 });
     };
     addEventListener("specified:scroll-naar", scrollNaar);
 

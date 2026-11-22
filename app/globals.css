@@ -271,7 +271,7 @@ body::after {
 }
 .site-nav[data-scrolled="true"] { background: var(--ink-900); border-bottom-color: var(--line); }
 .site-nav__bar { height: 76px; display: flex; align-items: center; justify-content: space-between; }
-.site-nav__logo { display: flex; align-items: center; }
+.site-nav__logo { display: flex; align-items: center; min-height: 44px; }
 .site-nav__links { display: flex; align-items: center; gap: clamp(1.25rem, 2vw, 2.25rem); }
 .site-nav__link {
   color: var(--bone-100); text-decoration: none; font-size: 0.9375rem; font-weight: 500;
@@ -564,6 +564,7 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 .team__naam { font-size: clamp(2.25rem, 3.5vw, 3.25rem); line-height: 0.95; }
 .team__rol { font-weight: 600; color: var(--lime-300); }
 .team__bio { color: var(--bone-400); }
+.team__linkedin { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* ─── Contact ─────────────────────────────────────────── */
 .cta { padding: var(--section-y) 0; border-top: 1px solid var(--line); }
@@ -590,8 +591,13 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 }
 @keyframes footer-band { to { transform: translateX(-50%); } }
 .footer__rij { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; padding-top: 2rem; padding-bottom: 2rem; }
-.footer__links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; }
-.footer__links a, .footer__links button { color: var(--bone-100); text-decoration: none; font-size: 0.9375rem; font-weight: 500; }
+.footer__logo { display: flex; align-items: center; min-height: 44px; }
+/* Klikdoelen van 44px hoog; de rijafstand zit nu in die hoogte zelf. */
+.footer__links { display: flex; flex-wrap: wrap; gap: 0 1.75rem; }
+.footer__links a, .footer__links button {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--bone-100); text-decoration: none; font-size: 0.9375rem; font-weight: 500;
+}
 .footer__links a:hover, .footer__links button:hover { color: var(--lime-300); }
 
 /* Foto's uit de CMS (blog) krijgen dezelfde donkere grade als de rest van de site. */
@@ -604,6 +610,10 @@ html:not(.js) .tekening .tekening__intro { display: none; }
   background: var(--ink-800); border: 1px solid var(--line);
 }
 html[data-consent] .cookie-banner { display: none; }
+/* Ruimte voor de banner (gezet door CookieBanner.tsx): de pagina kan tot
+   boven de banner scrollen en focus scrolt er niet achter. */
+html { scroll-padding-bottom: var(--cookie-ruimte, 0px); }
+body { padding-bottom: var(--cookie-ruimte, 0px); }
 .cookie-banner p { color: var(--bone-400); font-size: 0.875rem; line-height: 1.55; margin-bottom: 1rem; }
 /* Telefoon: compacter, zodat hij de hero niet voor een derde bedekt. */
 @media (max-width: 600px) {

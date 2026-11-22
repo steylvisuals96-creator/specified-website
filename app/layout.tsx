@@ -65,11 +65,13 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <a href="#inhoud" className="skip-link">Naar de inhoud</a>
+        {/* Vroeg in de DOM: de banner staat visueel onderaan, maar wie met het
+            toetsenbord werkt, komt hem meteen na de skip-link tegen. */}
+        <CookieBanner />
         <HashScroll />
         <VloeiendScrollen />
         <Vizier />
         {children}
-        <CookieBanner />
         <AnalyticsGate />
       </body>
     </html>

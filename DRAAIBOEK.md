@@ -337,7 +337,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
 - [x] Overzicht van het dashboard voor de klant: vacatures (met link naar de website en wat nog ontbreekt) en blog (`components/KlantOverzicht.tsx`, 2026-11-12). De creator houdt het recruitmentoverzicht.
 - [ ] Engelse versie (fase 2).
-- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was.
+- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22; axe en VoiceOver nog te doen.
 - [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
 - [ ] `/api/formulier`: de limiet per IP geldt per server. Bij misbruik een gedeelde limiet toevoegen (Vercel Firewall of een teller in Supabase).
 
@@ -360,7 +360,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 **Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 008: vacatures-easing, contactonderlijn, mobiel menu) staat open; 009 (vacaturepaneel op mobiel) vervalt, het paneel is vervangen door een pagina per vacature. 001 tot 003 gingen over de oude lijst met paneel en zijn daarmee ook achterhaald. Zie `plans/README.md`. De planbestanden 006 tot 009 staan sinds 2026-11-15 op main.
 
 **Niet samengevoegd werk**
-- [ ] Branch `preview/audit-fixes-2` (gepusht 2026-11-15) bevat werk dat nog niet op main staat: audit-fixes ronde 2 (toetsenbordfocus in de hero, cookiebanner vroeg in de tabvolgorde, klikdoelen 44px, vizier uit bij forced-colors, inline styles naar klassen in vacatures en blog) en streepjes vervangen plus nav-achtergrond via IntersectionObserver. De branch loopt 23 commits achter op main en botst vooral in `app/globals.css`, `components/HeroTekening.tsx` en `components/VacaturesClient.tsx`. Beslissen: per onderdeel opnieuw toepassen op main, of laten vallen.
+- [x] Toegankelijkheidsfixes van `preview/audit-fixes-2` per onderdeel opnieuw toegepast op main (2026-11-22): Tab naar de knoppen in de hero springt naar het eindbeeld van de tekening (nu via Lenis, dat er sinds oktober bij kwam), cookiebanner meteen na de skip-link in de tabvolgorde en houdt onderaan ruimte vrij zodat focus er niet achter verdwijnt, klikdoelen van minstens 44px (logo's, footerlinks, LinkedIn-links), vizier uit bij forced-colors en prefers-contrast. Lokaal getest met echte Tab-toetsen. Niet overgenomen: inline styles naar klassen in vacatures en blog (die pagina's zijn sindsdien herschreven), streepjes en nav-achtergrond (aparte keuze). De branch kan daarna weg.
 
 **CMS-doorlichting (2026-11-15)**
 
@@ -391,7 +391,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 21:02_
+_Bijgewerkt: 2026-11-22 21:10_
 
 ### Nog niet op main
 
@@ -403,6 +403,7 @@ _Bijgewerkt: 2026-11-22 21:02_
 
 **2026-11-22**
 
+- website: Draaiboek: specified.be toegevoegd in Resend, DNS-records voor Cronos (`5106c05`)
 - website: Beheer: account Simon en korte beheerhandleiding (pdf) (`24a94c1`)
 - website: Draaiboek: tweestapslogin voor Sam actief (`a85b3af`)
 - website: Draaiboek: registraties dicht in Supabase, minimale wachtwoordlengte 12 (`20138ac`)

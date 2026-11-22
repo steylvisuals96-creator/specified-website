@@ -527,7 +527,25 @@ export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<Web
           };
           addEventListener("resize", opResize);
 
+          // Toetsenbord: de knoppen staan pas aan het einde van de tekening in
+          // beeld. Wie er met Tab op komt, springt naar dat eindbeeld; anders
+          // krijgt een onzichtbare knop de focus (WCAG 2.4.7).
+          const slot = root.querySelector<HTMLElement>(".tekening__slot");
+          const naarEindbeeld = () => {
+            const st = tl?.scrollTrigger;
+            if (!st || st.progress > 0.99) return;
+            // Via Lenis als die draait (VloeiendScrollen), anders gewoon;
+            // "instant" omdat de site scroll-behavior: smooth op html zet.
+            const vraag = new CustomEvent("specified:scroll-naar", { detail: { y: st.end, direct: true }, cancelable: true });
+            if (dispatchEvent(vraag)) scrollTo({ top: st.end, behavior: "instant" });
+            ScrollTrigger.update();
+            st.getTween()?.progress(1);
+            tl?.progress(1);
+          };
+          slot?.addEventListener("focusin", naarEindbeeld);
+
           return () => {
+            slot?.removeEventListener("focusin", naarEindbeeld);
             actief = false;
             clearTimeout(wacht);
             removeEventListener("resize", opResize);
