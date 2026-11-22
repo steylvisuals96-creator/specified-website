@@ -337,7 +337,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
 - [x] Overzicht van het dashboard voor de klant: vacatures (met link naar de website en wat nog ontbreekt) en blog (`components/KlantOverzicht.tsx`, 2026-11-12). De creator houdt het recruitmentoverzicht.
 - [ ] Engelse versie (fase 2).
-- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22; axe en VoiceOver nog te doen.
+- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22. axe-core 4.10.3 (WCAG 2.0/2.1/2.2 A en AA plus best practices) op 2026-11-22 lokaal over 14 pagina's (home, vacatures, een vacature, voor bedrijven, voor engineers, open sollicitatie, blog, een artikel, FAQ, contact, disclaimer, toegankelijkheid, privacy, cookies, 404): 0 fouten. Wat axe niet zelf kon meten (contrast onder de korrellaag `body::after`) handmatig nagerekend: alle teksttinten halen AA in beide thema's (laagste bone-400 op ink-800 in het lichte thema, 5,86:1). Opnieuw draaien: `node_modules/axe-core/axe.min.js` tijdelijk naar `public/` kopiëren, in de console laden met een script-tag en `axe.run()` draaien, daarna weer weghalen. Nog te doen: VoiceOver (mens).
 - [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
 - [ ] `/api/formulier`: de limiet per IP geldt per server. Bij misbruik een gedeelde limiet toevoegen (Vercel Firewall of een teller in Supabase).
 
@@ -391,7 +391,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 21:10_
+_Bijgewerkt: 2026-11-22 21:18_
 
 ### Nog niet op main
 
@@ -403,6 +403,7 @@ _Bijgewerkt: 2026-11-22 21:10_
 
 **2026-11-22**
 
+- website: Toegankelijkheid: hero-focus, cookiebanner in tabvolgorde, klikdoelen 44px, vizier uit bij hoog contrast (`51c3f82`)
 - website: Draaiboek: specified.be toegevoegd in Resend, DNS-records voor Cronos (`5106c05`)
 - website: Beheer: account Simon en korte beheerhandleiding (pdf) (`24a94c1`)
 - website: Draaiboek: tweestapslogin voor Sam actief (`a85b3af`)
