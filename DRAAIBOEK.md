@@ -17,7 +17,7 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 | Repo | `steylvisuals96-creator/specified-website` | zelfde repo, map `cms/` (oude repo `specified-cms` wordt gearchiveerd) | zelfde repo, map `beheer/` |
 | Map lokaal | `~/specified-website` | `~/specified-website/cms` | `~/specified-website/beheer` |
 | Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
-| Stack | Next.js 16.3.6, React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
+| Stack | Next.js 16.4.6 (sinds 2026-11-22), React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
 | Data | uit Supabase (`NEXT_PUBLIC_DATABRON=supabase`, sinds 2026-11-15); meteen bij opslaan via `/api/ververs`, anders na 60 s | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
 | Media | Dienstenbeelden via het beheer; terugvalbeelden in `public/` | eigen mediaopslag op de CMS-server (zie deel 5) | Cloudflare R2, bucket `specified-media` (privé, beelden via `/m/<id>` met een ondertekende link) |
 | Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main`, root directory `beheer`, functies in Frankfurt (`fra1`) |
@@ -218,7 +218,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 
 ## 6. Beveiliging, stand van zaken
 
-- Next.js 16.3.6 en Payload 3.90.2: kritieke middleware-bypass dicht. `npm audit`: website 0, CMS 0 kritiek en hoog.
+- Website op Next.js 16.4.6 en sharp 0.35.5 (2026-11-22), net als het beheer: `npm audit` website en beheer 0. De oude CMS (Next.js 16.3.6, Payload 3.90.2) wordt niet meer bijgewerkt en gaat offline.
 - Semgrep (OWASP, Next, React, TS, secrets): 0 bevindingen. Security review na back-end redesign: geen high of critical.
 - Server actions in de CMS schrijven als de ingelogde gebruiker (`lib/serverPayload.ts`); eerder konden 11 acties zonder login schrijven, dat is dicht.
 - Login-lockout 5 keer per 15 minuten, sessie 8 uur, geen interne foutmeldingen naar de client.
@@ -386,7 +386,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 17:30_
+_Bijgewerkt: 2026-11-22 17:52_
 
 ### Nog niet op main
 
@@ -395,6 +395,10 @@ _Bijgewerkt: 2026-11-22 17:30_
 - branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
+
+**2026-11-22**
+
+- website: Draaiboek: audit voor de livegang, DNS bij Cronos, oude URL's en ontbrekende formuliervariabelen (`be3bc5d`)
 
 **2026-11-16**
 
