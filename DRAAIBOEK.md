@@ -285,11 +285,11 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
 - [ ] Tweestapslogin ook afdwingen in de Supabase RLS-regels. De app vraagt de code, maar de Data API controleert nu alleen de rol en kan daardoor toegang geven vóór de tweede stap.
 - [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload lokaal getest tot op de website (2026-11-15). Dezelfde vier `R2_*`-waarden staan in Vercel. De live upload en het laden van het testbeeld zijn ook getest.
-- [ ] In Supabase nieuwe registraties uitzetten (Authentication > Sign In / Providers). Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
+- [x] In Supabase nieuwe registraties uitgezet (Authentication > Sign In / Providers, 2026-11-22; publiek nagekeken: `disable_signup` true). Uitnodigen via Gebruikers en `npm run gebruiker:maken` werken nog, ze gebruiken de beheerderssleutel. Tegelijk de minimale wachtwoordlengte in Supabase op 12 gezet, gelijk aan wat het beheer eist. Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
 - [x] **Overstap gedaan (2026-11-15)**: vooraf vergeleken, de oude CMS was sinds 2026-10-27 niet meer gewijzigd en de inhoud in het beheer was identiek (vacatures, blog, homepage), dus het overstapscript had niets te doen. Daarna `NEXT_PUBLIC_DATABRON=supabase`, `NEXT_PUBLIC_SUPABASE_URL` en `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in het websiteproject gezet (beheer-adres en ververs-geheim stonden er al) en de website opnieuw gebouwd. Terug: `NEXT_PUBLIC_DATABRON` weghalen en opnieuw bouwen.
 - [ ] Juridische pagina's bewerkbaar maken (privacy, cookies, disclaimer, toegankelijkheid, algemene voorwaarden), met de tekstverwerker van de blog. Sam: later.
-- [ ] Sam: in Supabase "Leaked password protection" aanzetten (Authentication > Policies of Providers > Email), Supabase-adviseur meldt het als waarschuwing. Kan het betaalde plan vragen.
+- [ ] In Supabase "Prevent use of leaked passwords" aanzetten (Authentication > Sign In / Providers > Email). Kan alleen op het Pro-plan (nagekeken 2026-11-22), dus samen met de overstap naar het betaalde plan.
 - [x] Leesregels op blog, team en vacatures samengevoegd tot één per rol (Supabase-advies 0006, migratie 05, 2026-11-16); wie wat ziet bleef gelijk (getest per rol).
 - [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
 - [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt niet meer sinds de oude CMS gepauzeerd is (2026-11-22).
@@ -388,7 +388,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 18:02_
+_Bijgewerkt: 2026-11-22 18:06_
 
 ### Nog niet op main
 
@@ -400,6 +400,7 @@ _Bijgewerkt: 2026-11-22 18:02_
 
 **2026-11-22**
 
+- website: Draaiboek: oude CMS gepauzeerd, oude repo gearchiveerd (`69a19b7`)
 - website: Website naar Next.js 16.4.6, afhankelijkheden bijgewerkt (`7b9728e`)
 - website: Draaiboek: audit voor de livegang, DNS bij Cronos, oude URL's en ontbrekende formuliervariabelen (`be3bc5d`)
 
