@@ -277,7 +277,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - In het Vercel-project van de website ontbreken `RESEND_API_KEY`, `FORMULIER_AAN` en `FORMULIER_VAN` (nagekeken 2026-11-22): de formulieren werken live nog niet.
 - DNS van `specified.be` staat bij **Cronos** (`ns1` tot `ns4.cronos.be`), registrar Key-Systems. MX naar Microsoft 365, SPF met `relays.cronos.be` en Bullhorn (`-all`), DMARC `p=quarantine`. Zonder DKIM-record van Resend gaan formuliermails naar spam. Dat beantwoordt de vraag naar registrar en DNS-beheer bij de livegang.
 - De huidige site op `specified.be` is Engelstalig, met 18 URL's in de sitemap: `/about-us/`, `/services/`, `/services/career-partner/`, `/services/engineering-partner/`, `/jobs/`, `/jobs/spontaneous-application/`, vijf `/job/...`, `/contact/`, `/privacy-policy/`, `/cookie-policy/`, twee bedankpagina's en `/test-slider-home/`. Basis voor de 301's. Er bestaat dus al een privacy- en cookietekst.
-- Simon en zijn collega hebben nog geen account in het nieuwe beheer.
+- Simon heeft sinds 2026-11-22 een account in het nieuwe beheer (beheerder, nog zonder wachtwoord: hij kiest het zelf via een inloglink). Naam en e-mail van zijn collega zijn nog niet bekend.
 - Alle 5 vacatures missen uren, opleiding en talen.
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
@@ -292,9 +292,10 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] In Supabase "Prevent use of leaked passwords" aanzetten (Authentication > Sign In / Providers > Email). Kan alleen op het Pro-plan (nagekeken 2026-11-22), dus samen met de overstap naar het betaalde plan.
 - [x] Leesregels op blog, team en vacatures samengevoegd tot één per rol (Supabase-advies 0006, migratie 05, 2026-11-16); wie wat ziet bleef gelijk (getest per rol).
 - [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
-- [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt niet meer sinds de oude CMS gepauzeerd is (2026-11-22).
+- [x] Account voor Simon aangemaakt (2026-11-22, beheerder). Hij krijgt nog een inloglink: Sam maakt die bij **Gebruikers > Nieuwe inloglink** (24 uur geldig) en stuurt ze samen met de handleiding. Daarin staat ook dat de oude CMS niet meer gebruikt wordt.
+- [ ] Account voor de collega van Simon (beheerder) zodra naam en e-mail bekend zijn.
 - [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
-- [ ] Accounts voor Simon en zijn collega via Gebruikers (beide beheerder, zoals gevraagd); daarna `MFA_VERPLICHT=1` als iedereen tweestapslogin heeft.
+- [ ] `MFA_VERPLICHT=1` zodra Simon en zijn collega tweestapslogin hebben (accounts: zie hierboven).
 - [ ] Wijzigingen in de oude CMS tussen 2026-11-15 en de overstap staan niet in Supabase: vlak voor de overstap `beheer/supabase/overstap-opnieuw-kopieren.sql` draaien in de SQL Editor. Nieuwe rijen komen erbij, bestaande alleen als de oude CMS nieuwer is, niets wordt verwijderd (het laatste resultaat toont wat alleen in het beheer staat). Proef gedraaid en teruggedraaid op 2026-11-15: 0 nieuw, 0 bijgewerkt, zoals verwacht.
 - [ ] Een paar weken na de overstap: `cms/`, het Vercel-project `specified-cms` en het schema `payload` opruimen. Pas dan vervallen de punten over Payload hieronder. Stand 2026-11-22: project gepauzeerd, oude repo gearchiveerd. Het schema `payload` (met de oude kandidaatgegevens) pas wissen na akkoord van Specified, met vooraf een export als archief buiten de repo. Daarna de map `cms/` en de terugvalcode naar de oude CMS op de website weghalen (`CMS_URL` in `lib/` en `next.config.ts`).
 
@@ -319,7 +320,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Aanlevering van de klant: logo in vector, huisstijlgids, teksten, vacaturelijst, quotes en cases, cijfers en certificaten (zegt klaar te hebben). Teamfoto's en bio's ontbreken, komen uit de shootdag.
 - [ ] Echte cijfers voor de statistieken: 32 consultants en 4 sectoren zijn bekend, klanten in cijfers en jaren ervaring nog niet. Bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
 - [ ] Concurrentie bekijken (Abylsen, TEC, TMC, ENGIE Talents, Pauwels Consulting) en het goede meenemen, op vraag van de klant.
-- [ ] Korte beheerhandleiding in pdf.
+- [x] Korte beheerhandleiding in pdf (2026-11-22): `beheer/docs/Beheerhandleiding-Specified.pdf`, bron `beheer/docs/handleiding.html` (opnieuw maken met Chrome headless, print-to-pdf).
 
 **Bouwen volgens de invullijst**
 - [x] Pagina's: Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden (plaatshouder), Disclaimer, Toegankelijkheidsverklaring (2026-11-12).
@@ -388,7 +389,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 20:41_
+_Bijgewerkt: 2026-11-22 20:48_
 
 ### Nog niet op main
 
@@ -400,6 +401,7 @@ _Bijgewerkt: 2026-11-22 20:41_
 
 **2026-11-22**
 
+- website: Draaiboek: tweestapslogin voor Sam actief (`a85b3af`)
 - website: Draaiboek: registraties dicht in Supabase, minimale wachtwoordlengte 12 (`20138ac`)
 - website: Draaiboek: oude CMS gepauzeerd, oude repo gearchiveerd (`69a19b7`)
 - website: Website naar Next.js 16.4.6, afhankelijkheden bijgewerkt (`7b9728e`)

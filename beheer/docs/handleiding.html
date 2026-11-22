@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Beheerhandleiding Specified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 18mm 18mm 20mm; }
+  :root { --grafiet: #1d1f21; --limoen: #c6f432; --zwak: #5d6266; --lijn: #d9dcde; }
+  * { box-sizing: border-box; }
+  body { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; line-height: 1.5; color: var(--grafiet); margin: 0; background: #fff; }
+  h1, h2 { font-family: "Bebas Neue", sans-serif; font-weight: 400; letter-spacing: .02em; line-height: 1; margin: 0; }
+  h1 { font-size: 40pt; }
+  h2 { font-size: 18pt; margin: 18pt 0 6pt; padding-top: 6pt; border-top: 1px solid var(--lijn); break-after: avoid; }
+  .kop { border-left: 6px solid var(--limoen); padding: 4pt 0 4pt 12pt; margin-bottom: 14pt; }
+  .kop p { margin: 4pt 0 0; color: var(--zwak); }
+  p { margin: 0 0 6pt; }
+  ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+  li { margin-bottom: 3pt; }
+  b { font-weight: 600; }
+  code { font-family: inherit; background: #f1f3f0; padding: 0 3pt; border-radius: 2px; }
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; }
+  td, th { text-align: left; vertical-align: top; padding: 4pt 6pt; border-bottom: 1px solid var(--lijn); }
+  th { font-weight: 600; width: 28%; }
+  .kader { background: #f6f8f0; border: 1px solid #e3ebc6; border-radius: 2px; padding: 8pt 10pt; margin: 8pt 0; break-inside: avoid; }
+  .voet { margin-top: 18pt; color: var(--zwak); font-size: 9pt; }
+  tr, li { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="kop">
+  <h1>Beheer van de website</h1>
+  <p>Korte handleiding voor Specified · versie november 2026</p>
+</div>
+
+<p>Met het beheer pas je de website zelf aan: vacatures, blogartikels, het team, beelden en de teksten van de pagina's. Wat je opslaat, staat binnen een paar seconden online.</p>
+
+<div class="kader">
+  <b>Adres:</b> <code>https://specified-beheer.vercel.app</code><br>
+  Na de livegang van de nieuwe website wordt dat <code>beheer.specified.be</code>.<br>
+  <b>Belangrijk:</b> het oude beheer (<code>specified-cms.vercel.app</code>) staat uit en wordt niet meer gebruikt. Je oude account daar werkt niet meer.
+</div>
+
+<section>
+<h2>1. De eerste keer inloggen</h2>
+<ol>
+  <li>Je krijgt van Sam een persoonlijke link. Die werkt 24 uur en maar één keer. Is ze verlopen, vraag dan een nieuwe.</li>
+  <li>Kies een eigen wachtwoord van minstens 12 tekens. Een korte zin van een paar woorden werkt goed. Bewaar het in een wachtwoordbeheerder (Apple Wachtwoorden, 1Password, Bitwarden).</li>
+  <li>Zet meteen de <b>tweestapslogin</b> aan: ga naar <b>Account</b>, kies <b>Tweestapslogin</b> en scan de QR-code met een authenticator-app op je telefoon (Google Authenticator, Microsoft Authenticator of Apple Wachtwoorden). Vul de code van 6 cijfers in. Voortaan vraagt het beheer na je wachtwoord ook die code.</li>
+</ol>
+<p>Wachtwoord vergeten? Een beheerder maakt bij <b>Gebruikers</b> een nieuwe inloglink voor je. Deel nooit een account: iedereen krijgt een eigen login.</p>
+</section>
+
+<section>
+<h2>2. Wat staat waar</h2>
+<table>
+  <tr><th>Overzicht</th><td>Open vacatures, wat nog ontbreekt, de laatste artikels en wijzigingen.</td></tr>
+  <tr><th>Vacatures</th><td>Alle vacatures. Alleen <b>Actief</b> en <b>Ingevuld</b> komen op de website (ingevulde met een markering). <b>On hold</b> en <b>Geannuleerd</b> blijven intern.</td></tr>
+  <tr><th>Blog</th><td>Artikels schrijven met opmaak, een coverbeeld en een auteur. Een <b>Concept</b> is niet zichtbaar; zet het op <b>Gepubliceerd</b> om het online te zetten.</td></tr>
+  <tr><th>Homepage en Pagina's</th><td>De teksten van de website, met de pagina ernaast. Typ je in een veld, dan scrollt het voorbeeld mee naar die plek. Klik je in het voorbeeld op een link, dan ga je naar de editor van die pagina.</td></tr>
+  <tr><th>Team</th><td>De mensen in de teamsectie, met foto, rol en korte bio. Met <b>Volgorde</b> kies je de plaats: een lager getal staat eerder.</td></tr>
+  <tr><th>Media</th><td>De beeldbibliotheek. Upload foto's (jpg, png of webp, tot 4 MB; grote foto's worden vooraf verkleind). Geef elk beeld een korte omschrijving voor wie de site met een schermlezer bezoekt.</td></tr>
+  <tr><th>Seizoensthema</th><td>Geef de hele website tijdelijk een andere sfeer, met een start- en einddatum.</td></tr>
+  <tr><th>Gebruikers</th><td>Collega's toegang geven of afnemen (zie 4).</td></tr>
+  <tr><th>Logboek</th><td>Wie wat wijzigde, automatisch bijgehouden.</td></tr>
+  <tr><th>Account</th><td>Je naam, wachtwoord en tweestapslogin.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>3. Een vacature plaatsen</h2>
+<ol>
+  <li>Ga naar <b>Vacatures</b> en klik op <b>Nieuwe vacature</b>.</li>
+  <li>Vul functietitel, jobomschrijving, profiel, vakgebied, contract en locatie in. Vul ook <b>uren, opleiding en talen</b> in: dan toont Google de vacature beter in de zoekresultaten voor jobs. Het salaris is intern en komt nooit op de website.</li>
+  <li>Laat de status op <b>Actief</b> en <b>Toon op de website</b> aan, en sla op. De vacature staat meteen op de site.</li>
+  <li>Is ze ingevuld? Zet de status op <b>Ingevuld</b>. Ze blijft dan zichtbaar met een markering, wat vertrouwen geeft. Wil je ze helemaal weg, kies <b>Geannuleerd</b>.</li>
+</ol>
+<p>Sollicitaties en aanvragen via de website komen per mail binnen, niet in het beheer.</p>
+</section>
+
+<section>
+<h2>4. Een collega toegang geven</h2>
+<ol>
+  <li>Ga naar <b>Gebruikers</b>, vul naam en e-mailadres in en kies een rol: <b>Beheerder</b> (alles, ook gebruikers en homepage) of <b>Redacteur</b> (vacatures, blog, team en media).</li>
+  <li>Je krijgt een link. Bezorg die zelf aan je collega, per mail of Teams. Ze is 24 uur geldig.</li>
+  <li>Gaat iemand weg? Verwijder het account dezelfde dag.</li>
+</ol>
+</section>
+
+<section>
+<h2>5. Hulp nodig</h2>
+<p>Iets werkt niet zoals verwacht, of je wil iets aan de website laten veranderen dat niet in het beheer zit? Laat het weten aan Sam van SteylVisuals. Vermeld wat je probeerde en, als het kan, een schermafbeelding.</p>
+</section>
+
+<p class="voet">SteylVisuals · Herent</p>
+</body>
+</html>
