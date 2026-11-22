@@ -4,7 +4,7 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-11-15 (nieuw beheer).
+Laatst handmatig nagekeken: 2026-11-22 (audit voor de livegang).
 
 De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
@@ -262,11 +262,21 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Live voorbeeld scrollt mee naar het veld, geen klik-op-de-pagina | Wens Sam (2026-11-15): de klant ziet waar de tekst staat zonder te zoeken. Klikken in het voorbeeld kan later nog |
 | Uitnodigen met een link die de beheerder zelf bezorgt | Supabase verstuurt zonder eigen mailserver alleen mails naar het eigen team; zo werkt het meteen |
 | Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12). De voettekst stond ook in de CMS (Homepage en Instellingen) en is daar rechtstreeks in Supabase gecorrigeerd |
+| Repo blijft publiek; audits en beveiligingspunten buiten git | Keuze Sam (2026-11-22). Het draaiboek bevat alleen niet-gevoelige stand van zaken, beveiligingsactiepunten staan in de Studio |
 | Wekelijks SEO-onderzoek; AI-artikels eerst als concept | Teksten en bronnen blijven controleerbaar in het beheer; automatische metadata en betaalde covers zijn aparte opties |
 
 ---
 
 ## 8. Open punten
+
+**Audit voor de livegang (2026-11-22)**
+
+Specified is akkoord met de invoering. Sam heeft een audit van website, beheer en oude CMS; omdat deze repo publiek is, staan het rapport en de beveiligingspunten niet in git maar lokaal bij Sam en als taken 31 tot 48 in de Steylvisuals Studio (klant Specified NV). Niet-gevoelige vaststellingen:
+- In het Vercel-project van de website ontbreken `RESEND_API_KEY`, `FORMULIER_AAN` en `FORMULIER_VAN` (nagekeken 2026-11-22): de formulieren werken live nog niet.
+- DNS van `specified.be` staat bij **Cronos** (`ns1` tot `ns4.cronos.be`), registrar Key-Systems. MX naar Microsoft 365, SPF met `relays.cronos.be` en Bullhorn (`-all`), DMARC `p=quarantine`. Zonder DKIM-record van Resend gaan formuliermails naar spam. Dat beantwoordt de vraag naar registrar en DNS-beheer bij de livegang.
+- De huidige site op `specified.be` is Engelstalig, met 18 URL's in de sitemap: `/about-us/`, `/services/`, `/services/career-partner/`, `/services/engineering-partner/`, `/jobs/`, `/jobs/spontaneous-application/`, vijf `/job/...`, `/contact/`, `/privacy-policy/`, `/cookie-policy/`, twee bedankpagina's en `/test-slider-home/`. Basis voor de 301's. Er bestaat dus al een privacy- en cookietekst.
+- Simon en zijn collega hebben nog geen account in het nieuwe beheer.
+- Alle 5 vacatures missen uren, opleiding en talen.
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
@@ -376,7 +386,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-16 21:23_
+_Bijgewerkt: 2026-11-22 17:30_
 
 ### Nog niet op main
 
@@ -388,6 +398,7 @@ _Bijgewerkt: 2026-11-16 21:23_
 
 **2026-11-16**
 
+- website: Documenteer de bijgewerkte founderportretten (`cf06fd7`)
 - website: Leg de portretcontrole op de preview vast (`125e457`)
 - website: Documenteer de nieuwe founderportretten in Team (`cd4714e`)
 - website: Maak de vijf seizoensthema’s duidelijker zichtbaar (`6146bb2`)
