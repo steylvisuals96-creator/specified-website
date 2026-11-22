@@ -75,6 +75,8 @@ Vier formulieren uit één beschrijving (`lib/formulieren.ts`): sollicitatie bij
 
 Nodig in Vercel (website): `RESEND_API_KEY`, `FORMULIER_AAN` (ontvanger, later `Simon.claeys@specified.be`), `FORMULIER_VAN` (afzender op een in Resend geverifieerd domein). **Zonder geverifieerd domein bezorgt Resend alleen bij de eigenaar van het account**: de melding naar Simon en de bevestiging naar bezoekers werken dus pas na verificatie van `specified.be` in Resend (DNS-records). Zonder sleutels geeft het formulier in productie een nette foutmelding met het e-mailadres.
 
+**Stand Resend (2026-11-22):** `specified.be` toegevoegd in het Resend-account van SteylVisuals, regio Ierland (`eu-west-1`), klik- en opentracking uit. Te zetten bij Cronos (nog niet gebeurd, aangevraagd via Simon): TXT `resend._domainkey` (DKIM-sleutel uit Resend), CNAME `send` naar `send.forge.rmta.net` en CNAME `rsend` naar `rsend-euw1.forge.rmta.net`. Geen botsing met bestaande records; MX, SPF op het hoofddomein en DMARC blijven ongewijzigd (DKIM en return-path op `send.specified.be` zijn uitgelijnd met DMARC). Daarna in Resend verifiëren, `RESEND_API_KEY` (alleen verzenden, alleen dit domein) door Sam in Vercel, dan `FORMULIER_VAN` `Specified <website@specified.be>` en `FORMULIER_AAN` (eerst Sam voor de test, daarna Simon) en de vier formulieren testen.
+
 Alle teksten op de nieuwe pagina's zijn voorlopig (bron: invullijst, `lib/inhoud.ts`). Zelf geschreven en door Specified na te kijken: de drie stappen op Voor bedrijven, de FAQ-antwoorden, de omschrijvingen bij diensten en waarden, disclaimer en toegankelijkheidsverklaring.
 
 ### De hero (technische tekening)
@@ -389,7 +391,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 20:48_
+_Bijgewerkt: 2026-11-22 21:02_
 
 ### Nog niet op main
 
@@ -401,6 +403,7 @@ _Bijgewerkt: 2026-11-22 20:48_
 
 **2026-11-22**
 
+- website: Beheer: account Simon en korte beheerhandleiding (pdf) (`24a94c1`)
 - website: Draaiboek: tweestapslogin voor Sam actief (`a85b3af`)
 - website: Draaiboek: registraties dicht in Supabase, minimale wachtwoordlengte 12 (`20138ac`)
 - website: Draaiboek: oude CMS gepauzeerd, oude repo gearchiveerd (`69a19b7`)
