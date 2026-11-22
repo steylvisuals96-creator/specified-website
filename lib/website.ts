@@ -1,6 +1,8 @@
 import { CMS_URL } from "./settings";
 import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
-import { CONSULTANTS, DIENSTEN, HERO, JOBS, TEKENING, TEKENING_CALLOUTS } from "./inhoud";
+import type { DIENSTEN, HERO, JOBS, TEKENING } from "./inhoud";
+import { inhoud } from "./inhoud-taal";
+import type { Taal } from "./taal";
 
 /**
  * De teksten van de homepage, zoals de redactie ze in de CMS beheert (global
@@ -18,23 +20,35 @@ export type WebsiteInhoud = {
   contact: { email: string; telefoon: string; linkedin: string; footerTekst: string };
 };
 
-export const STANDAARD: WebsiteInhoud = {
-  hero: HERO,
-  tekening: { ...TEKENING.titelblok, intro: TEKENING.intro, scrollHint: TEKENING.scrollHint },
-  callouts: TEKENING_CALLOUTS,
-  consultants: CONSULTANTS,
-  diensten: DIENSTEN,
-  jobs: JOBS,
-  contact: { email: "", telefoon: "", linkedin: "", footerTekst: "" },
-};
+function maakStandaard(taal: Taal): WebsiteInhoud {
+  const i = inhoud(taal);
+  return {
+    hero: i.HERO,
+    tekening: { ...i.TEKENING.titelblok, intro: i.TEKENING.intro, scrollHint: i.TEKENING.scrollHint },
+    callouts: i.TEKENING_CALLOUTS,
+    consultants: i.CONSULTANTS,
+    diensten: i.DIENSTEN,
+    jobs: i.JOBS,
+    contact: { email: "", telefoon: "", linkedin: "", footerTekst: "" },
+  };
+}
+
+export const STANDAARD_TAAL: Record<Taal, WebsiteInhoud> = { nl: maakStandaard("nl"), en: maakStandaard("en") };
+export const STANDAARD: WebsiteInhoud = STANDAARD_TAAL.nl;
+
+/**
+ * In welke rij van pagina_inhoud de teksten van een pagina staan. Nederlands:
+ * de sleutel zelf ("homepage"), Engels: met voorvoegsel ("en:homepage").
+ */
+export const inhoudSleutel = (sleutel: string, taal: Taal) => (taal === "nl" ? sleutel : `${taal}:${sleutel}`);
 
 const tekst = (cms: unknown, terugval: string): string =>
   typeof cms === "string" && cms.trim() ? cms.trim() : terugval;
 
 /** Legt de CMS-waarden over de standaardteksten. Onbekende of lege velden vallen terug. */
-export function samenvoegen(cms: any): WebsiteInhoud {
+export function samenvoegen(cms: any, taal: Taal = "nl"): WebsiteInhoud {
   const c = cms ?? {};
-  const S = STANDAARD;
+  const S = STANDAARD_TAAL[taal];
 
   const dienst = (d: (typeof DIENSTEN)[number], v: any) => ({
     ...d,
@@ -89,16 +103,35 @@ export function samenvoegen(cms: any): WebsiteInhoud {
   };
 }
 
-export async function getWebsite(): Promise<WebsiteInhoud> {
+/**
+ * E-mail, telefoon en LinkedIn zijn voor beide talen dezelfde: ze staan alleen
+ * in de Nederlandse rij. De regel onderaan (footerTekst) is per taal.
+ */
+type Rij = { contact?: Record<string, unknown> } & Record<string, unknown>;
+export function metGedeeldContact(eigen: unknown, nl: unknown): Rij {
+  const e = (eigen && typeof eigen === "object" ? eigen : {}) as Rij;
+  const c = ((nl && typeof nl === "object" ? nl : {}) as Rij).contact ?? {};
+  return { ...e, contact: { email: c.email, telefoon: c.telefoon, linkedin: c.linkedin, footerTekst: e.contact?.footerTekst } };
+}
+
+export async function getWebsite(taal: Taal = "nl"): Promise<WebsiteInhoud> {
   if (LEEST_UIT_SUPABASE) {
     // Zelfde vorm als de oude global "website", dus dezelfde samenvoeging.
     try {
-      const [rij] = await supabaseLees<{ waarde: unknown }>("pagina_inhoud?select=waarde&sleutel=eq.homepage");
-      return samenvoegen(rij?.waarde ?? {});
+      if (taal === "nl") {
+        const [rij] = await supabaseLees<{ waarde: unknown }>("pagina_inhoud?select=waarde&sleutel=eq.homepage");
+        return samenvoegen(rij?.waarde ?? {});
+      }
+      const rijen = await supabaseLees<{ sleutel: string; waarde: unknown }>(
+        `pagina_inhoud?select=sleutel,waarde&sleutel=in.(${encodeURIComponent(`"homepage","${inhoudSleutel("homepage", taal)}"`)})`,
+      );
+      const vind = (s: string) => rijen.find((r) => r.sleutel === s)?.waarde ?? {};
+      return samenvoegen(metGedeeldContact(vind(inhoudSleutel("homepage", taal)), vind("homepage")), taal);
     } catch {
-      return STANDAARD;
+      return STANDAARD_TAAL[taal];
     }
   }
+  if (taal !== "nl") return STANDAARD_TAAL[taal];
   try {
     const res = await fetch(`${CMS_URL}/api/globals/website`, { next: { revalidate: 60 } });
     if (!res.ok) return STANDAARD;

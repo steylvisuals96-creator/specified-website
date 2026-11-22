@@ -1,8 +1,16 @@
+"use client";
+
 import Logo from "@/components/Logo";
 import Link from "next/link";
 import CookieVoorkeurenLink from "@/components/CookieVoorkeurenLink";
+import { useTaal } from "@/components/TaalContext";
+import { lokaalPad } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 
 export default function Footer({ linkedin, footerTekst }: { linkedin?: string; footerTekst?: string } = {}) {
+  const taal = useTaal();
+  const t = ui(taal);
+  const p = (pad: string) => lokaalPad(taal, pad);
   const linkedinUrl = linkedin || "https://www.linkedin.com/company/specified-be";
   const bedrijfsregel = footerTekst || "© 2026 Specified NV, Veldkant 31a, 2550 Kontich";
 
@@ -18,16 +26,16 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
       </div>
 
       <div className="wrap footer__rij">
-        <Link href="/" className="footer__logo" aria-label="Specified, naar de homepage">
+        <Link href={p("/")} className="footer__logo" aria-label={t.naarHome}>
           <Logo className="logo--footer" />
         </Link>
         <nav className="footer__links" aria-label="Footer">
-          <Link href="/voor-bedrijven">Voor bedrijven</Link>
-          <Link href="/voor-engineers">Voor engineers</Link>
-          <Link href="/vacatures">Vacatures</Link>
-          <Link href="/blog">Blog</Link>
-          <Link href="/faq">Veelgestelde vragen</Link>
-          <Link href="/contact">Contact</Link>
+          <Link href={p("/voor-bedrijven")}>{t.menu.bedrijven}</Link>
+          <Link href={p("/voor-engineers")}>{t.menu.engineers}</Link>
+          <Link href={p("/vacatures")}>{t.menu.vacatures}</Link>
+          <Link href={p("/blog")}>{t.menu.blog}</Link>
+          <Link href={p("/faq")}>{t.menu.faq}</Link>
+          <Link href={p("/contact")}>{t.menu.contact}</Link>
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" data-bewerk="contact.linkedin">
             LinkedIn
           </a>
@@ -35,12 +43,12 @@ export default function Footer({ linkedin, footerTekst }: { linkedin?: string; f
       </div>
       <div className="wrap footer__rij footer__rij--onder">
         <p className="meta" data-bewerk="contact.footerTekst">{bedrijfsregel}</p>
-        <nav className="footer__links footer__links--klein" aria-label="Juridisch">
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/cookies">Cookies</Link>
-          <Link href="/algemene-voorwaarden">Algemene voorwaarden</Link>
-          <Link href="/disclaimer">Disclaimer</Link>
-          <Link href="/toegankelijkheid">Toegankelijkheid</Link>
+        <nav className="footer__links footer__links--klein" aria-label={t.menu.juridisch}>
+          <Link href={p("/privacy")}>{t.juridisch.privacy}</Link>
+          <Link href={p("/cookies")}>{t.juridisch.cookies}</Link>
+          <Link href={p("/algemene-voorwaarden")}>{t.juridisch.voorwaarden}</Link>
+          <Link href={p("/disclaimer")}>{t.juridisch.disclaimer}</Link>
+          <Link href={p("/toegankelijkheid")}>{t.juridisch.toegankelijkheid}</Link>
           <CookieVoorkeurenLink style={{ fontSize: "0.875rem" }} />
         </nav>
       </div>

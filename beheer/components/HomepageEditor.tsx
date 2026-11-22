@@ -2,7 +2,8 @@
 
 import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { slaHomepageOp } from "@/lib/acties/homepage";
-import { CALLOUT_LETTERS, CALLOUT_STANDAARD, GROEPEN, PROFIELEN_STANDAARD, lees, uitFormulier } from "@/lib/homepage";
+import { CALLOUT_LETTERS, CALLOUT_STANDAARD, CALLOUT_STANDAARD_EN, PROFIELEN_STANDAARD, PROFIELEN_STANDAARD_EN, groepenVoor, lees, uitFormulier } from "@/lib/homepage";
+import { voorbeeldPad, type Taal } from "@/lib/taal";
 import { LijstVeld, Tekstvak, Tekstveld } from "./Velden";
 import OpslaanBalk from "./OpslaanBalk";
 import Voorbeeld, { type VoorbeeldBericht } from "./Voorbeeld";
@@ -12,7 +13,10 @@ import Voorbeeld, { type VoorbeeldBericht } from "./Voorbeeld";
  * het voorbeeld naar dat stuk van de pagina en zie je de tekst meteen
  * veranderen. Opslaan bewaart de inhoud in het beheer.
  */
-export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<string, unknown>; websiteUrl: string }) {
+export default function HomepageEditor({ waarde, websiteUrl, taal = "nl" }: { waarde: Record<string, unknown>; websiteUrl: string; taal?: Taal }) {
+  const groepen = groepenVoor(taal);
+  const calloutStandaard = taal === "en" ? CALLOUT_STANDAARD_EN : CALLOUT_STANDAARD;
+  const profielenStandaard = taal === "en" ? PROFIELEN_STANDAARD_EN : PROFIELEN_STANDAARD;
   const [staat, actie] = useActionState(slaHomepageOp, { ok: false });
   const form = useRef<HTMLFormElement>(null);
   const [bericht, setBericht] = useState<VoorbeeldBericht>({ data: waarde, veld: null });
@@ -61,8 +65,9 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
     // de velden eronder door: zo zie je ook op een tablet het voorbeeld meescrollen.
     <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(320px,420px)_minmax(0,1fr)] items-start">
       <form id="homepage" ref={form} action={actie} onInput={bijInvoer} onChange={bijInvoer} onFocus={bijFocus} onBlur={bijBlur} noValidate className="min-w-0 order-2 lg:order-none">
+        <input type="hidden" name="__taal" value={taal} />
         <div className="flex flex-col gap-5">
-          {GROEPEN.map((g, gi) => (
+          {groepen.map((g, gi) => (
             <section key={g.sleutel} className={`paneel flex flex-col gap-6 ${gi === 0 ? "blad" : ""}`}>
               <div>
                 <h2 className="text-[30px]">{g.titel}</h2>
@@ -89,7 +94,7 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
               {g.sleutel === "tekening" && (
                 <fieldset className="flex flex-col gap-4">
                   <legend className="veld-label mb-2">Letters van SPECIFIED, elk met een korte toelichting</legend>
-                  {CALLOUT_STANDAARD.map(([label, uitleg], i) => (
+                  {calloutStandaard.map(([label, uitleg], i) => (
                     <div key={i} className="grid grid-cols-[22px_minmax(0,1fr)_minmax(0,1.4fr)] gap-3 items-end">
                       <span className="kop text-[24px] text-[var(--limoen)] pb-1.5" aria-hidden="true">
                         {CALLOUT_LETTERS[i]}
@@ -105,7 +110,7 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
                   naam="consultants.profielen"
                   veld="consultants.profielen"
                   label="Profielen die meeschuiven met de scroll"
-                  waarden={profielen?.length ? profielen : PROFIELEN_STANDAARD}
+                  waarden={profielen?.length ? profielen : profielenStandaard}
                   max={36}
                   maxItems={12}
                   nieuw="Profiel toevoegen"
@@ -118,7 +123,7 @@ export default function HomepageEditor({ waarde, websiteUrl }: { waarde: Record<
       </form>
 
       <div className="order-1 lg:order-none sticky z-10 top-[calc(env(safe-area-inset-top)+52px)] md:top-2 lg:top-6 h-[42dvh] lg:h-[calc(100dvh-3rem)] -mx-1 px-1 pb-2 lg:pb-0 bg-[var(--grond)] lg:bg-transparent">
-        <Voorbeeld websiteUrl={websiteUrl} pad="/voorbeeld/home" bericht={bericht} />
+        <Voorbeeld key={taal} websiteUrl={websiteUrl} pad={voorbeeldPad("/voorbeeld/home", taal)} bericht={bericht} />
       </div>
     </div>
   );

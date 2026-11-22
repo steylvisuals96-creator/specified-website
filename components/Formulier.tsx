@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { CV_EXTENSIES, CV_MAX_BYTES, FORMULIEREN, type Soort, type Veld } from "@/lib/formulieren";
+import { CV_EXTENSIES, CV_MAX_BYTES, formulieren, type Soort, type Veld } from "@/lib/formulieren";
+import { useTaal } from "@/components/TaalContext";
+import { lokaalPad } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 
 /**
  * Eén formulier voor sollicitatie, open sollicitatie, contact en aanvraag.
@@ -11,7 +14,9 @@ import { CV_EXTENSIES, CV_MAX_BYTES, FORMULIEREN, type Soort, type Veld } from "
  * hoe je ons anders bereikt.
  */
 export default function Formulier({ soort, vacature }: { soort: Soort; vacature?: string }) {
-  const { velden, knop, bedankt } = FORMULIEREN[soort];
+  const taal = useTaal();
+  const t = ui(taal).formulier;
+  const { velden, knop, bedankt } = formulieren(taal)[soort];
   const id = useId();
   const gestart = useRef(0);
   const dankRef = useRef<HTMLDivElement>(null);
@@ -36,12 +41,13 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
     const cv = data.get("cv");
     if (cv instanceof File && cv.size > 0) {
       if (!CV_EXTENSIES.some((x) => cv.name.toLowerCase().endsWith(x))) {
-        return setFout({ tekst: "Het cv moet een pdf- of Word-bestand zijn.", veld: "cv" });
+        return setFout({ tekst: t.cvType, veld: "cv" });
       }
-      if (cv.size > CV_MAX_BYTES) return setFout({ tekst: "Het cv is groter dan 4 MB.", veld: "cv" });
+      if (cv.size > CV_MAX_BYTES) return setFout({ tekst: t.cvGroot, veld: "cv" });
     }
 
     data.set("soort", soort);
+    data.set("taal", taal);
     data.set("gestart", String(gestart.current));
     data.set("pagina", window.location.pathname);
     if (vacature) data.set("vacature", vacature);
@@ -55,11 +61,11 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
         setKlaar(true);
         form.reset();
       } else {
-        setFout({ tekst: antwoord?.fout || "Versturen lukt nu niet. Probeer het later opnieuw.", veld: antwoord?.veld });
+        setFout({ tekst: antwoord?.fout || t.lukt, veld: antwoord?.veld });
         if (antwoord?.veld) (form.elements.namedItem(antwoord.veld) as HTMLElement | null)?.focus();
       }
     } catch {
-      setFout({ tekst: "Geen verbinding. Controleer je internet en probeer opnieuw." });
+      setFout({ tekst: t.verbinding });
     } finally {
       setBezig(false);
     }
@@ -68,9 +74,9 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
   if (klaar) {
     return (
       <div className="form__dank" role="status" tabIndex={-1} ref={dankRef}>
-        <p className="form__dank-kop display display-m">Verstuurd.</p>
+        <p className="form__dank-kop display display-m">{t.verstuurd}</p>
         <p className="lead">{bedankt}</p>
-        <p className="meta">Je krijgt ook een bevestiging per e-mail. Niets ontvangen? Kijk even bij ongewenste mail.</p>
+        <p className="meta">{t.bevestiging}</p>
       </div>
     );
   }
@@ -79,14 +85,14 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
     <form className="form" onSubmit={verstuur}>
       <div className="form__velden">
         {velden.map((v) => (
-          <VeldInvoer key={v.naam} v={v} id={`${id}-${v.naam}`} fout={fout?.veld === v.naam ? fout.tekst : undefined} />
+          <VeldInvoer key={v.naam} v={v} id={`${id}-${v.naam}`} fout={fout?.veld === v.naam ? fout.tekst : undefined} t={t} />
         ))}
       </div>
 
       {/* Valkuil voor bots; mensen en schermlezers slaan dit over. */}
       <div className="form__val" aria-hidden="true">
         <label>
-          Laat dit veld leeg
+          {t.val}
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
@@ -94,9 +100,9 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
       <label className="form__akkoord">
         <input type="checkbox" name="akkoord" value="ja" required />
         <span>
-          Ik ga akkoord met de verwerking van mijn gegevens zoals beschreven in de{" "}
-          <Link href="/privacy" className="text-link">
-            privacyverklaring
+          {t.akkoordVoor}
+          <Link href={lokaalPad(taal, "/privacy")} className="text-link">
+            {t.akkoordLink}
           </Link>
           .
         </span>
@@ -104,20 +110,20 @@ export default function Formulier({ soort, vacature }: { soort: Soort; vacature?
 
       <div className="form__actie">
         <button type="submit" className="btn btn-primary" disabled={bezig}>
-          {bezig ? "Bezig met versturen" : knop}
+          {bezig ? t.bezig : knop}
         </button>
         <p className="form__melding" role="alert">
           {fout && !fout.veld ? fout.tekst : fout?.veld === "akkoord" ? fout.tekst : ""}
         </p>
       </div>
       <noscript>
-        <p className="meta">Dit formulier heeft JavaScript nodig. Je kan ons ook mailen op info@specified.be.</p>
+        <p className="meta">{t.noscript}</p>
       </noscript>
     </form>
   );
 }
 
-function VeldInvoer({ v, id, fout }: { v: Veld; id: string; fout?: string }) {
+function VeldInvoer({ v, id, fout, t }: { v: Veld; id: string; fout?: string; t: ReturnType<typeof ui>["formulier"] }) {
   const beschrijving = [v.hint ? `${id}-hint` : "", fout ? `${id}-fout` : ""].filter(Boolean).join(" ") || undefined;
   const gedeeld = {
     id,
@@ -131,13 +137,13 @@ function VeldInvoer({ v, id, fout }: { v: Veld; id: string; fout?: string }) {
     <div className="form__veld" data-half={v.half || undefined}>
       <label htmlFor={id}>
         {v.label}
-        {!v.verplicht && <span className="form__optioneel"> (optioneel)</span>}
+        {!v.verplicht && <span className="form__optioneel">{t.optioneel}</span>}
       </label>
       {v.type === "textarea" ? (
         <textarea {...gedeeld} rows={5} maxLength={v.max} />
       ) : v.type === "select" ? (
         <select {...gedeeld} defaultValue="">
-          <option value="">Kies</option>
+          <option value="">{t.kies}</option>
           {v.opties?.map((o) => (
             <option key={o} value={o}>
               {o}

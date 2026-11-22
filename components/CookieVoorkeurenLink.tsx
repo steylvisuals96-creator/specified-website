@@ -1,6 +1,8 @@
 "use client";
 
 import { clearConsent } from "@/lib/consent";
+import { useTaal } from "@/components/TaalContext";
+import { ui } from "@/lib/teksten";
 
 /**
  * Maakt de toestemming herroepbaar. Zonder dit kan een bezoeker zijn keuze
@@ -8,6 +10,7 @@ import { clearConsent } from "@/lib/consent";
  * footer staat en niet weggestopt zit in het cookiebeleid.
  */
 export default function CookieVoorkeurenLink({ style }: { style?: React.CSSProperties }) {
+  const label = ui(useTaal()).juridisch.cookievoorkeuren;
   return (
     <button
       type="button"
@@ -24,7 +27,7 @@ export default function CookieVoorkeurenLink({ style }: { style?: React.CSSPrope
         ...style,
       }}
     >
-      Cookievoorkeuren
+      {label}
     </button>
   );
 }

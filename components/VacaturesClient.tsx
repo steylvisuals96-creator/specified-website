@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useTaal } from "@/components/TaalContext";
+import { lokaalPad } from "@/lib/taal";
+import { ui, versheid } from "@/lib/teksten";
 
 export type VacatureRij = {
   slug: string;
@@ -14,20 +17,17 @@ export type VacatureRij = {
   dagen?: number;
 };
 
-const ALLE = "Alle";
+const ALLE = "__alle";
 
-// Alleen tonen als het nieuws is: "90 dagen online" leest als oud, niet als vers.
-export function versheid(dagen?: number) {
-  if (dagen === undefined || dagen > 30) return null;
-  if (dagen < 1) return { getal: "Nieuw", label: "vandaag online" };
-  return { getal: String(dagen), label: dagen === 1 ? "dag online" : "dagen online" };
-}
+
 
 /**
  * De vacaturelijst met één filter op vakgebied (Specified vroeg geen filters
  * op regio en uren). Elke rij is een link naar de pagina van de vacature.
  */
 export default function VacaturesClient({ vacatures }: { vacatures: VacatureRij[] }) {
+  const taal = useTaal();
+  const t = ui(taal).jobs;
   const vakgebieden = Array.from(new Set(vacatures.map((v) => v.vakgebied).filter(Boolean)));
   const [actief, setActief] = useState(ALLE);
   const zichtbaar = vacatures.filter((v) => actief === ALLE || v.vakgebied === actief);
@@ -37,11 +37,11 @@ export default function VacaturesClient({ vacatures }: { vacatures: VacatureRij[
       {/* Eén optie kan niets filteren; dan tonen we de filter niet. */}
       {vakgebieden.length > 1 && (
         <fieldset className="filter">
-          <legend>Vakgebied</legend>
+          <legend>{t.vakgebied}</legend>
           <div className="filter__knoppen">
             {[ALLE, ...vakgebieden].map((w) => (
               <button key={w} type="button" aria-pressed={actief === w} onClick={() => setActief(w)}>
-                {w}
+                {w === ALLE ? t.alleFilter : w}
               </button>
             ))}
           </div>
@@ -49,21 +49,21 @@ export default function VacaturesClient({ vacatures }: { vacatures: VacatureRij[
       )}
 
       <p className="sr-only" role="status">
-        {zichtbaar.length} vacature{zichtbaar.length === 1 ? "" : "s"} getoond
+        {t.getoond(zichtbaar.length)}
       </p>
 
       {zichtbaar.length === 0 ? (
-        <p className="lead jobs__leeg">Geen vacatures gevonden in dit vakgebied.</p>
+        <p className="lead jobs__leeg">{t.geenInVakgebied}</p>
       ) : (
         <ul className="jobs__lijst">
           {zichtbaar.map((v) => {
-            const vers = v.ingevuld ? null : versheid(v.dagen);
+            const vers = v.ingevuld ? null : versheid(v.dagen, taal);
             return (
               <li key={v.slug}>
-                <Link href={`/vacatures/${v.slug}`} className="jobs__rij" data-ingevuld={v.ingevuld || undefined}>
+                <Link href={lokaalPad(taal, `/vacatures/${v.slug}`)} className="jobs__rij" data-ingevuld={v.ingevuld || undefined}>
                   <span className="jobs__vers" data-leeg={!vers && !v.ingevuld}>
                     {v.ingevuld ? (
-                      <span className="jobs__ingevuld">Ingevuld</span>
+                      <span className="jobs__ingevuld">{t.ingevuld}</span>
                     ) : (
                       vers && (
                         <>

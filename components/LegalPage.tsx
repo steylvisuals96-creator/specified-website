@@ -1,6 +1,8 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { getSettings } from "@/lib/settings";
+import { huidigeTaal } from "@/lib/taal-server";
+import { ui } from "@/lib/teksten";
 
 export default async function LegalPage({
   title,
@@ -11,7 +13,8 @@ export default async function LegalPage({
   updated: string;
   children: React.ReactNode;
 }) {
-  const settings = await getSettings();
+  const taal = await huidigeTaal();
+  const settings = await getSettings(taal);
   return (
     <>
       <Nav />
@@ -39,7 +42,7 @@ export default async function LegalPage({
           {title}
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginBottom: "3rem" }}>
-          Laatst bijgewerkt: {updated}
+          {ui(taal).juridisch.bijgewerkt}: {updated}
         </p>
         <div className="legal-body">{children}</div>
       </main>

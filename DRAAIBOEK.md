@@ -305,7 +305,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 
 **Afstemmen met Simon (tegenstrijdigheden uit de invullijst, zie `BRIEFING.md`)**
 - [x] Pagina per vacature en één filter op vakgebied: gebouwd (2026-11-12), nog te bevestigen door Simon.
-- [ ] NL en EN gevraagd, meerdere talen op "later". Voorstel: livegang in het Nederlands, Engels als fase 2.
+- [x] NL en EN gevraagd. Engelse versie gebouwd (2026-11-23): Nederlands op de huidige adressen, Engels onder `/en` met Engelse adressen. Nog door Simon na te lezen: Engelse standaardteksten en vertaalde juridische pagina's.
 - [ ] Moeten sollicitaties ook in Bullhorn (hun ATS)? Zo ja: API-toegang via Bullhorn regelen.
 - [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy?
 - [ ] Bewaartermijn sollicitatiegegevens (advies: 1 jaar, 2 met toestemming).
@@ -338,7 +338,8 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Tweestapslogin voor het beheer (zie Techniek).
 - [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
 - [x] Overzicht van het dashboard voor de klant: vacatures (met link naar de website en wat nog ontbreekt) en blog (`components/KlantOverzicht.tsx`, 2026-11-12). De creator houdt het recruitmentoverzicht.
-- [ ] Engelse versie (fase 2).
+- [x] Engelse versie (2026-11-23): pagina's onder `app/[taal]/`, `proxy.ts` zet adressen om, taal via `lib/taal-server.ts` (root-params) en `components/TaalContext.tsx`. Teksten: `lib/teksten.ts`, `lib/inhoud-en.ts`, `STANDAARD_EN` in `lib/paginas.ts`. Beheer: schakelaar Nederlands/English bij Homepage en Pagina's, rijen `en:<sleutel>` in `pagina_inhoud` (migratie `20261123_01_engelse_teksten.sql`, op productie uitgevoerd). E-mail, telefoon en LinkedIn gedeeld. Vacatures en blog in hun eigen taal met Engelse labels; Engelse detailpagina canonical naar de Nederlandse, JobPosting alleen op NL. Oude Engelstalige specified.be-adressen sturen naar `/en`. Formulieren: Engelse meldingen en bevestiging, melding aan Specified Nederlands met "Taal: Engels".
+- [ ] Engelse versie nalopen op mobiel (menu, taalknop) en met echte mail zodra Resend actief is.
 - [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22. axe-core 4.10.3 (WCAG 2.0/2.1/2.2 A en AA plus best practices) op 2026-11-22 lokaal over 14 pagina's (home, vacatures, een vacature, voor bedrijven, voor engineers, open sollicitatie, blog, een artikel, FAQ, contact, disclaimer, toegankelijkheid, privacy, cookies, 404): 0 fouten. Wat axe niet zelf kon meten (contrast onder de korrellaag `body::after`) handmatig nagerekend: alle teksttinten halen AA in beide thema's (laagste bone-400 op ink-800 in het lichte thema, 5,86:1). Opnieuw draaien: `node_modules/axe-core/axe.min.js` tijdelijk naar `public/` kopiëren, in de console laden met een script-tag en `axe.run()` draaien, daarna weer weghalen. Nog te doen: VoiceOver (mens).
 - [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
 - [ ] `/api/formulier`: de limiet per IP geldt per server. Bij misbruik een gedeelde limiet toevoegen (Vercel Firewall of een teller in Supabase).
@@ -393,7 +394,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-23 00:24_
+_Bijgewerkt: 2026-11-23 00:26_
 
 ### Nog niet op main
 
@@ -405,6 +406,8 @@ _Bijgewerkt: 2026-11-23 00:24_
 
 **2026-11-23**
 
+- website: Engelse versie van de website onder /en, met NL/EN-schakelaar in het beheer (`694343b`)
+- website: Blog sneller op mobiel: GSAP alleen laden waar vloeiend scrollen draait (`af430d5`)
 - website: Tweestapslogin ook in RLS afdwingen (`2c6ef0a`)
 
 **2026-11-22**

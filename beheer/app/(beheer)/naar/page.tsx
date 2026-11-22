@@ -5,6 +5,7 @@ import Paginakop from "@/components/Paginakop";
 import { vereisSessie } from "@/lib/sessie";
 import { paginaSchema } from "@/lib/paginas-server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { metTaal, splitsPad } from "@/lib/taal";
 
 export const metadata: Metadata = { title: "Naar de editor" };
 
@@ -16,12 +17,14 @@ export const metadata: Metadata = { title: "Naar de editor" };
 export default async function Naar({ searchParams }: { searchParams: Promise<{ pad?: string }> }) {
   await vereisSessie();
   const { pad: ruw = "/" } = await searchParams;
-  const pad = (ruw.startsWith("/") ? ruw : "/").split(/[?#]/)[0].replace(/\/+$/, "") || "/";
+  const volledig = (ruw.startsWith("/") ? ruw : "/").split(/[?#]/)[0].replace(/\/+$/, "") || "/";
+  // Een link in het Engelse voorbeeld (/en/...) gaat naar de Engelse teksten van die pagina.
+  const { taal, nlPad: pad } = splitsPad(volledig);
 
-  if (pad === "/") redirect("/homepage");
+  if (pad === "/") redirect(metTaal("/homepage", taal));
   const schema = await paginaSchema();
   const pagina = schema.find((p) => p.pad === pad);
-  if (pagina) redirect(`/paginas/${pagina.sleutel}`);
+  if (pagina) redirect(metTaal(`/paginas/${pagina.sleutel}`, taal));
 
   const vacature = pad.match(/^\/vacatures\/([a-z0-9-]{1,140})$/);
   if (vacature) {
@@ -39,7 +42,7 @@ export default async function Naar({ searchParams }: { searchParams: Promise<{ p
       <Paginakop titel="Nog niet" accent="bewerkbaar" vul={20} />
       <section className="paneel blad max-w-[640px] flex flex-col gap-4">
         <p>
-          De pagina <code className="text-[var(--limoen)]">{pad}</code> kan je nog niet in het beheer aanpassen.
+          De pagina <code className="text-[var(--limoen)]">{volledig}</code> kan je nog niet in het beheer aanpassen.
         </p>
         <p className="stil text-[14px]">De juridische pagina&apos;s (privacy, cookies, disclaimer, toegankelijkheid, algemene voorwaarden) volgen nog. Wil je daar nu iets veranderd zien, laat het dan weten aan SteylVisuals.</p>
         <Link href="/paginas" className="knop self-start">

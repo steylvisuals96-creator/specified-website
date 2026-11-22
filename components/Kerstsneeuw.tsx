@@ -1,4 +1,8 @@
+"use client";
+
 import type { CSSProperties } from "react";
+import { useTaal } from "@/components/TaalContext";
+import { ui } from "@/lib/teksten";
 
 const VLOKKEN = [
   { links: 3, maat: 3, duur: 14, fase: -3 },
@@ -24,11 +28,12 @@ const VLOKKEN = [
 ];
 
 export default function Kerstsneeuw() {
+  const label = ui(useTaal()).sneeuw;
   return (
     <div className="kerstsneeuw">
       <label className="kerstsneeuw__knop">
         <input type="checkbox" defaultChecked />
-        Sneeuw
+        {label}
       </label>
       <div className="kerstsneeuw__veld" aria-hidden="true">
         {VLOKKEN.map(({ links, maat, duur, fase }) => (

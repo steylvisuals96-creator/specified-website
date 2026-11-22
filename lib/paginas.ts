@@ -1,5 +1,7 @@
 import { CERTIFICATEN, CIJFERS, CONTACT, BEDRIJF, DIENSTENLIJST, JOBS, PROFIELEN, SECTOREN, STAPPEN_ENGINEER, WAARDEN } from "./inhoud";
 import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
+import * as EN from "./inhoud-en";
+import { lokaalPad, type Taal } from "./taal";
 
 /**
  * De bewerkbare teksten van de doorklikpagina's, op één plek.
@@ -354,7 +356,156 @@ export const PAGINAS: PaginaDef[] = [
   },
 ];
 
-export const paginaDef = (sleutel: string) => PAGINAS.find((p) => p.sleutel === sleutel);
+/**
+ * De Engelse standaardteksten, per pagina en veld. Zelfde velden en labels als
+ * hierboven (het beheer blijft Nederlands); alleen de standaard verschilt.
+ * Ontbreekt een veld hier, dan geldt de Nederlandse standaard.
+ */
+const opsommingEn = (l: string[]) => l.slice(0, -1).join(", ").toLowerCase() + " and " + l[l.length - 1].toLowerCase();
+
+const STANDAARD_EN: Record<string, Record<string, unknown>> = {
+  algemeen: {
+    profielen: EN.PROFIELEN,
+    sectoren: EN.SECTOREN,
+    certificaten: EN.CERTIFICATEN,
+    attestenZin: "Our consultants hold these certificates:",
+    cijfers: EN.CIJFERS,
+  },
+  "voor-bedrijven": {
+    titel: "Your engineering partner",
+    inleiding:
+      "Need temporary reinforcement for a project, maintenance or a study? Specified deploys one of its own consultants: the right person in the right place, at the right time. Local talent for local partners, with a transparent approach built on communication.",
+    knopAanvraag: "Request a consultant",
+    knopContact: "Get in touch",
+    dienstenKop: "What we do",
+    diensten: EN.DIENSTENLIJST,
+    profielenKop: "Profiles",
+    profielenTekst: "Our consultants are engineers with their own specialisation. These are the profiles we deploy.",
+    sectorenKop: "Sectors",
+    sectorenTekst: "We work for companies in Flanders, in these sectors.",
+    stappenKop: "How it works",
+    stappen: [
+      { titel: "Your request", tekst: "You tell us which project, installation or study needs reinforcement." },
+      { titel: "Our proposal", tekst: "We propose a consultant with the right specialisation and experience." },
+      { titel: "The start", tekst: "The consultant starts at your company. We stay available and follow up on the collaboration." },
+    ],
+    cijfersKop: "In numbers",
+    aanvraagKop: "Request a consultant",
+    aanvraagTekst: "Briefly tell us what you are looking for. We will contact you to discuss your request.",
+  },
+  "voor-engineers": {
+    titel: "Your career partner",
+    inleiding:
+      "As a consultant at Specified, you discover different projects and sectors without committing your whole career to one path. We guide your choices, keep talking about what you want and help you grow into an expert or a versatile generalist.",
+    knopVacatures: "View the jobs",
+    knopOpen: "Send an open application",
+    waardenKop: "What we stand for",
+    waarden: EN.WAARDEN,
+    zoekenKop: "Who we are looking for",
+    zoekenTekst: "Experienced engineers, but also students and graduates who want to take their first steps.",
+    werkKop: "Where you work",
+    werkTekst: "With our partners in Flanders, in these sectors.",
+    stappenKop: "How it goes",
+    stappen: EN.STAPPEN_ENGINEER,
+    stappenNa: "No two engineers are the same, so we adapt the process where needed.",
+    slotKop: "Your job not listed?",
+    slotTekst: "We also recruit beyond the open vacancies. Send us your CV and tell us what you are looking for.",
+    slotKnop: "Send an open application",
+  },
+  vacatures: {
+    titel: EN.JOBS.titel,
+    inleidingLeeg: "There are no open vacancies online at the moment.",
+    slotKop: "Your job not listed?",
+    slotTekst: "We also recruit beyond the open vacancies.",
+    slotKnop: "Send an open application",
+  },
+  contact: {
+    titel: "Let's get acquainted",
+    inleiding: "A question about a project, a collaboration or a job? Send a message, email or call us.",
+    bedrijfsnaam: EN.BEDRIJF.naam,
+    straat: EN.CONTACT.straat,
+    postcode: EN.CONTACT.postcode,
+    ondernemingsnummer: EN.BEDRIJF.ondernemingsnummer,
+  },
+  faq: {
+    titel: "Frequently asked questions",
+    inleiding: "Can't find your question? Feel free to get in touch.",
+    groep1Kop: "About Specified",
+    groep1: [
+      {
+        vraag: "What does Specified do?",
+        antwoord:
+          "Specified is an engineering consultancy based in Kontich. Our consultants temporarily strengthen companies' projects, maintenance and studies. We connect local talent with local partners.",
+      },
+      { vraag: "Which sectors do you work in?", antwoord: `Our clients are active in ${opsommingEn(EN.SECTOREN)}.` },
+      { vraag: "Which region do you cover?", antwoord: "Flanders. Our office is in Kontich, near Antwerp." },
+    ],
+    groep2Kop: "For engineers",
+    groep2: [
+      { vraag: "Which profiles are you looking for?", antwoord: `We work with these profiles: ${opsommingEn(EN.PROFIELEN)}. Experienced engineers as well as students and graduates are welcome.` },
+      {
+        vraag: "How does the application process work?",
+        antwoord:
+          "We first review your CV. This is followed by a first interview via Teams and a second interview at our office in Kontich, with Tom and Simon. We adapt the process where needed.",
+      },
+      {
+        vraag: "My job is not listed. Can I still apply?",
+        antwoord: "Yes. We also recruit beyond the open vacancies.",
+        linkTekst: "Send an open application",
+        linkAdres: "/open-sollicitatie",
+      },
+      { vraag: "Why don't the vacancies mention a salary?", antwoord: "A salary package depends on your experience and on the project. We discuss it in a personal conversation." },
+      {
+        vraag: "What happens to my data?",
+        antwoord: "We only use your data to process your application.",
+        linkTekst: "Read the privacy policy",
+        linkAdres: "/privacy",
+      },
+    ],
+    groep3Kop: "For companies",
+    groep3: [
+      {
+        vraag: "How do I request a consultant?",
+        antwoord: "Through the request form. Briefly tell us what you are looking for and we will contact you to discuss your request.",
+        linkTekst: "Request a consultant",
+        linkAdres: "/voor-bedrijven#aanvraag",
+      },
+      { vraag: "What can I deploy a consultant for?", antwoord: "For temporary reinforcement of a project, for maintenance, for studies and for optimising existing processes." },
+    ],
+    slotKnop: "Get in touch",
+  },
+  "open-sollicitatie": {
+    titel: "Open application",
+    inleiding:
+      "Your job not listed? We also recruit beyond the open vacancies. Send us your CV and tell us what you are looking for, and we will look together at what fits.",
+  },
+  blog: {
+    titel: "Blog",
+    inleiding: "Insights, tips and stories about engineering, consultancy and careers.",
+  },
+};
+
+const PAGINAS_EN: PaginaDef[] = PAGINAS.map((p) => ({
+  ...p,
+  pad: p.pad ? lokaalPadEn(p.pad) : null,
+  groepen: p.groepen.map((g) => ({
+    ...g,
+    velden: g.velden.map((v) => {
+      const en = STANDAARD_EN[p.sleutel]?.[v.sleutel];
+      return en === undefined ? v : ({ ...v, standaard: en } as VeldDef);
+    }),
+  })),
+}));
+
+function lokaalPadEn(pad: string) {
+  return lokaalPad("en", pad);
+}
+
+/** De beschrijving van de pagina's met de standaardteksten van een taal. */
+export const paginasVoor = (taal: Taal): PaginaDef[] => (taal === "en" ? PAGINAS_EN : PAGINAS);
+
+export const paginaDef = (sleutel: string, taal: Taal = "nl") => paginasVoor(taal).find((p) => p.sleutel === sleutel);
+
 
 /**
  * De samengevoegde teksten van een pagina. Welke sleutel een tekst, een lijst of
@@ -393,12 +544,13 @@ export function samenvoegenPagina(def: PaginaDef, opgeslagen: unknown): PaginaTe
 export const veiligeLinkAdres = (v?: string) => (v && /^(\/(?!\/)|https:\/\/)/.test(v) ? v : undefined);
 
 /** De teksten van een pagina: uit het beheer (Supabase) met de standaard als terugval. */
-export async function getPagina(sleutel: string): Promise<PaginaTeksten> {
-  const def = paginaDef(sleutel);
+export async function getPagina(sleutel: string, taal: Taal = "nl"): Promise<PaginaTeksten> {
+  const def = paginaDef(sleutel, taal);
   if (!def) throw new Error(`Onbekende pagina ${sleutel}`);
   if (!LEEST_UIT_SUPABASE) return samenvoegenPagina(def, {});
   try {
-    const [rij] = await supabaseLees<{ waarde: unknown }>(`pagina_inhoud?select=waarde&sleutel=eq.${encodeURIComponent(sleutel)}`);
+    const rijSleutel = taal === "nl" ? sleutel : `${taal}:${sleutel}`;
+    const [rij] = await supabaseLees<{ waarde: unknown }>(`pagina_inhoud?select=waarde&sleutel=eq.${encodeURIComponent(rijSleutel)}`);
     return samenvoegenPagina(def, rij?.waarde);
   } catch {
     return samenvoegenPagina(def, {});
@@ -406,7 +558,7 @@ export async function getPagina(sleutel: string): Promise<PaginaTeksten> {
 }
 
 /** Gedeelde lijsten en de teksten van één pagina, samen. */
-export async function getPaginaMetAlgemeen(sleutel: string) {
-  const [t, algemeen] = await Promise.all([getPagina(sleutel), getPagina("algemeen")]);
+export async function getPaginaMetAlgemeen(sleutel: string, taal: Taal = "nl") {
+  const [t, algemeen] = await Promise.all([getPagina(sleutel, taal), getPagina("algemeen", taal)]);
   return { t, algemeen };
 }

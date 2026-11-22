@@ -1,6 +1,57 @@
 import { NextResponse, after } from "next/server";
 import { meldFout } from "@/lib/foutmelding";
-import { CV_EXTENSIES, CV_MAX_BYTES, FORMULIEREN, SOORT_TITEL, isSoort } from "@/lib/formulieren";
+import { CV_EXTENSIES, CV_MAX_BYTES, FORMULIEREN, SOORT_TITEL, formulieren, isSoort } from "@/lib/formulieren";
+import { isTaal, type Taal } from "@/lib/taal";
+
+/** Meldingen aan de bezoeker, in de taal van het formulier. De melding aan Specified blijft Nederlands. */
+const M = {
+  nl: {
+    ongeldig: "Ongeldige aanvraag.",
+    teVaak: "Te veel aanvragen na elkaar. Probeer het over tien minuten opnieuw.",
+    lezen: "Het formulier kon niet gelezen worden. Is het bestand kleiner dan 4 MB?",
+    onbekend: "Onbekend formulier.",
+    akkoord: "Vink aan dat je akkoord gaat met de privacyverklaring.",
+    cv: "Voeg je cv toe.",
+    cvType: "Het cv moet een pdf- of Word-bestand zijn.",
+    cvGroot: "Het cv is groter dan 4 MB.",
+    vulIn: (l: string) => `Vul "${l}" in.`,
+    teLang: (l: string) => `"${l}" is te lang.`,
+    email: "Dat e-mailadres klopt niet.",
+    url: "De link moet met https:// beginnen.",
+    datum: (l: string) => `"${l}" is geen geldige datum.`,
+    kies: (l: string) => `Kies een optie bij "${l}".`,
+    nietIngesteld: "Versturen lukt nu niet. Mail ons op info@specified.be, dan helpen we je verder.",
+    mislukt: "Versturen lukt nu niet. Probeer het later opnieuw of mail ons op info@specified.be.",
+    onderwerp: (soort: string) => `We hebben je ${soort === "contact" ? "bericht" : soort === "aanvraag" ? "aanvraag" : "sollicitatie"} ontvangen`,
+    dag: (naam: string) => `Dag ${naam},`,
+    gaatOm: (v: string) => `\nHet gaat om: ${v}`,
+    automatisch: "Dit is een automatische bevestiging. Heb je nog een vraag, antwoord dan gewoon op deze mail.",
+    adres: "Veldkant 31a, 2550 Kontich",
+  },
+  en: {
+    ongeldig: "Invalid request.",
+    teVaak: "Too many requests in a row. Please try again in ten minutes.",
+    lezen: "The form could not be read. Is the file smaller than 4 MB?",
+    onbekend: "Unknown form.",
+    akkoord: "Please confirm that you agree to the privacy policy.",
+    cv: "Please add your CV.",
+    cvType: "Your CV must be a PDF or Word file.",
+    cvGroot: "Your CV is larger than 4 MB.",
+    vulIn: (l: string) => `Please fill in "${l}".`,
+    teLang: (l: string) => `"${l}" is too long.`,
+    email: "That email address is not valid.",
+    url: "The link must start with https://.",
+    datum: (l: string) => `"${l}" is not a valid date.`,
+    kies: (l: string) => `Please choose an option for "${l}".`,
+    nietIngesteld: "Sending is not possible right now. Email us at info@specified.be and we will help you.",
+    mislukt: "Sending is not possible right now. Please try again later or email us at info@specified.be.",
+    onderwerp: (soort: string) => `We have received your ${soort === "contact" ? "message" : soort === "aanvraag" ? "request" : "application"}`,
+    dag: (naam: string) => `Dear ${naam},`,
+    gaatOm: (v: string) => `\nRegarding: ${v}`,
+    automatisch: "This is an automatic confirmation. If you have any questions, simply reply to this email.",
+    adres: "Veldkant 31a, 2550 Kontich, Belgium",
+  },
+} satisfies Record<Taal, unknown>;
 
 /**
  * Ontvangt de formulieren van de site (sollicitatie, open sollicitatie,
@@ -52,6 +103,8 @@ async function stuur(sleutel: string, mail: Record<string, unknown>): Promise<bo
 }
 
 export async function POST(req: Request) {
+  // De taal staat ook in het formulier, maar dat lezen we pas na de eerste controles.
+  let m = M.nl;
   // Alleen formulieren van de eigen site.
   const origin = req.headers.get("origin");
   if (origin) {
@@ -61,30 +114,37 @@ export async function POST(req: Request) {
     } catch {
       /* "null" of onzin: geen eigen pagina */
     }
-    if (host !== req.headers.get("host")) return fout("Ongeldige aanvraag.", 403);
+    if (host !== req.headers.get("host")) return fout(m.ongeldig, 403);
   }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "onbekend";
-  if (teVaak(ip)) return fout("Te veel aanvragen na elkaar. Probeer het over tien minuten opnieuw.", 429);
+  if (teVaak(ip)) return fout(m.teVaak, 429);
 
   let data: FormData;
   try {
     data = await req.formData();
   } catch {
-    return fout("Het formulier kon niet gelezen worden. Is het bestand kleiner dan 4 MB?", 413);
+    return fout(m.lezen, 413);
   }
 
+  const ruweTaal = data.get("taal");
+  const taal: Taal = isTaal(ruweTaal) ? ruweTaal : "nl";
+  m = M[taal];
+
   const soort = data.get("soort");
-  if (!isSoort(soort)) return fout("Onbekend formulier.");
+  if (!isSoort(soort)) return fout(m.onbekend);
 
   // Valkuil voor bots: een veld dat mensen niet zien. Ingevuld of te snel
   // verstuurd betekent doen alsof het gelukt is, zonder te mailen.
   const gestart = Number(data.get("gestart"));
   if (data.get("website") || !gestart || Date.now() - gestart < 2500) return NextResponse.json({ ok: true });
 
-  if (data.get("akkoord") !== "ja") return fout("Vink aan dat je akkoord gaat met de privacyverklaring.", 400, "akkoord");
+  if (data.get("akkoord") !== "ja") return fout(m.akkoord, 400, "akkoord");
 
-  const { velden } = FORMULIEREN[soort];
+  // Controleren met de velden in de taal van de bezoeker; bewaren met de
+  // Nederlandse labels en keuzes, voor de melding aan Specified.
+  const { velden } = formulieren(taal)[soort];
+  const nlVelden = FORMULIEREN[soort].velden;
   const waarden: [string, string][] = [];
   let cv: File | null = null;
 
@@ -93,31 +153,33 @@ export async function POST(req: Request) {
     if (v.type === "file") {
       const bestand = ruw instanceof File && ruw.size > 0 ? ruw : null;
       if (!bestand) {
-        if (v.verplicht) return fout("Voeg je cv toe.", 400, v.naam);
+        if (v.verplicht) return fout(m.cv, 400, v.naam);
         continue;
       }
       const naam = bestand.name.toLowerCase();
-      if (!CV_EXTENSIES.some((e) => naam.endsWith(e))) return fout("Het cv moet een pdf- of Word-bestand zijn.", 400, v.naam);
-      if (bestand.size > CV_MAX_BYTES) return fout("Het cv is groter dan 4 MB.", 400, v.naam);
+      if (!CV_EXTENSIES.some((e) => naam.endsWith(e))) return fout(m.cvType, 400, v.naam);
+      if (bestand.size > CV_MAX_BYTES) return fout(m.cvGroot, 400, v.naam);
       cv = bestand;
       continue;
     }
     let waarde = typeof ruw === "string" ? ruw.trim() : "";
     if (v.type !== "textarea") waarde = eenRegel(waarde);
     if (!waarde) {
-      if (v.verplicht) return fout(`Vul "${v.label}" in.`, 400, v.naam);
+      if (v.verplicht) return fout(m.vulIn(v.label), 400, v.naam);
       continue;
     }
-    if (v.max && waarde.length > v.max) return fout(`"${v.label}" is te lang.`, 400, v.naam);
-    if (v.type === "email" && !EMAIL.test(waarde)) return fout("Dat e-mailadres klopt niet.", 400, v.naam);
-    if (v.type === "url" && !/^https?:\/\/\S+$/i.test(waarde)) return fout("De link moet met https:// beginnen.", 400, v.naam);
-    if (v.type === "date" && !/^\d{4}-\d{2}-\d{2}$/.test(waarde)) return fout(`"${v.label}" is geen geldige datum.`, 400, v.naam);
-    if (v.type === "select" && !v.opties?.includes(waarde)) return fout(`Kies een optie bij "${v.label}".`, 400, v.naam);
-    waarden.push([v.label, waarde]);
+    if (v.max && waarde.length > v.max) return fout(m.teLang(v.label), 400, v.naam);
+    if (v.type === "email" && !EMAIL.test(waarde)) return fout(m.email, 400, v.naam);
+    if (v.type === "url" && !/^https?:\/\/\S+$/i.test(waarde)) return fout(m.url, 400, v.naam);
+    if (v.type === "date" && !/^\d{4}-\d{2}-\d{2}$/.test(waarde)) return fout(m.datum(v.label), 400, v.naam);
+    if (v.type === "select" && !v.opties?.includes(waarde)) return fout(m.kies(v.label), 400, v.naam);
+    const nl = nlVelden.find((x) => x.naam === v.naam) ?? v;
+    const keuze = v.type === "select" ? nl.opties?.[v.opties!.indexOf(waarde)] ?? waarde : waarde;
+    waarden.push([nl.label, keuze]);
   }
 
   const veld = (naam: string) => {
-    const v = velden.find((x) => x.naam === naam);
+    const v = nlVelden.find((x) => x.naam === naam);
     return waarden.find(([l]) => l === v?.label)?.[1] ?? "";
   };
   const naam = veld("naam");
@@ -135,7 +197,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true, test: true });
     }
     after(() => meldFout(new Error("Formulier ontvangen, maar RESEND_API_KEY of FORMULIER_AAN ontbreekt"), { bron: "route", route: "/api/formulier", methode: "POST" }));
-    return fout("Versturen lukt nu niet. Mail ons op info@specified.be, dan helpen we je verder.", 503);
+    return fout(m.nietIngesteld, 503);
   }
 
   const van = process.env.FORMULIER_VAN || "Specified website <onboarding@resend.dev>";
@@ -147,6 +209,7 @@ export async function POST(req: Request) {
     "",
     cv ? `Cv in bijlage: ${cv.name}` : null,
     pagina ? `Verstuurd vanaf: ${pagina}` : null,
+    taal === "en" ? "Taal: Engels (de bezoeker gebruikte de Engelse site; antwoord liefst in het Engels)" : null,
     `Tijdstip: ${new Date().toLocaleString("nl-BE", { timeZone: "Europe/Brussels" })}`,
     "",
     "Antwoorden op deze mail gaat rechtstreeks naar de afzender.",
@@ -165,7 +228,7 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     after(() => meldFout(err, { bron: "route", route: "/api/formulier", methode: "POST" }));
-    return fout("Versturen lukt nu niet. Probeer het later opnieuw of mail ons op info@specified.be.", 502);
+    return fout(m.mislukt, 502);
   }
 
   // De bevestiging mag het formulier niet laten mislukken: de aanvraag is binnen.
@@ -175,17 +238,17 @@ export async function POST(req: Request) {
         from: van,
         to: [email],
         reply_to: process.env.FORMULIER_ANTWOORD || "info@specified.be",
-        subject: `We hebben je ${soort === "contact" ? "bericht" : soort === "aanvraag" ? "aanvraag" : "sollicitatie"} ontvangen`,
+        subject: m.onderwerp(soort),
         text: [
-          `Dag ${naam},`,
+          m.dag(naam),
           "",
-          FORMULIEREN[soort].bedankt,
-          vacature ? `\nHet gaat om: ${vacature}` : null,
+          formulieren(taal)[soort].bedankt,
+          vacature ? m.gaatOm(vacature) : null,
           "",
-          "Dit is een automatische bevestiging. Heb je nog een vraag, antwoord dan gewoon op deze mail.",
+          m.automatisch,
           "",
           "Specified NV",
-          "Veldkant 31a, 2550 Kontich",
+          m.adres,
           "specified.be",
         ].filter((r) => r !== null).join("\n"),
       });

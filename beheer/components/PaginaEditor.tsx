@@ -7,13 +7,14 @@ import { LijstVeld, Tekstvak, Tekstveld } from "./Velden";
 import ItemsVeld from "./ItemsVeld";
 import OpslaanBalk from "./OpslaanBalk";
 import Voorbeeld, { type VoorbeeldBericht } from "./Voorbeeld";
+import { voorbeeldPad, type Taal } from "@/lib/taal";
 
 /**
  * Eén editor voor elke doorklikpagina, gebouwd uit de beschrijving die de
  * website geeft. Zelfde werking als de homepage: velden links, de echte pagina
  * rechts, en het voorbeeld scrollt naar het veld waarin je typt.
  */
-export default function PaginaEditor({ def, waarde, websiteUrl }: { def: PaginaDef; waarde: Record<string, unknown>; websiteUrl: string }) {
+export default function PaginaEditor({ def, waarde, websiteUrl, taal = "nl" }: { def: PaginaDef; waarde: Record<string, unknown>; websiteUrl: string; taal?: Taal }) {
   const [staat, actie] = useActionState(slaPaginaOp, { ok: false });
   const form = useRef<HTMLFormElement>(null);
   const [bericht, setBericht] = useState<VoorbeeldBericht>({ data: waarde, veld: null });
@@ -52,6 +53,7 @@ export default function PaginaEditor({ def, waarde, websiteUrl }: { def: PaginaD
     <div className="grid gap-5 lg:gap-6 lg:grid-cols-[minmax(320px,440px)_minmax(0,1fr)] items-start">
       <form id="pagina" ref={form} action={actie} onInput={bijInvoer} onChange={bijInvoer} onFocus={bijFocus} onBlur={bijBlur} noValidate className="min-w-0 order-2 lg:order-none">
         <input type="hidden" name="__pagina" value={def.sleutel} />
+        <input type="hidden" name="__taal" value={taal} />
         <div className="flex flex-col gap-5">
           {def.groepen.map((g, gi) => (
             <section key={g.titel} className={`paneel flex flex-col gap-6 ${gi === 0 ? "blad" : ""}`}>
@@ -92,7 +94,7 @@ export default function PaginaEditor({ def, waarde, websiteUrl }: { def: PaginaD
       </form>
 
       <div className="order-1 lg:order-none sticky z-10 top-[calc(env(safe-area-inset-top)+52px)] md:top-2 lg:top-6 h-[42dvh] lg:h-[calc(100dvh-3rem)] -mx-1 px-1 pb-2 lg:pb-0 bg-[var(--grond)] lg:bg-transparent">
-        <Voorbeeld websiteUrl={websiteUrl} pad={`/voorbeeld/pagina/${def.voorbeeld}?bewerk=${def.sleutel}`} bericht={bericht} />
+        <Voorbeeld key={taal} websiteUrl={websiteUrl} pad={voorbeeldPad(`/voorbeeld/pagina/${def.voorbeeld}?bewerk=${def.sleutel}`, taal)} bericht={bericht} />
       </div>
     </div>
   );

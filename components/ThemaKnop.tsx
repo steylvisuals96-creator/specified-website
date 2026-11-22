@@ -2,22 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { leesThema, zetThema, type Thema } from "@/lib/thema";
+import { useTaal } from "@/components/TaalContext";
+import { ui } from "@/lib/teksten";
 
 /** Schakelt tussen het donkere en het lichte thema. */
 export default function ThemaKnop({ metTekst }: { metTekst?: boolean }) {
   // Tot de browser het weet, gaan we uit van donker (de standaard).
   const [thema, setThema] = useState<Thema>("donker");
+  const t = ui(useTaal()).thema;
   useEffect(() => setThema(leesThema()), []);
 
   const ander: Thema = thema === "licht" ? "donker" : "licht";
-  const label = ander === "licht" ? "Licht thema" : "Donker thema";
+  const label = ander === "licht" ? t.licht : t.donker;
 
   return (
     <button
       type="button"
       className="thema-knop"
       data-tekst={metTekst || undefined}
-      aria-label={metTekst ? undefined : `Wissel naar ${label.toLowerCase()}`}
+      aria-label={metTekst ? undefined : t.wissel(label)}
       title={metTekst ? undefined : label}
       onClick={() => {
         zetThema(ander);

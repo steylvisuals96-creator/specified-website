@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { onConsentChange, readConsent, writeConsent, type ConsentValue } from "@/lib/consent";
+import { useTaal } from "@/components/TaalContext";
+import { lokaalPad } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 
 /**
  * Wordt op de server al gerenderd, zodat hij bij de eerste weergave staat in
@@ -14,7 +17,9 @@ export default function CookieBanner() {
   const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
   // De voorbeeldpagina's staan in een frame in het beheer; daar hoort geen banner over de inhoud.
-  const voorbeeld = /^\/(voorbeeld\/|blog\/voorbeeld)/.test(usePathname() ?? "");
+  const voorbeeld = /^\/((nl|en)\/)?(voorbeeld\/|blog\/voorbeeld)/.test(usePathname() ?? "");
+  const taal = useTaal();
+  const t = ui(taal).cookie;
 
   useEffect(() => {
     const sync = () => setVisible(readConsent() === null);
@@ -68,20 +73,21 @@ export default function CookieBanner() {
   if (!visible || voorbeeld) return null;
 
   return (
-    <div ref={ref} role="dialog" aria-label="Cookievoorkeuren" className="cookie-banner">
+    <div ref={ref} role="dialog" aria-label={t.label} className="cookie-banner">
       <p>
-        We gebruiken noodzakelijke cookies om de site te laten werken en, met jouw toestemming, analytische
-        cookies om hem te verbeteren. Meer info in ons <Link href="/cookies">cookiebeleid</Link>.
+        {t.tekstVoor}
+        <Link href={lokaalPad(taal, "/cookies")}>{t.link}</Link>
+        {t.tekstNa}
       </p>
       {/* Beide keuzes krijgen exact hetzelfde gewicht: zelfde vorm, maat,
           letterdikte en contrast. De EDPB-richtsnoeren vereisen dat weigeren
           even makkelijk is als aanvaarden. */}
       <div className="cookie-banner__keuzes">
         <button type="button" onClick={() => choose("accepted")}>
-          Alles accepteren
+          {t.alles}
         </button>
         <button type="button" onClick={() => choose("declined")}>
-          Enkel noodzakelijke
+          {t.noodzakelijk}
         </button>
       </div>
     </div>

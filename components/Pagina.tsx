@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { getSettings } from "@/lib/settings";
 import { metAccent } from "@/lib/accent";
 
 export type FooterGegevens = { linkedin?: string; footerTekst?: string };
@@ -47,12 +46,6 @@ export function PaginaRaam({
       <Footer linkedin={footer?.linkedin} footerTekst={footer?.footerTekst} />
     </>
   );
-}
-
-/** Zelfde raamwerk, met de footergegevens uit de instellingen (server). */
-export default async function Pagina(props: { titel: string; inleiding?: React.ReactNode; acties?: React.ReactNode; children: React.ReactNode }) {
-  const settings = await getSettings();
-  return <PaginaRaam {...props} footer={{ linkedin: settings.linkedin, footerTekst: settings.footer_tekst }} />;
 }
 
 /** Een sectie met een kop links en de inhoud rechts (op brede schermen). */

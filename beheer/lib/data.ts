@@ -1,6 +1,7 @@
 import "server-only";
 import { supabaseServer } from "./supabase/server";
 import type { Document } from "./richtekst";
+import { rijSleutel, type Taal } from "./taal";
 
 export type Vacature = {
   id: string;
@@ -110,9 +111,9 @@ export async function media(): Promise<Media[]> {
   return (data ?? []) as Media[];
 }
 
-export async function homepage(): Promise<{ waarde: Record<string, unknown>; gewijzigd: string }> {
+export async function homepage(taal: Taal = "nl"): Promise<{ waarde: Record<string, unknown>; gewijzigd: string }> {
   const sb = await supabaseServer();
-  const { data } = await sb.from("pagina_inhoud").select("waarde, gewijzigd").eq("sleutel", "homepage").maybeSingle();
+  const { data } = await sb.from("pagina_inhoud").select("waarde, gewijzigd").eq("sleutel", rijSleutel("homepage", taal)).maybeSingle();
   return { waarde: (data?.waarde as Record<string, unknown>) ?? {}, gewijzigd: data?.gewijzigd ?? "" };
 }
 

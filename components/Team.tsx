@@ -1,4 +1,6 @@
 import { rolLabel, type TeamMember } from "@/lib/settings";
+import type { Taal } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 
 const FALLBACK: TeamMember[] = [
   {
@@ -15,7 +17,7 @@ const FALLBACK: TeamMember[] = [
     voornaam: "Simon",
     achternaam: "Claeys",
     rol: "managing_partner",
-    bio: "Founder & partner at Specified. Voormalig engineer, begrijpt als geen ander wat kandidaten drijft en wat bedrijven écht nodig hebben om te groeien.",
+    bio: "Founder & partner at Specified. A former engineer who understands like no other what drives candidates and what companies really need to grow.",
     linkedin: "https://www.linkedin.com/in/simon-claeys-specified/",
     fotoUrl: "/images/team/Simon-768x1024.jpeg",
   },
@@ -25,19 +27,22 @@ export default function Team({
   members,
   titel,
   titelAccent,
+  taal = "nl",
 }: {
   members?: TeamMember[];
   titel?: string;
   titelAccent?: string;
+  taal?: Taal;
 }) {
   const lijst = members && members.length > 0 ? members : FALLBACK;
+  const t = ui(taal).team;
 
   return (
     <section id="over-ons" className="team">
       <div className="wrap">
         <h2 className="display display-l team__kop">
-          {titel || "Twee founders."}{" "}
-          <span className="human team__accent">{titelAccent || "Eén missie."}</span>
+          {titel || t.titel}{" "}
+          <span className="human team__accent">{titelAccent || t.accent}</span>
         </h2>
 
         <div className="team__grid">
@@ -63,7 +68,7 @@ export default function Team({
                   {m.bio && <p className="team__bio">{m.bio}</p>}
                   {m.linkedin && (
                     <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="text-link team__linkedin">
-                      {m.voornaam} op LinkedIn
+                      {t.linkedin(m.voornaam ?? "")}
                     </a>
                   )}
                 </div>

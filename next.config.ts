@@ -54,7 +54,7 @@ function maakCsp(frameAncestors: string) {
 }
 
 /** Alleen de voorbeeldpagina mag in een frame, en alleen van de oude CMS en het nieuwe beheer. */
-const VOORBEELD_PADEN = ["/blog/voorbeeld", "/voorbeeld/:pad*"];
+const VOORBEELD_PADEN = ["/blog/voorbeeld", "/voorbeeld/:pad*", "/en/blog/voorbeeld", "/en/voorbeeld/:pad*"];
 const csp = maakCsp("'none'");
 const voorbeeldCsp = maakCsp(
   [origin(CMS_URL), origin(BEHEER_URL), ...(dev ? ["http://localhost:3003", "http://localhost:3004"] : [])].filter(Boolean).join(" ") || "'none'",
@@ -93,26 +93,27 @@ const nextConfig: NextConfig = {
   // Turbopack die map als root en mist het wijzigingen in dit project.
   turbopack: { root: process.cwd() },
   // De vorige site op specified.be was Engelstalig. Zijn 18 adressen (sitemap
-  // van 2026-11-22) sturen permanent door naar de nieuwe pagina's, zodat
-  // Google de posities overdraagt en oude links (vacatures, LinkedIn) werken.
+  // van 2026-11-22) sturen permanent door naar de Engelse versie van de nieuwe
+  // pagina's (onder /en, sinds 2026-11-23), zodat Google de posities overdraagt
+  // en oude links (vacatures, LinkedIn) werken.
   // De oude adressen eindigden op een slash: Next haalt die eerst weg (308),
   // daarna volgt deze doorverwijzing (308). Twee sprongen, voor Google geen probleem.
   async redirects() {
     const oud: [string, string][] = [
-      ["/about-us", "/#over-ons"],
-      ["/services", "/voor-bedrijven"],
-      ["/services/engineering-partner", "/voor-bedrijven"],
-      ["/services/career-partner", "/voor-engineers"],
-      ["/jobs", "/vacatures"],
-      ["/jobs/spontaneous-application", "/open-sollicitatie"],
-      ["/jobs/thanks-for-your-sollicitation", "/vacatures"],
-      ["/job", "/vacatures"],
+      ["/about-us", "/en#over-ons"],
+      ["/services", "/en/for-companies"],
+      ["/services/engineering-partner", "/en/for-companies"],
+      ["/services/career-partner", "/en/for-engineers"],
+      ["/jobs", "/en/jobs"],
+      ["/jobs/spontaneous-application", "/en/open-application"],
+      ["/jobs/thanks-for-your-sollicitation", "/en/jobs"],
+      ["/job", "/en/jobs"],
       // Oude vacatures hebben andere adressen; ze landen op het overzicht.
-      ["/job/:slug", "/vacatures"],
-      ["/contact/thank-you", "/contact"],
-      ["/privacy-policy", "/privacy"],
-      ["/cookie-policy", "/cookies"],
-      ["/test-slider-home", "/"],
+      ["/job/:slug", "/en/jobs"],
+      ["/contact/thank-you", "/en/contact"],
+      ["/privacy-policy", "/en/privacy"],
+      ["/cookie-policy", "/en/cookies"],
+      ["/test-slider-home", "/en"],
     ];
     return oud.map(([source, destination]) => ({ source, destination, permanent: true }));
   },
@@ -128,7 +129,7 @@ const nextConfig: NextConfig = {
       { key: "Cache-Control", value: "no-store, max-age=0" },
     ];
     return [
-      { source: "/((?!blog/voorbeeld$|voorbeeld/).*)", headers: securityHeaders },
+      { source: "/((?!(?:en/)?blog/voorbeeld$|(?:en/)?voorbeeld/).*)", headers: securityHeaders },
       ...VOORBEELD_PADEN.map((source) => ({ source, headers: voorbeeldHeaders })),
     ];
   },

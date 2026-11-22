@@ -7,11 +7,15 @@
  * Een leeg veld betekent: de standaardtekst van de website (lib/inhoud.ts
  * daar). Die standaard staat hier als placeholder, zodat je ziet wat er komt.
  */
+import type { Taal } from "./taal";
+
 export type VeldDef = {
   sleutel: string;
   label: string;
   max: number;
   standaard?: string;
+  /** De Engelse standaardtekst (lib/inhoud-en.ts op de website). */
+  standaardEn?: string;
   hint?: string;
   soort?: "tekst" | "tekstvak" | "email";
   /** Controle die alleen een melding geeft (null = in orde). */
@@ -33,6 +37,18 @@ export const CALLOUT_STANDAARD: [string, string][] = [
   ["Drive", "en verantwoordelijkheid"],
 ];
 export const PROFIELEN_STANDAARD = ["Civil Engineer", "Electrical Engineer", "Automation Engineer", "Mechanical Engineer", "Engineering Consultant"];
+export const CALLOUT_STANDAARD_EN: [string, string][] = [
+  ["Studies", "temporary support"],
+  ["Projects", "and maintenance"],
+  ["Electromechanics", "our specialisation"],
+  ["Consultants", "our own engineers, at your site"],
+  ["Industry", "our partners"],
+  ["Focus", "energy, fun and passion"],
+  ["Integration", "systems and processes"],
+  ["Extra mile", "we run the extra mile"],
+  ["Drive", "and responsibility"],
+];
+export const PROFIELEN_STANDAARD_EN = ["Civil Engineer", "Electrical Engineer", "Automation Engineer", "Mechanical Engineer", "Engineering Consultant", "Project Manager"];
 
 export const GROEPEN: GroepDef[] = [
   {
@@ -43,8 +59,8 @@ export const GROEPEN: GroepDef[] = [
       { sleutel: "hero.prefix", label: "Eerste woord", max: 20, standaard: "We" },
       { sleutel: "hero.woord", label: "Accentwoord (in limoen)", max: 24, standaard: "engineer" },
       { sleutel: "hero.suffix", label: "Tweede regel", max: 30, standaard: "possibilities." },
-      { sleutel: "hero.ctaBedrijven", label: "Knop voor bedrijven", max: 40, standaard: "Zet onze consultants in" },
-      { sleutel: "hero.ctaEngineers", label: "Knop voor engineers", max: 40, standaard: "Word consultant" },
+      { sleutel: "hero.ctaBedrijven", label: "Knop voor bedrijven", max: 40, standaard: "Zet onze consultants in", standaardEn: "Deploy our consultants" },
+      { sleutel: "hero.ctaEngineers", label: "Knop voor engineers", max: 40, standaard: "Word consultant", standaardEn: "Become a consultant" },
     ],
   },
   {
@@ -52,55 +68,56 @@ export const GROEPEN: GroepDef[] = [
     titel: "Technische tekening",
     uitleg: "De tekst bij de tekening van het woord SPECIFIED. De tekening bouwt zich opnieuw op als je even stopt met typen.",
     velden: [
-      { sleutel: "tekening.intro", label: "Inleiding", max: 140, soort: "tekstvak", standaard: "Engineering consultancy uit Antwerpen: onze eigen consultants versterken jouw projecten." },
-      { sleutel: "tekening.scrollHint", label: "Scrollhint", max: 60, standaard: "Scroll om de specificatie te openen." },
+      { sleutel: "tekening.intro", label: "Inleiding", max: 140, soort: "tekstvak", standaard: "Engineering consultancy uit Antwerpen: onze eigen consultants versterken jouw projecten.", standaardEn: "Engineering consultancy from Kontich: our own consultants strengthen your projects." },
+      { sleutel: "tekening.scrollHint", label: "Scrollhint", max: 60, standaard: "Scroll om de specificatie te openen.", standaardEn: "Scroll to open the specification." },
       { sleutel: "tekening.project", label: "Titelblok: project", max: 40, standaard: "We are here to stay" },
       {
         sleutel: "tekening.locatie",
         label: "Titelblok: locatie (stad, regio)",
         max: 40,
         standaard: "Kontich, Antwerpen",
+        standaardEn: "Kontich, Antwerp",
         controle: (v) => (!v || v.includes(", ") ? null : "Schrijf stad en regio gescheiden door een komma en spatie, bv. Kontich, Antwerpen."),
       },
-      { sleutel: "tekening.waarden", label: "Titelblok: waarden", max: 40, standaard: "Drive en verantwoordelijkheid" },
-      { sleutel: "tekening.akkoord", label: "Titelblok: goedkeuring", max: 40, standaard: "Goedgekeurd door Specified" },
+      { sleutel: "tekening.waarden", label: "Titelblok: waarden", max: 40, standaard: "Drive en verantwoordelijkheid", standaardEn: "Drive and responsibility" },
+      { sleutel: "tekening.akkoord", label: "Titelblok: goedkeuring", max: 40, standaard: "Goedgekeurd door Specified", standaardEn: "Approved by Specified" },
     ],
   },
   {
     sleutel: "consultants",
     titel: "Onze consultants",
     velden: [
-      { sleutel: "consultants.titel", label: "Titel", max: 20, standaard: "Onze" },
+      { sleutel: "consultants.titel", label: "Titel", max: 20, standaard: "Onze", standaardEn: "Our" },
       { sleutel: "consultants.accent", label: "Accentwoord (in limoen)", max: 24, standaard: "consultants." },
-      { sleutel: "consultants.tekst", label: "Tekst", max: 400, soort: "tekstvak", standaard: "Eigen engineers, in dienst van Specified, tijdelijk ingezet bij jouw projecten, onderhoud en studies." },
+      { sleutel: "consultants.tekst", label: "Tekst", max: 400, soort: "tekstvak", standaard: "Eigen engineers, in dienst van Specified, tijdelijk ingezet bij jouw projecten, onderhoud en studies.", standaardEn: "Our own engineers, employed by Specified, temporarily deployed on your projects, maintenance and studies." },
     ],
   },
   {
     sleutel: "diensten_bedrijven",
     titel: "Blok voor bedrijven",
     velden: [
-      { sleutel: "diensten_bedrijven.kop", label: "Kop", max: 30, standaard: "Voor bedrijven" },
+      { sleutel: "diensten_bedrijven.kop", label: "Kop", max: 30, standaard: "Voor bedrijven", standaardEn: "For companies" },
       { sleutel: "diensten_bedrijven.titel", label: "Titel", max: 60, standaard: "We design & support projects" },
-      { sleutel: "diensten_bedrijven.tekst", label: "Tekst", max: 600, soort: "tekstvak", standaard: "Tijdelijke versterking nodig voor een project, onderhoud of een studie? Wij zetten een eigen consultant in: de juiste persoon op de juiste plek, op het juiste moment." },
-      { sleutel: "diensten_bedrijven.cta", label: "Knop", max: 40, standaard: "Zet onze consultants in" },
+      { sleutel: "diensten_bedrijven.tekst", label: "Tekst", max: 600, soort: "tekstvak", standaard: "Tijdelijke versterking nodig voor een project, onderhoud of een studie? Wij zetten een eigen consultant in: de juiste persoon op de juiste plek, op het juiste moment.", standaardEn: "Need temporary reinforcement for a project, maintenance or a study? We deploy one of our own consultants: the right person in the right place, at the right time." },
+      { sleutel: "diensten_bedrijven.cta", label: "Knop", max: 40, standaard: "Zet onze consultants in", standaardEn: "Deploy our consultants" },
     ],
   },
   {
     sleutel: "diensten_engineers",
     titel: "Blok voor engineers",
     velden: [
-      { sleutel: "diensten_engineers.kop", label: "Kop", max: 30, standaard: "Voor engineers" },
+      { sleutel: "diensten_engineers.kop", label: "Kop", max: 30, standaard: "Voor engineers", standaardEn: "For engineers" },
       { sleutel: "diensten_engineers.titel", label: "Titel", max: 60, standaard: "We engineer possibilities" },
-      { sleutel: "diensten_engineers.tekst", label: "Tekst", max: 600, soort: "tekstvak", standaard: "Als consultant bij Specified ontdek je verschillende projecten en sectoren zonder je hele carrière op één pad vast te leggen." },
-      { sleutel: "diensten_engineers.cta", label: "Knop", max: 40, standaard: "Word consultant" },
+      { sleutel: "diensten_engineers.tekst", label: "Tekst", max: 600, soort: "tekstvak", standaard: "Als consultant bij Specified ontdek je verschillende projecten en sectoren zonder je hele carrière op één pad vast te leggen.", standaardEn: "As a consultant at Specified, you discover different projects and sectors without committing your whole career to one path." },
+      { sleutel: "diensten_engineers.cta", label: "Knop", max: 40, standaard: "Word consultant", standaardEn: "Become a consultant" },
     ],
   },
   {
     sleutel: "jobs",
     titel: "Vacatures op de homepage",
     velden: [
-      { sleutel: "jobs.titel", label: "Titel", max: 40, standaard: "Word consultant." },
-      { sleutel: "jobs.linkTekst", label: "Link naar alle vacatures", max: 40, standaard: "Alle vacatures" },
+      { sleutel: "jobs.titel", label: "Titel", max: 40, standaard: "Word consultant.", standaardEn: "Become a consultant." },
+      { sleutel: "jobs.linkTekst", label: "Link naar alle vacatures", max: 40, standaard: "Alle vacatures", standaardEn: "All jobs" },
     ],
   },
   {
@@ -125,6 +142,22 @@ export const GROEPEN: GroepDef[] = [
     ],
   },
 ];
+
+/** Velden die in beide talen gelijk zijn: alleen in het Nederlands te bewerken. */
+const GEDEELD = ["contact.email", "contact.telefoon", "contact.linkedin"];
+
+/**
+ * De groepen voor een taal. In het Engels staat de Engelse standaard als
+ * placeholder, en ontbreken e-mail, telefoon en LinkedIn (die zijn gedeeld).
+ */
+export function groepenVoor(taal: Taal): GroepDef[] {
+  if (taal === "nl") return GROEPEN;
+  return GROEPEN.map((g) => ({
+    ...g,
+    uitleg: g.sleutel === "contact" ? "E-mail, telefoon en LinkedIn zijn voor beide talen dezelfde: die pas je aan bij Nederlands." : g.uitleg,
+    velden: g.velden.filter((v) => !GEDEELD.includes(v.sleutel)).map((v) => ({ ...v, standaard: v.standaardEn ?? v.standaard })),
+  }));
+}
 
 const ALLE_VELDEN = GROEPEN.flatMap((g) => g.velden);
 

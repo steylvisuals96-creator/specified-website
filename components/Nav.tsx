@@ -1,21 +1,57 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import ThemaKnop from "@/components/ThemaKnop";
-import { CONTACT } from "@/lib/inhoud";
+import { useTaal } from "@/components/TaalContext";
+import { inhoud } from "@/lib/inhoud-taal";
+import { lokaalPad, wisselPad } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 import { useEffect, useState } from "react";
 
-// Eén bron voor desktop- én mobiel menu.
-const NAV_ITEMS = [
-  { label: "Voor bedrijven", href: "/voor-bedrijven" },
-  { label: "Voor engineers", href: "/voor-engineers" },
-  { label: "Vacatures", href: "/vacatures" },
-  { label: "Blog", href: "/blog" },
-  { label: "Over ons", href: "/#over-ons" },
-];
+/**
+ * Naar dezelfde pagina in de andere taal. Een gewone link (geen client-
+ * navigatie): de taal staat in de root layout, dus een volledige lading zet
+ * ook html[lang] goed.
+ */
+function TaalWissel({ metTekst, onKies }: { metTekst?: boolean; onKies?: () => void }) {
+  const taal = useTaal();
+  const pad = usePathname() ?? "/";
+  const andere = taal === "nl" ? "en" : "nl";
+  const w = ui(taal).taalWissel;
+  // Het hash-deel (bv. #over-ons) meenemen kan pas in de browser.
+  const [hash, setHash] = useState("");
+  useEffect(() => setHash(window.location.hash), [pad]);
+  return (
+    <a
+      href={wisselPad(pad, andere) + hash}
+      hrefLang={w.lang}
+      lang={w.lang}
+      className="taal-knop"
+      data-tekst={metTekst || undefined}
+      aria-label={metTekst ? undefined : w.uitleg}
+      title={metTekst ? undefined : w.uitleg}
+      onClick={onKies}
+    >
+      {metTekst ? w.label : w.kort}
+    </a>
+  );
+}
 
 export default function Nav() {
+  const taal = useTaal();
+  const t = ui(taal);
+  const CONTACT = inhoud(taal).CONTACT;
+  const p = (pad: string) => lokaalPad(taal, pad);
+  // Eén bron voor desktop- én mobiel menu.
+  const NAV_ITEMS = [
+    { label: t.menu.bedrijven, href: p("/voor-bedrijven") },
+    { label: t.menu.engineers, href: p("/voor-engineers") },
+    { label: t.menu.vacatures, href: p("/vacatures") },
+    { label: t.menu.blog, href: p("/blog") },
+    { label: t.menu.overOns, href: p("/#over-ons") },
+  ];
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -37,19 +73,20 @@ export default function Nav() {
   return (
     <header className="site-nav" data-scrolled={scrolled || menuOpen}>
       <div className="wrap site-nav__bar">
-        <Link href="/" className="site-nav__logo" aria-label="Specified, naar de homepage">
+        <Link href={p("/")} className="site-nav__logo" aria-label={t.naarHome}>
           <Logo className="logo--nav" />
         </Link>
 
-        <nav className="site-nav__links nav-desktop" aria-label="Hoofdmenu">
+        <nav className="site-nav__links nav-desktop" aria-label={t.menu.hoofdmenu}>
           {NAV_ITEMS.map((item) => (
             <Link key={item.label} href={item.href} className="site-nav__link">
               {item.label}
             </Link>
           ))}
+          <TaalWissel />
           <ThemaKnop />
-          <Link href="/contact" className="btn btn-primary site-nav__cta">
-            Neem contact op
+          <Link href={p("/contact")} className="btn btn-primary site-nav__cta">
+            {t.menu.contactKnop}
           </Link>
         </nav>
 
@@ -59,7 +96,7 @@ export default function Nav() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-expanded={menuOpen}
           aria-controls="mobiel-menu"
-          aria-label={menuOpen ? "Menu sluiten" : "Menu openen"}
+          aria-label={menuOpen ? t.menu.sluiten : t.menu.openen}
         >
           <span data-open={menuOpen} />
           <span data-open={menuOpen} />
@@ -67,7 +104,7 @@ export default function Nav() {
       </div>
 
       {menuOpen && (
-        <nav id="mobiel-menu" className="site-nav__mobile" aria-label="Mobiel menu">
+        <nav id="mobiel-menu" className="site-nav__mobile" aria-label={t.menu.mobielMenu}>
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
@@ -78,10 +115,13 @@ export default function Nav() {
               {item.label}
             </Link>
           ))}
-          <Link href="/contact" onClick={() => setMenuOpen(false)} className="btn btn-primary">
-            Neem contact op
+          <Link href={p("/contact")} onClick={() => setMenuOpen(false)} className="btn btn-primary">
+            {t.menu.contactKnop}
           </Link>
-          <ThemaKnop metTekst />
+          <div className="site-nav__mobile-knoppen">
+            <ThemaKnop metTekst />
+            <TaalWissel metTekst onKies={() => setMenuOpen(false)} />
+          </div>
           <div className="site-nav__mobile-contact">
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             <a href={`tel:${CONTACT.telefoonLink}`}>{CONTACT.telefoon}</a>

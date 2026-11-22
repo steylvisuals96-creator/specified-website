@@ -1,6 +1,7 @@
 import { CMS_URL } from "./settings";
 import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
 import { isTiptap, tiptapNaarHtml } from "./richtekst";
+import { LOCALE, type Taal } from "./taal";
 
 export type BlogPost = {
   id: string;
@@ -172,10 +173,10 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-export function formatDatum(iso?: string): string {
+export function formatDatum(iso?: string, taal: Taal = "nl"): string {
   if (!iso) return "";
   try {
-    return new Date(iso).toLocaleDateString("nl-BE", { day: "numeric", month: "long", year: "numeric" });
+    return new Date(iso).toLocaleDateString(LOCALE[taal], { day: "numeric", month: "long", year: "numeric" });
   } catch {
     return "";
   }

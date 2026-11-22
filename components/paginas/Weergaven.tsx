@@ -7,6 +7,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { formatDatum, type BlogPost } from "@/lib/blog";
 import { veiligeLinkAdres, type PaginaTeksten } from "@/lib/paginas";
+import { lokaalPad, type Taal } from "@/lib/taal";
+import { ui } from "@/lib/teksten";
 
 /**
  * De doorklikpagina's als weergave: alle teksten komen binnen als `t` (en de
@@ -16,12 +18,12 @@ import { veiligeLinkAdres, type PaginaTeksten } from "@/lib/paginas";
  * veld in het beheer.
  */
 type T = PaginaTeksten;
-type Basis = { t: T; footer?: FooterGegevens };
+type Basis = { t: T; footer?: FooterGegevens; taal?: Taal };
 type MetAlgemeen = Basis & { a: T };
 
 const attestenZin = (a: T) => `${a.attestenZin} ${(a.certificaten as string[]).join(", ")}.`;
 
-export function VoorBedrijvenWeergave({ t, a, footer }: MetAlgemeen) {
+export function VoorBedrijvenWeergave({ t, a, footer, taal = "nl" }: MetAlgemeen) {
   return (
     <PaginaRaam
       titel={t.titel}
@@ -32,7 +34,7 @@ export function VoorBedrijvenWeergave({ t, a, footer }: MetAlgemeen) {
           <a href="#aanvraag" className="btn btn-primary" data-bewerk="knopAanvraag">
             {t.knopAanvraag}
           </a>
-          <Link href="/contact" className="btn btn-secondary" data-bewerk="knopContact">
+          <Link href={lokaalPad(taal, "/contact")} className="btn btn-secondary" data-bewerk="knopContact">
             {t.knopContact}
           </Link>
         </>
@@ -84,7 +86,8 @@ export function VoorBedrijvenWeergave({ t, a, footer }: MetAlgemeen) {
   );
 }
 
-export function VoorEngineersWeergave({ t, a, footer }: MetAlgemeen) {
+export function VoorEngineersWeergave({ t, a, footer, taal = "nl" }: MetAlgemeen) {
+  const p = (pad: string) => lokaalPad(taal, pad);
   return (
     <PaginaRaam
       titel={t.titel}
@@ -92,10 +95,10 @@ export function VoorEngineersWeergave({ t, a, footer }: MetAlgemeen) {
       footer={footer}
       acties={
         <>
-          <Link href="/vacatures" className="btn btn-primary" data-bewerk="knopVacatures">
+          <Link href={p("/vacatures")} className="btn btn-primary" data-bewerk="knopVacatures">
             {t.knopVacatures}
           </Link>
-          <Link href="/open-sollicitatie" className="btn btn-secondary" data-bewerk="knopOpen">
+          <Link href={p("/open-sollicitatie")} className="btn btn-secondary" data-bewerk="knopOpen">
             {t.knopOpen}
           </Link>
         </>
@@ -134,7 +137,7 @@ export function VoorEngineersWeergave({ t, a, footer }: MetAlgemeen) {
           <p className="lead" data-bewerk="slotTekst">
             {t.slotTekst}
           </p>
-          <Link href="/open-sollicitatie" className="btn btn-primary" data-bewerk="slotKnop">
+          <Link href={p("/open-sollicitatie")} className="btn btn-primary" data-bewerk="slotKnop">
             {t.slotKnop}
           </Link>
         </div>
@@ -145,17 +148,19 @@ export function VoorEngineersWeergave({ t, a, footer }: MetAlgemeen) {
 
 export type VacatureRij = { slug: string; titel: string; vakgebied: string; locatie: string; uren: string; ervaring: string; ingevuld: boolean; dagen?: number };
 
-export function VacaturesWeergave({ t, footer, vacatures }: Basis & { vacatures: VacatureRij[] }) {
+export function VacaturesWeergave({ t, footer, vacatures, taal = "nl" }: Basis & { vacatures: VacatureRij[] }) {
   const open = vacatures.filter((v) => !v.ingevuld).length;
+  const u = ui(taal);
   return (
     <PaginaRaam
       titel={t.titel}
       footer={footer}
-      inleiding={open > 0 ? `${open} open vacature${open === 1 ? "" : "s"} als engineering consultant bij Specified.` : t.inleidingLeeg}
+      inleiding={open > 0 ? u.jobs.aantalOpen(open) : t.inleidingLeeg}
     >
       <section className="blok blok--lijst">
         <div className="wrap">
           <VacaturesClient vacatures={vacatures} />
+          {u.vacature.taalMelding && open > 0 && <p className="meta vacatures__taal">{u.vacature.taalMelding}</p>}
           <div className="pagina__slot pagina__slot--links">
             <h2 className="display display-m" data-bewerk="slotKop">
               {t.slotKop}
@@ -163,7 +168,7 @@ export function VacaturesWeergave({ t, footer, vacatures }: Basis & { vacatures:
             <p className="lead" data-bewerk="slotTekst">
               {t.slotTekst}
             </p>
-            <Link href="/open-sollicitatie" className="btn btn-secondary" data-bewerk="slotKnop">
+            <Link href={lokaalPad(taal, "/open-sollicitatie")} className="btn btn-secondary" data-bewerk="slotKnop">
               {t.slotKnop}
             </Link>
           </div>
@@ -173,26 +178,27 @@ export function VacaturesWeergave({ t, footer, vacatures }: Basis & { vacatures:
   );
 }
 
-export function ContactWeergave({ t, footer, mail, telefoon, linkedin }: Basis & { mail: string; telefoon: string; linkedin: string }) {
+export function ContactWeergave({ t, footer, mail, telefoon, linkedin, taal = "nl" }: Basis & { mail: string; telefoon: string; linkedin: string }) {
+  const c = ui(taal).contact;
   return (
     <PaginaRaam titel={t.titel} inleiding={t.inleiding} footer={footer}>
       <section className="blok">
         <div className="wrap contact__grid">
           <address className="contact__gegevens">
             <div>
-              <h2 className="contact__label">E-mail</h2>
+              <h2 className="contact__label">{c.email}</h2>
               <a href={`mailto:${mail}`} className="text-link">
                 {mail}
               </a>
             </div>
             <div>
-              <h2 className="contact__label">Telefoon</h2>
+              <h2 className="contact__label">{c.telefoon}</h2>
               <a href={`tel:${telefoon.replace(/\s/g, "")}`} className="text-link">
                 {telefoon}
               </a>
             </div>
             <div>
-              <h2 className="contact__label">Adres</h2>
+              <h2 className="contact__label">{c.adres}</h2>
               <p data-bewerk="bedrijfsnaam,straat,postcode">
                 {t.bedrijfsnaam}
                 <br />
@@ -202,13 +208,13 @@ export function ContactWeergave({ t, footer, mail, telefoon, linkedin }: Basis &
               </p>
             </div>
             <div>
-              <h2 className="contact__label">Volg ons</h2>
+              <h2 className="contact__label">{c.volg}</h2>
               <a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-link">
                 LinkedIn
               </a>
             </div>
             <p className="meta" data-bewerk="ondernemingsnummer">
-              Ondernemingsnummer {t.ondernemingsnummer}
+              {c.ondernemingsnummer} {t.ondernemingsnummer}
             </p>
           </address>
           <div>
@@ -222,7 +228,7 @@ export function ContactWeergave({ t, footer, mail, telefoon, linkedin }: Basis &
 
 type Vraag = { vraag: string; antwoord: string; linkTekst?: string; linkAdres?: string };
 
-export function FaqWeergave({ t, footer }: Basis) {
+export function FaqWeergave({ t, footer, taal = "nl" }: Basis) {
   const groepen: { kop: string; veld: string; vragen: Vraag[] }[] = [1, 2, 3].map((n) => ({ kop: t[`groep${n}Kop`], veld: `groep${n}`, vragen: t[`groep${n}`] }));
   const jsonLd = {
     "@context": "https://schema.org",
@@ -247,7 +253,7 @@ export function FaqWeergave({ t, footer }: Basis) {
                     <div className="faq__antwoord">
                       <p>{v.antwoord}</p>
                       {adres && v.linkTekst && (
-                        <Link href={adres} className="text-link">
+                        <Link href={lokaalPad(taal, adres)} className="text-link">
                           {v.linkTekst}
                         </Link>
                       )}
@@ -261,7 +267,7 @@ export function FaqWeergave({ t, footer }: Basis) {
       ))}
       <section className="blok">
         <div className="wrap pagina__slot">
-          <Link href="/contact" className="btn btn-primary" data-bewerk="slotKnop">
+          <Link href={lokaalPad(taal, "/contact")} className="btn btn-primary" data-bewerk="slotKnop">
             {t.slotKnop}
           </Link>
         </div>
@@ -282,7 +288,8 @@ export function OpenSollicitatieWeergave({ t, footer }: Basis) {
   );
 }
 
-export function BlogOverzichtWeergave({ t, footer, posts }: Basis & { posts: BlogPost[] }) {
+export function BlogOverzichtWeergave({ t, footer, posts, taal = "nl" }: Basis & { posts: BlogPost[] }) {
+  const b = ui(taal).blog;
   return (
     <>
       <Nav />
@@ -309,13 +316,13 @@ export function BlogOverzichtWeergave({ t, footer, posts }: Basis & { posts: Blo
             </p>
 
             {posts.length === 0 ? (
-              <p style={{ color: "var(--muted)", padding: "2rem 0" }}>Binnenkort verschijnen hier de eerste artikels.</p>
+              <p style={{ color: "var(--muted)", padding: "2rem 0" }}>{b.leeg}</p>
             ) : (
               <div className="blog-grid" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
                 {posts.map((post, i) => (
                   <Link
                     key={post.id}
-                    href={`/blog/${post.slug}`}
+                    href={lokaalPad(taal, `/blog/${post.slug}`)}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -333,13 +340,13 @@ export function BlogOverzichtWeergave({ t, footer, posts }: Basis & { posts: Blo
                     )}
                     <div style={{ padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                       {post.publicatiedatum && (
-                        <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>{formatDatum(post.publicatiedatum)}</span>
+                        <span style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0", color: "var(--lime)" }}>{formatDatum(post.publicatiedatum, taal)}</span>
                       )}
                       <h2 style={{ fontFamily: "var(--font-bebas)", fontSize: "1.9rem", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 1.05, color: "var(--white)" }}>
                         {post.titel}
                       </h2>
                       {post.samenvatting && <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.65 }}>{post.samenvatting}</p>}
-                      <span style={{ color: "var(--lime)", fontSize: "0.85rem", fontWeight: 600, marginTop: "0.25rem" }}>Lees artikel</span>
+                      <span style={{ color: "var(--lime)", fontSize: "0.85rem", fontWeight: 600, marginTop: "0.25rem" }}>{b.lees}</span>
                     </div>
                   </Link>
                 ))}

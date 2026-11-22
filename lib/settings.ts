@@ -1,4 +1,5 @@
 import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
+import type { Taal } from "./taal";
 
 /**
  * Waar de CMS draait. Overschrijfbaar via NEXT_PUBLIC_CMS_URL zodat een
@@ -91,17 +92,22 @@ export const veiligeLink = (v?: string): string | undefined => (v && /^https:\/\
  * "website", groep "contact"). Een leeg veld daar valt terug op Instellingen,
  * waar ze vroeger stonden.
  */
-export async function getSettings(): Promise<SiteSettings> {
+export async function getSettings(taal: Taal = "nl"): Promise<SiteSettings> {
   if (LEEST_UIT_SUPABASE) {
     // Het nieuwe beheer kent geen aparte instellingen: contact en footer staan bij de homepage-teksten.
+    // E-mail, telefoon en LinkedIn staan alleen in de Nederlandse rij; de footerregel is per taal.
     try {
-      const [rij] = await supabaseLees<{ waarde: { contact?: Contact } }>("pagina_inhoud?select=waarde&sleutel=eq.homepage");
-      const c: Contact = rij?.waarde?.contact ?? {};
+      const sleutels = taal === "nl" ? ["homepage"] : ["homepage", `${taal}:homepage`];
+      const rijen = await supabaseLees<{ sleutel: string; waarde: { contact?: Contact } }>(
+        `pagina_inhoud?select=sleutel,waarde&sleutel=in.(${encodeURIComponent(sleutels.map((s) => `"${s}"`).join(","))})`,
+      );
+      const c: Contact = rijen.find((r) => r.sleutel === "homepage")?.waarde?.contact ?? {};
+      const eigen: Contact = rijen.find((r) => r.sleutel === sleutels[sleutels.length - 1])?.waarde?.contact ?? {};
       return {
         contact_email: gevuld(c.email),
         telefoon: gevuld(c.telefoon),
         linkedin: veiligeLink(gevuld(c.linkedin)),
-        footer_tekst: gevuld(c.footerTekst),
+        footer_tekst: gevuld(eigen.footerTekst),
       };
     } catch {
       return {};

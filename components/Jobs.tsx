@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { metAccent } from "@/lib/accent";
+import { lokaalPad, type Taal } from "@/lib/taal";
+import { ui, versheid } from "@/lib/teksten";
 
 type Job = {
   slug: string;
@@ -11,38 +13,30 @@ type Job = {
   dagen?: number;
 };
 
-function versheid(dagen?: number) {
-  // Alleen tonen als het nieuws is: "90 dagen online" leest als oud, niet als vers.
-  if (dagen === undefined || dagen > 30) return null;
-  if (dagen < 1) return { getal: "Nieuw", label: "vandaag online" };
-  return { getal: String(dagen), label: dagen === 1 ? "dag online" : "dagen online" };
-}
-
-export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: string; linkTekst?: string }) {
+export default function Jobs({ jobs, titel, linkTekst, taal = "nl" }: { jobs: Job[]; titel?: string; linkTekst?: string; taal?: Taal }) {
+  const t = ui(taal).jobs;
+  const p = (pad: string) => lokaalPad(taal, pad);
   return (
     <section id="jobs" className="jobs">
       <div className="wrap">
         <div className="jobs__kop">
-          <h2 className="display display-l" data-bewerk="jobs.titel">{metAccent(titel || "Vind jouw volgende stap.")}</h2>
+          <h2 className="display display-l" data-bewerk="jobs.titel">{metAccent(titel || t.titel)}</h2>
         </div>
 
         {jobs.length === 0 ? (
           <div className="jobs__leeg">
-            <p className="lead">
-              Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook
-              buiten de openstaande jobs.
-            </p>
-            <Link href="/open-sollicitatie" className="btn btn-primary">
-              Stuur een open sollicitatie
+            <p className="lead">{t.leeg}</p>
+            <Link href={p("/open-sollicitatie")} className="btn btn-primary">
+              {t.open}
             </Link>
           </div>
         ) : (
           <ul className="jobs__lijst">
             {jobs.map((job) => {
-              const v = versheid(job.dagen);
+              const v = versheid(job.dagen, taal);
               return (
                 <li key={job.slug}>
-                  <Link href={`/vacatures/${job.slug}`} className="jobs__rij">
+                  <Link href={p(`/vacatures/${job.slug}`)} className="jobs__rij">
                     <span className="jobs__veeg" aria-hidden="true" />
                     <span className="jobs__vers" data-leeg={!v}>
                       {v && (
@@ -64,8 +58,8 @@ export default function Jobs({ jobs, titel, linkTekst }: { jobs: Job[]; titel?: 
           </ul>
         )}
 
-        <Link href="/vacatures" className="btn btn-secondary jobs__alle" data-bewerk="jobs.linkTekst">
-          {linkTekst || "Bekijk alle vacatures"}
+        <Link href={p("/vacatures")} className="btn btn-secondary jobs__alle" data-bewerk="jobs.linkTekst">
+          {linkTekst || t.alle}
         </Link>
       </div>
     </section>
