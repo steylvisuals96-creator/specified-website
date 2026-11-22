@@ -1,6 +1,6 @@
 # Draaiboek Specified-website
 
-Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar zit en wat er nog open staat. Het gaat over de website (hoofdmap) en haar back-end, sinds 2026-11-15 in één repository. **Sinds 2026-11-15 (overstap) leest de website uit het nieuwe beheer** op Supabase en R2 zonder Payload (map `beheer/`, `specified-beheer.vercel.app`). De oude CMS op Payload (map `cms/`) draait nog, maar de website leest er niet meer uit: wijzigingen daar komen niet meer online. Terug naar de oude CMS: `NEXT_PUBLIC_DATABRON` weghalen in het Vercel-project van de website en opnieuw bouwen.
+Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar zit en wat er nog open staat. Het gaat over de website (hoofdmap) en haar back-end, sinds 2026-11-15 in één repository. **Sinds 2026-11-15 (overstap) leest de website uit het nieuwe beheer** op Supabase en R2 zonder Payload (map `beheer/`, `specified-beheer.vercel.app`). De oude CMS op Payload (map `cms/`) is **sinds 2026-11-22 gepauzeerd** in Vercel (geeft 503); de gegevens staan nog in het schema `payload`. Terug naar de oude CMS kan alleen nog door het project `specified-cms` eerst weer te activeren en dan `NEXT_PUBLIC_DATABRON` weg te halen in het websiteproject.
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
@@ -16,7 +16,7 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 |---|---|---|---|
 | Repo | `steylvisuals96-creator/specified-website` | zelfde repo, map `cms/` (oude repo `specified-cms` wordt gearchiveerd) | zelfde repo, map `beheer/` |
 | Map lokaal | `~/specified-website` | `~/specified-website/cms` | `~/specified-website/beheer` |
-| Live | `specified-website.vercel.app` | `specified-cms.vercel.app` | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
+| Live | `specified-website.vercel.app` | `specified-cms.vercel.app`, gepauzeerd sinds 2026-11-22 | `specified-beheer.vercel.app` (sinds 2026-11-15; lokaal poort 3004) |
 | Stack | Next.js 16.4.6 (sinds 2026-11-22), React 19, Tailwind 4, GSAP, Lenis, Framer Motion | Next.js 16.3.6, Payload 3.90.2, Tailwind 4, shadcn, Tiptap | Next.js 16.4.6, React 19, Tailwind 4, supabase-js en @supabase/ssr, Tiptap, aws4fetch |
 | Data | uit Supabase (`NEXT_PUBLIC_DATABRON=supabase`, sinds 2026-11-15); meteen bij opslaan via `/api/ververs`, anders na 60 s | Supabase Postgres, schema `payload` | Supabase Postgres, schema `public` met RLS; login en tweestapslogin via Supabase Auth |
 | Media | Dienstenbeelden via het beheer; terugvalbeelden in `public/` | eigen mediaopslag op de CMS-server (zie deel 5) | Cloudflare R2, bucket `specified-media` (privé, beelden via `/m/<id>` met een ondertekende link) |
@@ -152,7 +152,9 @@ Via **Website > Seizoensthema** in het beheer kiezen beheerders Standaard, Kerst
 
 De website leest de instelling publiek uit `public.seizoensthema`; alleen beheerders en creators kunnen wijzigen. Opslaan ververst de site met het bestaande cachemechanisme en schrijft een regel in het logboek. Migratie `20261115_05_seizoensthema.sql` is toegepast op Supabase met **Standaard** als startwaarde. De licht/donkerkeuze blijft bij de bezoeker.
 
-### Oude CMS op Payload (nog live)
+### Oude CMS op Payload (gepauzeerd sinds 2026-11-22)
+
+In de week na de overstap kwam er geen enkel verzoek meer binnen (Vercel-logboek, 7 dagen), ook niet op de koppelingen voor inkomende mail en Make. De website roept de oude CMS alleen aan zonder `NEXT_PUBLIC_DATABRON=supabase`. Daarom is het project gepauzeerd: het ging om afhankelijkheden die niet meer bijgewerkt worden. Opnieuw activeren kan in Vercel (Settings > General). De beschrijving hieronder blijft als naslag.
 
 Eén codebase met twee ingangen:
 
@@ -196,7 +198,7 @@ In `/dashboard` zijn Homepage, Blog en Team te bewerken met de website ernaast (
 
 ## 5. Infrastructuur
 
-- **Vercel**: drie projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap (zonder `cms/` en `beheer/`), `specified-cms` bouwt met root directory `cms`, `specified-beheer` met root directory `beheer` (aangemaakt 2026-11-15, functies in Frankfurt naast Supabase). Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step). Geheime variabelen van het beheer staan als "Sensitive" (achteraf niet leesbaar). `VERVERS_GEHEIM` (website) en `WEBSITE_VERVERS_GEHEIM` (beheer) zijn dezelfde willekeurige waarde, alleen in productie.
+- **Vercel**: drie projecten op dezelfde repo, deploy bij push naar `main`. `specified-website` bouwt de hoofdmap (zonder `cms/` en `beheer/`), `specified-cms` bouwt met root directory `cms` (gepauzeerd sinds 2026-11-22), `specified-beheer` met root directory `beheer` (aangemaakt 2026-11-15, functies in Frankfurt naast Supabase). Elk project slaat de build over als zijn deel niet veranderde (Ignored Build Step). Geheime variabelen van het beheer staan als "Sensitive" (achteraf niet leesbaar). `VERVERS_GEHEIM` (website) en `WEBSITE_VERVERS_GEHEIM` (beheer) zijn dezelfde willekeurige waarde, alleen in productie.
 - **Supabase**: project `specified-cms` (ref `htkcrkafetzbnpznektz`, Frankfurt, gratis plan). Schema `payload` (oude CMS), niet via de Data API bereikbaar, anon en authenticated hebben geen rechten (nagekeken 2026-11-15: de Supabase-melding "RLS uit" op die tabellen is daardoor geen lek). Migratie uit MongoDB op 2026-09-26. Sinds 2026-11-15 ook schema `public` voor het nieuwe beheer (tabellen `profielen`, `vacatures`, `vacatures_intern`, `blog`, `team`, `media`, `pagina_inhoud`, `seizoensthema`, `wijzigingen`, alle met RLS) en schema `privaat` voor de rolfuncties. Migraties in `beheer/supabase/migrations/`.
 - **Cloudflare R2**: bucket `specified-media` (aangemaakt 2026-11-15, West-Europa, privé, geen r2.dev-adres), in het Cloudflare-account van SteylVisuals. API-token `specified-media` met alleen Object Read & Write op die bucket. Gebruikt door het nieuwe beheer; beelden naar buiten via `/m/<id>` met een ondertekende link. **De oude CMS heeft R2 nooit gebruikt**: in geen enkele Vercel-omgeving van `specified-cms` staan R2-variabelen, dus uploads daar zouden op de tijdelijke schijf van Vercel belanden (de mediatabel was leeg, er is niets verloren). De scroll-frames van de hero (6,6 MB) staan nog op Vercel; verhuizen naar `media.specified.be` samen met de domeinverhuis.
 - **Resend** (CMS en website sinds 2026-10-27; `FOUTMELDING_AAN` = steylvisuals96@gmail.com in beide Vercel-projecten, `RESEND_API_KEY` nog alleen in de CMS): serverfouten gaan via `instrumentation.ts` en `lib/foutmelding.ts` naar de beheerder, met een limiet op het aantal mails. Opgevangen fouten melden met `meldFout()` in het catch-blok.
@@ -290,11 +292,11 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - [ ] Sam: in Supabase "Leaked password protection" aanzetten (Authentication > Policies of Providers > Email), Supabase-adviseur meldt het als waarschuwing. Kan het betaalde plan vragen.
 - [x] Leesregels op blog, team en vacatures samengevoegd tot één per rol (Supabase-advies 0006, migratie 05, 2026-11-16); wie wat ziet bleef gelijk (getest per rol).
 - [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
-- [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt nog, maar wat hij daar wijzigt komt niet online.
+- [ ] Simon en zijn collega een account geven in het nieuwe beheer (Gebruikers, beide beheerder) en hen laten weten dat de oude CMS niet meer gebruikt wordt. Zijn oude Payload-account werkt niet meer sinds de oude CMS gepauzeerd is (2026-11-22).
 - [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
 - [ ] Accounts voor Simon en zijn collega via Gebruikers (beide beheerder, zoals gevraagd); daarna `MFA_VERPLICHT=1` als iedereen tweestapslogin heeft.
 - [ ] Wijzigingen in de oude CMS tussen 2026-11-15 en de overstap staan niet in Supabase: vlak voor de overstap `beheer/supabase/overstap-opnieuw-kopieren.sql` draaien in de SQL Editor. Nieuwe rijen komen erbij, bestaande alleen als de oude CMS nieuwer is, niets wordt verwijderd (het laatste resultaat toont wat alleen in het beheer staat). Proef gedraaid en teruggedraaid op 2026-11-15: 0 nieuw, 0 bijgewerkt, zoals verwacht.
-- [ ] Een paar weken na de overstap: `cms/`, het Vercel-project `specified-cms` en het schema `payload` opruimen. Pas dan vervallen de punten over Payload hieronder.
+- [ ] Een paar weken na de overstap: `cms/`, het Vercel-project `specified-cms` en het schema `payload` opruimen. Pas dan vervallen de punten over Payload hieronder. Stand 2026-11-22: project gepauzeerd, oude repo gearchiveerd. Het schema `payload` (met de oude kandidaatgegevens) pas wissen na akkoord van Specified, met vooraf een export als archief buiten de repo. Daarna de map `cms/` en de terugvalcode naar de oude CMS op de website weghalen (`CMS_URL` in `lib/` en `next.config.ts`).
 
 **Afstemmen met Simon (tegenstrijdigheden uit de invullijst, zie `BRIEFING.md`)**
 - [x] Pagina per vacature en één filter op vakgebied: gebouwd (2026-11-12), nog te bevestigen door Simon.
@@ -370,7 +372,7 @@ Wat beter kan, belangrijkste eerst:
 - [ ] **Afhankelijkheden**: `@dnd-kit/*` wordt niet gebruikt (alleen `@hello-pangea/dnd`), `shadcn` is een CLI en hoort niet bij de runtime-afhankelijkheden, Tiptap in het dashboard naast Lexical van Payload vraagt een conversie (`cms/lib/lexical.ts`); op termijn één editor.
 - [ ] **Kleine verstevigingen**: geheimen in `inbound-email` en `make-callback` vergelijken met `timingSafeEqual`; de Make-callback valideert de binnenkomende velden niet.
 - [ ] **Overblijfselen uit vastgoed**: `cms/components/SomLogo.tsx` en verwijzingen in `dashboard/gebruikers/create`.
-- [ ] Oude repo `specified-cms` archiveren op GitHub zodra het CMS-project in Vercel op deze repo draait. Daar staat nog een branch `blog-automatisering` (2 commits, niet op main): eerst bekijken of dat werk mee moet.
+- [x] Oude repo `specified-cms` gearchiveerd op GitHub (2026-11-22, privé, alleen nog lezen). De branch `blog-automatisering` (wekelijks AI-blogconcept) hoefde niet mee: de SEO-bot in het nieuwe beheer doet dat. Eerder stond hier: eerst bekijken of dat werk mee moet.
 
 **Documentatie die achterloopt**
 - `cms/README.md` en `.env.example` noemen nog MongoDB en `MONGODB_URI`; de database is Supabase (`DATABASE_URI`). Ook de rollenlijst en de toegang tot `/admin` in de README zijn verouderd.
@@ -386,7 +388,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 17:52_
+_Bijgewerkt: 2026-11-22 18:02_
 
 ### Nog niet op main
 
@@ -398,6 +400,7 @@ _Bijgewerkt: 2026-11-22 17:52_
 
 **2026-11-22**
 
+- website: Website naar Next.js 16.4.6, afhankelijkheden bijgewerkt (`7b9728e`)
 - website: Draaiboek: audit voor de livegang, DNS bij Cronos, oude URL's en ontbrekende formuliervariabelen (`be3bc5d`)
 
 **2026-11-16**
