@@ -124,7 +124,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee oorspronkelijke sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud.
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
 - **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v4.webp` en `simon-claeys-portret-v4.webp` staan in R2 en zijn gekoppeld via **Website > Team**. Bij deze versie dienden de originele gezichten opnieuw als referentie voor de bewerking. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De vorige versies en de originele portretten blijven beschikbaar in de mediabibliotheek. De originele bestanden staan ook lokaal als terugval.
-- Nog niet getest: tweestapslogin aanzetten en iemand uitnodigen.
+- Tweestapslogin aanzetten getest (2026-11-22, account Sam). Nog niet getest: iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
 - Het script `gebruiker-maken` toonde het wachtwoord bij het typen (fout, hersteld op 2026-11-15: invoer nu echt onzichtbaar). Het eerste wachtwoord van Sam is daardoor op het scherm verschenen en moet gewijzigd worden.
@@ -282,7 +282,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
-- [ ] Sam: wachtwoord wijzigen bij Account (het eerste stond op het scherm), daarna tweestapslogin aanzetten.
+- [x] Sam: wachtwoord gewijzigd bij Account en tweestapslogin (TOTP) aangezet (2026-11-22, nagekeken in Supabase).
 - [ ] Tweestapslogin ook afdwingen in de Supabase RLS-regels. De app vraagt de code, maar de Data API controleert nu alleen de rol en kan daardoor toegang geven vóór de tweede stap.
 - [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload lokaal getest tot op de website (2026-11-15). Dezelfde vier `R2_*`-waarden staan in Vercel. De live upload en het laden van het testbeeld zijn ook getest.
 - [x] In Supabase nieuwe registraties uitgezet (Authentication > Sign In / Providers, 2026-11-22; publiek nagekeken: `disable_signup` true). Uitnodigen via Gebruikers en `npm run gebruiker:maken` werken nog, ze gebruiken de beheerderssleutel. Tegelijk de minimale wachtwoordlengte in Supabase op 12 gezet, gelijk aan wat het beheer eist. Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
@@ -388,7 +388,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 18:06_
+_Bijgewerkt: 2026-11-22 20:41_
 
 ### Nog niet op main
 
@@ -400,6 +400,7 @@ _Bijgewerkt: 2026-11-22 18:06_
 
 **2026-11-22**
 
+- website: Draaiboek: registraties dicht in Supabase, minimale wachtwoordlengte 12 (`20138ac`)
 - website: Draaiboek: oude CMS gepauzeerd, oude repo gearchiveerd (`69a19b7`)
 - website: Website naar Next.js 16.4.6, afhankelijkheden bijgewerkt (`7b9728e`)
 - website: Draaiboek: audit voor de livegang, DNS bij Cronos, oude URL's en ontbrekende formuliervariabelen (`be3bc5d`)
