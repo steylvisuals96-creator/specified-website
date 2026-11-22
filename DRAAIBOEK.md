@@ -229,7 +229,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - Rolscenario's getest, 14 van 14.
 - `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel en de rol van de back-up zijn verwijderd (2026-10-28).
 - Bekend gat: het publieke e-mailendpoint heeft nog geen rate limiting.
-- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Redactie-acties lopen als de ingelogde gebruiker. Gebruikersbeheer en de SEO-bot gebruiken de geheime Supabase-sleutel na controle van de rol of het cron-geheim. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`. Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
+- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Redactie-acties lopen als de ingelogde gebruiker. Gebruikersbeheer en de SEO-bot gebruiken de geheime Supabase-sleutel na controle van de rol of het cron-geheim. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`, en sinds 2026-11-23 ook in RLS afgedwongen voor wie een factor heeft (aal2 nodig). Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
 
 ---
 
@@ -285,7 +285,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
 - [x] Sam: wachtwoord gewijzigd bij Account en tweestapslogin (TOTP) aangezet (2026-11-22, nagekeken in Supabase).
-- [ ] Tweestapslogin ook afdwingen in de Supabase RLS-regels. De app vraagt de code, maar de Data API controleert nu alleen de rol en kan daardoor toegang geven vóór de tweede stap.
+- [x] Tweestapslogin ook afgedwongen in de Supabase RLS-regels (2026-11-23, migratie `20261123_01_tweestap_in_rls.sql`). Wie een geverifieerde factor heeft, krijgt de rechten van zijn rol pas met een token na de code (aal2); met alleen het wachtwoord ziet hij in de Data API enkel wat publiek is. Zonder factor verandert er niets. De controle zit in `privaat.tweede_stap_ok()`, aangeroepen door `mijn_rol`, `is_redactie` en `is_beheerder`, en dus door alle regels; "eigen naam wijzigen" kreeg ze er expliciet bij. Eerst in een teruggedraaide transactie en daarna live getest als Sam met aal1 en aal2, en als Simon zonder factor. `MFA_VERPLICHT=1` blijft een regel van de app: wie geen factor heeft, houdt in de database zijn rechten tot hij er een instelt.
 - [x] R2 ingesteld: bucket `specified-media` en API-token aangemaakt, waarden lokaal in `beheer/.env.local`, upload lokaal getest tot op de website (2026-11-15). Dezelfde vier `R2_*`-waarden staan in Vercel. De live upload en het laden van het testbeeld zijn ook getest.
 - [x] In Supabase nieuwe registraties uitgezet (Authentication > Sign In / Providers, 2026-11-22; publiek nagekeken: `disable_signup` true). Uitnodigen via Gebruikers en `npm run gebruiker:maken` werken nog, ze gebruiken de beheerderssleutel. Tegelijk de minimale wachtwoordlengte in Supabase op 12 gezet, gelijk aan wat het beheer eist. Accounts komen alleen via het beheer of het script; een account zonder profiel kan niets, maar dicht is beter.
 - [x] Vercel-project `specified-beheer` aangemaakt met alle variabelen (2026-11-15). De website kreeg `NEXT_PUBLIC_BEHEER_URL` en `VERVERS_GEHEIM` (voorbeeld en meteen verversen); `NEXT_PUBLIC_DATABRON` nog niet, dus de live site leest nog uit de oude CMS. Later `beheer.specified.be`.
@@ -391,7 +391,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-22 21:35_
+_Bijgewerkt: 2026-11-23 00:05_
 
 ### Nog niet op main
 
@@ -403,6 +403,7 @@ _Bijgewerkt: 2026-11-22 21:35_
 
 **2026-11-22**
 
+- website: Doorverwijzingen van de 18 oude specified.be-adressen naar de nieuwe pagina's (`1236b70`)
 - website: axe-core als ontwikkelpakket; axe-toets 14 pagina's zonder fouten (`1a04854`)
 - website: Toegankelijkheid: hero-focus, cookiebanner in tabvolgorde, klikdoelen 44px, vizier uit bij hoog contrast (`51c3f82`)
 - website: Draaiboek: specified.be toegevoegd in Resend, DNS-records voor Cronos (`5106c05`)
