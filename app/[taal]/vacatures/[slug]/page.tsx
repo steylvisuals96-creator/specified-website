@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const taal = await huidigeTaal();
   const v = await getVacature(slug, taal);
-  if (!v) return { title: taal === "en" ? "Job not found — Specified" : "Vacature niet gevonden — Specified" };
+  if (!v) return { title: taal === "en" ? "Job not found | Specified" : "Vacature niet gevonden | Specified" };
   const standaard = taal === "en" ? `Job ${v.titel} at Specified in ${v.locatie}.` : `Vacature ${v.titel} bij Specified in ${v.locatie}.`;
   const beschrijving = (v.beschrijving[0] ?? standaard).slice(0, 160);
   return {
-    title: `${v.titel}, ${v.locatie} — Specified`,
+    title: `${v.titel}, ${v.locatie} | Specified`,
     description: beschrijving,
     // De vacaturetekst zelf is in beide talen dezelfde: de Nederlandse pagina is
     // de echte (canonical), zodat Google en Google for Jobs ze niet dubbel tellen.

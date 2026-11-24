@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const taal = await huidigeTaal();
   const t = await getPagina("blog", taal);
   return paginaMetadata(lokaalPad(taal, "/blog"), {
-    title: `${t.titel} — Specified`,
+    title: `${t.titel} | Specified`,
     description: t.inleiding,
     alternates: taalAlternates(taal, "/blog"),
   });

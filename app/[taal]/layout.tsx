@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const en = (await huidigeTaal()) === "en";
   return {
     metadataBase: new URL(SITE_URL),
-    title: "Specified — We Engineer Possibilities",
+    title: "Specified | We Engineer Possibilities",
     description: en
       ? "Engineering consultancy from Kontich: our own consultants for projects, maintenance and studies in Flanders."
       : "Engineering consultancy uit Kontich: eigen consultants voor projecten, onderhoud en studies in Vlaanderen.",

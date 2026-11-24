@@ -78,6 +78,8 @@ const cmsHost = host(CMS_URL, "specified-cms.vercel.app");
 const beheerHost = host(BEHEER_URL, "");
 
 const nextConfig: NextConfig = {
+  // Geen "x-powered-by: Next.js": verklapt niets nuttigs aan bezoekers.
+  poweredByHeader: false,
   // Coverbeelden van de blog: alleen deze hosts via next/image (components/Cover.tsx).
   images: {
     formats: ["image/avif", "image/webp"],
@@ -131,6 +133,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/((?!(?:en/)?blog/voorbeeld$|(?:en/)?voorbeeld/).*)", headers: securityHeaders },
       ...VOORBEELD_PADEN.map((source) => ({ source, headers: voorbeeldHeaders })),
+      // Het vercel.app-adres hoort niet in Google: vóór de livegang niet onder het
+      // verkeerde domein, daarna geen dubbele inhoud naast specified.be.
+      { source: "/:pad*", has: [{ type: "host" as const, value: ".*\\.vercel\\.app" }], headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
     ];
   },
 };

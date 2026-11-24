@@ -10,12 +10,12 @@ export const revalidate = 60;
 
 const META = {
   nl: {
-    title: "Werken als engineering consultant — Specified",
+    title: "Werken als engineering consultant | Specified",
     description:
       "Word engineering consultant bij Specified. Ontdek projecten en sectoren in Vlaanderen, met een carrièrepartner die je keuzes begeleidt en je laat groeien.",
   },
   en: {
-    title: "Working as an engineering consultant — Specified",
+    title: "Working as an engineering consultant | Specified",
     description:
       "Become an engineering consultant at Specified. Discover projects and sectors in Flanders, with a career partner who guides your choices and helps you grow.",
   },

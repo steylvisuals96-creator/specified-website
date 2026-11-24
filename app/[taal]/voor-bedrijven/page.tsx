@@ -10,12 +10,12 @@ export const revalidate = 60;
 
 const META = {
   nl: {
-    title: "Engineering consultancy voor bedrijven — Specified",
+    title: "Engineering consultancy voor bedrijven | Specified",
     description:
       "Tijdelijke versterking voor projecten, onderhoud en studies. Specified zet eigen engineering consultants in bij bedrijven in farma, productie, bouw en infrastructuur in Vlaanderen.",
   },
   en: {
-    title: "Engineering consultancy for companies — Specified",
+    title: "Engineering consultancy for companies | Specified",
     description:
       "Temporary reinforcement for projects, maintenance and studies. Specified deploys its own engineering consultants at companies in pharma, manufacturing, construction and infrastructure in Flanders.",
   },

@@ -4,7 +4,7 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-11-22 (audit voor de livegang).
+Laatst handmatig nagekeken: 2026-11-24 (tweede audit en de snelle verbeteringen daaruit).
 
 De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
@@ -71,7 +71,7 @@ Mogelijke extra foto's voor de volgende beeldronde:
 
 ### Formulieren (2026-11-12)
 
-Vier formulieren uit één beschrijving (`lib/formulieren.ts`): sollicitatie bij een vacature, open sollicitatie, contact en aanvraag consultant. `components/Formulier.tsx` tekent ze, `app/api/formulier/route.ts` controleert opnieuw en mailt via Resend: een melding naar Specified (cv als bijlage, antwoorden gaat naar de bezoeker) en een bevestiging naar de bezoeker. Er wordt niets opgeslagen. Beveiliging: alleen eigen origin, verborgen valkuilveld, minimale invultijd, 5 per 10 minuten per IP (per server), cv alleen pdf of Word tot 4 MB.
+Vier formulieren uit één beschrijving (`lib/formulieren.ts`): sollicitatie bij een vacature, open sollicitatie, contact en aanvraag consultant. `components/Formulier.tsx` tekent ze, `app/api/formulier/route.ts` controleert opnieuw en mailt via Resend: een melding naar Specified (cv als bijlage, antwoorden gaat naar de bezoeker) en een bevestiging naar de bezoeker. Er wordt niets opgeslagen. Beveiliging: alleen eigen origin (de Origin-header is verplicht, sinds 2026-11-24), verborgen valkuilveld, minimale invultijd, 5 per 10 minuten per IP (per server), cv alleen pdf of Word tot 4 MB en sinds 2026-11-24 ook gecontroleerd op de eerste bytes van het bestand. De bevestiging aan de bezoeker bevat sinds 2026-11-24 alleen vaste tekst ("Hallo," en de bedanktekst), niet meer de ingevulde naam of de vacature.
 
 Nodig in Vercel (website): `RESEND_API_KEY`, `FORMULIER_AAN` (ontvanger, later `Simon.claeys@specified.be`), `FORMULIER_VAN` (afzender op een in Resend geverifieerd domein). **Zonder geverifieerd domein bezorgt Resend alleen bij de eigenaar van het account**: de melding naar Simon en de bevestiging naar bezoekers werken dus pas na verificatie van `specified.be` in Resend (DNS-records). Zonder sleutels geeft het formulier in productie een nette foutmelding met het e-mailadres.
 
@@ -100,7 +100,7 @@ SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrost
 
 ### Beveiliging van de site
 
-Security-headers in `next.config.ts`: CSP, HSTS, nosniff, frame-deny, referrer-policy, permissions-policy. De CSP heeft `'unsafe-inline'` voor scripts nodig (Next.js en Vercel Analytics), pas weg met nonces. Blog is dichtgezet tegen XSS (javascript:-links, koptags, JSON-LD). Cookiebanner is server-gerenderd, keuzes zijn gelijkwaardig, analytics pas na toestemming.
+Security-headers in `next.config.ts`: CSP, HSTS, nosniff, frame-deny, referrer-policy, permissions-policy. De CSP heeft `'unsafe-inline'` voor scripts nodig (Next.js en Vercel Analytics), pas weg met nonces. Blog is dichtgezet tegen XSS (javascript:-links, koptags, JSON-LD). Cookiebanner is server-gerenderd, keuzes zijn gelijkwaardig, analytics pas na toestemming. Geen `x-powered-by`-header (2026-11-24). Elk `*.vercel.app`-adres krijgt `X-Robots-Tag: noindex, nofollow` (2026-11-24), zodat Google de site niet onder het tijdelijke adres opneemt; `specified.be` krijgt die header niet.
 
 ### Prestaties (meting 2026-09-27, lokale productiebuild)
 
@@ -231,7 +231,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 - Rolscenario's getest, 14 van 14.
 - `teksten`-tabel: RLS aan zonder regels (Supabase-advies, niveau info). De leesregel en de rol van de back-up zijn verwijderd (2026-10-28).
 - Bekend gat: het publieke e-mailendpoint heeft nog geen rate limiting.
-- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Redactie-acties lopen als de ingelogde gebruiker. Gebruikersbeheer en de SEO-bot gebruiken de geheime Supabase-sleutel na controle van de rol of het cron-geheim. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`, en sinds 2026-11-23 ook in RLS afgedwongen voor wie een factor heeft (aal2 nodig). Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
+- **Nieuw beheer** (2026-11-15): drie lagen (proxy, controle per pagina en actie, RLS in de database). Redactie-acties lopen als de ingelogde gebruiker. Gebruikersbeheer en de SEO-bot gebruiken de geheime Supabase-sleutel na controle van de rol of het cron-geheim. Salaris in een aparte tabel zonder publieke regel. Uploads alleen van het eigen domein, ingelogd, 4 MB, type uit de eerste bytes, geen SVG. Rich text opnieuw opgebouwd uit een vaste lijst. Tweestapslogin (TOTP) ingebouwd, verplicht te maken met `MFA_VERPLICHT=1`, en sinds 2026-11-23 ook in RLS afgedwongen voor wie een factor heeft (aal2 nodig). Loginrem 5 pogingen per kwartier per IP (per server) bovenop die van Supabase. Sinds 2026-11-24 vraagt wachtwoord wijzigen eerst de code uit de app aan wie tweestapslogin heeft, ook na een herstellink (eerst `/login/code`, daarna terug naar het wachtwoordscherm). RLS getest in SQL voor anoniem, zonder profiel, redacteur, beheerder en creator. Supabase-adviseur: geen waarschuwingen meer op de nieuwe tabellen.
 
 ---
 
@@ -269,6 +269,8 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Uitnodigen met een link die de beheerder zelf bezorgt | Supabase verstuurt zonder eigen mailserver alleen mails naar het eigen team; zo werkt het meteen |
 | Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12). De voettekst stond ook in de CMS (Homepage en Instellingen) en is daar rechtstreeks in Supabase gecorrigeerd |
 | Repo blijft publiek; audits en beveiligingspunten buiten git | Keuze Sam (2026-11-22). Het draaiboek bevat alleen niet-gevoelige stand van zaken, beveiligingsactiepunten staan in de Studio |
+| Paginatitels met een verticale streep ("Contact | Specified") in plaats van een lang streepje | Huisregel: geen lange streepjes in teksten (2026-11-24) |
+| `noindex` op elk vercel.app-adres, ook na de livegang | Vóór de livegang geen indexering onder het verkeerde domein, daarna geen dubbele inhoud naast specified.be (2026-11-24) |
 | Wekelijks SEO-onderzoek; AI-artikels eerst als concept | Teksten en bronnen blijven controleerbaar in het beheer; automatische metadata en betaalde covers zijn aparte opties |
 
 ---
@@ -283,6 +285,12 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 - De huidige site op `specified.be` is Engelstalig, met 18 URL's in de sitemap: `/about-us/`, `/services/`, `/services/career-partner/`, `/services/engineering-partner/`, `/jobs/`, `/jobs/spontaneous-application/`, vijf `/job/...`, `/contact/`, `/privacy-policy/`, `/cookie-policy/`, twee bedankpagina's en `/test-slider-home/`. Basis voor de 301's. Er bestaat dus al een privacy- en cookietekst.
 - Simon heeft sinds 2026-11-22 een account in het nieuwe beheer (beheerder, nog zonder wachtwoord: hij kiest het zelf via een inloglink). Naam en e-mail van zijn collega zijn nog niet bekend.
 - Alle 5 vacatures missen uren, opleiding en talen.
+
+**Tweede audit (2026-11-23)**
+
+Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doorgevoerd (formulier, wachtwoord wijzigen, noindex op vercel.app, titels, `x-powered-by`). Niet-gevoelige open punten:
+- [ ] De 404-pagina komt zonder inhoud en zonder `lang`-attribuut van de server; de browser bouwt ze pas zelf op. Waarschijnlijk komt dat doordat de root-layout onder `app/[taal]/` staat. Een catch-all met `dynamicParams` en `global-not-found` losten het niet op (getest 2026-11-24). De status blijft wel 404 met `noindex`.
+- [ ] Bij de livegang `vercel.app` met een 308 naar `specified.be` laten doorverwijzen (Vercel, domeininstellingen).
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
 - [x] `SUPABASE_SECRET_KEY` lokaal gezet, account Sam (creator) aangemaakt, ingelogd en alle schermen nagelopen (2026-11-15).
@@ -394,7 +402,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-23 00:26_
+_Bijgewerkt: 2026-11-24 20:57_
 
 ### Nog niet op main
 
@@ -406,6 +414,7 @@ _Bijgewerkt: 2026-11-23 00:26_
 
 **2026-11-23**
 
+- website: Draaiboek: LCP blog na deploy 1,2 s (mobiel 100) (`04df84c`)
 - website: Engelse versie van de website onder /en, met NL/EN-schakelaar in het beheer (`2616b2c`)
 - website: Blog sneller op mobiel: GSAP alleen laden waar vloeiend scrollen draait (`af430d5`)
 - website: Tweestapslogin ook in RLS afdwingen (`2c6ef0a`)

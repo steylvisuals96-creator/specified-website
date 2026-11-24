@@ -10,11 +10,11 @@ export const revalidate = 60;
 
 const META = {
   nl: {
-    title: "Veelgestelde vragen — Specified",
+    title: "Veelgestelde vragen | Specified",
     description: "Antwoorden op veelgestelde vragen over werken bij Specified en over het inzetten van engineering consultants.",
   },
   en: {
-    title: "Frequently asked questions — Specified",
+    title: "Frequently asked questions | Specified",
     description: "Answers to frequently asked questions about working at Specified and about deploying engineering consultants.",
   },
 };

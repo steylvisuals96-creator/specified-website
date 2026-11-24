@@ -3,13 +3,13 @@ import { huidigeTaal } from "@/lib/taal-server";
 import { taalAlternates } from "@/lib/taal";
 
 const META_NL = {
-  title: "Disclaimer — Specified",
+  title: "Disclaimer | Specified",
   description: "Voorwaarden voor het gebruik van de website van Specified NV.",
   alternates: { canonical: "/disclaimer" },
 };
 
 const META_EN = {
-  title: "Disclaimer — Specified",
+  title: "Disclaimer | Specified",
   description: "Terms of use of the Specified NV website.",
 };
 

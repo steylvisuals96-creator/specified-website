@@ -4,11 +4,12 @@ import { useActionState } from "react";
 import { codeControleren, uitloggen } from "@/lib/auth-acties";
 import { LEEG } from "@/lib/formulier";
 
-export default function CodeFormulier() {
+export default function CodeFormulier({ verder }: { verder?: "wachtwoord" }) {
   const [staat, actie, bezig] = useActionState(codeControleren, LEEG);
   return (
     <>
       <form action={actie} className="paneel blad flex flex-col gap-6">
+        {verder && <input type="hidden" name="verder" value={verder} />}
         <div>
           <label className="veld-label" htmlFor="code">
             Code

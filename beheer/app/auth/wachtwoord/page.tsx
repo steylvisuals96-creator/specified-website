@@ -12,6 +12,11 @@ export default async function Wachtwoord() {
     data: { user },
   } = await sb.auth.getUser();
   if (!user) redirect("/login?link=ongeldig");
+  // Met tweestapslogin eerst de code uit de app, daarna pas een nieuw wachtwoord.
+  if ((user.factors ?? []).some((f) => f.status === "verified")) {
+    const { data: token } = await sb.auth.getClaims();
+    if (token?.claims?.aal !== "aal2") redirect("/login/code?verder=wachtwoord");
+  }
 
   return (
     <main className="min-h-dvh grid place-items-center px-4 py-12">

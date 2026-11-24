@@ -6,7 +6,8 @@ import { sessieStand } from "@/lib/sessie";
 
 export const metadata: Metadata = { title: "Code invullen" };
 
-export default async function Code() {
+export default async function Code({ searchParams }: { searchParams: Promise<{ verder?: string }> }) {
+  const { verder } = await searchParams;
   // Alleen wie het wachtwoord al gaf en nog een code moet invullen.
   const stand = await sessieStand();
   if (stand.soort === "uit") redirect("/auth/uitloggen");
@@ -20,7 +21,7 @@ export default async function Code() {
         </h1>
         <div className="maatlijn mb-6" style={{ ["--vul" as string]: "68%" }} aria-hidden="true" />
         <p className="stil mb-6">Open je authenticator-app en vul de code van zes cijfers in die bij Specified staat.</p>
-        <CodeFormulier />
+        <CodeFormulier verder={verder === "wachtwoord" ? "wachtwoord" : undefined} />
       </div>
     </main>
   );

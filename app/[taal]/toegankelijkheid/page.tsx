@@ -3,13 +3,13 @@ import { huidigeTaal } from "@/lib/taal-server";
 import { taalAlternates } from "@/lib/taal";
 
 const META_NL = {
-  title: "Toegankelijkheidsverklaring — Specified",
+  title: "Toegankelijkheidsverklaring | Specified",
   description: "Hoe Specified NV werkt aan een website die voor iedereen bruikbaar is.",
   alternates: { canonical: "/toegankelijkheid" },
 };
 
 const META_EN = {
-  title: "Accessibility statement — Specified",
+  title: "Accessibility statement | Specified",
   description: "How Specified NV works on a website that everyone can use.",
 };
 

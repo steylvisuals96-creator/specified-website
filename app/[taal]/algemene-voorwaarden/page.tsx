@@ -4,14 +4,14 @@ import { taalAlternates } from "@/lib/taal";
 
 // Niet indexeren zolang de tekst van Specified er niet staat.
 const META_NL = {
-  title: "Algemene voorwaarden — Specified",
+  title: "Algemene voorwaarden | Specified",
   description: "De algemene voorwaarden van Specified NV.",
   alternates: { canonical: "/algemene-voorwaarden" },
   robots: { index: false },
 };
 
 const META_EN = {
-  title: "Terms and conditions — Specified",
+  title: "Terms and conditions | Specified",
   description: "The general terms and conditions of Specified NV.",
   robots: { index: false },
 };

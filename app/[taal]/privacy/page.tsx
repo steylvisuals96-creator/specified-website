@@ -4,12 +4,12 @@ import { huidigeTaal } from "@/lib/taal-server";
 import { taalAlternates } from "@/lib/taal";
 
 const META_NL = {
-  title: "Privacybeleid — Specified",
+  title: "Privacybeleid | Specified",
   description: "Hoe Specified NV omgaat met je persoonsgegevens conform de GDPR.",
 };
 
 const META_EN = {
-  title: "Privacy policy — Specified",
+  title: "Privacy policy | Specified",
   description: "How Specified NV handles your personal data in accordance with the GDPR.",
 };
 

@@ -11,12 +11,12 @@ export const revalidate = 60;
 
 const META = {
   nl: {
-    title: "Vacatures voor engineers — Specified",
+    title: "Vacatures voor engineers | Specified",
     description:
       "Ingenieur jobs in Vlaanderen: word engineering consultant bij Specified. Vacatures voor civil, electrical, automation en mechanical engineers en projectleiders.",
   },
   en: {
-    title: "Engineering jobs — Specified",
+    title: "Engineering jobs | Specified",
     description:
       "Engineering jobs in Flanders: become an engineering consultant at Specified. Vacancies for civil, electrical, automation and mechanical engineers and project managers.",
   },

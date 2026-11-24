@@ -65,7 +65,8 @@ export async function codeControleren(_: Resultaat, fd: FormData): Promise<Resul
     return { ok: false, melding: "Die code klopt niet of is verlopen. Probeer de volgende." };
   }
   pogingen.delete(ip);
-  redirect("/");
+  // Na een herstellink: terug naar het scherm om een nieuw wachtwoord te kiezen.
+  redirect(fd.get("verder") === "wachtwoord" ? "/auth/wachtwoord" : "/");
 }
 
 export async function uitloggen() {

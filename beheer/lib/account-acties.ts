@@ -16,6 +16,15 @@ export async function wachtwoordZetten(_: Resultaat, fd: FormData): Promise<Resu
   } = await sb.auth.getUser();
   if (!user) redirect("/login");
 
+  // Wie tweestapslogin heeft, wijzigt het wachtwoord pas na de code uit de app.
+  // Anders kan iemand met alleen het wachtwoord (of een herstellink) het
+  // wachtwoord veranderen en de eigenaar buitensluiten.
+  const heeftFactor = (user.factors ?? []).some((f) => f.status === "verified");
+  if (heeftFactor) {
+    const { data: token } = await sb.auth.getClaims();
+    if (token?.claims?.aal !== "aal2") redirect(fd.get("naHerstel") === "1" ? "/login/code?verder=wachtwoord" : "/login/code");
+  }
+
   const nieuw = typeof fd.get("wachtwoord") === "string" ? (fd.get("wachtwoord") as string) : "";
   const herhaal = typeof fd.get("herhaal") === "string" ? (fd.get("herhaal") as string) : "";
   if (nieuw.length < 12) return { ok: false, velden: { wachtwoord: "Minstens 12 tekens." } };

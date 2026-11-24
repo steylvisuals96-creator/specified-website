@@ -10,8 +10,8 @@ import { lokaalPad, taalAlternates } from "@/lib/taal";
 export const revalidate = 60;
 
 const META = {
-  nl: { title: "Contact — Specified", description: "Neem contact op met Specified, engineering consultancy in Kontich. Mail, bel of stuur een bericht." },
-  en: { title: "Contact — Specified", description: "Get in touch with Specified, engineering consultancy in Kontich. Email, call or send a message." },
+  nl: { title: "Contact | Specified", description: "Neem contact op met Specified, engineering consultancy in Kontich. Mail, bel of stuur een bericht." },
+  en: { title: "Contact | Specified", description: "Get in touch with Specified, engineering consultancy in Kontich. Email, call or send a message." },
 };
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -78,7 +78,7 @@ export const JOBS: typeof NL.JOBS = {
 };
 
 export const META: typeof NL.META = {
-  titel: "Specified — Engineering consultancy",
+  titel: "Specified | Engineering consultancy",
   beschrijving:
     "Belgian engineering consultancy specialised in electromechanics for industry. Our own consultants support projects, maintenance and studies.",
 };

@@ -23,8 +23,7 @@ const M = {
     nietIngesteld: "Versturen lukt nu niet. Mail ons op info@specified.be, dan helpen we je verder.",
     mislukt: "Versturen lukt nu niet. Probeer het later opnieuw of mail ons op info@specified.be.",
     onderwerp: (soort: string) => `We hebben je ${soort === "contact" ? "bericht" : soort === "aanvraag" ? "aanvraag" : "sollicitatie"} ontvangen`,
-    dag: (naam: string) => `Dag ${naam},`,
-    gaatOm: (v: string) => `\nHet gaat om: ${v}`,
+    dag: "Hallo,",
     automatisch: "Dit is een automatische bevestiging. Heb je nog een vraag, antwoord dan gewoon op deze mail.",
     adres: "Veldkant 31a, 2550 Kontich",
   },
@@ -46,8 +45,7 @@ const M = {
     nietIngesteld: "Sending is not possible right now. Email us at info@specified.be and we will help you.",
     mislukt: "Sending is not possible right now. Please try again later or email us at info@specified.be.",
     onderwerp: (soort: string) => `We have received your ${soort === "contact" ? "message" : soort === "aanvraag" ? "request" : "application"}`,
-    dag: (naam: string) => `Dear ${naam},`,
-    gaatOm: (v: string) => `\nRegarding: ${v}`,
+    dag: "Hello,",
     automatisch: "This is an automatic confirmation. If you have any questions, simply reply to this email.",
     adres: "Veldkant 31a, 2550 Kontich, Belgium",
   },
@@ -58,7 +56,9 @@ const M = {
  * contact, aanvraag consultant) en mailt ze via Resend:
  *  - een melding naar Specified (FORMULIER_AAN), met het cv als bijlage en
  *    het adres van de bezoeker als antwoordadres;
- *  - een bevestiging naar de bezoeker.
+ *  - een bevestiging naar de bezoeker. Die bevat alleen vaste tekst: wie het
+ *    formulier misbruikt met andermans adres, kan zo geen eigen boodschap
+ *    vanaf het domein van Specified laten versturen.
  *
  * Er wordt niets opgeslagen: Specified wil aanvragen alleen in de mail
  * (invullijst 2026-11-12). Daarom geldt een formulier pas als verstuurd als
@@ -87,6 +87,25 @@ function teVaak(ip: string): boolean {
 const EMAIL = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
 const eenRegel = (v: string) => v.replace(/[\r\n\t]+/g, " ").trim();
 
+/**
+ * Kijkt naar de eerste bytes, niet alleen naar de extensie: een hernoemd
+ * bestand komt anders als bijlage in de mailbox van Specified terecht.
+ * pdf begint met %PDF-, docx is een zip (PK..), doc een OLE-bestand.
+ */
+const HANDTEKENING: Record<string, number[]> = {
+  ".pdf": [0x25, 0x50, 0x44, 0x46, 0x2d],
+  ".docx": [0x50, 0x4b, 0x03, 0x04],
+  ".doc": [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1],
+};
+async function echtCv(bestand: File): Promise<boolean> {
+  const naam = bestand.name.toLowerCase();
+  const ext = Object.keys(HANDTEKENING).find((e) => naam.endsWith(e));
+  if (!ext) return false;
+  const verwacht = HANDTEKENING[ext];
+  const begin = new Uint8Array(await bestand.slice(0, verwacht.length).arrayBuffer());
+  return verwacht.every((b, i) => begin[i] === b);
+}
+
 function fout(boodschap: string, status = 400, veld?: string) {
   return NextResponse.json({ ok: false, fout: boodschap, veld }, { status });
 }
@@ -105,17 +124,15 @@ async function stuur(sleutel: string, mail: Record<string, unknown>): Promise<bo
 export async function POST(req: Request) {
   // De taal staat ook in het formulier, maar dat lezen we pas na de eerste controles.
   let m = M.nl;
-  // Alleen formulieren van de eigen site.
-  const origin = req.headers.get("origin");
-  if (origin) {
-    let host = "";
-    try {
-      host = new URL(origin).host;
-    } catch {
-      /* "null" of onzin: geen eigen pagina */
-    }
-    if (host !== req.headers.get("host")) return fout(m.ongeldig, 403);
+  // Alleen formulieren van de eigen site. Browsers sturen bij een POST altijd
+  // een Origin mee; zonder is het een script, en dat weigeren we.
+  let host = "";
+  try {
+    host = new URL(req.headers.get("origin") ?? "").host;
+  } catch {
+    /* ontbreekt, "null" of onzin: geen eigen pagina */
   }
+  if (!host || host !== req.headers.get("host")) return fout(m.ongeldig, 403);
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "onbekend";
   if (teVaak(ip)) return fout(m.teVaak, 429);
@@ -159,6 +176,7 @@ export async function POST(req: Request) {
       const naam = bestand.name.toLowerCase();
       if (!CV_EXTENSIES.some((e) => naam.endsWith(e))) return fout(m.cvType, 400, v.naam);
       if (bestand.size > CV_MAX_BYTES) return fout(m.cvGroot, 400, v.naam);
+      if (!(await echtCv(bestand))) return fout(m.cvType, 400, v.naam);
       cv = bestand;
       continue;
     }
@@ -240,10 +258,9 @@ export async function POST(req: Request) {
         reply_to: process.env.FORMULIER_ANTWOORD || "info@specified.be",
         subject: m.onderwerp(soort),
         text: [
-          m.dag(naam),
+          m.dag,
           "",
           formulieren(taal)[soort].bedankt,
-          vacature ? m.gaatOm(vacature) : null,
           "",
           m.automatisch,
           "",

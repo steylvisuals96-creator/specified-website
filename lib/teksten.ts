@@ -100,7 +100,7 @@ const nl = {
     kies: "Kies",
   },
   nietGevonden: {
-    titel: "Pagina niet gevonden — Specified",
+    titel: "Pagina niet gevonden | Specified",
     kop1: "Deze pagina",
     kop2: "bestaat niet.",
     tekst: "De link die je volgde is verlopen of verkeerd. Hieronder vind je de weg terug.",
@@ -208,7 +208,7 @@ const en: Teksten = {
     kies: "Choose",
   },
   nietGevonden: {
-    titel: "Page not found — Specified",
+    titel: "Page not found | Specified",
     kop1: "This page",
     kop2: "does not exist.",
     tekst: "The link you followed has expired or is incorrect. Find your way back below.",

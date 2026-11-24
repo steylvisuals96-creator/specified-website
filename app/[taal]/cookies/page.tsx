@@ -4,12 +4,12 @@ import { huidigeTaal } from "@/lib/taal-server";
 import { taalAlternates } from "@/lib/taal";
 
 const META_NL = {
-  title: "Cookiebeleid — Specified",
+  title: "Cookiebeleid | Specified",
   description: "Welke cookies Specified gebruikt en hoe je je voorkeuren beheert.",
 };
 
 const META_EN = {
-  title: "Cookie policy — Specified",
+  title: "Cookie policy | Specified",
   description: "Which cookies Specified uses and how you manage your preferences.",
 };
 
