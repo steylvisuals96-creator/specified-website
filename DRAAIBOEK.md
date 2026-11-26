@@ -64,9 +64,11 @@ Misschien later (invullijst): Over ons, Cases zonder klantnamen, Team, Evenement
 
 De homepage gebruikt de herwerkte AI-sfeerbeelden van de pompinstallatie en de consultant met tablet in **Voor bedrijven** en **Voor engineers**. `Split` haalt ze op via de beheerlinks uit `lib/inhoud.ts`. Zonder ingesteld beheer gebruikt de website de lokale terugvalbeelden. De foto bij Voor engineers is hoger uitgelijnd in de liggende uitsnede, zodat helm en tablet samen in beeld blijven.
 
-Mogelijke extra foto's voor de volgende beeldronde:
+Op 2026-11-26 zijn met Sams akkoord zes aanvullende AI-sfeerbeelden gemaakt met de ingebouwde ChatGPT-beeldgenerator: productieomgeving, engineer op locatie, schakelkast, industriële pomp en reserveblogcovers voor industriële automatisering en preventief onderhoud. Alle beelden zijn 1672 × 941 px. De WebP-versies staan in `public/images/beeld/`, in de privé-R2-bucket `specified-media` en in de Supabase-mediabibliotheek. Ze zijn beschikbaar om te kiezen in het beheer; bestaande websitebeelden en blogcovers zijn niet vervangen. De modelversie van de ingebouwde generator was niet controleerbaar; daarvoor gaf Sam expliciet akkoord.
 
-- **Voor bedrijven, bij Sectoren:** één breed beeld van een werkende productieomgeving. Per case kan later een foto van de gefotografeerde installatie mee.
+Verder beeldwerk:
+
+- **Voor bedrijven, bij Sectoren:** het nieuwe brede productiebeeld is beschikbaar in het beheer. Per echte case kan later een foto van de gefotografeerde installatie mee.
 - **Voor engineers, bij Waar je werkt:** een echt duo van consultants tijdens een test of werfbespreking. Dat laat zien hoe ze samenwerken op locatie.
 - **Over ons, bij de founders:** tijdens de geplande shoot een gezamenlijk portret van Tom en Simon maken, naast de individuele portretten.
 - **Blog:** per artikel een eigen cover die het onderwerp toont. Technische onderwerpen kunnen een AI-sfeerbeeld krijgen, cases gebruiken beeld uit het project.
@@ -128,6 +130,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
 - **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
 - **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee oorspronkelijke sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud.
+- **Aanvullende beeldreeks (2026-11-26)**: `specified-productieomgeving.webp`, `specified-engineer-op-locatie.webp`, `specified-schakelkast-detail.webp`, `specified-pomp-detail.webp`, `specified-blog-industriele-automatisering.webp` en `specified-blog-preventief-onderhoud.webp`. Als WebP toegevoegd aan R2 onder `media/2026/11/*-20261126.webp` en geregistreerd in de mediabibliotheek met alttekst, werkelijke afmetingen (1672 × 941 px), bestandsgrootte. Bestandsinhoud na upload per beeld gecontroleerd met SHA-256; ook de openbare beheerlinks zijn gecontroleerd. Bron-PNG's, definitieve prompts en uploadregistratie staan lokaal in `specified-website/output/imagegen/specified-2026-11-26/`. De twee blogcovers zijn reservebeelden voor passende artikels.
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
 - **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v4.webp` en `simon-claeys-portret-v4.webp` staan in R2 en zijn gekoppeld via **Website > Team**. Bij deze versie dienden de originele gezichten opnieuw als referentie voor de bewerking. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De vorige versies en de originele portretten blijven beschikbaar in de mediabibliotheek. De originele bestanden staan ook lokaal als terugval.
 - **Simon zittend (2026-11-26)**: Sam wilde Simon ook zittend zoals Tom en bevestigde daarna de oorspronkelijke foto van `specified.be/wp-content/uploads/2025/03/Simon.jpeg` als bron voor zijn exacte gezicht. Zijn teamfoto is `simon-claeys-portret-v7-origineel-gezicht.webp`, aan dezelfde werktafel met technische tekening. Het hoofd is rechtstreeks uit de bronfoto overgenomen, met een zachte overgang langs de buitenrand. De centrale gezichtspixels zijn op gelijkheid gecontroleerd in het PNG-masterbestand. Het WebP staat in R2 en de mediabibliotheek, gekoppeld via **Website > Team**.
@@ -410,7 +413,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:05_
+_Bijgewerkt: 2026-11-26 22:13_
 
 ### Nog niet op main
 
@@ -422,6 +425,8 @@ _Bijgewerkt: 2026-11-26 22:05_
 
 **2026-11-26**
 
+- website: Breid beeldbibliotheek uit tot achttien beelden met reserveselectie (`49af132`)
+- website: Bewaar zes aanvullende sfeerbeelden in de mediabibliotheek (`12d8ab2`)
 - website: Neem Simons originele gezicht over in zijn zittende portret (`18ed08b`)
 - website: Engelse versie in Amerikaans Engels (`ef28b2f`)
 - website: Werk Simons portret bij met ingetogener glimlach (`6550720`)
