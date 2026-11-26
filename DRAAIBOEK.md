@@ -292,7 +292,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 **Tweede audit (2026-11-23)**
 
 Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doorgevoerd (formulier, wachtwoord wijzigen, noindex op vercel.app, titels, `x-powered-by`). Niet-gevoelige open punten:
-- [ ] De 404-pagina komt zonder inhoud en zonder `lang`-attribuut van de server; de browser bouwt ze pas zelf op. Waarschijnlijk komt dat doordat de root-layout onder `app/[taal]/` staat. Een catch-all met `dynamicParams` en `global-not-found` losten het niet op (getest 2026-11-24). De status blijft wel 404 met `noindex`. Waarschijnlijke verklaring (2026-11-26, niet apart bewezen): React toont bij de serveropbouw geen foutgrenzen, dus `notFound()` in de eerste opbouw levert een lege foutpagina. Opgelost kan het alleen door de routes in `proxy.ts` te herhalen; dat is voorlopig niet de moeite.
+- [ ] De 404-pagina komt zonder inhoud en zonder `lang`-attribuut van de server; de browser bouwt ze pas zelf op. Waarschijnlijk komt dat doordat de root-layout onder `app/[taal]/` staat. Een catch-all met `dynamicParams` en `global-not-found` losten het niet op (getest 2026-11-24). De status blijft wel 404 met `noindex`. Waarschijnlijke verklaring (2026-11-26, niet apart bewezen): React toont bij de serveropbouw geen foutgrenzen, dus `notFound()` in de eerste opbouw levert een lege foutpagina. Nog niet geprobeerd: onbekende adressen in `proxy.ts` zelf met status 404 naar een gewone pagina sturen (vraagt daar een lijst van de routes).
 - [ ] Bij de livegang `vercel.app` met een 308 naar `specified.be` laten doorverwijzen (Vercel, domeininstellingen).
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
@@ -407,7 +407,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 21:31_
+_Bijgewerkt: 2026-11-26 21:35_
 
 ### Nog niet op main
 
@@ -416,6 +416,10 @@ _Bijgewerkt: 2026-11-26 21:31_
 - branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
+
+**2026-11-26**
+
+- website: Opkuis, animaties 007 en 008, Engelse versie getest (`a0e3ea0`)
 
 **2026-11-24**
 
