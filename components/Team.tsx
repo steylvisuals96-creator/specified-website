@@ -2,6 +2,21 @@ import Image from "next/image";
 import { rolLabel, type TeamMember } from "@/lib/settings";
 import type { Taal } from "@/lib/taal";
 import { ui } from "@/lib/teksten";
+import { mediaUrl } from "@/lib/beheer";
+import PortretWissel from "@/components/PortretWissel";
+
+// Elke engineerbewerking hoort bij één specifiek bronportret. Een andere
+// foto uit het beheer krijgt het effect pas na een bijpassende bewerking.
+const ENGINEER_PORTRETTEN: Record<string, { bron: string; engineer: string }> = {
+  "c80e8c93-deb9-4944-be51-3feeb93ad7cc": {
+    bron: "e2c2c849-b495-4c35-885a-1232e928755e",
+    engineer: "6d4df3f2-fd4c-4ef6-84d8-7ccf0da0dc49",
+  },
+  "6976c65f-43b3-4550-9002-174c2253601b": {
+    bron: "e9fa1572-376b-476d-8cae-037089410d6b",
+    engineer: "ba0c06db-1900-4ca0-8d22-50b50489cbef",
+  },
+};
 
 const FALLBACK: TeamMember[] = [
   {
@@ -49,10 +64,20 @@ export default function Team({
         <div className="team__grid">
           {lijst.map((m) => {
             const naam = [m.voornaam, m.achternaam].filter(Boolean).join(" ");
+            const portret = ENGINEER_PORTRETTEN[m.id];
+            const engineerSrc = portret && m.fotoUrl === mediaUrl(portret.bron) ? mediaUrl(portret.engineer) : undefined;
             return (
               <article key={m.id} className="team__lid">
                 <div className="team__foto">
-                  {m.fotoUrl ? (
+                  {m.fotoUrl && engineerSrc ? (
+                    <PortretWissel
+                      key={m.fotoUrl}
+                      src={m.fotoUrl}
+                      engineerSrc={engineerSrc}
+                      naam={naam}
+                      label={taal === "en" ? `Switch between ${naam}'s portrait and engineer photo` : `Wissel tussen het portret en de engineerfoto van ${naam}`}
+                    />
+                  ) : m.fotoUrl ? (
                     <Image src={m.fotoUrl} alt={naam} fill sizes="(min-width: 900px) 50vw, 100vw" />
                   ) : (
                     <span className="display team__foto-leeg">{naam}</span>
