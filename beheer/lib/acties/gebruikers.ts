@@ -13,7 +13,8 @@ const linkVan = (hash: string, type: "invite" | "recovery") => `${BEHEER_URL}/au
 /**
  * Nodigt iemand uit: maakt het account en geeft een link terug die de
  * beheerder zelf bezorgt (mail, Teams). Supabase verstuurt niets, zodat dit
- * werkt zonder eigen mailserver. De link is 24 uur geldig.
+ * werkt zonder eigen mailserver. De link is 1 uur geldig
+ * (Supabase: Email OTP expiration, 3600 s).
  */
 export async function uitnodigen(_: LinkResultaat, fd: FormData): Promise<LinkResultaat> {
   await vereisBeheerder();
@@ -60,7 +61,7 @@ export async function nieuweLink(_: LinkResultaat, fd: FormData): Promise<LinkRe
   if (!gebruiker?.user?.email) return { ok: false, melding: "Onbekende gebruiker." };
   const { data, error } = await admin.auth.admin.generateLink({ type: "recovery", email: gebruiker.user.email });
   if (error || !data) return { ok: false, melding: "Een link maken lukte niet." };
-  return { ok: true, melding: "Nieuwe inloglink, 24 uur geldig.", link: linkVan(data.properties.hashed_token, "recovery") };
+  return { ok: true, melding: "Nieuwe inloglink, 1 uur geldig.", link: linkVan(data.properties.hashed_token, "recovery") };
 }
 
 export async function rolWijzigen(fd: FormData) {

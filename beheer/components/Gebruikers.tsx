@@ -13,7 +13,7 @@ function LinkKaart({ link, melding }: { link: string; melding?: string }) {
       <p className="label" data-toon="goed">
         {melding}
       </p>
-      <p className="text-[13px] stil">Bezorg deze link zelf (mail of Teams). Wie hem opent, kiest een eigen wachtwoord. Hij werkt één keer, binnen 24 uur.</p>
+      <p className="text-[13px] stil">Bezorg deze link zelf (mail of Teams). Wie hem opent, kiest een eigen wachtwoord. Hij werkt één keer, binnen 1 uur.</p>
       <code className="text-[12.5px] break-all bg-[rgba(0,0,0,.3)] px-3 py-2">{link}</code>
       <button
         type="button"
