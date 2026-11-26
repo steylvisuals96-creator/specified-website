@@ -26,7 +26,7 @@ export type GroepDef = { sleutel: string; titel: string; uitleg?: string; velden
 
 export const CALLOUT_LETTERS = ["S", "P", "E", "C", "I", "F", "I", "E", "D"];
 export const CALLOUT_STANDAARD: [string, string][] = [
-  ["Studies", "tijdelijke ondersteuning"],
+  ["Studies", "en procesoptimalisatie"],
   ["Projecten", "en onderhoud"],
   ["Elektromechanica", "onze specialisatie"],
   ["Consultants", "eigen engineers, bij jou ingezet"],

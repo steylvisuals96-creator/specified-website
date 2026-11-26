@@ -83,7 +83,7 @@ Alle teksten op de nieuwe pagina's zijn voorlopig (bron: invullijst, `lib/inhoud
 
 ### De hero (technische tekening)
 
-SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrostichon: Studies, Projecten, Elektromechanica, Consultants, Industrie, Focus, Integratie, Extra mile, Drive). De tekening wordt natekend, callouts poppen op (`back.out`, bewust), en de hele hero is gekoppeld aan scroll. Op mobiel draait SPECIFIED op het einde naar horizontaal. Component: `components/HeroTekening.tsx`. Teksten: `lib/inhoud.ts` (`TEKENING_CALLOUTS`, `TEKENING`).
+SPECIFIED getekend als blad met titelblok. Elke letter heeft een callout (acrostichon: Studies, Projecten, Elektromechanica, Consultants, Industrie, Focus, Integratie, Extra mile, Drive). De tekening wordt natekend, callouts poppen op (`back.out`, bewust), en de hele hero is gekoppeld aan scroll. Op mobiel draait SPECIFIED op het einde naar horizontaal. Component: `components/HeroTekening.tsx`. Teksten: `lib/inhoud.ts` (`TEKENING_CALLOUTS`, `TEKENING`). Sinds 2026-11-26 staat bij de S "Studies, en procesoptimalisatie" (was "tijdelijke ondersteuning"). De andere regels komen van de huidige specified.be; Elektromechanica als specialisatie nog laten bevestigen door Simon.
 
 ### Bouwstenen
 

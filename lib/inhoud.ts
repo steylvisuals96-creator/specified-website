@@ -13,7 +13,7 @@
 
 /** De technische tekening: SPECIFIED als acrostichon, elk label begint met zijn letter. */
 export const TEKENING_CALLOUTS: [string, string][] = [
-  ["Studies", "tijdelijke ondersteuning"], // About us: "support for projects, maintenance, and studies"
+  ["Studies", "en procesoptimalisatie"], // Diensten uit de invullijst (2026-11-12)
   ["Projecten", "en onderhoud"],
   ["Elektromechanica", "onze specialisatie"], // About us: "electromechanical engineering solutions for the industry"
   ["Consultants", "eigen engineers, bij jou ingezet"],

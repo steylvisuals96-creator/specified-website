@@ -8,7 +8,7 @@ import type * as NL from "./inhoud";
 
 /** Het acrostichon blijft SPECIFIED: elk Engels label begint met dezelfde letter. */
 export const TEKENING_CALLOUTS: typeof NL.TEKENING_CALLOUTS = [
-  ["Studies", "temporary support"],
+  ["Studies", "and process optimisation"],
   ["Projects", "and maintenance"],
   ["Electromechanics", "our specialisation"],
   ["Consultants", "our own engineers, at your site"],
