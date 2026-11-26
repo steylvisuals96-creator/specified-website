@@ -40,7 +40,7 @@ export const PROFIELEN_STANDAARD = ["Civil Engineer", "Electrical Engineer", "Au
 export const CALLOUT_STANDAARD_EN: [string, string][] = [
   ["Studies", "temporary support"],
   ["Projects", "and maintenance"],
-  ["Electromechanics", "our specialisation"],
+  ["Electromechanics", "our specialization"],
   ["Consultants", "our own engineers, at your site"],
   ["Industry", "our partners"],
   ["Focus", "energy, fun and passion"],

@@ -60,7 +60,7 @@ function maak(taal: Taal): Formulieren {
     },
     { naam: "beschikbaar", label: en ? "Available from" : "Beschikbaar vanaf", type: "date", half: true },
     { naam: "herkomst", label: en ? "How did you find us?" : "Hoe ben je bij ons terechtgekomen?", type: "select", opties: herkomst },
-    { naam: "cv", label: en ? "CV" : "Cv", type: "file", verplicht: true, hint: en ? "PDF or Word, max. 4 MB." : "Pdf of Word, maximaal 4 MB." },
+    { naam: "cv", label: en ? "Resume" : "Cv", type: "file", verplicht: true, hint: en ? "PDF or Word, max. 4 MB." : "Pdf of Word, maximaal 4 MB." },
     { naam: "bericht", label: en ? "Anything we should know?" : "Iets dat we moeten weten?", type: "textarea", max: 4000 },
   ];
 

@@ -67,7 +67,7 @@ function CookiesPageNl() {
 
 function CookiesPageEn() {
   return (
-    <LegalPage title="Cookie policy" updated="5 July 2026">
+    <LegalPage title="Cookie policy" updated="July 5, 2026">
       <p>
         This website uses cookies and similar technologies. In this cookie policy we explain what cookies are, which ones we use and
         how you can manage your preferences.

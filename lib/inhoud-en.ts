@@ -8,9 +8,9 @@ import type * as NL from "./inhoud";
 
 /** Het acrostichon blijft SPECIFIED: elk Engels label begint met dezelfde letter. */
 export const TEKENING_CALLOUTS: typeof NL.TEKENING_CALLOUTS = [
-  ["Studies", "and process optimisation"],
+  ["Studies", "and process optimization"],
   ["Projects", "and maintenance"],
-  ["Electromechanics", "our specialisation"],
+  ["Electromechanics", "our specialization"],
   ["Consultants", "our own engineers, at your site"],
   ["Industry", "our partners"],
   ["Focus", "energy, fun and passion"],
@@ -51,7 +51,7 @@ export const DIENSTEN: typeof NL.DIENSTEN = [
     kop: "For companies",
     titel: "We design & support projects",
     tekst:
-      "Need temporary reinforcement for a project, maintenance or a study? We deploy one of our own consultants: the right person in the right place, at the right time. From project development and system integration to optimising existing processes.",
+      "Need temporary reinforcement for a project, maintenance or a study? We deploy one of our own consultants: the right person in the right place, at the right time. From project development and system integration to optimizing existing processes.",
     cta: "Deploy our consultants",
     href: "/voor-bedrijven",
     knop: "btn-primary",
@@ -80,7 +80,7 @@ export const JOBS: typeof NL.JOBS = {
 export const META: typeof NL.META = {
   titel: "Specified | Engineering consultancy",
   beschrijving:
-    "Belgian engineering consultancy specialised in electromechanics for industry. Our own consultants support projects, maintenance and studies.",
+    "Belgian engineering consultancy specialized in electromechanics for industry. Our own consultants support projects, maintenance and studies.",
 };
 
 export const CONTACT: typeof NL.CONTACT = {
@@ -101,8 +101,8 @@ export const BEDRIJF: typeof NL.BEDRIJF = {
 export const DIENSTENLIJST: typeof NL.DIENSTENLIJST = [
   { titel: "Temporary reinforcement", tekst: "An extra engineer for the duration of your project, at the moment your team needs one." },
   { titel: "Maintenance", tekst: "Support with planned and unplanned maintenance of installations." },
-  { titel: "Studies", tekst: "Feasibility studies, design and calculations, worked out by a consultant with the right specialisation." },
-  { titel: "Process optimisation", tekst: "Analysing and improving existing processes and systems." },
+  { titel: "Studies", tekst: "Feasibility studies, design and calculations, worked out by a consultant with the right specialization." },
+  { titel: "Process optimization", tekst: "Analyzing and improving existing processes and systems." },
   { titel: "Secondment", tekst: "Our consultants work on your shop floor; we remain their point of contact and stay involved." },
 ];
 
@@ -127,7 +127,7 @@ export const CIJFERS: typeof NL.CIJFERS = [
 ];
 
 export const STAPPEN_ENGINEER: typeof NL.STAPPEN_ENGINEER = [
-  { titel: "CV", tekst: "You apply for a vacancy or send an open application. We review your CV." },
+  { titel: "Resume", tekst: "You apply for a job opening or send a general application. We review your resume." },
   { titel: "First interview", tekst: "An introduction via Teams: who you are, what you are looking for, what we do." },
   { titel: "Second interview", tekst: "You meet Tom and Simon in Kontich and we look at which project suits you." },
 ];

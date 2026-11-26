@@ -275,6 +275,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Repo blijft publiek; audits en beveiligingspunten buiten git | Keuze Sam (2026-11-22). Het draaiboek bevat alleen niet-gevoelige stand van zaken, beveiligingsactiepunten staan in de Studio |
 | Paginatitels met een verticale streep ("Contact | Specified") in plaats van een lang streepje | Huisregel: geen lange streepjes in teksten (2026-11-24) |
 | `noindex` op elk vercel.app-adres, ook na de livegang | Vóór de livegang geen indexering onder het verkeerde domein, daarna geen dubbele inhoud naast specified.be (2026-11-24) |
+| De Engelse versie is Amerikaans Engels: spelling, "resume", "job openings", "general application" en datums als November 26, 2026. Adressen onder `/en` blijven gelijk | Wens Sam (2026-11-26); de huidige specified.be schrijft ook Amerikaans |
 | Wekelijks SEO-onderzoek; AI-artikels eerst als concept | Teksten en bronnen blijven controleerbaar in het beheer; automatische metadata en betaalde covers zijn aparte opties |
 
 ---
@@ -408,7 +409,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 21:42_
+_Bijgewerkt: 2026-11-26 21:44_
 
 ### Nog niet op main
 
@@ -420,6 +421,7 @@ _Bijgewerkt: 2026-11-26 21:42_
 
 **2026-11-26**
 
+- website: Werk Simons portret bij met ingetogener glimlach (`6550720`)
 - website: Hero: bij de S Studies en procesoptimalisatie (`c9fa7a0`)
 - website: Gebruik zittend portret van Simon naast Tom (`038d1e2`)
 - website: Draaiboek: 404-punt scherper en wijzigingslog (`7fffe17`)

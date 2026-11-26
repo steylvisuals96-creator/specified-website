@@ -61,7 +61,7 @@ function DisclaimerNl() {
 
 function DisclaimerEn() {
   return (
-    <LegalPage title="Disclaimer" updated="12 November 2026">
+    <LegalPage title="Disclaimer" updated="November 12, 2026">
       <h2>1. Publisher</h2>
       <p>
         This website belongs to <strong>Specified NV</strong>, Veldkant 31a, 2550 Kontich, Belgium, company number BE 0727.537.711.
@@ -72,7 +72,7 @@ function DisclaimerEn() {
       <p>
         We compile the content of this website with care and keep it up to date. Nevertheless, information may be incomplete or out
         of date. The content is general in nature and is not personal or professional advice. No rights can be derived from the
-        information on this website, including vacancies.
+        information on this website, including job openings.
       </p>
 
       <h2>3. Liability</h2>

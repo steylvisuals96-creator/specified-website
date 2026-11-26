@@ -57,8 +57,8 @@ export async function generateMetadata(): Promise<Metadata> {
       : "Engineering consultancy uit Kontich: eigen consultants voor projecten, onderhoud en studies in Vlaanderen.",
     openGraph: {
       type: "website",
-      locale: en ? "en_GB" : "nl_BE",
-      alternateLocale: en ? "nl_BE" : "en_GB",
+      locale: en ? "en_US" : "nl_BE",
+      alternateLocale: en ? "nl_BE" : "en_US",
       siteName: "Specified",
       url: en ? "/en" : "/",
     },

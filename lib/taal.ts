@@ -59,7 +59,7 @@ export function nlPadVan(pad: string): string {
 export const wisselPad = (pad: string, naar: Taal): string => lokaalPad(naar, nlPadVan(pad));
 
 /** Datums zoals bezoekers ze lezen. */
-export const LOCALE: Record<Taal, string> = { nl: "nl-BE", en: "en-GB" };
+export const LOCALE: Record<Taal, string> = { nl: "nl-BE", en: "en-US" };
 
 /** Canonical en hreflang voor een pagina die in beide talen bestaat. */
 export function taalAlternates(taal: Taal, nlPad: string) {

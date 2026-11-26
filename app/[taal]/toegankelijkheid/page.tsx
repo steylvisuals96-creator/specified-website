@@ -54,7 +54,7 @@ function ToegankelijkheidNl() {
 
 function ToegankelijkheidEn() {
   return (
-    <LegalPage title="Accessibility" updated="12 November 2026">
+    <LegalPage title="Accessibility" updated="November 12, 2026">
       <h2>1. Our aim</h2>
       <p>
         Specified NV wants everyone to be able to use this website, including people with a visual, auditory, motor or cognitive

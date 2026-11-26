@@ -94,7 +94,7 @@ function PrivacyPageNl() {
 
 function PrivacyPageEn() {
   return (
-    <LegalPage title="Privacy policy" updated="5 July 2026">
+    <LegalPage title="Privacy policy" updated="July 5, 2026">
       <p>
         Specified NV attaches great importance to protecting your personal data and respects your privacy. In this privacy policy we
         explain which data we collect, why, and which rights you have. This policy has been drawn up in accordance with the General
@@ -111,16 +111,16 @@ function PrivacyPageEn() {
       <p>Depending on your interaction with us, we collect:</p>
       <ul>
         <li><strong>Contact details:</strong> name, email address, phone number.</li>
-        <li><strong>Application data:</strong> CV, job title, experience, sector and availability when you apply or put yourself forward as a candidate.</li>
+        <li><strong>Application data:</strong> resume, job title, experience, sector and availability when you apply or put yourself forward as a candidate.</li>
         <li><strong>Company data:</strong> contact person and company details when you contact us as a client.</li>
-        <li><strong>Technical data:</strong> limited, anonymised usage data of the website (see our <Link href="/en/cookies">cookie policy</Link>).</li>
+        <li><strong>Technical data:</strong> limited, anonymized usage data of the website (see our <Link href="/en/cookies">cookie policy</Link>).</li>
       </ul>
 
       <h2>3. Purposes and legal basis</h2>
       <p>We only process your data for:</p>
       <ul>
         <li>Answering your question or contact request (legal basis: your consent or our legitimate interest).</li>
-        <li>Guiding applications and matching candidates with vacancies (legal basis: performance of a contract or your consent).</li>
+        <li>Guiding applications and matching candidates with job openings (legal basis: performance of a contract or your consent).</li>
         <li>Maintaining the relationship with clients (legal basis: performance of a contract).</li>
       </ul>
 

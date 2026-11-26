@@ -9,7 +9,7 @@ export const revalidate = 60;
 
 const META = {
   nl: { title: "Open sollicitatie | Specified", description: "Geen passende vacature gevonden? Stuur Specified je cv en vertel wat je zoekt als engineer." },
-  en: { title: "Open application | Specified", description: "No suitable vacancy? Send Specified your CV and tell us what you are looking for as an engineer." },
+  en: { title: "General application | Specified", description: "No suitable position? Send Specified your resume and tell us what you are looking for as an engineer." },
 };
 
 export async function generateMetadata(): Promise<Metadata> {

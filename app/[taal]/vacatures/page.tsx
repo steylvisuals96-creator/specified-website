@@ -18,7 +18,7 @@ const META = {
   en: {
     title: "Engineering jobs | Specified",
     description:
-      "Engineering jobs in Flanders: become an engineering consultant at Specified. Vacancies for civil, electrical, automation and mechanical engineers and project managers.",
+      "Engineering jobs in Flanders: become an engineering consultant at Specified. Openings for civil, electrical, automation and mechanical engineers and project managers.",
   },
 };
 

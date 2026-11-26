@@ -380,13 +380,13 @@ const STANDAARD_EN: Record<string, Record<string, unknown>> = {
     dienstenKop: "What we do",
     diensten: EN.DIENSTENLIJST,
     profielenKop: "Profiles",
-    profielenTekst: "Our consultants are engineers with their own specialisation. These are the profiles we deploy.",
+    profielenTekst: "Our consultants are engineers with their own specialization. These are the profiles we deploy.",
     sectorenKop: "Sectors",
     sectorenTekst: "We work for companies in Flanders, in these sectors.",
     stappenKop: "How it works",
     stappen: [
       { titel: "Your request", tekst: "You tell us which project, installation or study needs reinforcement." },
-      { titel: "Our proposal", tekst: "We propose a consultant with the right specialisation and experience." },
+      { titel: "Our proposal", tekst: "We propose a consultant with the right specialization and experience." },
       { titel: "The start", tekst: "The consultant starts at your company. We stay available and follow up on the collaboration." },
     ],
     cijfersKop: "In numbers",
@@ -398,7 +398,7 @@ const STANDAARD_EN: Record<string, Record<string, unknown>> = {
     inleiding:
       "As a consultant at Specified, you discover different projects and sectors without committing your whole career to one path. We guide your choices, keep talking about what you want and help you grow into an expert or a versatile generalist.",
     knopVacatures: "View the jobs",
-    knopOpen: "Send an open application",
+    knopOpen: "Send a general application",
     waardenKop: "What we stand for",
     waarden: EN.WAARDEN,
     zoekenKop: "Who we are looking for",
@@ -409,15 +409,15 @@ const STANDAARD_EN: Record<string, Record<string, unknown>> = {
     stappen: EN.STAPPEN_ENGINEER,
     stappenNa: "No two engineers are the same, so we adapt the process where needed.",
     slotKop: "Your job not listed?",
-    slotTekst: "We also recruit beyond the open vacancies. Send us your CV and tell us what you are looking for.",
-    slotKnop: "Send an open application",
+    slotTekst: "We also recruit beyond the open positions. Send us your resume and tell us what you are looking for.",
+    slotKnop: "Send a general application",
   },
   vacatures: {
     titel: EN.JOBS.titel,
-    inleidingLeeg: "There are no open vacancies online at the moment.",
+    inleidingLeeg: "There are no open positions online at the moment.",
     slotKop: "Your job not listed?",
-    slotTekst: "We also recruit beyond the open vacancies.",
-    slotKnop: "Send an open application",
+    slotTekst: "We also recruit beyond the open positions.",
+    slotKnop: "Send a general application",
   },
   contact: {
     titel: "Let's get acquainted",
@@ -446,15 +446,15 @@ const STANDAARD_EN: Record<string, Record<string, unknown>> = {
       {
         vraag: "How does the application process work?",
         antwoord:
-          "We first review your CV. This is followed by a first interview via Teams and a second interview at our office in Kontich, with Tom and Simon. We adapt the process where needed.",
+          "We first review your resume. This is followed by a first interview via Teams and a second interview at our office in Kontich, with Tom and Simon. We adapt the process where needed.",
       },
       {
         vraag: "My job is not listed. Can I still apply?",
-        antwoord: "Yes. We also recruit beyond the open vacancies.",
-        linkTekst: "Send an open application",
+        antwoord: "Yes. We also recruit beyond the open positions.",
+        linkTekst: "Send a general application",
         linkAdres: "/open-sollicitatie",
       },
-      { vraag: "Why don't the vacancies mention a salary?", antwoord: "A salary package depends on your experience and on the project. We discuss it in a personal conversation." },
+      { vraag: "Why don't the job openings mention a salary?", antwoord: "A salary package depends on your experience and on the project. We discuss it in a personal conversation." },
       {
         vraag: "What happens to my data?",
         antwoord: "We only use your data to process your application.",
@@ -470,14 +470,14 @@ const STANDAARD_EN: Record<string, Record<string, unknown>> = {
         linkTekst: "Request a consultant",
         linkAdres: "/voor-bedrijven#aanvraag",
       },
-      { vraag: "What can I deploy a consultant for?", antwoord: "For temporary reinforcement of a project, for maintenance, for studies and for optimising existing processes." },
+      { vraag: "What can I deploy a consultant for?", antwoord: "For temporary reinforcement of a project, for maintenance, for studies and for optimizing existing processes." },
     ],
     slotKnop: "Get in touch",
   },
   "open-sollicitatie": {
-    titel: "Open application",
+    titel: "General application",
     inleiding:
-      "Your job not listed? We also recruit beyond the open vacancies. Send us your CV and tell us what you are looking for, and we will look together at what fits.",
+      "Your job not listed? We also recruit beyond the open positions. Send us your resume and tell us what you are looking for, and we will look together at what fits.",
   },
   blog: {
     titel: "Blog",

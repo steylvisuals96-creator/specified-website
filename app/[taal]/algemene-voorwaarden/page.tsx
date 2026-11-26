@@ -38,7 +38,7 @@ function AlgemeneVoorwaardenNl() {
 
 function AlgemeneVoorwaardenEn() {
   return (
-    <LegalPage title="Terms and conditions" updated="12 November 2026">
+    <LegalPage title="Terms and conditions" updated="November 12, 2026">
       <p>
         The general terms and conditions of <strong>Specified NV</strong> (Veldkant 31a, 2550 Kontich, company number BE 0727.537.711)
         will be published on this page soon.
