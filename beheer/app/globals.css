@@ -342,6 +342,28 @@ select.invoer option {
   }
 }
 
+/* Veld dat net in het live voorbeeld is aangeklikt: kort oplichten zodat je ziet waar je typt. */
+[data-gekozen] {
+  animation: gekozen 1.4s ease-out;
+  border-radius: 4px;
+}
+@keyframes gekozen {
+  0%,
+  35% {
+    box-shadow: 0 0 0 6px var(--limoen-zacht), 0 0 0 7px var(--limoen);
+    background: var(--limoen-zacht);
+  }
+  100% {
+    box-shadow: 0 0 0 6px transparent, 0 0 0 7px transparent;
+    background: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-gekozen] {
+    animation-duration: 0.01s;
+  }
+}
+
 /* Schakelaar (aan/uit) */
 .schakel {
   position: relative;

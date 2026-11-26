@@ -21,7 +21,7 @@ export default async function Homepage({ searchParams }: { searchParams: Promise
         vul={60}
         uitleg={
           <>
-            Klik in een veld: het voorbeeld scrollt naar dat stuk van de website en toont je tekst meteen. Een leeg veld gebruikt de standaardtekst
+            Klik in een veld of op een tekst in het voorbeeld: het voorbeeld scrollt naar dat stuk, het veld gaat open en je tekst staat meteen op de website. Een leeg veld gebruikt de standaardtekst
             {taal === "en" ? " (in het Engels)" : ""}.
             {gewijzigd && Object.keys(waarde).length > 0 && <span className="zwak"> Laatst gewijzigd {wanneer(gewijzigd)}.</span>}
           </>

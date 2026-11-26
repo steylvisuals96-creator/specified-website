@@ -30,7 +30,7 @@ export default async function PaginaBewerken({ params, searchParams }: { params:
         vul={60}
         uitleg={
           <>
-            {def.uitleg ? `${def.uitleg} ` : ""}Klik in een veld: het voorbeeld scrollt naar dat stuk. Een leeg veld gebruikt de standaardtekst
+            {def.uitleg ? `${def.uitleg} ` : ""}Klik in een veld of op een tekst in het voorbeeld: het voorbeeld scrollt naar dat stuk en het veld gaat open. Een leeg veld gebruikt de standaardtekst
             {taal === "en" ? " in het Engels" : ""} (grijs).
             {data?.gewijzigd && Object.keys(data.waarde ?? {}).length > 0 && <span className="zwak"> Laatst gewijzigd {wanneer(data.gewijzigd)}.</span>}
           </>

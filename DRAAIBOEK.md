@@ -315,7 +315,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [ ] In Supabase "Prevent use of leaked passwords" aanzetten (Authentication > Sign In / Providers > Email). Kan alleen op het Pro-plan (nagekeken 2026-11-22), dus samen met de overstap naar het betaalde plan.
 - [x] Leesregels op blog, team en vacatures samengevoegd tot één per rol (Supabase-advies 0006, migratie 05, 2026-11-16); wie wat ziet bleef gelijk (getest per rol).
 - [x] Lus tussen inlogscherm en overzicht bij een sessie die de proxy nog goedkeurt maar Supabase niet meer: nu netjes uitgelogd met cookies gewist (`/auth/uitloggen`), 2026-11-15.
-- [x] Account voor Simon aangemaakt (2026-11-22, beheerder). Hij krijgt nog een inloglink: Sam maakt die bij **Gebruikers > Nieuwe inloglink** (1 uur geldig: in Supabase staat Email OTP expiration op 3600 s, nagekeken 2026-11-26; beheer en handleiding zeiden 24 uur en zijn aangepast) en stuurt ze samen met de handleiding. Het account is nog nooit gebruikt (nagekeken 2026-11-26). Daarin staat ook dat de oude CMS niet meer gebruikt wordt.
+- [x] Account voor Simon aangemaakt (2026-11-22, beheerder). Hij krijgt nog een inloglink: Sam maakt die bij **Gebruikers > Nieuwe inloglink** (24 uur geldig: Email OTP expiration in Supabase stond op 3600 s en is op 2026-11-26 op vraag van Sam op 86400 s gezet, na herladen nagekeken) en stuurt ze samen met de handleiding. Het account is nog nooit gebruikt (nagekeken 2026-11-26). Daarin staat ook dat de oude CMS niet meer gebruikt wordt.
 - [ ] Account voor de collega van Simon (beheerder) zodra naam en e-mail bekend zijn.
 - [x] Voorbeeld in het beheer werd in een browser met een oude kopie van `/voorbeeld/home` geweigerd ("verbinding geweigerd"): de voorbeeldpagina's krijgen nu `Cache-Control: no-store`, het beheer laadt het frame na het laden van de pagina met een unieke parameter en toont na 12 s een melding met "Voorbeeld opnieuw laden" in plaats van eindeloos te laden (2026-11-15). Ook: de hero bouwt niet meer in een frame zonder maat (gaf NaN-fouten).
 - [ ] `MFA_VERPLICHT=1` zodra Simon en zijn collega tweestapslogin hebben (accounts: zie hierboven).
@@ -343,7 +343,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [ ] Aanlevering van de klant: logo in vector, huisstijlgids, teksten, vacaturelijst, quotes en cases, cijfers en certificaten (zegt klaar te hebben). Teamfoto's en bio's ontbreken, komen uit de shootdag.
 - [ ] Echte cijfers voor de statistieken: 32 consultants en 4 sectoren zijn bekend, klanten in cijfers en jaren ervaring nog niet. Bevestiging van de teksten uit `lib/inhoud.ts` (CMS bevat nog voorbeeldteksten uit de recruitment-richting).
 - [ ] Concurrentie bekijken (Abylsen, TEC, TMC, ENGIE Talents, Pauwels Consulting) en het goede meenemen, op vraag van de klant.
-- [x] Korte beheerhandleiding in pdf (2026-11-22): `beheer/docs/Beheerhandleiding-Specified.pdf` (2026-11-26 aangevuld met de NL/EN-schakelaar en de juiste geldigheid van de inloglink), bron `beheer/docs/handleiding.html` (opnieuw maken met Chrome headless, print-to-pdf).
+- [x] Korte beheerhandleiding in pdf (2026-11-22): `beheer/docs/Beheerhandleiding-Specified.pdf` (2026-11-26 aangevuld met de NL/EN-schakelaar en de geldigheid van de inloglink), bron `beheer/docs/handleiding.html` (opnieuw maken met Chrome headless, print-to-pdf).
 
 **Bouwen volgens de invullijst**
 - [x] Pagina's: Voor bedrijven, Voor engineers, Open sollicitatie, FAQ, Contact, Algemene voorwaarden (plaatshouder), Disclaimer, Toegankelijkheidsverklaring (2026-11-12).
@@ -415,7 +415,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:24_
+_Bijgewerkt: 2026-11-26 22:29_
 
 ### Nog niet op main
 
@@ -427,6 +427,7 @@ _Bijgewerkt: 2026-11-26 22:24_
 
 **2026-11-26**
 
+- website: Beheer: inloglink is 1 uur geldig, handleiding aangevuld met NL/EN (`4a79abd`)
 - website: Cookiebeleid: zelfde privacycontact als het privacybeleid (`07edd88`)
 - website: Draaiboek: AAAA en www bij de domeinverhuis (`dc20d6d`)
 - website: Privacybeleid gelijk aan het huidige beleid van Specified: bewaartermijnen en contact (`08e260a`)

@@ -16,10 +16,52 @@ export type VoorbeeldBericht = { data: unknown; veld: string | null; label?: str
  * Stuurt bij elke wijziging de nieuwe teksten en het veld waarin je typt; de
  * website toont de tekst meteen, scrollt naar dat stuk en zet er een kader om.
  *
- * Protocol (zie lib/useVoorbeeld.ts op de website):
- *   beheer -> website  { type: "specified-voorbeeld", data, veld, label }
+ * Omgekeerd werkt het ook: klik je in het voorbeeld op een tekst, dan opent en
+ * focust dit het bijhorende veld in het formulier ernaast (kiesVeld).
+ *
+ * Protocol (zie lib/useVoorbeeld.ts en components/BewerkOverlay.tsx op de website):
+ *   beheer -> website  { type: "specified-voorbeeld", data, veld, label, scroll }
  *   website -> beheer  { type: "specified-voorbeeld", klaar: true }
+ *   website -> beheer  { type: "specified-voorbeeld", kies: ["hero.woord", ...] }
+ *   website -> beheer  { type: "specified-voorbeeld", navigeer: "/pad" }
  */
+
+/**
+ * Zoekt het formulierveld voor een sleutel uit het voorbeeld en zet de cursor
+ * erin. Eerst exact ("hero.woord"), dan een lijst ("consultants.profielen"
+ * wordt "consultants.profielen.0"). Geeft de gekozen sleutel terug.
+ */
+function kiesVeld(velden: string[]): string | null {
+  const alle = Array.from(document.querySelectorAll<HTMLElement>("form [data-veld]")).filter((el) => !el.closest("[hidden]"));
+  let doel: HTMLElement | undefined;
+  for (const v of velden) {
+    doel = alle.find((el) => el.dataset.veld === v) ?? alle.find((el) => el.dataset.veld?.startsWith(`${v}.`));
+    if (doel) break;
+  }
+  if (!doel) return null;
+  const zacht = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Smaller dan 1024 px plakt het voorbeeld bovenaan; het veld moet eronder uitkomen.
+  const naast = matchMedia("(min-width: 1024px)").matches;
+  doel.style.scrollMarginTop = naast ? "" : "calc(42dvh + 96px)";
+  doel.scrollIntoView({ block: naast ? "center" : "start", behavior: zacht ? "smooth" : "auto" });
+  doel.focus({ preventScroll: true });
+  if (doel instanceof HTMLInputElement || doel instanceof HTMLTextAreaElement) {
+    const n = doel.value.length;
+    try {
+      doel.setSelectionRange(n, n);
+    } catch {
+      /* type="email" kent geen selectie */
+    }
+  }
+  const blok = doel.closest("li") ?? doel.parentElement;
+  if (blok) {
+    blok.removeAttribute("data-gekozen");
+    void blok.offsetWidth;
+    blok.setAttribute("data-gekozen", "");
+    setTimeout(() => blok.removeAttribute("data-gekozen"), 1400);
+  }
+  return doel.dataset.veld ?? null;
+}
 export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: string; pad: string; bericht: VoorbeeldBericht }) {
   const origin = useMemo(() => new URL(websiteUrl).origin, [websiteUrl]);
   const router = useRouter();
@@ -28,6 +70,8 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
   const [klaar, setKlaar] = useState(false);
   const [breedte, setBreedte] = useState(BREEDTES[0].px);
   const [maat, setMaat] = useState({ w: 0, h: 0 });
+  // Het veld dat net in het voorbeeld is aangeklikt: daarvoor hoeft het voorbeeld niet te scrollen.
+  const gekozenVeld = useRef<string | null>(null);
 
   useLayoutEffect(() => {
     const d = doos.current;
@@ -44,6 +88,12 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
       if (e.origin !== origin || e.source !== frame.current?.contentWindow) return;
       if (e.data?.type !== "specified-voorbeeld") return;
       if (e.data.klaar) setKlaar(true);
+      // Een klik op een tekst in het voorbeeld: het bijhorende veld openen.
+      if (Array.isArray(e.data.kies)) {
+        const velden = (e.data.kies as unknown[]).filter((v): v is string => typeof v === "string").slice(0, 8).map((v) => v.slice(0, 80));
+        if (velden.length) gekozenVeld.current = kiesVeld(velden);
+        return;
+      }
       // Een klik op een link in het voorbeeld: naar de editor van die pagina.
       if (typeof e.data.navigeer === "string" && e.data.navigeer.startsWith("/")) {
         const nietOpgeslagen = document.documentElement.dataset.nietOpgeslagen === "1";
@@ -90,7 +140,9 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
   // Pas na "klaar" luistert de pagina; daarna gaat elke wijziging meteen door.
   useEffect(() => {
     if (!klaar) return;
-    frame.current?.contentWindow?.postMessage({ type: "specified-voorbeeld", ...bericht }, origin);
+    const scroll = !bericht.veld || bericht.veld !== gekozenVeld.current;
+    if (scroll) gekozenVeld.current = null;
+    frame.current?.contentWindow?.postMessage({ type: "specified-voorbeeld", ...bericht, scroll }, origin);
   }, [bericht, klaar, origin]);
 
   // Op een smal scherm (telefoon) meteen de mobiele weergave: desktop wordt daar onleesbaar klein.
