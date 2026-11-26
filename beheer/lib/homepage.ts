@@ -118,6 +118,15 @@ export const GROEPEN: GroepDef[] = [
     velden: [
       { sleutel: "jobs.titel", label: "Titel", max: 40, standaard: "Word consultant.", standaardEn: "Become a consultant." },
       { sleutel: "jobs.linkTekst", label: "Link naar alle vacatures", max: 40, standaard: "Alle vacatures", standaardEn: "All jobs" },
+      {
+        sleutel: "jobs.leeg",
+        label: "Tekst als er geen vacatures online staan",
+        max: 200,
+        soort: "tekstvak",
+        standaard: "Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook buiten de openstaande jobs.",
+        standaardEn: "There are no job openings online right now. Feel free to send us your resume: we also recruit beyond the open positions.",
+      },
+      { sleutel: "jobs.openKnop", label: "Knop open sollicitatie (zonder vacatures)", max: 40, standaard: "Stuur een open sollicitatie", standaardEn: "Send a general application" },
     ],
   },
   {

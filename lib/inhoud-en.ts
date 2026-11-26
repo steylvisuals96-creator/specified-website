@@ -75,6 +75,8 @@ export const DIENSTEN: typeof NL.DIENSTEN = [
 export const JOBS: typeof NL.JOBS = {
   titel: "Become a consultant.",
   linkTekst: "All jobs",
+  leeg: "There are no job openings online right now. Feel free to send us your resume: we also recruit beyond the open positions.",
+  openKnop: "Send a general application",
 };
 
 export const META: typeof NL.META = {

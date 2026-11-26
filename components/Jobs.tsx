@@ -13,7 +13,22 @@ type Job = {
   dagen?: number;
 };
 
-export default function Jobs({ jobs, titel, linkTekst, taal = "nl" }: { jobs: Job[]; titel?: string; linkTekst?: string; taal?: Taal }) {
+export default function Jobs({
+  jobs,
+  titel,
+  linkTekst,
+  leeg,
+  openKnop,
+  taal = "nl",
+}: {
+  jobs: Job[];
+  titel?: string;
+  linkTekst?: string;
+  /** Tekst en knop als er geen vacatures online staan (beheer: Homepage > Vacatures). */
+  leeg?: string;
+  openKnop?: string;
+  taal?: Taal;
+}) {
   const t = ui(taal).jobs;
   const p = (pad: string) => lokaalPad(taal, pad);
   return (
@@ -25,9 +40,11 @@ export default function Jobs({ jobs, titel, linkTekst, taal = "nl" }: { jobs: Jo
 
         {jobs.length === 0 ? (
           <div className="jobs__leeg">
-            <p className="lead">{t.leeg}</p>
-            <Link href={p("/open-sollicitatie")} className="btn btn-primary">
-              {t.open}
+            <p className="lead" data-bewerk="jobs.leeg">
+              {leeg || t.leeg}
+            </p>
+            <Link href={p("/open-sollicitatie")} className="btn btn-primary" data-bewerk="jobs.openKnop">
+              {openKnop || t.open}
             </Link>
           </div>
         ) : (

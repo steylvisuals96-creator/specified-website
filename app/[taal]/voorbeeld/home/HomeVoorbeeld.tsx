@@ -53,7 +53,7 @@ export default function HomeVoorbeeld() {
         <HeroTekening key={hero.sleutel} inhoud={hero.deel} />
         <Disciplines inhoud={inhoud.consultants} />
         <Split kolommen={inhoud.diensten} taal={taal} />
-        <Jobs jobs={[]} titel={inhoud.jobs.titel} linkTekst={inhoud.jobs.linkTekst} taal={taal} />
+        <Jobs jobs={[]} titel={inhoud.jobs.titel} linkTekst={inhoud.jobs.linkTekst} leeg={inhoud.jobs.leeg} openKnop={inhoud.jobs.openKnop} taal={taal} />
         <Team taal={taal} />
         <CTA email={inhoud.contact.email || undefined} telefoon={inhoud.contact.telefoon || undefined} />
       </main>

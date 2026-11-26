@@ -94,6 +94,8 @@ export function samenvoegen(cms: unknown, taal: Taal = "nl"): WebsiteInhoud {
     jobs: {
       titel: tekst(c.jobs?.titel, S.jobs.titel),
       linkTekst: tekst(c.jobs?.linkTekst, S.jobs.linkTekst),
+      leeg: tekst(c.jobs?.leeg, S.jobs.leeg),
+      openKnop: tekst(c.jobs?.openKnop, S.jobs.openKnop),
     },
     contact: {
       email: tekst(c.contact?.email, ""),

@@ -81,6 +81,9 @@ export const DIENSTEN = [
 export const JOBS = {
   titel: "Word consultant.", // Jobs: "Help build the future as an Engineering Consultant at Specified!"
   linkTekst: "Alle vacatures",
+  // Alleen zichtbaar als er geen vacatures online staan.
+  leeg: "Er staan op dit moment geen vacatures online. Stuur ons gerust je cv: we zoeken ook buiten de openstaande jobs.",
+  openKnop: "Stuur een open sollicitatie",
 };
 
 export const META = {
