@@ -4,7 +4,7 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-11-26 (offerte getekend, opkuis, animaties, Engelse versie getest).
+Laatst handmatig nagekeken: 2026-11-26 (revisietool toegevoegd, offerte getekend, opkuis, animaties, Engelse versie getest).
 
 De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
@@ -126,6 +126,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Live voorbeeld dat meescrollt** (wens Sam): bij Homepage staan de velden links en de echte website rechts (verkleind, met Desktop, Tablet en Mobiel); onder 1024 px plakt het voorbeeld bovenaan en schuiven de velden eronder door, op een telefoon start het in Mobiel. Klik je in een veld, dan scrollt het voorbeeld naar dat stuk en komt er een limoen kader met hoekmarkeringen en de veldnaam omheen; wat je typt verschijnt meteen. Voor de hero rekent de website de plek uit op de tijdlijn van de tekening (`heroScrollY` in `components/HeroTekening.tsx`), zodat callouts en titelblok echt in beeld staan. Werkt via `data-bewerk` op de elementen (aangevuld voor contact, footer en profielen) en `components/VoorbeeldFocus.tsx`. Blog en team hebben een live voorbeeld zonder meescrollen. Getest in de browser, eerst met een testframe (hero-callout, titelblok, blok voor engineers, contact) en daarna ingelogd in het echte scherm. Het beheer vraagt de website zelf of ze klaar is, omdat het frame anders zijn eerste melding kan missen.
 - **Rich text**: Tiptap-document als JSON, op de server opnieuw opgebouwd uit een vaste lijst knopen; de website rendert met dezelfde lijst (`lib/richtekst.ts`). De inhoud uit Payload (Lexical) is in SQL omgezet.
 - **Gebruikers**: accounts aanmaken met een uitnodigingslink die de beheerder zelf bezorgt (geen mailserver nodig); nieuwe inloglink bij een vergeten wachtwoord. Eerste account via `npm run gebruiker:maken` in `beheer/`.
+- **Revisies (2026-11-26)**: feedbacktool onder Beheer > Revisies, voor alle ingelogde teamleden. Elke melding heeft een paginapad (NL/EN, eventueel met #sectie), titel, toelichting, toestel en prioriteit. Filter op status of eigen meldingen, 30 per pagina. Detail: website openen, reacties, status en historiek. Beheerders volgen op van Open via In uitvoering en Klaar om na te kijken naar Afgerond; heropenen kan ook. De naam en ID van de auteur worden door de database vastgelegd, evenals de naam bij elke reactie en status- of prioriteitswijziging. Auteurs zijn niet via het formulier wijzigbaar; namen blijven bewaard na het verwijderen van een account. Migratie `20261126_03_revisies.sql` is op productie uitgevoerd. RLS en tweestapslogin beschermen alle drie tabellen. Gelijktijdige statusupdates worden gecontroleerd op het vorige wijzigingsmoment. Geen automatische wijziging van de website of mailmeldingen. Lokale databasetests controleren auteurs, reacties, historiek, conflictsituaties, redacteur/beheerder, MFA en anonieme toegang (`beheer/scripts/test-revisies.sh`); typecheck en productiebuild met Webpack geslaagd.
 - **Logboek**: database-trigger schrijft elke wijziging weg (wie, wat, wanneer); te zien bij Logboek en op het overzicht.
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
 - **Klikken in het voorbeeld** (2026-11-26, wens Sam: "een volledige live editor"): ga je met de muis over een tekst in het voorbeeld, dan krijgt die een gestreept kader met "Klik om te bewerken". Klik je erop, dan scrollt het formulier naar het bijhorende veld, licht het kort op en staat de cursor erin; wat je typt staat meteen in het voorbeeld. Werkt voor de homepage, de doorklikpagina's en vacatures, ook voor de SVG-teksten in de tekening (callouts, titelblok) en knoppen (die volgen dan hun link niet). Een element met twee velden (bv. titel + accentwoord) opent het eerste; een lijst (profielen, vereisten) de eerste regel. Een gewone link zonder bewerkbare tekst opent nog steeds de editor van die pagina. Na een klik scrollt het voorbeeld niet mee (het stuk staat al in beeld), alleen het kader verschijnt. Verdeling: de website meldt alleen wat je aanklikt (`components/BewerkOverlay.tsx`, alleen actief in een frame van het beheer, bericht `kies`); het beheer zoekt en focust het veld (`kiesVeld` in `beheer/components/Voorbeeld.tsx`). Dat kan niet volledig in het beheer: het voorbeeld is de echte website op een ander domein en de browser laat het beheer niet in dat frame kijken. Bewust niet rechtstreeks in het voorbeeld typen: de tekening is SVG en het formulier blijft de enige plek waar je typt en opslaat. Getest met een testframe op localhost:3004 (callout, heroknop, consultants-titel, profielenrij, "All jobs", en een gewone link die nog doorstuurt), niet ingelogd in het echte beheer.
@@ -420,7 +421,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 23:03_
+_Bijgewerkt: 2026-11-26 23:23_
 
 ### Nog niet op main
 
@@ -432,6 +433,7 @@ _Bijgewerkt: 2026-11-26 23:03_
 
 **2026-11-26**
 
+- website: Homepage: teamkop, afsluiter en tekeninglabels bewerkbaar; teamlid opent Team-editor (nog niet getest) (`0edfa41`)
 - website: Beheer: tweestapslogin verplicht voor iedereen, ook in RLS (audit B3) (`546bfcd`)
 - website: Homepage: tekst en knop zonder vacatures bewerkbaar in het beheer (`bf8c9d2`)
 - website: Live editor: klik een tekst in het voorbeeld om het veld te openen (`2f13744`)

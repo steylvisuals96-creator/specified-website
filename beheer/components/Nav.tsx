@@ -28,6 +28,7 @@ const GROEPEN: { naam: string; links: NavLink[] }[] = [
   {
     naam: "Beheer",
     links: [
+      { href: "/revisies", label: "Revisies" },
       { href: "/gebruikers", label: "Gebruikers", alleenBeheerder: true },
       { href: "/logboek", label: "Logboek", alleenBeheerder: true },
       { href: "/account", label: "Account" },

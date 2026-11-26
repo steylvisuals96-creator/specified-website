@@ -16,6 +16,7 @@ Look: de opbouw van de SteylVisuals-studio (matglas, trage gloed, glans onder de
 | Media | iedereen | upload naar R2 (privé), browser verkleint vooraf, echte bestandscontrole op de server |
 | Homepage | beheerder | velden links, website rechts; het voorbeeld scrollt naar het veld waarin je typt en zet er een kader om |
 | Gebruikers | beheerder | account aanmaken met een uitnodigingslink die je zelf bezorgt; nieuwe inloglink bij een vergeten wachtwoord |
+| Revisies | iedereen | feedback per pagina, auteur, toestel, reacties en historiek; status en prioriteit opvolgen door beheerders |
 | Logboek | beheerder | wie wijzigde wat, bijgehouden door een trigger in de database |
 | Account | iedereen | naam, wachtwoord, tweestapslogin (authenticator-app) |
 
@@ -76,3 +77,13 @@ De bot verwerkt één ronde per week op maandag om 07.00 UTC (08.00 in de winter
 5. Controleer de eerste ronde in het beheerscherm. De geplande Vercel-route gebruikt `CRON_SECRET` en kan desgewenst één keer zelf opgeroepen worden met een GET en een Authorization Bearer-header. Een tweede oproep in dezelfde UTC-week start geen nieuwe ronde. Kijk bij een mislukte ronde eerst naar het rapport en de functielogs.
 
 Verbruik per ronde: Apify is technisch begrensd op $0,05 en vier resultatenpagina's. OpenAI krijgt maximaal één tekstaanvraag met 4.600 uitvoertokens (ongeveer $0,03 voor tekst bij de gebruikte hoeveelheden) en optioneel één medium cover van 1536 × 1024 (ongeveer $0,041 plus prompttokens). Zie [Apify-tarieven](https://apify.com/apify/google-search-scraper), [OpenAI-teksttarieven](https://developers.openai.com/api/docs/models/gpt-6.1-terra) en [OpenAI-beeldtarieven](https://developers.openai.com/api/docs/guides/image-generation#earlier-gpt-image-models).
+
+## Revisies
+
+Via **Beheer > Revisies** kan elk ingelogd teamlid feedback melden bij een Nederlands of Engels paginapad (eventueel met #sectie), met titel, toelichting, toestel en prioriteit. Het overzicht filtert op status en eigen meldingen en toont 30 meldingen per pagina. De detailpagina heeft een link naar de website, reacties en historiek. Beheerders en de creator wijzigen status (Open, In uitvoering, Klaar om na te kijken, Afgerond) en prioriteit. Reacties en meldingen worden niet verwijderd of achteraf herschreven.
+
+Migratie `20261126_03_revisies.sql` is op 2026-11-26 uitgevoerd op productie. Nieuwe tabellen: `revisies`, `revisie_reacties`, `revisie_activiteiten`. De auteur-ID en naam komen uitsluitend uit de ingelogde gebruiker en diens profiel via databasetriggers; de naam blijft bewaard als een account later verdwijnt. Status- en prioriteitswijzigingen krijgen een eigen auteur en tijdstip. De database staat geen directe invoer of wijziging van deze auteurs of activiteiten toe. Toegang vraagt een redactieprofiel en aal2, met de bestaande tweestapsfuncties. Anonieme bezoekers krijgen geen toegang. Revisies wijzigen nooit automatisch de publieke website en versturen geen mails.
+
+Gelijktijdig gewijzigde opvolging overschrijft niets: de update controleert het vorige wijzigingsmoment en vraagt bij een conflict om de pagina te vernieuwen.
+
+Testen: `bash scripts/test-revisies.sh` vanuit `beheer/` (Node, PostgreSQL en Python 3). De test maakt een eigen tijdelijke lokale database, simuleert de bestaande Supabase-authfuncties en ruimt die database daarna op. Testdata gaat nooit naar productie. Daarnaast: `npm run typecheck` en `npm run build`.
