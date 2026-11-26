@@ -1,6 +1,6 @@
 # 008 - Mobiel menu: zakt open vanuit de navigatiebalk
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 06fe3b5
 - **Severity**: LOW
 - **Category**: Missed opportunity

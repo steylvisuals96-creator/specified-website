@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArtikelWeergave from "@/components/ArtikelWeergave";
-import { getBlogPost, getBlogPosts, formatDatum } from "@/lib/blog";
+import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";

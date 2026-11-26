@@ -26,11 +26,11 @@ const BEHEER_ORIGINS = [beheerOrigin, ...(process.env.NODE_ENV !== "production" 
  *   Relaties die publiek leesbaar zijn halen we zelf op: `relaties` zegt welk
  *   veld naar welke collectie wijst, bv. { auteur: "team", cover: "media" }.
  */
-export function useVoorbeeld(relaties: Record<string, string> = {}) {
-  const [data, setData] = useState<any>(null);
+export function useVoorbeeld<T = Record<string, unknown>>(relaties: Record<string, string> = {}) {
+  const [data, setData] = useState<T | null>(null);
   const [focus, setFocus] = useState<{ veld: string | null; label?: string; teller: number }>({ veld: null, teller: 0 });
   const [wacht, setWacht] = useState(true);
-  const cache = useRef(new Map<string, any>());
+  const cache = useRef(new Map<string, unknown>());
   const relatiesRef = useRef(relaties);
   const vorige = useRef("");
 

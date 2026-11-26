@@ -10,12 +10,12 @@ Ronde 2 (006-009) opgesteld op commit `06fe3b5`.
 | 003 | Detailpaneel korter en versneld | MEDIUM | DONE |
 | 004 | Hover-beweging alleen op hover-apparaten | MEDIUM | DONE |
 | 005 | Limoenveeg: ease-out | MEDIUM | DONE |
-| 006 | Vacatures: Framer-easing gelijk aan de standaardcurve | LOW | TODO |
-| 007 | Contact: onderlijn via transform | LOW | TODO |
-| 008 | Mobiel menu: zakt open vanuit de balk | LOW | TODO |
+| 006 | Vacatures: Framer-easing gelijk aan de standaardcurve | LOW | VERVALLEN |
+| 007 | Contact: onderlijn via transform | LOW | DONE |
+| 008 | Mobiel menu: zakt open vanuit de balk | LOW | DONE |
 | 009 | Vacatures op mobiel: geopend detail in beeld | MEDIUM | VERVALLEN |
 
-009 vervalt: het detailpaneel is vervangen door een pagina per vacature (2026-11-12). Kijk bij 006 eerst na of `components/VacaturesClient.tsx` nog de code bevat die het plan beschrijft.
+009 vervalt: het detailpaneel is vervangen door een pagina per vacature (2026-11-12). 006 vervalt ook: de eigen curve staat niet meer in `components/VacaturesClient.tsx` (nagekeken 2026-11-26). 007 en 008 zijn op 2026-11-26 uitgevoerd.
 
 ## Volgorde ronde 2
 

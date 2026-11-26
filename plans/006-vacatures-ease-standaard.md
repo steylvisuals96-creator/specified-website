@@ -1,6 +1,6 @@
 # 006 - Vacatures: Framer-easing gelijk aan de standaardcurve
 
-- **Status**: TODO
+- **Status**: VERVALLEN
 - **Commit**: 06fe3b5
 - **Severity**: LOW
 - **Category**: Cohesion & tokens

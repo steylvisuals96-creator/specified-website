@@ -1,6 +1,6 @@
 # 007 - Contact: onderlijn onder het e-mailadres via transform
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 06fe3b5
 - **Severity**: LOW
 - **Category**: Performance

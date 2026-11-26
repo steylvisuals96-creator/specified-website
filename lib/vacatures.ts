@@ -2,6 +2,7 @@ import { CMS_URL } from "./settings";
 import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
 import { tiptapAlineas } from "./richtekst";
 import { LOCALE, type Taal } from "./taal";
+import type { CmsVacature, LexicalDocument, LexicalNode } from "./cms-vormen";
 
 /**
  * Vacatures uit de CMS, op één plek: de homepage, de lijst en de pagina per
@@ -100,20 +101,23 @@ const label = (tabel: Record<string, string>, v: unknown): string =>
   typeof v === "string" && v ? tabel[v] ?? v : "";
 
 /** Verzamelt alle tekst onder één node, hoe diep genest ook. */
-function nodeText(node: any): string {
+function nodeText(node: LexicalNode | undefined): string {
   if (typeof node?.text === "string") return node.text;
   if (Array.isArray(node?.children)) return node.children.map(nodeText).join("");
   return "";
 }
 
 /** De omschrijving (Lexical) als losse alinea's. */
-function alineas(richText: any): string[] {
-  if (!richText?.root?.children) return [];
-  return richText.root.children.map(nodeText).map((t: string) => t.trim()).filter(Boolean);
+function alineas(richText: unknown): string[] {
+  const doc = richText as LexicalDocument | null | undefined;
+  if (!doc?.root?.children) return [];
+  return doc.root.children.map(nodeText).map((t) => t.trim()).filter(Boolean);
 }
 
-const punten = (lijst: any): string[] =>
-  Array.isArray(lijst) ? lijst.map((r: any) => (typeof r?.punt === "string" ? r.punt.trim() : "")).filter(Boolean) : [];
+const punten = (lijst: unknown): string[] =>
+  Array.isArray(lijst)
+    ? lijst.map((r: { punt?: unknown } | null) => (typeof r?.punt === "string" ? r.punt.trim() : "")).filter(Boolean)
+    : [];
 
 export function slugify(tekst: string): string {
   return tekst
@@ -127,7 +131,7 @@ export function slugify(tekst: string): string {
 
 const UUID_ACHTERAAN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function vorm(v: any, taal: Taal = "nl"): Vacature {
+function vorm(v: CmsVacature, taal: Taal = "nl"): Vacature {
   const L = LABELS[taal];
   const titel = typeof v.titel === "string" ? v.titel.trim() : "Vacature";
   const id = String(v.id);
@@ -225,7 +229,7 @@ export async function getVacatures(limiet = 100, taal: Taal = "nl"): Promise<Vac
     );
     if (!res.ok) return [];
     const data = await res.json();
-    const lijst: Vacature[] = (data.docs ?? []).filter((v: any) => v.zichtbaar_op_website !== false).map((v: unknown) => vorm(v, taal));
+    const lijst: Vacature[] = (data.docs ?? []).filter((v: CmsVacature) => v.zichtbaar_op_website !== false).map((v: CmsVacature) => vorm(v, taal));
     return [...lijst.filter((v) => !v.ingevuld), ...lijst.filter((v) => v.ingevuld)];
   } catch {
     return [];

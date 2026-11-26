@@ -293,6 +293,18 @@ body::after {
   background: var(--ink-900); border-top: 1px solid var(--line);
   padding: 1.5rem var(--gutter) 2rem; display: flex; flex-direction: column; gap: 0.25rem;
   min-height: calc(100svh - 76px);
+  clip-path: inset(0 0 0 0);
+  transition: opacity 160ms ease-out;
+}
+/* Intrede: het menu zakt open vanuit de balk; bij beperkte beweging alleen een fade. */
+@starting-style {
+  .site-nav__mobile { opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .site-nav__mobile { transition: clip-path 280ms var(--ease-out), opacity 160ms ease-out; }
+  @starting-style {
+    .site-nav__mobile { clip-path: inset(0 0 100% 0); }
+  }
 }
 .site-nav__mobile-link {
   color: var(--bone-100); text-decoration: none; font-size: clamp(2.75rem, 12vw, 4rem);
@@ -570,13 +582,18 @@ html:not(.js) .tekening .tekening__intro { display: none; }
 .cta { padding: var(--section-y) 0; border-top: 1px solid var(--line); }
 .cta__inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: clamp(28px, 4vw, 56px); }
 .cta__mail {
+  position: relative;
   font-size: clamp(1.75rem, 5.5vw, 5rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em;
   color: var(--bone-100); text-decoration: none; overflow-wrap: anywhere;
-  background-image: linear-gradient(var(--lime-300), var(--lime-300));
-  background-size: 100% 3px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 0.1em;
+  padding-bottom: 0.1em;
   transition: color 160ms ease-out;
 }
 .cta__mail:hover { color: var(--lime-300); }
+/* De onderlijn: een eigen element, zodat de scroll alleen transform hoeft te animeren. */
+.cta__lijn {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--lime-300); transform-origin: left center;
+}
 
 /* ─── Footer ──────────────────────────────────────────── */
 .footer { border-top: 1px solid var(--line); overflow: hidden; }

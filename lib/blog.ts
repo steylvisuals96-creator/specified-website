@@ -2,6 +2,7 @@ import { CMS_URL } from "./settings";
 import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
 import { isTiptap, tiptapNaarHtml } from "./richtekst";
 import { LOCALE, type Taal } from "./taal";
+import type { CmsArtikel, LexicalDocument, LexicalNode } from "./cms-vormen";
 
 export type BlogPost = {
   id: string;
@@ -24,14 +25,14 @@ function escapeHtml(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function nodeToHtml(node: any): string {
-  const children = (node.children || []).map((c: any) => nodeToHtml(c)).join("");
+function nodeToHtml(node: LexicalNode): string {
+  const children = (node.children || []).map((c) => nodeToHtml(c)).join("");
   switch (node.type) {
     case "text": {
       let t = escapeHtml(node.text || "");
-      if (node.format & 1) t = `<strong>${t}</strong>`;
-      if (node.format & 2) t = `<em>${t}</em>`;
-      if (node.format & 8) t = `<u>${t}</u>`;
+      if ((node.format ?? 0) & 1) t = `<strong>${t}</strong>`;
+      if ((node.format ?? 0) & 2) t = `<em>${t}</em>`;
+      if ((node.format ?? 0) & 8) t = `<u>${t}</u>`;
       return t;
     }
     case "paragraph":
@@ -39,7 +40,7 @@ function nodeToHtml(node: any): string {
     case "heading": {
       // h1 blijft voor de artikeltitel; verlaag koppen in de tekst één niveau.
       // Alleen bekende koptags: node.tag komt uit de CMS en belandt letterlijk in de HTML.
-      const tag = ["h2", "h3", "h4", "h5", "h6"].includes(node.tag) ? node.tag : "h2";
+      const tag = node.tag && ["h2", "h3", "h4", "h5", "h6"].includes(node.tag) ? node.tag : "h2";
       return `<${tag}>${children}</${tag}>`;
     }
     case "list":
@@ -64,14 +65,15 @@ function nodeToHtml(node: any): string {
   }
 }
 
-export function lexicalToHtml(lexical: any): string {
-  if (!lexical?.root?.children) return "";
-  return lexical.root.children.map((n: any) => nodeToHtml(n)).join("");
+export function lexicalToHtml(lexical: unknown): string {
+  const doc = lexical as LexicalDocument | null | undefined;
+  if (!doc?.root?.children) return "";
+  return doc.root.children.map((n) => nodeToHtml(n)).join("");
 }
 
 /* ── Data ophalen ─────────────────────────────────────────── */
 
-export function mapPost(d: any): BlogPost {
+export function mapPost(d: CmsArtikel): BlogPost {
   const uploadUrl = d.cover?.url as string | undefined;
   const uploadFull = uploadUrl ? (uploadUrl.startsWith("http") ? uploadUrl : `${CMS_URL}${uploadUrl}`) : undefined;
   const coverUrl = uploadFull ?? (d.cover_url as string | undefined) ?? undefined;
@@ -143,7 +145,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.docs ?? []).filter((d: any) => d.slug).map(mapPost);
+    return (data.docs ?? []).filter((d: CmsArtikel) => d.slug).map(mapPost);
   } catch {
     return [];
   }

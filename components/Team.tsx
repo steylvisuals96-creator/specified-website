@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { rolLabel, type TeamMember } from "@/lib/settings";
 import type { Taal } from "@/lib/taal";
 import { ui } from "@/lib/teksten";
@@ -52,8 +53,7 @@ export default function Team({
               <article key={m.id} className="team__lid">
                 <div className="team__foto">
                   {m.fotoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={m.fotoUrl} alt={naam} loading="lazy" />
+                    <Image src={m.fotoUrl} alt={naam} fill sizes="(min-width: 900px) 50vw, 100vw" />
                   ) : (
                     <span className="display team__foto-leeg">{naam}</span>
                   )}

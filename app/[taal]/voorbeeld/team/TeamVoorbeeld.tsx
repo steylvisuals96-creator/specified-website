@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Team from "@/components/Team";
 import { getTeam, CMS_URL, type TeamMember } from "@/lib/settings";
 import { useVoorbeeld } from "@/lib/useVoorbeeld";
+import type { CmsTeamlid } from "@/lib/cms-vormen";
 
 const RELATIES = { foto: "media" };
 
@@ -13,7 +14,7 @@ const RELATIES = { foto: "media" };
  * nieuw is). Het CMS geeft het id mee in de URL (?id=).
  */
 export default function TeamVoorbeeld() {
-  const { data } = useVoorbeeld(RELATIES);
+  const { data } = useVoorbeeld<CmsTeamlid>(RELATIES);
   const [leden, setLeden] = useState<TeamMember[] | null>(null);
   const id = typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("id");
 

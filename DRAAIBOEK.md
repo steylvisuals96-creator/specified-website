@@ -4,7 +4,7 @@ Dit is de ene plek waar staat wat de website van Specified is, hoe die in elkaar
 
 **Bijhouden:** de delen 1 tot en met 8 schrijft Claude bij zodra iets verandert (regel staat in `CLAUDE.md`). Deel 9 (wijzigingslog) wordt automatisch uit git gebouwd bij elke commit, via `scripts/draaiboek-bijwerken.sh`. Buiten de markeringen in deel 9 niets met de hand wijzigen in dat deel.
 
-Laatst handmatig nagekeken: 2026-11-24 (tweede audit en de snelle verbeteringen daaruit).
+Laatst handmatig nagekeken: 2026-11-26 (offerte getekend, opkuis, animaties, Engelse versie getest).
 
 De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.md`: wensen per pagina en functie, tegenstrijdigheden en gevolgen voor wat er nu staat.
 
@@ -23,6 +23,8 @@ De ingevulde invullijst van de klant (2026-11-12) staat uitgewerkt in `BRIEFING.
 | Hosting | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main` | Vercel, deploy bij push naar `main`, root directory `beheer`, functies in Frankfurt (`fra1`) |
 
 Klant: **Specified NV** (BE 0727.537.711), Veldkant 31a, 2550 Kontich. Engineering consultancy met eigen consultants, opgericht januari 2025, 13 mensen op de payroll en 32 in totaal. Oprichters Tom Wijdooghe en Simon Claeys; aanspreekpunt voor het project, facturen en storingen is Simon Claeys (Managing Partner). Algemeen adres op de site: `info@specified.be`. Gebouwd en gehost door SteylVisuals (Sam). De bestaande site op `specified.be` (gebouwd door Rocketship) draait nog; de nieuwe staat op de Vercel-adressen tot de livegang, gewenst op **2027-01-11**. Teksten van de klant zijn klaar op 2026-12-21.
+
+**Stand 2026-11-26:** de offerte is door beide partijen getekend. De draaidag is op 2026-12-10 van 17u tot 21u. De Engelse versie en de Bullhorn-koppeling horen bij de opdracht (planning eind januari 2027).
 
 Werkafspraak: rechtstreeks naar `main` pushen, geen feature-branches en PR's (zie `CLAUDE.md`).
 
@@ -128,6 +130,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee oorspronkelijke sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud.
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
 - **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v4.webp` en `simon-claeys-portret-v4.webp` staan in R2 en zijn gekoppeld via **Website > Team**. Bij deze versie dienden de originele gezichten opnieuw als referentie voor de bewerking. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De vorige versies en de originele portretten blijven beschikbaar in de mediabibliotheek. De originele bestanden staan ook lokaal als terugval.
+- **Teamfoto's (2026-11-26)**: de homepage toont ze via `next/image`, dus geschaald en in AVIF of WebP. Lokaal testen met echte beelden vraagt `NEXT_PUBLIC_BEHEER_URL=https://specified-beheer.vercel.app` bij zowel de build als de start.
 - Tweestapslogin aanzetten getest (2026-11-22, account Sam). Nog niet getest: iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
 - **Verbeterd na de livegang** (2026-11-15): blogvoorbeeld al vanaf 1280 px en blog en team tonen meteen de huidige inhoud in het voorbeeld; tijden in Belgische tijd (Vercel draait in UTC); de proxy controleert alleen nog het token (3 ms in plaats van tot 200 ms) en de tweede stap en rol gebeuren in `lib/sessie.ts` met de geverifieerde gebruiker, zonder de Supabase-waarschuwing bij elke pagina; een account zonder profiel wordt uitgelogd met een melding in plaats van heen en weer te springen; het inlogscherm toont "link verlopen" en "geen toegang".
@@ -289,7 +292,7 @@ Specified is akkoord met de invoering. Sam heeft een audit van website, beheer e
 **Tweede audit (2026-11-23)**
 
 Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doorgevoerd (formulier, wachtwoord wijzigen, noindex op vercel.app, titels, `x-powered-by`). Niet-gevoelige open punten:
-- [ ] De 404-pagina komt zonder inhoud en zonder `lang`-attribuut van de server; de browser bouwt ze pas zelf op. Waarschijnlijk komt dat doordat de root-layout onder `app/[taal]/` staat. Een catch-all met `dynamicParams` en `global-not-found` losten het niet op (getest 2026-11-24). De status blijft wel 404 met `noindex`.
+- [ ] De 404-pagina komt zonder inhoud en zonder `lang`-attribuut van de server; de browser bouwt ze pas zelf op. Waarschijnlijk komt dat doordat de root-layout onder `app/[taal]/` staat. Een catch-all met `dynamicParams` en `global-not-found` losten het niet op (getest 2026-11-24). De status blijft wel 404 met `noindex`. Waarschijnlijke verklaring (2026-11-26, niet apart bewezen): React toont bij de serveropbouw geen foutgrenzen, dus `notFound()` in de eerste opbouw levert een lege foutpagina. Opgelost kan het alleen door de routes in `proxy.ts` te herhalen; dat is voorlopig niet de moeite.
 - [ ] Bij de livegang `vercel.app` met een 308 naar `specified.be` laten doorverwijzen (Vercel, domeininstellingen).
 
 **Overstap naar het nieuwe beheer (`beheer/`, gebouwd 2026-11-15)**
@@ -314,7 +317,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 **Afstemmen met Simon (tegenstrijdigheden uit de invullijst, zie `BRIEFING.md`)**
 - [x] Pagina per vacature en één filter op vakgebied: gebouwd (2026-11-12), nog te bevestigen door Simon.
 - [x] NL en EN gevraagd. Engelse versie gebouwd (2026-11-23): Nederlands op de huidige adressen, Engels onder `/en` met Engelse adressen. Nog door Simon na te lezen: Engelse standaardteksten en vertaalde juridische pagina's.
-- [ ] Moeten sollicitaties ook in Bullhorn (hun ATS)? Zo ja: API-toegang via Bullhorn regelen.
+- [ ] Bullhorn-koppeling die sollicitaties doorstuurt: staat in de getekende offerte, nog niet gebouwd. Wacht op API-toegang via Bullhorn.
 - [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy?
 - [ ] Bewaartermijn sollicitatiegegevens (advies: 1 jaar, 2 met toestemming).
 - [ ] Betaalwijze: toelichting ontbrak in de invullijst.
@@ -322,7 +325,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [ ] Concepten en publicatie inplannen voor vacatures en blog: voorstel doen.
 
 **Wachten op de klant of Sam**
-- [ ] Offerte opmaken, met één shootdag (foto en video, 3 à 4 mensen) en onderhoudsabonnement (reactie binnen 2 werkdagen, 1 à 2 kleine aanpassingen per maand).
+- [x] Offerte opgemaakt en door beide partijen getekend (2026-11-26), met één shootdag (foto en video, 3 à 4 mensen) en onderhoudsabonnement (reactie binnen 2 werkdagen, 1 à 2 kleine aanpassingen per maand).
 - [ ] Livegang op `specified.be` (2027-01-11): domein naar Vercel, `NEXT_PUBLIC_SITE_URL`, CORS-lijst CMS, sitemap en canonical live controleren, status- en media-subdomein. Registrar, DNS-beheer, hosting en vervaldata zijn bij de klant onbekend: via de contactpersoon van Rocketship achterhalen. MX, SPF, DKIM, DMARC en autodiscover van Microsoft 365 (beheerd door Cronos) exact overnemen.
 - [x] Permanente doorverwijzingen (308, door Google behandeld als 301) van de 18 oude URL's op `specified.be` naar de nieuwe, in `next.config.ts` (2026-11-22): about-us naar `/#over-ons`, services en engineering-partner naar Voor bedrijven, career-partner naar Voor engineers, jobs naar Vacatures, spontaneous-application naar Open sollicitatie, alle `/job/...` naar het vacatureoverzicht (oude vacatures hebben andere adressen), privacy- en cookiepolicy naar de nieuwe pagina's, bedankpagina's naar Contact en Vacatures, test-slider-home naar de homepage. Lokaal alle 18 getest: elk eindigt op een 200. Met slash achteraan zijn het twee sprongen (Next haalt eerst de slash weg). Werkt pas echt na de domeinverhuis; daarna in Search Console de oude adressen nakijken.
 - [ ] Analytics en Search Console op een account van Specified zetten (huidige eigenaar onbekend).
@@ -342,13 +345,13 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [ ] De 5 bestaande vacatures aanvullen met uren, opleiding en talen (velden zijn leeg), of vervangen door de lijst van Specified.
 - [x] Licht thema met keuzeschakelaar (2026-11-12). De hero-tekening volgt het thema, ook het eindlogo (`--tek-mix`). Nog door Sam te beoordelen, vooral de hero-tekening en de teamfoto's in licht.
 - [x] Dashboard voor de klant teruggebracht tot vacatures, blog, team, media en homepage; rollabels op de website zonder "Recruitment" (2026-11-12). De rol `consultant` bestaat nog; Specified wil 2 gebruikers met dezelfde rechten (beide beheerder maken).
-- [ ] Vacature-alert per e-mail (inschrijven met bevestiging, uitschrijflink, mail bij nieuwe vacature). Vraagt opslag van adressen en een geverifieerd maildomein.
+- [ ] Vacature-alert per e-mail (inschrijven met bevestiging, uitschrijflink, mail bij nieuwe vacature). Vraagt opslag van adressen en een geverifieerd maildomein. Staat in de getekende offerte.
 - [ ] Tweestapslogin voor het beheer (zie Techniek).
 - [ ] Certificaten staan nu als tekst op Voor bedrijven en Voor engineers; verhalen van consultants nog te maken (inhoud van Specified nodig).
 - [x] Overzicht van het dashboard voor de klant: vacatures (met link naar de website en wat nog ontbreekt) en blog (`components/KlantOverzicht.tsx`, 2026-11-12). De creator houdt het recruitmentoverzicht.
 - [x] Engelse versie (2026-11-23): pagina's onder `app/[taal]/`, `proxy.ts` zet adressen om, taal via `lib/taal-server.ts` (root-params) en `components/TaalContext.tsx`. Teksten: `lib/teksten.ts`, `lib/inhoud-en.ts`, `STANDAARD_EN` in `lib/paginas.ts`. Beheer: schakelaar Nederlands/English bij Homepage en Pagina's, rijen `en:<sleutel>` in `pagina_inhoud` (migratie `20261123_01_engelse_teksten.sql`, op productie uitgevoerd). E-mail, telefoon en LinkedIn gedeeld. Vacatures en blog in hun eigen taal met Engelse labels; Engelse detailpagina canonical naar de Nederlandse, JobPosting alleen op NL. Oude Engelstalige specified.be-adressen sturen naar `/en`. Formulieren: Engelse meldingen en bevestiging, melding aan Specified Nederlands met "Taal: Engels".
-- [ ] Engelse versie nalopen op mobiel (menu, taalknop) en met echte mail zodra Resend actief is.
-- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22. axe-core 4.10.3 (WCAG 2.0/2.1/2.2 A en AA plus best practices) op 2026-11-22 lokaal over 14 pagina's (home, vacatures, een vacature, voor bedrijven, voor engineers, open sollicitatie, blog, een artikel, FAQ, contact, disclaimer, toegankelijkheid, privacy, cookies, 404): 0 fouten. Wat axe niet zelf kon meten (contrast onder de korrellaag `body::after`) handmatig nagerekend: alle teksttinten halen AA in beide thema's (laagste bone-400 op ink-800 in het lichte thema, 5,86:1). Opnieuw draaien: `node_modules/axe-core/axe.min.js` tijdelijk naar `public/` kopiëren, in de console laden met een script-tag en `axe.run()` draaien, daarna weer weghalen. Nog te doen: VoiceOver (mens).
+- [ ] Engelse versie nalopen op mobiel (menu, taalknop) en met echte mail zodra Resend actief is. Menu en taalknop op 375 px nagekeken op 2026-11-26 (geen horizontaal scrollen); alleen de echte mail rest.
+- [ ] Toegankelijkheid op WCAG 2.1 AA controleren met een echte toets (axe, schermlezer); de verklaring zegt nu eerlijk dat er nog geen onafhankelijke toets was. Toetsenbord en klikdoelen nagekeken op 2026-11-22. axe-core 4.10.3 (WCAG 2.0/2.1/2.2 A en AA plus best practices) op 2026-11-22 lokaal over 14 pagina's (home, vacatures, een vacature, voor bedrijven, voor engineers, open sollicitatie, blog, een artikel, FAQ, contact, disclaimer, toegankelijkheid, privacy, cookies, 404): 0 fouten. Wat axe niet zelf kon meten (contrast onder de korrellaag `body::after`) handmatig nagerekend: alle teksttinten halen AA in beide thema's (laagste bone-400 op ink-800 in het lichte thema, 5,86:1). Opnieuw draaien: `node_modules/axe-core/axe.min.js` tijdelijk naar `public/` kopiëren, in de console laden met een script-tag en `axe.run()` draaien, daarna weer weghalen. Nog te doen: VoiceOver (mens). Engelse versie op 2026-11-26 lokaal met axe getest (home, vacatures, een vacature, voor bedrijven, voor engineers, open sollicitatie, blog, een artikel, FAQ, contact, toegankelijkheid, privacy, cookies, disclaimer, voorwaarden): 0 fouten.
 - [ ] SEO op "engineering consultancy" en "ingenieur jobs": titels en beschrijvingen staan, inhoud volgt met de teksten van Specified; kwartaalrapport met het aantal sollicitaties.
 - [ ] `/api/formulier`: de limiet per IP geldt per server. Bij misbruik een gedeelde limiet toevoegen (Vercel Firewall of een teller in Supabase).
 
@@ -363,12 +366,14 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [x] Audit-log (wie wijzigde wat): in het nieuwe beheer, via een trigger in de database (2026-11-15).
 - [ ] Overblijfselen uit vastgoed in `dashboard/team/create` en `team/[id]/edit`.
 - [x] LCP op home en blog onder 2,5 s (2026-11-23, PageSpeed Insights mobiel op productie): home 100 met LCP 0,9 s, blog van 94 met 2,8 s naar 100 met 1,2 s na het weghalen van GSAP uit het kritieke pad (zie Prestaties). Desktop beide 100.
+- [x] Opkuis (2026-11-26): geen lintfouten meer in `lib/`, teamfoto's via `next/image`, indexen op `seizoensthema.gewijzigd_door` en `seo_voorstellen.besloten_door` (migratie `20261126_01_fk_indexen.sql`, op productie toegepast).
+- [ ] Nog 5 lintfouten buiten `lib/` (`Nav`, `ThemaKnop`, `HeroTekening`, `HomeVoorbeeld`): React-regels over state, refs en globals. De site werkt; aanpassen vraagt apart testen van thema, taalknop en hero.
 - [ ] `prefers-reduced-motion` in een echte browser emuleren en controleren.
 - [ ] Scroll-frames naar R2 (met de domeinverhuis).
 - [ ] CSP zonder `'unsafe-inline'` via nonces.
 - [ ] Het in-page-editor-werk door Sam laten testen op productie.
 
-**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd; ronde 2 (006 tot 008: vacatures-easing, contactonderlijn, mobiel menu) staat open; 009 (vacaturepaneel op mobiel) vervalt, het paneel is vervangen door een pagina per vacature. 001 tot 003 gingen over de oude lijst met paneel en zijn daarmee ook achterhaald. Zie `plans/README.md`. De planbestanden 006 tot 009 staan sinds 2026-11-15 op main.
+**Animatieplannen** (`plans/`): ronde 1 (001 tot 005) is uitgevoerd. Van ronde 2 zijn 007 (contactonderlijn via transform) en 008 (mobiel menu zakt open) op 2026-11-26 uitgevoerd; 006 en 009 vervallen omdat die code niet meer bestaat. Zie `plans/README.md`.
 
 **Niet samengevoegd werk**
 - [x] Toegankelijkheidsfixes van `preview/audit-fixes-2` per onderdeel opnieuw toegepast op main (2026-11-22): Tab naar de knoppen in de hero springt naar het eindbeeld van de tekening (nu via Lenis, dat er sinds oktober bij kwam), cookiebanner meteen na de skip-link in de tabvolgorde en houdt onderaan ruimte vrij zodat focus er niet achter verdwijnt, klikdoelen van minstens 44px (logo's, footerlinks, LinkedIn-links), vizier uit bij forced-colors en prefers-contrast. Lokaal getest met echte Tab-toetsen. Niet overgenomen: inline styles naar klassen in vacatures en blog (die pagina's zijn sindsdien herschreven), streepjes en nav-achtergrond (aparte keuze). De branch kan daarna weg.
@@ -382,7 +387,7 @@ Wat beter kan, belangrijkste eerst:
 - [ ] **MongoDB weg**: `payload.config.ts` valt zonder `DATABASE_URI` stil terug op MongoDB met een lege URL in plaats van te stoppen. Fallback en `@payloadcms/db-mongodb` verwijderen.
 - [x] **Wijzigingen meteen live**: opgelost in het nieuwe beheer via `/api/ververs` op de website (gedeeld geheim, 2026-11-15). De oude CMS blijft op 60 s.
 - [ ] **Next 16**: `cms/middleware.ts` heet nu `proxy.ts` (de build waarschuwt).
-- [ ] **Types delen**: de CMS heeft 164 keer `as any`, de website 23 lintfouten op `any` in `lib/`. Nu beide in één repo staan, kan de website de types uit `cms/payload-types.ts` gebruiken.
+- [ ] **Types delen**: de CMS heeft 164 keer `as any`, de website had 23 lintfouten op `any` in `lib/` (weg sinds 2026-11-26, vormen in `lib/cms-vormen.ts`). Nu beide in één repo staan, kan de website de types uit `cms/payload-types.ts` gebruiken.
 - [ ] **Afhankelijkheden**: `@dnd-kit/*` wordt niet gebruikt (alleen `@hello-pangea/dnd`), `shadcn` is een CLI en hoort niet bij de runtime-afhankelijkheden, Tiptap in het dashboard naast Lexical van Payload vraagt een conversie (`cms/lib/lexical.ts`); op termijn één editor.
 - [ ] **Kleine verstevigingen**: geheimen in `inbound-email` en `make-callback` vergelijken met `timingSafeEqual`; de Make-callback valideert de binnenkomende velden niet.
 - [ ] **Overblijfselen uit vastgoed**: `cms/components/SomLogo.tsx` en verwijzingen in `dashboard/gebruikers/create`.
@@ -402,7 +407,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-24 20:57_
+_Bijgewerkt: 2026-11-26 21:31_
 
 ### Nog niet op main
 
@@ -411,6 +416,10 @@ _Bijgewerkt: 2026-11-24 20:57_
 - branch `preview/streepjes-nav`: 1 commit(s) voor op main
 
 ### Op main
+
+**2026-11-24**
+
+- website: Snelle verbeteringen uit de tweede audit (`fe6956c`)
 
 **2026-11-23**
 

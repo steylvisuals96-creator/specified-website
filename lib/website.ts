@@ -3,6 +3,7 @@ import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
 import type { DIENSTEN, HERO, JOBS, TEKENING } from "./inhoud";
 import { inhoud } from "./inhoud-taal";
 import type { Taal } from "./taal";
+import type { CmsWebsite } from "./cms-vormen";
 
 /**
  * De teksten van de homepage, zoals de redactie ze in de CMS beheert (global
@@ -46,11 +47,11 @@ const tekst = (cms: unknown, terugval: string): string =>
   typeof cms === "string" && cms.trim() ? cms.trim() : terugval;
 
 /** Legt de CMS-waarden over de standaardteksten. Onbekende of lege velden vallen terug. */
-export function samenvoegen(cms: any, taal: Taal = "nl"): WebsiteInhoud {
-  const c = cms ?? {};
+export function samenvoegen(cms: unknown, taal: Taal = "nl"): WebsiteInhoud {
+  const c = (cms ?? {}) as CmsWebsite;
   const S = STANDAARD_TAAL[taal];
 
-  const dienst = (d: (typeof DIENSTEN)[number], v: any) => ({
+  const dienst = (d: (typeof DIENSTEN)[number], v: CmsWebsite["diensten_bedrijven"]) => ({
     ...d,
     kop: tekst(v?.kop, d.kop),
     titel: tekst(v?.titel, d.titel),
@@ -59,7 +60,7 @@ export function samenvoegen(cms: any, taal: Taal = "nl"): WebsiteInhoud {
   });
 
   const profielen = Array.isArray(c.consultants?.profielen)
-    ? c.consultants.profielen.map((p: any) => tekst(p?.naam, "")).filter(Boolean)
+    ? c.consultants.profielen.map((p) => tekst(p?.naam, "")).filter(Boolean)
     : [];
 
   return {

@@ -4,6 +4,7 @@ import { mapPost } from "@/lib/blog";
 import ArtikelWeergave from "@/components/ArtikelWeergave";
 import Nav from "@/components/Nav";
 import { useVoorbeeld } from "@/lib/useVoorbeeld";
+import type { CmsArtikel } from "@/lib/cms-vormen";
 
 const RELATIES = { auteur: "team", cover: "media" };
 
@@ -13,7 +14,7 @@ const RELATIES = { auteur: "team", cover: "media" };
  * Dezelfde artikelweergave als de echte pagina (components/ArtikelWeergave.tsx).
  */
 export default function VoorbeeldClient() {
-  const { data, wacht } = useVoorbeeld(RELATIES);
+  const { data, wacht } = useVoorbeeld<CmsArtikel>(RELATIES);
 
   if (!data?.titel && !data?.inhoud) {
     return (

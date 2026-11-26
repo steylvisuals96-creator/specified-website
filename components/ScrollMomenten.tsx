@@ -79,10 +79,10 @@ export default function ScrollMomenten() {
         },
       );
       gsap.fromTo(
-        ".cta__mail",
-        { backgroundSize: "0% 3px" },
+        ".cta__lijn",
+        { scaleX: 0 },
         {
-          backgroundSize: "100% 3px",
+          scaleX: 1,
           ease: "none",
           scrollTrigger: { trigger: ".cta__mail", start: "top 90%", end: "top 55%", scrub: 0.6 },
         },

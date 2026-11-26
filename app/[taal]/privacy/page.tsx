@@ -73,7 +73,7 @@ function PrivacyPageNl() {
       <ul>
         <li>Inzage in de gegevens die we over je bewaren;</li>
         <li>Correctie van onjuiste gegevens;</li>
-        <li>Verwijdering van je gegevens ("recht om vergeten te worden");</li>
+        <li>Verwijdering van je gegevens (&quot;recht om vergeten te worden&quot;);</li>
         <li>Beperking van of bezwaar tegen de verwerking;</li>
         <li>Overdraagbaarheid van je gegevens.</li>
       </ul>

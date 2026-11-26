@@ -1,5 +1,6 @@
 import { LEEST_UIT_SUPABASE, mediaUrl, supabaseLees } from "./beheer";
 import type { Taal } from "./taal";
+import type { CmsTeamlid } from "./cms-vormen";
 
 /**
  * Waar de CMS draait. Overschrijfbaar via NEXT_PUBLIC_CMS_URL zodat een
@@ -154,7 +155,7 @@ export async function getTeam(): Promise<TeamMember[]> {
     );
     if (!res.ok) return [];
     const data = await res.json();
-    return (data.docs ?? []).map((m: any) => {
+    return (data.docs ?? []).map((m: CmsTeamlid) => {
       const url = m.foto?.url as string | undefined;
       const fotoUrl = url ? (url.startsWith("http") ? url : `${CMS_URL}${url}`) : undefined;
       return {
