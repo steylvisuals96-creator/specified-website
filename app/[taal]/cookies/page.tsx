@@ -21,7 +21,7 @@ export async function generateMetadata() {
 
 function CookiesPageNl() {
   return (
-    <LegalPage title="Cookiebeleid" updated="5 juli 2026">
+    <LegalPage title="Cookiebeleid" updated="26 november 2026">
       <p>
         Deze website gebruikt cookies en vergelijkbare technologieën. In dit cookiebeleid leggen we
         uit wat cookies zijn, welke we gebruiken en hoe je je voorkeuren kan beheren.
@@ -58,7 +58,7 @@ function CookiesPageNl() {
       <h2>4. Vragen</h2>
       <p>
         Heb je vragen over ons cookiegebruik? Neem contact op via{" "}
-        <a href="mailto:info@specified.be">info@specified.be</a>. Meer over hoe we met
+        <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>. Meer over hoe we met
         persoonsgegevens omgaan, lees je in ons <Link href="/privacy">privacybeleid</Link>.
       </p>
     </LegalPage>
@@ -67,7 +67,7 @@ function CookiesPageNl() {
 
 function CookiesPageEn() {
   return (
-    <LegalPage title="Cookie policy" updated="July 5, 2026">
+    <LegalPage title="Cookie policy" updated="November 26, 2026">
       <p>
         This website uses cookies and similar technologies. In this cookie policy we explain what cookies are, which ones we use and
         how you can manage your preferences.
@@ -100,7 +100,7 @@ function CookiesPageEn() {
 
       <h2>4. Questions</h2>
       <p>
-        Do you have questions about our use of cookies? Contact us at <a href="mailto:info@specified.be">info@specified.be</a>. Read
+        Do you have questions about our use of cookies? Contact us at <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>. Read
         more about how we handle personal data in our <Link href="/en/privacy">privacy policy</Link>.
       </p>
     </LegalPage>

@@ -415,7 +415,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:19_
+_Bijgewerkt: 2026-11-26 22:22_
 
 ### Nog niet op main
 
@@ -427,6 +427,7 @@ _Bijgewerkt: 2026-11-26 22:19_
 
 **2026-11-26**
 
+- website: Draaiboek: AAAA en www bij de domeinverhuis (`dc20d6d`)
 - website: Privacybeleid gelijk aan het huidige beleid van Specified: bewaartermijnen en contact (`08e260a`)
 - website: Herstel de kragen in beide engineerportretten (`adc5809`)
 - website: Breid beeldbibliotheek uit tot achttien beelden met reserveselectie (`1303887`)
