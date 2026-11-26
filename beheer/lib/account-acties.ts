@@ -45,8 +45,11 @@ export async function naamWijzigen(_: Resultaat, fd: FormData): Promise<Resultaa
   const naam = tekst(fd, "naam", 80);
   if (!naam) return { ok: false, velden: { naam: "Vul je naam in." } };
   const sb = await supabaseServer();
-  const { error } = await sb.from("profielen").update({ naam }).eq("id", s.id);
+  // De database laat alleen schrijven na de code uit de app (aal2): zonder
+  // tweestapslogin wordt er niets gewijzigd, en dat zeggen we dan ook.
+  const { data, error } = await sb.from("profielen").update({ naam }).eq("id", s.id).select("id");
   if (error) return { ok: false, melding: "Opslaan lukte niet." };
+  if (!data?.length) return { ok: false, melding: "Stel eerst tweestapslogin in; daarna kan je je naam wijzigen." };
   revalidatePath("/", "layout");
   return { ok: true, melding: "Opgeslagen.", opgeslagen: nu() };
 }
