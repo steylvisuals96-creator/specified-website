@@ -66,6 +66,8 @@ De homepage gebruikt de herwerkte AI-sfeerbeelden van de pompinstallatie en de c
 
 Op 2026-11-26 zijn met Sams akkoord zes aanvullende AI-sfeerbeelden gemaakt met de ingebouwde ChatGPT-beeldgenerator: productieomgeving, engineer op locatie, schakelkast, industriële pomp en reserveblogcovers voor industriële automatisering en preventief onderhoud. Alle beelden zijn 1672 × 941 px. De WebP-versies staan in `public/images/beeld/`, in de privé-R2-bucket `specified-media` en in de Supabase-mediabibliotheek. Ze zijn beschikbaar om te kiezen in het beheer; bestaande websitebeelden en blogcovers zijn niet vervangen. De modelversie van de ingebouwde generator was niet controleerbaar; daarvoor gaf Sam expliciet akkoord.
 
+De beeldbibliotheek is op 2026-11-26 uitgebreid tot **18 beelden**. De kernselectie van **14** sluit aan bij de bevestigde sectoren (farma, productie, bouwondernemingen klasse 8 en infrastructuur), diensten en engineeringprofielen. **Vier beelden zijn reserve:** zonne-energie, HVAC, perslucht en een hygiënische procesinstallatie uit de voedingsindustrie. Die vier hebben in het beheer het voorvoegsel `reserve-` en horen pas bij passende, bevestigde inhoud; zonne-energie staat buiten de huidige websiteselectie. Alle 18 WebP-bestanden staan lokaal en in R2/Supabase, met altteksten en gecontroleerde beheerlinks. Overzicht, bronbestanden, prompts en uploadregistraties staan in `specified-website/output/imagegen/` (`BIBLIOTHEEK.md`, `BIBLIOTHEEK.json` en de twee beeldmappen).
+
 Verder beeldwerk:
 
 - **Voor bedrijven, bij Sectoren:** het nieuwe brede productiebeeld is beschikbaar in het beheer. Per echte case kan later een foto van de gefotografeerde installatie mee.
