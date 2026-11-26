@@ -81,6 +81,10 @@ export const GROEPEN: GroepDef[] = [
       },
       { sleutel: "tekening.waarden", label: "Titelblok: waarden", max: 40, standaard: "Drive en verantwoordelijkheid", standaardEn: "Drive and responsibility" },
       { sleutel: "tekening.akkoord", label: "Titelblok: goedkeuring", max: 40, standaard: "Goedgekeurd door Specified", standaardEn: "Approved by Specified" },
+      { sleutel: "tekening.labelProject", label: "Titelblok: label boven project", max: 20, standaard: "Project" },
+      { sleutel: "tekening.labelLocatie", label: "Titelblok: label boven locatie", max: 20, standaard: "Locatie", standaardEn: "Location" },
+      { sleutel: "tekening.labelWaarden", label: "Titelblok: label boven waarden", max: 20, standaard: "Waarden", standaardEn: "Values" },
+      { sleutel: "tekening.labelGoedgekeurd", label: "Titelblok: label boven handtekening (telefoon)", max: 20, standaard: "Goedgekeurd", standaardEn: "Approved" },
     ],
   },
   {
@@ -128,6 +132,21 @@ export const GROEPEN: GroepDef[] = [
       },
       { sleutel: "jobs.openKnop", label: "Knop open sollicitatie (zonder vacatures)", max: 40, standaard: "Stuur een open sollicitatie", standaardEn: "Send a general application" },
     ],
+  },
+  {
+    sleutel: "team",
+    titel: "Over ons",
+    uitleg: "De kop boven de founders. De teamleden zelf pas je aan bij Team; klik op een teamlid in het voorbeeld om dat te openen.",
+    velden: [
+      { sleutel: "team.titel", label: "Titel", max: 30, standaard: "Twee founders.", standaardEn: "Two founders." },
+      { sleutel: "team.accent", label: "Tweede regel (schuin, in limoen)", max: 30, standaard: "Eén missie.", standaardEn: "One mission." },
+    ],
+  },
+  {
+    sleutel: "cta",
+    titel: "Afsluiter",
+    uitleg: "De grote zin boven het e-mailadres onderaan de homepage.",
+    velden: [{ sleutel: "cta.titel", label: "Titel", max: 50, standaard: "Laten we kennismaken.", standaardEn: "Let's get acquainted." }],
   },
   {
     sleutel: "contact",

@@ -12,7 +12,9 @@ export default function CTA({ titel, email, telefoon }: { titel?: string; email?
   return (
     <section id="contact" className="cta">
       <div className="wrap cta__inner">
-        <h2 className="display display-l">{metAccent(titel || standaardTitel)}</h2>
+        <h2 className="display display-l" data-bewerk="cta.titel">
+          {metAccent(titel || standaardTitel)}
+        </h2>
         <a href={`mailto:${mail}`} className="cta__mail" data-bewerk="contact.email">
           {mail}
           <span className="cta__lijn" aria-hidden="true" />

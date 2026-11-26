@@ -25,6 +25,8 @@ const SECTIE: Record<string, string> = {
   diensten_bedrijven: "#diensten",
   diensten_engineers: "#diensten",
   jobs: "#jobs",
+  team: "#over-ons",
+  cta: "#contact",
   contact: "#contact",
 };
 

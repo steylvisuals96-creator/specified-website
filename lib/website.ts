@@ -2,6 +2,7 @@ import { CMS_URL } from "./settings";
 import { LEEST_UIT_SUPABASE, supabaseLees } from "./beheer";
 import type { DIENSTEN, HERO, JOBS, TEKENING } from "./inhoud";
 import { inhoud } from "./inhoud-taal";
+import { ui } from "./teksten";
 import type { Taal } from "./taal";
 import type { CmsWebsite } from "./cms-vormen";
 
@@ -12,24 +13,47 @@ import type { CmsWebsite } from "./cms-vormen";
  */
 export type WebsiteInhoud = {
   hero: typeof HERO;
-  tekening: typeof TEKENING.titelblok & { intro: string; scrollHint: string };
+  tekening: typeof TEKENING.titelblok & {
+    intro: string;
+    scrollHint: string;
+    /** De kleine labels in het titelblok (standaard uit lib/teksten.ts). */
+    labelProject: string;
+    labelLocatie: string;
+    labelWaarden: string;
+    labelGoedgekeurd: string;
+  };
   callouts: [string, string][];
   consultants: { titel: string; accent: string; tekst: string; profielen: string[] };
   diensten: typeof DIENSTEN;
   jobs: typeof JOBS;
+  /** Kop boven de founders (sectie Over ons). */
+  team: { titel: string; accent: string };
+  /** De afsluiter boven het e-mailadres (laatste woord schuin via metAccent). */
+  cta: { titel: string };
   /** Leeg = de standaard van het onderdeel (CTA/Footer). */
   contact: { email: string; telefoon: string; linkedin: string; footerTekst: string };
 };
 
 function maakStandaard(taal: Taal): WebsiteInhoud {
   const i = inhoud(taal);
+  const u = ui(taal);
   return {
     hero: i.HERO,
-    tekening: { ...i.TEKENING.titelblok, intro: i.TEKENING.intro, scrollHint: i.TEKENING.scrollHint },
+    tekening: {
+      ...i.TEKENING.titelblok,
+      intro: i.TEKENING.intro,
+      scrollHint: i.TEKENING.scrollHint,
+      labelProject: u.tekening.project,
+      labelLocatie: u.tekening.locatie,
+      labelWaarden: u.tekening.waarden,
+      labelGoedgekeurd: u.tekening.goedgekeurd,
+    },
     callouts: i.TEKENING_CALLOUTS,
     consultants: i.CONSULTANTS,
     diensten: i.DIENSTEN,
     jobs: i.JOBS,
+    team: { titel: u.team.titel, accent: u.team.accent },
+    cta: { titel: u.cta.titel },
     contact: { email: "", telefoon: "", linkedin: "", footerTekst: "" },
   };
 }
@@ -78,6 +102,10 @@ export function samenvoegen(cms: unknown, taal: Taal = "nl"): WebsiteInhoud {
       locatie: tekst(c.tekening?.locatie, S.tekening.locatie),
       waarden: tekst(c.tekening?.waarden, S.tekening.waarden),
       akkoord: tekst(c.tekening?.akkoord, S.tekening.akkoord),
+      labelProject: tekst(c.tekening?.labelProject, S.tekening.labelProject),
+      labelLocatie: tekst(c.tekening?.labelLocatie, S.tekening.labelLocatie),
+      labelWaarden: tekst(c.tekening?.labelWaarden, S.tekening.labelWaarden),
+      labelGoedgekeurd: tekst(c.tekening?.labelGoedgekeurd, S.tekening.labelGoedgekeurd),
     },
     // Het acrostichon heeft negen letters; ontbrekende regels houden de standaardtekst.
     callouts: S.callouts.map((standaard, i) => {
@@ -97,6 +125,11 @@ export function samenvoegen(cms: unknown, taal: Taal = "nl"): WebsiteInhoud {
       leeg: tekst(c.jobs?.leeg, S.jobs.leeg),
       openKnop: tekst(c.jobs?.openKnop, S.jobs.openKnop),
     },
+    team: {
+      titel: tekst(c.team?.titel, S.team.titel),
+      accent: tekst(c.team?.accent, S.team.accent),
+    },
+    cta: { titel: tekst(c.cta?.titel, S.cta.titel) },
     contact: {
       email: tekst(c.contact?.email, ""),
       telefoon: tekst(c.contact?.telefoon, ""),

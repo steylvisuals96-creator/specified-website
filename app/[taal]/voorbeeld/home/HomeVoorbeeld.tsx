@@ -9,7 +9,7 @@ import Jobs from "@/components/Jobs";
 import Team from "@/components/Team";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
-import { veiligeLink } from "@/lib/settings";
+import { getTeam, veiligeLink, type TeamMember } from "@/lib/settings";
 import ScrollMomenten from "@/components/ScrollMomenten";
 import BewerkOverlay from "@/components/BewerkOverlay";
 import VoorbeeldFocus from "@/components/VoorbeeldFocus";
@@ -25,6 +25,11 @@ import { useVoorbeeld } from "@/lib/useVoorbeeld";
  */
 export default function HomeVoorbeeld() {
   const { data, focus } = useVoorbeeld();
+  // De echte teamleden (met hun id), zodat een klik op een lid de editor van dat lid opent.
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  useEffect(() => {
+    getTeam().then(setTeam);
+  }, []);
   // Op /en/voorbeeld/home: de Engelse teksten (schakelaar EN in het beheer).
   const taal = useTaal();
   const inhoud = useMemo(() => (data ? samenvoegen(data, taal) : STANDAARD_TAAL[taal]), [data, taal]);
@@ -54,8 +59,8 @@ export default function HomeVoorbeeld() {
         <Disciplines inhoud={inhoud.consultants} />
         <Split kolommen={inhoud.diensten} taal={taal} />
         <Jobs jobs={[]} titel={inhoud.jobs.titel} linkTekst={inhoud.jobs.linkTekst} leeg={inhoud.jobs.leeg} openKnop={inhoud.jobs.openKnop} taal={taal} />
-        <Team taal={taal} />
-        <CTA email={inhoud.contact.email || undefined} telefoon={inhoud.contact.telefoon || undefined} />
+        <Team members={team} titel={inhoud.team.titel} titelAccent={inhoud.team.accent} taal={taal} />
+        <CTA titel={inhoud.cta.titel} email={inhoud.contact.email || undefined} telefoon={inhoud.contact.telefoon || undefined} />
       </main>
       <ScrollMomenten />
       <Footer linkedin={veiligeLink(inhoud.contact.linkedin)} footerTekst={inhoud.contact.footerTekst || undefined} />

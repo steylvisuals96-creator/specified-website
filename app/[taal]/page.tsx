@@ -82,8 +82,8 @@ export default async function Home() {
         <Disciplines inhoud={website.consultants} />
         <Split kolommen={website.diensten} taal={taal} />
         <Jobs jobs={jobs} titel={website.jobs.titel} linkTekst={website.jobs.linkTekst} leeg={website.jobs.leeg} openKnop={website.jobs.openKnop} taal={taal} />
-        <Team members={team} titel={settings.over_titel} titelAccent={settings.over_titel_accent} taal={taal} />
-        <CTA titel={settings.contact_titel} email={settings.contact_email} telefoon={settings.telefoon} />
+        <Team members={team} titel={settings.over_titel || website.team.titel} titelAccent={settings.over_titel_accent || website.team.accent} taal={taal} />
+        <CTA titel={settings.contact_titel || website.cta.titel} email={settings.contact_email} telefoon={settings.telefoon} />
       </main>
       <ScrollMomenten />
       <Footer linkedin={settings.linkedin} footerTekst={settings.footer_tekst} />

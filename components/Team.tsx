@@ -56,7 +56,7 @@ export default function Team({
   return (
     <section id="over-ons" className="team">
       <div className="wrap">
-        <h2 className="display display-l team__kop">
+        <h2 className="display display-l team__kop" data-bewerk="team.titel,team.accent">
           {titel || t.titel}{" "}
           <span className="human team__accent">{titelAccent || t.accent}</span>
         </h2>
@@ -67,7 +67,7 @@ export default function Team({
             const portret = ENGINEER_PORTRETTEN[m.id];
             const engineerSrc = portret && m.fotoUrl === mediaUrl(portret.bron) ? mediaUrl(portret.engineer) : undefined;
             return (
-              <article key={m.id} className="team__lid">
+              <article key={m.id} className="team__lid" data-beheer={/^[0-9a-f-]{36}$/i.test(m.id) ? `/team/${m.id}` : undefined}>
                 <div className="team__foto">
                   {m.fotoUrl && engineerSrc ? (
                     <PortretWissel

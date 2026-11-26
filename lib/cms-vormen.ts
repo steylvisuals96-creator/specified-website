@@ -70,5 +70,7 @@ export type CmsWebsite = {
   diensten_bedrijven?: Velden;
   diensten_engineers?: Velden;
   jobs?: Velden;
+  team?: Velden;
+  cta?: Velden;
   contact?: Velden;
 };

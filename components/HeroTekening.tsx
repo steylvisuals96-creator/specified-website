@@ -36,6 +36,8 @@ const NS = "http://www.w3.org/2000/svg";
 let T: Pick<WebsiteInhoud, "tekening" | "callouts"> = { tekening: STANDAARD.tekening, callouts: STANDAARD.callouts };
 // De vaste labels van het titelblok, in de taal van de pagina.
 let L = UI.nl.tekening;
+// Welk beheerveld bij het label van een waarde in het titelblok hoort.
+const LABEL_SLEUTEL: Record<string, string> = { project: "labelProject", locatie: "labelLocatie", waarden: "labelWaarden" };
 const HANDTEKENING =
   "M8 132 C 40 96, 70 40, 92 36 C 112 32, 104 96, 86 118 C 70 138, 60 104, 96 86 C 128 70, 140 64, 150 76 C 160 90, 142 112, 150 116 C 160 120, 178 84, 194 70 C 204 62, 206 84, 198 102 C 192 118, 206 118, 220 100 C 236 80, 246 62, 262 60 C 276 58, 268 88, 280 92 C 294 96, 306 70, 322 62 C 336 56, 330 84, 344 86 C 380 88, 460 52, 552 30";
 // Het beeldmerk van Specified (zelfde paden als het logo), 26,3 breed en 24,4 hoog.
@@ -239,7 +241,7 @@ function bouwLiggend(svg: SVGSVGElement, vw: number, vh: number, kop: Rect | nul
   el("line", { class: "tek__blok", x1: bx, y1: by + 54, x2: bx + bw, y2: by + 54 }, tb);
   el("line", { class: "tek__blok", x1: bx + 262, y1: by + 54, x2: bx + 262, y2: by + bh }, tb);
   const veld = (lx: number, ly: number, label: string, waarde: string, sleutel: string) => {
-    el("text", { class: "tek__label", x: lx, y: ly }, tb).textContent = label;
+    el("text", { class: "tek__label", x: lx, y: ly, "data-bewerk": `tekening.${LABEL_SLEUTEL[sleutel]}` }, tb).textContent = label;
     el("text", { class: "tek__waarde", x: lx, y: ly + 22, "data-bewerk": `tekening.${sleutel}` }, tb).textContent = waarde;
   };
   veld(bx + 14, by + 20, L.project, T.tekening.project, "project");
@@ -334,15 +336,15 @@ function bouwStaand(svg: SVGSVGElement, vw: number, vh: number): Delen {
   el("rect", { class: "tek__blok", x: bx, y: by, width: bw, height: bh }, tb);
   el("line", { class: "tek__blok", x1: bx, y1: by + 112, x2: bx + bw, y2: by + 112 }, tb);
   el("line", { class: "tek__blok", x1: bx + kol, y1: by + 112, x2: bx + kol, y2: by + bh }, tb);
-  const lab = (x: number, y: number, t: string) => (el("text", { class: "tek__label tek__label--groot", x, y }, tb).textContent = t);
+  const lab = (x: number, y: number, t: string, sleutel: string) => (el("text", { class: "tek__label tek__label--groot", x, y, "data-bewerk": `tekening.${sleutel}` }, tb).textContent = t);
   const waa = (x: number, y: number, t: string, sleutel = "") => (el("text", { class: "tek__waarde tek__waarde--groot", x, y, ...(sleutel ? { "data-bewerk": `tekening.${sleutel}` } : {}) }, tb).textContent = t);
-  lab(bx + 22, by + 42, L.project);
+  lab(bx + 22, by + 42, L.project, "labelProject");
   waa(bx + 22, by + 90, T.tekening.project, "project");
   const [stad, regio] = T.tekening.locatie.split(", ");
-  lab(bx + 22, by + 158, L.locatie);
+  lab(bx + 22, by + 158, L.locatie, "labelLocatie");
   waa(bx + 22, by + 206, `${stad},`, "locatie");
   waa(bx + 22, by + 252, regio ?? "", "locatie");
-  lab(bx + kol + 22, by + 158, L.goedgekeurd);
+  lab(bx + kol + 22, by + 158, L.goedgekeurd, "labelGoedgekeurd");
   const hand = el("path", { class: "tek__hand tek__hand--dik", d: HANDTEKENING, pathLength: 1, transform: `translate(${bx + kol + 12} ${by + 168}) scale(.44)` }, tb);
 
   return {
@@ -459,7 +461,14 @@ export function heroScrollY(moment: HeroMoment): number | null {
 export default function HeroTekening({ inhoud = STANDAARD }: { inhoud?: Pick<WebsiteInhoud, "hero" | "tekening" | "callouts"> }) {
   const taal = useTaal();
   T = { tekening: inhoud.tekening, callouts: inhoud.callouts };
-  L = ui(taal).tekening;
+  // De labels in het titelblok komen uit het beheer (standaard: lib/teksten.ts).
+  L = {
+    ...ui(taal).tekening,
+    project: inhoud.tekening.labelProject,
+    locatie: inhoud.tekening.labelLocatie,
+    waarden: inhoud.tekening.labelWaarden,
+    goedgekeurd: inhoud.tekening.labelGoedgekeurd,
+  };
   const HERO = inhoud.hero;
   const ref = useRef<HTMLElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);

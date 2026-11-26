@@ -31,6 +31,9 @@ export default async function Naar({ searchParams }: { searchParams: Promise<{ p
     const { data } = await (await supabaseServer()).from("vacatures").select("id").eq("slug", vacature[1]).maybeSingle();
     redirect(data ? `/vacatures/${data.id}` : "/vacatures");
   }
+  // Een teamlid in het voorbeeld (data-beheer op de website) opent zijn eigen editor.
+  const lid = pad.match(/^\/team\/([0-9a-f-]{36})$/i);
+  if (lid) redirect(`/team/${lid[1]}`);
   const artikel = pad.match(/^\/blog\/([a-z0-9-]{1,140})$/);
   if (artikel) {
     const { data } = await (await supabaseServer()).from("blog").select("id").eq("slug", artikel[1]).maybeSingle();

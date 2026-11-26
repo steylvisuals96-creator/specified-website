@@ -18,6 +18,9 @@ const CMS_ORIGIN = (() => {
  * veldnamen naar het beheer, dat het bijhorende veld opent en focust. Typen
  * in dat veld toont de tekst meteen hier (useVoorbeeld + VoorbeeldFocus).
  *
+ * Een element met data-beheer (bv. een teamlid) heeft een eigen editor: een klik
+ * vraagt het beheer die te openen (bericht navigeer, zoals een link).
+ *
  * Twee ontvangers:
  * - Het beheer (beheer/components/Voorbeeld.tsx): altijd aan als de pagina in
  *   een frame van het beheer staat. Bericht { type: "specified-voorbeeld", kies: [velden] }.
@@ -25,6 +28,10 @@ const CMS_ORIGIN = (() => {
  *
  * De website zelf bewaart niets en kent geen login. Buiten een frame doet dit niets.
  */
+// data-bewerk: een tekst met een veld in deze editor. data-beheer: een item met een eigen
+// editor in het beheer (bv. een teamlid, "/team/<id>"); een klik opent die editor.
+const DOEL = "[data-bewerk],[data-beheer]";
+
 export default function BewerkOverlay() {
   useEffect(() => {
     if (window.parent === window) return;
@@ -67,7 +74,7 @@ export default function BewerkOverlay() {
     const vind = (x: number, y: number) => {
       let beste: Element | null = null;
       let oppervlak = Infinity;
-      for (const el of document.querySelectorAll("[data-bewerk]")) {
+      for (const el of document.querySelectorAll(DOEL)) {
         const r = el.getBoundingClientRect();
         if (r.width <= 0 || x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
         const o = r.width * r.height;
@@ -113,10 +120,15 @@ export default function BewerkOverlay() {
     // navigeert niet; andere links werken zoals voorheen.
     const onClick = (e: MouseEvent) => {
       const el = e.target instanceof Element ? e.target : null;
-      const doel = vind(e.clientX, e.clientY) ?? el?.closest("[data-bewerk]");
+      const doel = vind(e.clientX, e.clientY) ?? el?.closest(DOEL);
       if (doel) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        const item = doel.getAttribute("data-beheer");
+        if (item) {
+          if (naarBeheer && item.startsWith("/")) window.parent.postMessage({ type: "specified-voorbeeld", navigeer: item }, ouder);
+          return;
+        }
         const velden = (doel.getAttribute("data-bewerk") ?? "").split(",").filter(Boolean);
         if (naarBeheer) window.parent.postMessage({ type: "specified-voorbeeld", kies: velden }, ouder);
         else window.parent.postMessage({ type: "specified-bewerken", actie: "kies", velden }, CMS_ORIGIN);

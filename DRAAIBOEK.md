@@ -130,6 +130,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
 - **Klikken in het voorbeeld** (2026-11-26, wens Sam: "een volledige live editor"): ga je met de muis over een tekst in het voorbeeld, dan krijgt die een gestreept kader met "Klik om te bewerken". Klik je erop, dan scrollt het formulier naar het bijhorende veld, licht het kort op en staat de cursor erin; wat je typt staat meteen in het voorbeeld. Werkt voor de homepage, de doorklikpagina's en vacatures, ook voor de SVG-teksten in de tekening (callouts, titelblok) en knoppen (die volgen dan hun link niet). Een element met twee velden (bv. titel + accentwoord) opent het eerste; een lijst (profielen, vereisten) de eerste regel. Een gewone link zonder bewerkbare tekst opent nog steeds de editor van die pagina. Na een klik scrollt het voorbeeld niet mee (het stuk staat al in beeld), alleen het kader verschijnt. Verdeling: de website meldt alleen wat je aanklikt (`components/BewerkOverlay.tsx`, alleen actief in een frame van het beheer, bericht `kies`); het beheer zoekt en focust het veld (`kiesVeld` in `beheer/components/Voorbeeld.tsx`). Dat kan niet volledig in het beheer: het voorbeeld is de echte website op een ander domein en de browser laat het beheer niet in dat frame kijken. Bewust niet rechtstreeks in het voorbeeld typen: de tekening is SVG en het formulier blijft de enige plek waar je typt en opslaat. Getest met een testframe op localhost:3004 (callout, heroknop, consultants-titel, profielenrij, "All jobs", en een gewone link die nog doorstuurt), niet ingelogd in het echte beheer.
 - **Homepage zonder vacatures bewerkbaar** (2026-11-26): de tekst "Er staan op dit moment geen vacatures online…" en de knop "Stuur een open sollicitatie" waren vaste teksten (`lib/teksten.ts`). Nu zijn het velden in het blok Vacatures op de homepage (`jobs.leeg`, `jobs.openKnop`, NL en EN), met de oude tekst als standaard (`JOBS` in `lib/inhoud.ts` en `lib/inhoud-en.ts`). Ze dragen `data-bewerk`, dus klikken in het voorbeeld opent het veld. Op de echte homepage alleen zichtbaar als er geen vacatures online staan. Getest met het testframe (typen toont de tekst live, klik op de knop opent het veld).
+- **Meer homepageteksten bewerkbaar** (2026-11-26, NIET GETEST, niet gepusht): teamkop (`team.titel`, `team.accent`), afsluiter "Laten we kennismaken." (`cta.titel`) en de labels in het titelblok van de tekening (`tekening.label*`) zijn velden in het beheer met `data-bewerk`. Een teamlid in het voorbeeld (`data-beheer="/team/<id>"`) opent de Team-editor via `/naar`. Nog open: menu, footer, formulierlabels en knoppen (`lib/teksten.ts`) zijn niet bewerkbaar; voorstel: twee paginadefinities "Menu en footer" en "Formulieren" via `lib/paginas.ts`.
 - **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
 - **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
 - **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
@@ -419,7 +420,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:51_
+_Bijgewerkt: 2026-11-26 23:03_
 
 ### Nog niet op main
 
@@ -431,6 +432,7 @@ _Bijgewerkt: 2026-11-26 22:51_
 
 **2026-11-26**
 
+- website: Beheer: tweestapslogin verplicht voor iedereen, ook in RLS (audit B3) (`546bfcd`)
 - website: Homepage: tekst en knop zonder vacatures bewerkbaar in het beheer (`bf8c9d2`)
 - website: Live editor: klik een tekst in het voorbeeld om het veld te openen (`2f13744`)
 - website: Beheer: inloglink weer 24 uur geldig (Supabase aangepast) (`65d06eb`)
