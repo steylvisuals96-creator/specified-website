@@ -128,6 +128,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Gebruikers**: accounts aanmaken met een uitnodigingslink die de beheerder zelf bezorgt (geen mailserver nodig); nieuwe inloglink bij een vergeten wachtwoord. Eerste account via `npm run gebruiker:maken` in `beheer/`.
 - **Logboek**: database-trigger schrijft elke wijziging weg (wie, wat, wanneer); te zien bij Logboek en op het overzicht.
 - **Meteen live**: na opslaan roept het beheer `/api/ververs` op de website aan (gedeeld geheim); anders binnen 60 s.
+- **Klikken in het voorbeeld** (2026-11-26, wens Sam: "een volledige live editor"): ga je met de muis over een tekst in het voorbeeld, dan krijgt die een gestreept kader met "Klik om te bewerken". Klik je erop, dan scrollt het formulier naar het bijhorende veld, licht het kort op en staat de cursor erin; wat je typt staat meteen in het voorbeeld. Werkt voor de homepage, de doorklikpagina's en vacatures, ook voor de SVG-teksten in de tekening (callouts, titelblok) en knoppen (die volgen dan hun link niet). Een element met twee velden (bv. titel + accentwoord) opent het eerste; een lijst (profielen, vereisten) de eerste regel. Een gewone link zonder bewerkbare tekst opent nog steeds de editor van die pagina. Na een klik scrollt het voorbeeld niet mee (het stuk staat al in beeld), alleen het kader verschijnt. Verdeling: de website meldt alleen wat je aanklikt (`components/BewerkOverlay.tsx`, alleen actief in een frame van het beheer, bericht `kies`); het beheer zoekt en focust het veld (`kiesVeld` in `beheer/components/Voorbeeld.tsx`). Dat kan niet volledig in het beheer: het voorbeeld is de echte website op een ander domein en de browser laat het beheer niet in dat frame kijken. Bewust niet rechtstreeks in het voorbeeld typen: de tekening is SVG en het formulier blijft de enige plek waar je typt en opslaat. Getest met een testframe op localhost:3004 (callout, heroknop, consultants-titel, profielenrij, "All jobs", en een gewone link die nog doorstuurt), niet ingelogd in het echte beheer.
 - **Getest op 2026-11-15**, ingelogd als Sam (creator, lokaal): overzicht, vacatures (lijst en formulier met de omgezette omschrijving), homepage-editor (meescrollen naar een callout, tekst meteen in het voorbeeld, niet opgeslagen), blog (testconcept aangemaakt, onzichtbaar voor de website, logboek met naam, en weer verwijderd), team, media, gebruikers, logboek, account, en de telefoonweergave. Daarvoor al: build en typecheck van beide apps, de deuren zonder login, RLS per rol in SQL, de website die uit Supabase leest en `/api/ververs`.
 - **Uploaden getest** (2026-11-15): testbeeld via `/api/upload` naar R2, `/m/<id>` geeft een ondertekende link, beeld gekozen als teamfoto en zichtbaar op de website (lokaal, uit Supabase), daarna teamlid en beeld via het beheer verwijderd (ook uit R2). Een nepbestand (SVG-code als png) werd geweigerd. De bucket zelf weigert alles zonder handtekening.
 - **Getest op Vercel (2026-11-15)**: testbeeld geüpload, geladen via het ondertekende R2-adres en weer uit de mediabibliotheek verwijderd. Op de homepage-editor de bestaande teksten opgeslagen zonder velden te wijzigen. Beide tests staan in het logboek, met de juiste Belgische tijd. De homepage-editor bevestigt dat de inhoud is opgeslagen zodra Supabase de bijgewerkte rij teruggeeft. De website leest voorlopig uit Payload.
@@ -275,7 +276,7 @@ Website: `NEXT_PUBLIC_CMS_URL` (optioneel), later `NEXT_PUBLIC_SITE_URL`; voor d
 | Nieuwe back-end rechtstreeks op Supabase en R2, zonder Payload | Projectregel en wens Sam (2026-11-15): minder lagen, login en tweestapslogin uit Supabase, RLS als laatste slot. Gebouwd naast de oude CMS in `beheer/`, overstap met één variabele op de website |
 | Alleen wat Specified gebruikt in het nieuwe beheer; recruitment-CRM niet mee | Specified beheert volgens de invullijst alleen vacatures en blog, sollicitaties gaan per mail. Oude tabellen blijven als archief in `payload`. Later uitbreiden kan, op vraag van Specified (2026-11-15) |
 | Look van de SteylVisuals-studio in de Specified-huisstijl | Sam vindt de studio mooi ogen; matglas en beweging overgenomen, kleuren, letters en radius van Specified (2026-11-15) |
-| Live voorbeeld scrollt mee naar het veld, geen klik-op-de-pagina | Wens Sam (2026-11-15): de klant ziet waar de tekst staat zonder te zoeken. Klikken in het voorbeeld kan later nog |
+| Live voorbeeld scrollt mee naar het veld; sinds 2026-11-26 ook klikken in het voorbeeld om het veld te openen | Wens Sam (2026-11-15): de klant ziet waar de tekst staat zonder te zoeken. 2026-11-26: klikken in het voorbeeld opent het veld in het formulier; typen blijft in het formulier (tekening is SVG, één plek om op te slaan) |
 | Uitnodigen met een link die de beheerder zelf bezorgt | Supabase verstuurt zonder eigen mailserver alleen mails naar het eigen team; zo werkt het meteen |
 | Juridische naam Specified NV (niet BV) | Invullijst, aangepast in footer, privacy en JSON-LD (2026-11-12). De voettekst stond ook in de CMS (Homepage en Instellingen) en is daar rechtstreeks in Supabase gecorrigeerd |
 | Repo blijft publiek; audits en beveiligingspunten buiten git | Keuze Sam (2026-11-22). Het draaiboek bevat alleen niet-gevoelige stand van zaken, beveiligingsactiepunten staan in de Studio |
@@ -415,7 +416,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:29_
+_Bijgewerkt: 2026-11-26 22:35_
 
 ### Nog niet op main
 
@@ -427,6 +428,7 @@ _Bijgewerkt: 2026-11-26 22:29_
 
 **2026-11-26**
 
+- website: Beheer: inloglink weer 24 uur geldig (Supabase aangepast) (`65d06eb`)
 - website: Beheer: inloglink is 1 uur geldig, handleiding aangevuld met NL/EN (`4a79abd`)
 - website: Cookiebeleid: zelfde privacycontact als het privacybeleid (`07edd88`)
 - website: Draaiboek: AAAA en www bij de domeinverhuis (`dc20d6d`)

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import VacatureWeergave from "@/components/paginas/VacatureWeergave";
+import BewerkOverlay from "@/components/BewerkOverlay";
 import VoorbeeldFocus from "@/components/VoorbeeldFocus";
 import { getSettings, type SiteSettings } from "@/lib/settings";
 import { vormSupabase, type SupabaseVacature } from "@/lib/vacatures";
@@ -56,6 +57,7 @@ export default function VacatureVoorbeeld() {
 
   return (
     <>
+      <BewerkOverlay />
       <VoorbeeldFocus focus={focus} />
       <VacatureWeergave v={v} taal={taal} footer={{ linkedin: settings.linkedin, footerTekst: settings.footer_tekst }} />
     </>

@@ -13,7 +13,7 @@ const CMS_ORIGIN = (() => {
 })();
 
 // Het nieuwe beheer (lokaal op poort 3004 tijdens het ontwikkelen).
-const BEHEER_ORIGINS = [beheerOrigin, ...(process.env.NODE_ENV !== "production" ? ["http://localhost:3004"] : [])].filter(Boolean);
+export const BEHEER_ORIGINS = [beheerOrigin, ...(process.env.NODE_ENV !== "production" ? ["http://localhost:3004"] : [])].filter(Boolean);
 
 /**
  * Luistert naar de berichten van het beheer naast het voorbeeld.
@@ -28,7 +28,7 @@ const BEHEER_ORIGINS = [beheerOrigin, ...(process.env.NODE_ENV !== "production" 
  */
 export function useVoorbeeld<T = Record<string, unknown>>(relaties: Record<string, string> = {}) {
   const [data, setData] = useState<T | null>(null);
-  const [focus, setFocus] = useState<{ veld: string | null; label?: string; teller: number }>({ veld: null, teller: 0 });
+  const [focus, setFocus] = useState<{ veld: string | null; label?: string; teller: number; scroll?: boolean }>({ veld: null, teller: 0 });
   const [wacht, setWacht] = useState(true);
   const cache = useRef(new Map<string, unknown>());
   const relatiesRef = useRef(relaties);
@@ -66,7 +66,9 @@ export function useVoorbeeld<T = Record<string, unknown>>(relaties: Record<strin
         setWacht(false);
         const veld = typeof e.data.veld === "string" ? e.data.veld.slice(0, 80) : null;
         const label = typeof e.data.label === "string" ? e.data.label.slice(0, 80) : undefined;
-        setFocus((f) => (f.veld === veld ? f : { veld, label, teller: f.teller + 1 }));
+        // scroll: false = het veld is net in dit voorbeeld aangeklikt; het staat dus al in beeld.
+        const scroll = e.data.scroll !== false;
+        setFocus((f) => (f.veld === veld ? f : { veld, label, teller: f.teller + 1, scroll }));
         return;
       }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import BewerkOverlay from "@/components/BewerkOverlay";
 import VoorbeeldFocus from "@/components/VoorbeeldFocus";
 import {
   BlogOverzichtWeergave,
@@ -58,6 +59,7 @@ export default function PaginaVoorbeeld({ toon }: { toon: string }) {
 
   return (
     <>
+      <BewerkOverlay />
       <VoorbeeldFocus focus={focus} />
       {toon === "voor-bedrijven" && <VoorBedrijvenWeergave t={t} a={a} footer={footer} taal={taal} />}
       {toon === "voor-engineers" && <VoorEngineersWeergave t={t} a={a} footer={footer} taal={taal} />}

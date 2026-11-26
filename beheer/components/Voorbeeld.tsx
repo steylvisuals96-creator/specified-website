@@ -29,16 +29,18 @@ export type VoorbeeldBericht = { data: unknown; veld: string | null; label?: str
 /**
  * Zoekt het formulierveld voor een sleutel uit het voorbeeld en zet de cursor
  * erin. Eerst exact ("hero.woord"), dan een lijst ("consultants.profielen"
- * wordt "consultants.profielen.0"). Geeft de gekozen sleutel terug.
+ * wordt "consultants.profielen.0").
  */
-function kiesVeld(velden: string[]): string | null {
+function kiesVeld(velden: string[], voorFocus: (veld: string) => void) {
   const alle = Array.from(document.querySelectorAll<HTMLElement>("form [data-veld]")).filter((el) => !el.closest("[hidden]"));
   let doel: HTMLElement | undefined;
   for (const v of velden) {
     doel = alle.find((el) => el.dataset.veld === v) ?? alle.find((el) => el.dataset.veld?.startsWith(`${v}.`));
     if (doel) break;
   }
-  if (!doel) return null;
+  if (!doel) return;
+  // Vóór de focus: de focus stuurt meteen het veld naar het voorbeeld, en dat moet weten dat het niet hoeft te scrollen.
+  voorFocus(doel.dataset.veld ?? "");
   const zacht = !matchMedia("(prefers-reduced-motion: reduce)").matches;
   // Smaller dan 1024 px plakt het voorbeeld bovenaan; het veld moet eronder uitkomen.
   const naast = matchMedia("(min-width: 1024px)").matches;
@@ -60,7 +62,6 @@ function kiesVeld(velden: string[]): string | null {
     blok.setAttribute("data-gekozen", "");
     setTimeout(() => blok.removeAttribute("data-gekozen"), 1400);
   }
-  return doel.dataset.veld ?? null;
 }
 export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: string; pad: string; bericht: VoorbeeldBericht }) {
   const origin = useMemo(() => new URL(websiteUrl).origin, [websiteUrl]);
@@ -91,7 +92,7 @@ export default function Voorbeeld({ websiteUrl, pad, bericht }: { websiteUrl: st
       // Een klik op een tekst in het voorbeeld: het bijhorende veld openen.
       if (Array.isArray(e.data.kies)) {
         const velden = (e.data.kies as unknown[]).filter((v): v is string => typeof v === "string").slice(0, 8).map((v) => v.slice(0, 80));
-        if (velden.length) gekozenVeld.current = kiesVeld(velden);
+        if (velden.length) kiesVeld(velden, (veld) => (gekozenVeld.current = veld));
         return;
       }
       // Een klik op een link in het voorbeeld: naar de editor van die pagina.

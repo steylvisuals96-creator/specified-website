@@ -13,7 +13,7 @@ import { heroScrollY, type HeroMoment } from "./HeroTekening";
  * hero, waar alles aan de scroll hangt, rekenen we de plek uit op de
  * tijdlijn van de tekening: anders staat een callout nog niet in beeld.
  */
-type Focus = { veld: string | null; label?: string; teller: number };
+type Focus = { veld: string | null; label?: string; teller: number; scroll?: boolean };
 type Kader = { x: number; y: number; w: number; h: number };
 
 // Valt een veld buiten alle data-bewerk-elementen, dan dit stuk van de pagina.
@@ -74,7 +74,8 @@ export default function VoorbeeldFocus({ focus }: { focus: Focus }) {
   // Naar het veld scrollen, één keer per nieuw veld (niet bij elke toetsaanslag).
   useEffect(() => {
     veldRef.current = focus.veld;
-    if (!focus.veld) return;
+    // Aangeklikt in het voorbeeld zelf (BewerkOverlay): niet scrollen, alleen het kader.
+    if (!focus.veld || focus.scroll === false) return;
     const veld = focus.veld;
     const t = setTimeout(() => {
       const moment = heroMoment(veld);
@@ -86,7 +87,7 @@ export default function VoorbeeldFocus({ focus }: { focus: Focus }) {
       scrollNaar(scrollY + r.top - (hoog ? 96 : (innerHeight - r.height) / 2));
     }, 60);
     return () => clearTimeout(t);
-  }, [focus.teller, focus.veld]);
+  }, [focus.teller, focus.veld, focus.scroll]);
 
   // Het kader volgt het element terwijl de pagina scrollt en de tekening beweegt.
   useEffect(() => {
