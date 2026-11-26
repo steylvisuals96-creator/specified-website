@@ -10,11 +10,11 @@ import PortretWissel from "@/components/PortretWissel";
 const ENGINEER_PORTRETTEN: Record<string, { bron: string; engineer: string }> = {
   "c80e8c93-deb9-4944-be51-3feeb93ad7cc": {
     bron: "e2c2c849-b495-4c35-885a-1232e928755e",
-    engineer: "6d4df3f2-fd4c-4ef6-84d8-7ccf0da0dc49",
+    engineer: "6ccda54a-0502-49c4-ac3b-bef599432d10",
   },
   "6976c65f-43b3-4550-9002-174c2253601b": {
     bron: "e9fa1572-376b-476d-8cae-037089410d6b",
-    engineer: "ba0c06db-1900-4ca0-8d22-50b50489cbef",
+    engineer: "8512cd5c-a1b1-4bfe-bfb1-be6b4bc379ad",
   },
 };
 

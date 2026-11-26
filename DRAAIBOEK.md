@@ -136,7 +136,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
 - **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v4.webp` en `simon-claeys-portret-v4.webp` staan in R2 en zijn gekoppeld via **Website > Team**. Bij deze versie dienden de originele gezichten opnieuw als referentie voor de bewerking. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De vorige versies en de originele portretten blijven beschikbaar in de mediabibliotheek. De originele bestanden staan ook lokaal als terugval.
 - **Simon zittend (2026-11-26)**: Sam wilde Simon ook zittend zoals Tom en bevestigde daarna de oorspronkelijke foto van `specified.be/wp-content/uploads/2025/03/Simon.jpeg` als bron voor zijn exacte gezicht. Zijn teamfoto is `simon-claeys-portret-v7-origineel-gezicht.webp`, aan dezelfde werktafel met technische tekening. Het hoofd is rechtstreeks uit de bronfoto overgenomen, met een zachte overgang langs de buitenrand. De centrale gezichtspixels zijn op gelijkheid gecontroleerd in het PNG-masterbestand. Het WebP staat in R2 en de mediabibliotheek, gekoppeld via **Website > Team**.
-- **Founderportretten wisselen naar engineer (2026-11-26)**: op vraag van Sam krijgen Tom en Simon elk een eigen bewerking met witte veiligheidshelm en werkkleding in dezelfde zithouding. Beide beelden staan in de mediabibliotheek (`tom-wijdooghe-engineer-hover-v1.webp` en `simon-claeys-engineer-hover-v1.webp`). Op desktop verschijnt die versie bij hover en verdwijnt ze bij het verlaten van de foto. Tikken, Enter of spatie wisselen de foto ook. De overgang gebruikt alleen opacity (200 ms, 100 ms bij verminderde beweging). De wissel is pas actief nadat het tweede beeld geladen is. De koppeling staat in `components/Team.tsx` en geldt alleen voor de bijbehorende bronfoto; `components/PortretWissel.tsx` bedient het effect in beide talen.
+- **Founderportretten wisselen naar engineer (2026-11-26)**: op vraag van Sam krijgen Tom en Simon elk een eigen bewerking met witte veiligheidshelm en werkkleding in dezelfde zithouding. Beide beelden staan in de mediabibliotheek (`tom-wijdooghe-engineer-hover-v2.webp` en `simon-claeys-engineer-hover-v2.webp`). Op desktop verschijnt die versie bij hover en verdwijnt ze bij het verlaten van de foto. Tikken, Enter of spatie wisselen de foto ook. De overgang gebruikt alleen opacity (200 ms, 100 ms bij verminderde beweging). De wissel is pas actief nadat het tweede beeld geladen is. De koppeling staat in `components/Team.tsx` en geldt alleen voor de bijbehorende bronfoto; `components/PortretWissel.tsx` bedient het effect in beide talen. De v2-beelden herstellen de kraag: de overgebleven beige trui van Tom en blazer-/hemdrand van Simon zijn plaatselijk weggewerkt. De bestaande portretten zijn behouden; alleen de herstelde kraag- en halszones zijn overgenomen. Nieuwe media-ID’s vermijden de cache van v1. De gewone portretten en het hovergedrag zijn ongewijzigd.
 - **Teamfoto's (2026-11-26)**: de homepage toont ze via `next/image`, dus geschaald en in AVIF of WebP. Lokaal testen met echte beelden vraagt `NEXT_PUBLIC_BEHEER_URL=https://specified-beheer.vercel.app` bij zowel de build als de start.
 - Tweestapslogin aanzetten getest (2026-11-22, account Sam). Nog niet getest: iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
@@ -415,7 +415,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:13_
+_Bijgewerkt: 2026-11-26 22:14_
 
 ### Nog niet op main
 
@@ -427,8 +427,10 @@ _Bijgewerkt: 2026-11-26 22:13_
 
 **2026-11-26**
 
-- website: Breid beeldbibliotheek uit tot achttien beelden met reserveselectie (`49af132`)
-- website: Bewaar zes aanvullende sfeerbeelden in de mediabibliotheek (`12d8ab2`)
+- website: Herstel de kragen in beide engineerportretten (`ba4de85`)
+- website: Breid beeldbibliotheek uit tot achttien beelden met reserveselectie (`1303887`)
+- website: Bewaar zes aanvullende sfeerbeelden in de mediabibliotheek (`48fa8a7`)
+- website: Laat founderportretten wisselen naar hun engineer-versie (`c79bd1f`)
 - website: Neem Simons originele gezicht over in zijn zittende portret (`18ed08b`)
 - website: Engelse versie in Amerikaans Engels (`ef28b2f`)
 - website: Werk Simons portret bij met ingetogener glimlach (`6550720`)
