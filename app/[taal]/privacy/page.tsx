@@ -21,7 +21,7 @@ export async function generateMetadata() {
 
 function PrivacyPageNl() {
   return (
-    <LegalPage title="Privacybeleid" updated="5 juli 2026">
+    <LegalPage title="Privacybeleid" updated="26 november 2026">
       <p>
         Specified NV hecht veel belang aan de bescherming van je persoonsgegevens en respecteert
         je privacy. In dit privacybeleid leggen we uit welke gegevens we verzamelen, waarom, en
@@ -32,8 +32,8 @@ function PrivacyPageNl() {
       <h2>1. Verwerkingsverantwoordelijke</h2>
       <p>
         <strong>Specified NV</strong>, met maatschappelijke zetel te Veldkant 31a, 2550 Kontich, België.
-        Ondernemingsnummer: BE 0727.537.711. Voor alle vragen over dit beleid kan je ons
-        bereiken via <a href="mailto:info@specified.be">info@specified.be</a>.
+        Ondernemingsnummer: BE 0727.537.711. Voor vragen over dit beleid en je persoonsgegevens
+        bereik je ons via <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>.
       </p>
 
       <h2>2. Welke gegevens we verzamelen</h2>
@@ -55,9 +55,10 @@ function PrivacyPageNl() {
 
       <h2>4. Bewaartermijn</h2>
       <p>
-        We bewaren je gegevens niet langer dan noodzakelijk voor de doeleinden waarvoor ze zijn
-        verzameld. Sollicitatiegegevens bewaren we maximaal 2 jaar na het laatste contact, tenzij
-        je ons vraagt ze eerder te verwijderen.
+        We bewaren je gegevens niet langer dan nodig voor de doeleinden waarvoor ze verzameld zijn.
+        Contactvragen bewaren we tot 1 jaar na de afhandeling. Sollicitatiegegevens bewaren we
+        maximaal 1 jaar na je sollicitatie. Geef je toestemming om in onze wervingsreserve te
+        blijven, dan is dat maximaal 3 jaar, en je kan die toestemming op elk moment intrekken.
       </p>
 
       <h2>5. Delen met derden</h2>
@@ -78,7 +79,7 @@ function PrivacyPageNl() {
         <li>Overdraagbaarheid van je gegevens.</li>
       </ul>
       <p>
-        Je kan deze rechten uitoefenen via <a href="mailto:info@specified.be">info@specified.be</a>.
+        Je kan deze rechten uitoefenen via <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>.
         Ben je niet tevreden over hoe we met je gegevens omgaan, dan kan je klacht indienen bij de
         Belgische Gegevensbeschermingsautoriteit (<a href="https://www.gegevensbeschermingsautoriteit.be" target="_blank" rel="noopener noreferrer">gegevensbeschermingsautoriteit.be</a>).
       </p>
@@ -94,7 +95,7 @@ function PrivacyPageNl() {
 
 function PrivacyPageEn() {
   return (
-    <LegalPage title="Privacy policy" updated="July 5, 2026">
+    <LegalPage title="Privacy policy" updated="November 26, 2026">
       <p>
         Specified NV attaches great importance to protecting your personal data and respects your privacy. In this privacy policy we
         explain which data we collect, why, and which rights you have. This policy has been drawn up in accordance with the General
@@ -104,7 +105,7 @@ function PrivacyPageEn() {
       <h2>1. Data controller</h2>
       <p>
         <strong>Specified NV</strong>, with registered office at Veldkant 31a, 2550 Kontich, Belgium. Company number: BE 0727.537.711.
-        For any questions about this policy you can reach us at <a href="mailto:info@specified.be">info@specified.be</a>.
+        For questions about this policy and your personal data you can reach us at <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>.
       </p>
 
       <h2>2. What data we collect</h2>
@@ -126,8 +127,9 @@ function PrivacyPageEn() {
 
       <h2>4. Retention period</h2>
       <p>
-        We do not keep your data longer than necessary for the purposes for which it was collected. We keep application data for a
-        maximum of 2 years after the last contact, unless you ask us to delete it sooner.
+        We do not keep your data longer than necessary for the purposes for which it was collected. We keep contact requests for up
+        to 1 year after they have been handled. We keep application data for a maximum of 1 year after your application. If you
+        consent to staying in our talent pool, that is a maximum of 3 years, and you can withdraw your consent at any time.
       </p>
 
       <h2>5. Sharing with third parties</h2>
@@ -147,7 +149,7 @@ function PrivacyPageEn() {
         <li>Portability of your data.</li>
       </ul>
       <p>
-        You can exercise these rights via <a href="mailto:info@specified.be">info@specified.be</a>. If you are not satisfied with how
+        You can exercise these rights via <a href="mailto:dpo@cronos.be">dpo@cronos.be</a>. If you are not satisfied with how
         we handle your data, you can lodge a complaint with the Belgian Data Protection Authority (
         <a href="https://www.dataprotectionauthority.be" target="_blank" rel="noopener noreferrer">dataprotectionauthority.be</a>).
       </p>

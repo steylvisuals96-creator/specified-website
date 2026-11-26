@@ -326,7 +326,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [x] Pagina per vacature en één filter op vakgebied: gebouwd (2026-11-12), nog te bevestigen door Simon.
 - [x] NL en EN gevraagd. Engelse versie gebouwd (2026-11-23): Nederlands op de huidige adressen, Engels onder `/en` met Engelse adressen. Nog door Simon na te lezen: Engelse standaardteksten en vertaalde juridische pagina's.
 - [ ] Bullhorn-koppeling die sollicitaties doorstuurt: staat in de getekende offerte, nog niet gebouwd. Wacht op API-toegang via Bullhorn.
-- [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy?
+- [ ] Privacyverklaring bestaat "actueel" maar privacy- en cookieteksten en algemene voorwaarden "heb ik niet": bestaande teksten opvragen of laten opstellen. Wie is verantwoordelijk voor privacy? Stand 2026-11-26: hun huidige privacybeleid noemt `dpo@cronos.be` als contact, bewaart sollicitaties 1 jaar (wervingsreserve tot 3 jaar met toestemming) en contactvragen 1 jaar. De nieuwe privacypagina (NL en EN) volgt dat nu (was 2 jaar en info@). Door Simon te bevestigen. Algemene voorwaarden: de oude site heeft er geen, en de offerte belooft een basistekst; nog te maken.
 - [ ] Bewaartermijn sollicitatiegegevens (advies: 1 jaar, 2 met toestemming).
 - [ ] Betaalwijze: toelichting ontbrak in de invullijst.
 - [ ] Slogans "We engineer possibilities" en "We are here to stay": voorstel doen.
@@ -350,7 +350,7 @@ Rapport lokaal bij Sam, niet in git. De snelle codepunten zijn op 2026-11-24 doo
 - [x] Formulieren: sollicitatie met cv per vacature, open sollicitatie, contact, consultant aanvragen, met bevestigingsmail en melding (2026-11-12). Echt mailen is niet getest: zie volgende punt.
 - [ ] **Formulieren activeren**: `specified.be` verifiëren in Resend (DNS), in het Vercel-project van de website `RESEND_API_KEY`, `FORMULIER_AAN` en `FORMULIER_VAN` zetten, en elk formulier één keer echt versturen. Tot dan tonen de formulieren een foutmelding.
 - [x] Vacaturevelden in de CMS, pagina per vacature en JobPosting voor Google for Jobs (2026-11-12). Daarna de vacaturepagina's testen in Googles Rich Results Test zodra de site live staat.
-- [ ] De 5 bestaande vacatures aanvullen met uren, opleiding en talen (velden zijn leeg), of vervangen door de lijst van Specified.
+- [ ] De 5 bestaande vacatures aanvullen met uren, opleiding en talen (velden zijn leeg), of vervangen door de lijst van Specified. Opleiding op bachelor gezet (2026-11-26, volgt uit de vereisten van elke vacature); uren en talen staan nergens, ook niet op de oude site.
 - [x] Licht thema met keuzeschakelaar (2026-11-12). De hero-tekening volgt het thema, ook het eindlogo (`--tek-mix`). Nog door Sam te beoordelen, vooral de hero-tekening en de teamfoto's in licht.
 - [x] Dashboard voor de klant teruggebracht tot vacatures, blog, team, media en homepage; rollabels op de website zonder "Recruitment" (2026-11-12). De rol `consultant` bestaat nog; Specified wil 2 gebruikers met dezelfde rechten (beide beheerder maken).
 - [ ] Vacature-alert per e-mail (inschrijven met bevestiging, uitschrijflink, mail bij nieuwe vacature). Vraagt opslag van adressen en een geverifieerd maildomein. Staat in de getekende offerte.
@@ -415,7 +415,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 22:14_
+_Bijgewerkt: 2026-11-26 22:18_
 
 ### Nog niet op main
 
@@ -427,7 +427,7 @@ _Bijgewerkt: 2026-11-26 22:14_
 
 **2026-11-26**
 
-- website: Herstel de kragen in beide engineerportretten (`ba4de85`)
+- website: Herstel de kragen in beide engineerportretten (`adc5809`)
 - website: Breid beeldbibliotheek uit tot achttien beelden met reserveselectie (`1303887`)
 - website: Bewaar zes aanvullende sfeerbeelden in de mediabibliotheek (`48fa8a7`)
 - website: Laat founderportretten wisselen naar hun engineer-versie (`c79bd1f`)
