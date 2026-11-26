@@ -130,7 +130,7 @@ Gebouwd naast de oude CMS, in `beheer/` (uitleg en overstapstappen in `beheer/RE
 - **Startinhoud media (2026-11-15)**: de vier bestaande websitebeelden uit `public/images/team/` en `public/images/beeld/` staan in `specified-media` en de Supabase-mediabibliotheek. De portretten heten in het beheer `tom-wijdooghe.jpg` en `simon-claeys.jpg`. De twee oorspronkelijke sfeerbeelden behouden hun bestandsnaam. Alle vier hebben een omschrijving voor schermlezers en zijn via de live beheerlinks gecontroleerd op identieke bestandsinhoud.
 - **Dienstenbeelden homepage**: `specified-voor-bedrijven-v2.webp` en `specified-voor-engineers-v2.webp` staan in dezelfde bibliotheek, met een beschrijving en hun originele afmetingen. Beide live beheerlinks leveren exact de geüploade bestanden.
 - **Founderportretten (2026-11-16)**: de goedgekeurde herwerkingen `tom-wijdooghe-portret-v4.webp` en `simon-claeys-portret-v4.webp` staan in R2 en zijn gekoppeld via **Website > Team**. Bij deze versie dienden de originele gezichten opnieuw als referentie voor de bewerking. De Team-profielen zijn gestart met de namen, rollen, bio's, volgorde en links uit de homepage. De vorige versies en de originele portretten blijven beschikbaar in de mediabibliotheek. De originele bestanden staan ook lokaal als terugval.
-- **Simon zittend (2026-11-26)**: Sam wilde Simon ook zittend zoals Tom. Zijn teamfoto is `simon-claeys-portret-v6-zittend.webp`, aan dezelfde werktafel met technische tekening. Bij deze versie is de glimlach ingetogener en diende de originele foto opnieuw als gezichtsreferentie. Het beeld staat in R2 en de mediabibliotheek, gekoppeld via **Website > Team**.
+- **Simon zittend (2026-11-26)**: Sam wilde Simon ook zittend zoals Tom en bevestigde daarna de oorspronkelijke foto van `specified.be/wp-content/uploads/2025/03/Simon.jpeg` als bron voor zijn exacte gezicht. Zijn teamfoto is `simon-claeys-portret-v7-origineel-gezicht.webp`, aan dezelfde werktafel met technische tekening. Het hoofd is rechtstreeks uit de bronfoto overgenomen, met een zachte overgang langs de buitenrand. De centrale gezichtspixels zijn op gelijkheid gecontroleerd in het PNG-masterbestand. Het WebP staat in R2 en de mediabibliotheek, gekoppeld via **Website > Team**.
 - **Teamfoto's (2026-11-26)**: de homepage toont ze via `next/image`, dus geschaald en in AVIF of WebP. Lokaal testen met echte beelden vraagt `NEXT_PUBLIC_BEHEER_URL=https://specified-beheer.vercel.app` bij zowel de build als de start.
 - Tweestapslogin aanzetten getest (2026-11-22, account Sam). Nog niet getest: iemand uitnodigen.
 - **Live getest** (2026-11-15, `specified-beheer.vercel.app`): inloggen, homepage-editor met het meescrollende voorbeeld van de live website, en een upload naar R2 (beeld zichtbaar via `/m/`, daarna verwijderd).
@@ -409,7 +409,7 @@ Wat beter kan, belangrijkste eerst:
 Wordt automatisch gevuld uit git (beide repo's, `main`) door `scripts/draaiboek-bijwerken.sh`. Niet met de hand wijzigen.
 
 <!-- LOG-START -->
-_Bijgewerkt: 2026-11-26 21:44_
+_Bijgewerkt: 2026-11-26 21:52_
 
 ### Nog niet op main
 
@@ -421,6 +421,7 @@ _Bijgewerkt: 2026-11-26 21:44_
 
 **2026-11-26**
 
+- website: Engelse versie in Amerikaans Engels (`ef28b2f`)
 - website: Werk Simons portret bij met ingetogener glimlach (`6550720`)
 - website: Hero: bij de S Studies en procesoptimalisatie (`c9fa7a0`)
 - website: Gebruik zittend portret van Simon naast Tom (`038d1e2`)
